@@ -34,6 +34,10 @@ import Joy from "../../assets/Josy.svg";
 import Adeola from "../../assets/Adeola.svg";
 import Gift from "../../assets/Gift.svg";
 import Folder from "../../assets/Folder.svg";
+import WhatsAppIcon from "../../assets/WhatsApp.svg";
+import FBIcon from "../../assets/FaceBookIcon.svg";
+import IGIcon from "../../assets/InstagramIcon.svg";
+import WHIcon from "../../assets/WAIcon.svg";
 import "../../styles/pages/LandingPage.css";
 
 const customTheme = extendTheme({
@@ -368,12 +372,11 @@ const LandingPage = () => {
             <Box h="5" />
           </Box>
           <Box h="20px" />
-          <Box display="flex">
+          <Box display="flex" marginLeft="100px">
             <Box w="70px" />
 
-            <Box>
+            <Box marginRight="-110">
               <Box
-                bg="white"
                 justifyContent="center"
                 alignItems="center"
                 padding="20px"
@@ -387,7 +390,6 @@ const LandingPage = () => {
               <Box w="10" />
 
               <Box
-                bg="white"
                 justifyContent="center"
                 alignItems="center"
                 padding="20px"
@@ -404,23 +406,21 @@ const LandingPage = () => {
             <Box w="-20px" />
 
             <Box
-              bg="white"
               justifyContent="center"
               alignItems="center"
               padding="20px"
               borderRadius="20px"
               flexDirection="row"
             >
-              <Box marginLeft="-40px">
+              <Box>
                 <Image src={CenterMed} alt="Logo" w="306px" h="413px" />
               </Box>
               <Box h="5" />
             </Box>
 
             <Box w="-20px" />
-            <Box>
+            <Box marginLeft="-110px">
               <Box
-                bg="white"
                 justifyContent="center"
                 alignItems="center"
                 padding="20px"
@@ -433,14 +433,13 @@ const LandingPage = () => {
               </Box>
               <Box w="10" />
               <Box
-                bg="white"
                 justifyContent="center"
                 alignItems="center"
                 padding="20px"
                 borderRadius="20px"
                 flexDirection="row"
               >
-                <Box marginRight="40px">
+                <Box marginRight="10px">
                   <Image src={Gift} alt="Logo" w="398px" h="191px" />
                 </Box>
                 <Box h="5" />
@@ -450,7 +449,7 @@ const LandingPage = () => {
           <Box h="60px" />
         </Box>
 
-        <Box bg="white" >
+        <Box bg="white">
           <Box h="60px" />
           <Box>
             <Text
@@ -474,7 +473,7 @@ const LandingPage = () => {
             <Box w="70px" />
 
             <Box>
-              <Accordion allowToggle w="520px" >
+              <Accordion allowToggle w="520px">
                 <AccordionItem
                   p={4}
                   my={5}
@@ -657,11 +656,132 @@ const LandingPage = () => {
                 <Box marginRight="30px">
                   <Image src={Folder} alt="Logo" w="551px" h="329px" />
                 </Box>
+                <Box marginLeft="480px" marginTop="-75px">
+                  <a href="https://example.com">
+                    <Image src={WhatsAppIcon} alt="Logo" w="150px" h="147px" />
+                  </a>
+                </Box>
                 <Box h="5" />
               </Box>
             </Box>
           </Box>
           <Box h="60px" />
+        </Box>
+
+        <Box
+          bg="#A210C6"
+          display="flex"
+          w="1441"
+          h="543"
+          pd="48px, 84px, 32px, 60px"
+        >
+          <Box marginLeft="40px" marginTop="40px">
+            <Text fontFamily="body" color="white" fontSize="32px">
+              MIKUL HEALTH
+            </Text>
+            <Text
+              fontFamily="Montserrat"
+              color="white"
+              fontSize="20px"
+              marginTop="40px"
+            >
+              We leverage technological <br></br>
+              advancement to provide care<br></br>
+              for you and your loved ones.
+            </Text>
+          </Box>
+          <Box marginLeft="380px" marginTop="40px">
+            <Text fontFamily="body" color="white" fontSize="32px">
+              Quick Links
+            </Text>
+            <a href="https://example.com">
+              <Text
+                fontFamily="Montserrat"
+                color="white"
+                fontSize="20px"
+                marginTop="40px"
+              >
+                About
+              </Text>
+            </a>
+            <a href="https://example.com">
+              <Text
+                fontFamily="Montserrat"
+                color="white"
+                fontSize="20px"
+                marginTop="40px"
+              >
+                Contact us
+              </Text>
+            </a>
+            <a href="https://example.com">
+              <Text
+                fontFamily="Montserrat"
+                color="white"
+                fontSize="20px"
+                marginTop="40px"
+              >
+                Support
+              </Text>
+            </a>
+            <a href="https://example.com">
+              <Text
+                fontFamily="Montserrat"
+                color="white"
+                fontSize="20px"
+                marginTop="40px"
+              >
+                FAQs
+              </Text>
+            </a>
+            <a href="https://example.com">
+              <Text
+                fontFamily="Montserrat"
+                color="white"
+                fontSize="20px"
+                marginTop="40px"
+              >
+                Join Mikul Health
+              </Text>
+            </a>
+          </Box>
+          <Box marginLeft="300px" marginTop="40px">
+            <Text fontFamily="body" color="white" fontSize="32px">
+              Socials
+            </Text>
+            <Box marginLeft="5px" display="flex">
+              <a href="https://example.com">
+                <Image
+                  src={FBIcon}
+                  alt="Logo"
+                  w="32px"
+                  h="32px"
+                  marginTop="40px"
+                  marginLeft="20px"
+                />
+              </a>
+              <a href="https://example.com">
+                <Image
+                  src={IGIcon}
+                  alt="Logo"
+                  w="32px"
+                  h="32px"
+                  marginTop="40px"
+                  marginLeft="20px"
+                />
+              </a>
+              <a href="https://example.com">
+                <Image
+                  src={WHIcon}
+                  alt="Logo"
+                  w="32px"
+                  h="32px"
+                  marginTop="40px"
+                  marginLeft="20px"
+                />
+              </a>
+            </Box>
+          </Box>
         </Box>
       </Box>
     </ChakraProvider>
