@@ -10,6 +10,11 @@ import {
   extendTheme,
   ChakraProvider,
   Text,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
 } from "@chakra-ui/react";
 import logo from "../../assets/Whitelogo.png";
 import MHNurse from "../../assets/MHNurse.svg";
@@ -19,6 +24,17 @@ import PostPaturm from "../../assets/Postpatum.svg";
 import Recovery from "../../assets/RecoveryCare.svg";
 import Online from "../../assets/OnlineConsult.svg";
 import Doctor from "../../assets/Doctor.svg";
+import SignUp from "../../assets/SignUp.svg";
+import SelectCare from "../../assets/SelectService.svg";
+import GetMatched from "../../assets/GetMatched.svg";
+import ReceieveCare from "../../assets/RecieveCare.svg";
+import CenterMed from "../../assets/CenterMedic.svg";
+import Kudirat from "../../assets/Kudirat.svg";
+import Joy from "../../assets/Josy.svg";
+import Adeola from "../../assets/Adeola.svg";
+import Gift from "../../assets/Gift.svg";
+import Folder from "../../assets/Folder.svg";
+import "../../styles/pages/LandingPage.css";
 
 const customTheme = extendTheme({
   components: {
@@ -74,6 +90,7 @@ const LandingPage = () => {
                 <br />
                 journey.
               </Text>
+              <Box h="20px"></Box>
               <Button bg="#A210C6" color="white">
                 Get Started
               </Button>
@@ -87,7 +104,7 @@ const LandingPage = () => {
         </Box>
         <Box h="60px" />
         <Box bg="#A210C6">
-        <Box h="60px" />
+          <Box h="60px" />
           <Box>
             <Text
               fontSize="48px"
@@ -193,7 +210,7 @@ const LandingPage = () => {
           <Box h="60px" />
           <Box>
             <Box display="flex">
-              <Box marginLeft="100px">
+              <Box marginLeft="70px">
                 <Image src={Doctor} alt="Logo" w="563px" h="652px" />
               </Box>
               <Box>
@@ -220,6 +237,431 @@ const LandingPage = () => {
               </Box>
             </Box>
           </Box>
+          <Box h="60px" />
+        </Box>
+
+        <Box bg="white">
+          <Box h="60px" />
+          <Box>
+            <Text
+              fontSize="48px"
+              fontWeight="bold"
+              fontFamily="body"
+              color="black"
+            >
+              How it works
+            </Text>
+            <Box h="5" />
+          </Box>
+          <Box h="20px" />
+          <Box display="flex">
+            <Box w="70px" />
+            <Box
+              bg="white"
+              justifyContent="center"
+              alignItems="center"
+              padding="20px"
+              borderRadius="20px"
+              flexDirection="row"
+            >
+              <Box marginLeft="20px">
+                <Image src={SignUp} alt="Logo" w="200px" h="200px" />
+              </Box>
+              <Box h="5" />
+              <Text fontSize="xl" fontWeight="bold" textAlign="center">
+                Sign up
+              </Text>
+              <Text textAlign="center">
+                Getting started is quick <br />
+                and easy. Sign up with <br />
+                us to receive premium <br />
+                care
+              </Text>
+            </Box>
+            <Box w="10" />
+            <Box
+              bg="white"
+              justifyContent="center"
+              alignItems="center"
+              padding="20px"
+              borderRadius="20px"
+              flexDirection="row"
+            >
+              <Box marginLeft="20px">
+                <Image src={SelectCare} alt="Logo" w="200px" h="200px" />
+              </Box>
+              <Box h="5" />
+              <Text fontSize="xl" fontWeight="bold" textAlign="center">
+                Select Care
+              </Text>
+              <Text textAlign="center">
+                Now that you are a part <br />
+                of our community, you <br />
+                can find the kind of <br />
+                service you need
+              </Text>
+            </Box>
+            <Box w="10" />
+            <Box
+              bg="white"
+              justifyContent="center"
+              alignItems="center"
+              padding="20px"
+              borderRadius="20px"
+              flexDirection="row"
+            >
+              <Box marginLeft="15px">
+                <Image src={GetMatched} alt="Logo" w="200px" h="200px" />
+              </Box>
+              <Box h="5" />
+              <Text fontSize="xl" fontWeight="bold" textAlign="center">
+                Get Matched
+              </Text>
+              <Text textAlign="center">
+                Personalized care, just a <br />
+                click away. We match <br />
+                you to a professional <br />
+                tailored to your needs
+              </Text>
+            </Box>
+            <Box w="10" />
+            <Box
+              bg="white"
+              justifyContent="center"
+              alignItems="center"
+              padding="20px"
+              borderRadius="20px"
+              flexDirection="row"
+            >
+              <Box marginLeft="15px">
+                <Image src={ReceieveCare} alt="Logo" w="200px" h="200px" />
+              </Box>
+              <Box h="5" />
+              <Text fontSize="xl" fontWeight="bold" textAlign="center">
+                Receive Care
+              </Text>
+              <Text textAlign="center">
+                Getting started is quick <br />
+                and easy. Sign up with <br />
+                us to receive premium <br />
+                care
+              </Text>
+            </Box>
+          </Box>
+          <Box h="60px" />
+        </Box>
+
+        <Box bg="white">
+          <Box h="60px" />
+          <Box>
+            <Text
+              fontSize="48px"
+              fontWeight="bold"
+              fontFamily="Montserrat"
+              color="black"
+            >
+              Testimonials
+            </Text>
+            <Text fontSize="28px" fontFamily="body" color="black">
+              Here is what our clients have to say about us
+            </Text>
+            <Box h="5" />
+          </Box>
+          <Box h="20px" />
+          <Box display="flex">
+            <Box w="70px" />
+
+            <Box>
+              <Box
+                bg="white"
+                justifyContent="center"
+                alignItems="center"
+                padding="20px"
+                borderRadius="20px"
+                flexDirection="row"
+              >
+                <Box marginLeft="2px">
+                  <Image src={Kudirat} alt="Logo" w="398px" h="191px" />
+                </Box>
+              </Box>
+              <Box w="10" />
+
+              <Box
+                bg="white"
+                justifyContent="center"
+                alignItems="center"
+                padding="20px"
+                borderRadius="20px"
+                flexDirection="row"
+              >
+                <Box marginRight="40px">
+                  <Image src={Adeola} alt="Logo" w="398px" h="191px" />
+                </Box>
+                <Box h="5" />
+              </Box>
+            </Box>
+
+            <Box w="-20px" />
+
+            <Box
+              bg="white"
+              justifyContent="center"
+              alignItems="center"
+              padding="20px"
+              borderRadius="20px"
+              flexDirection="row"
+            >
+              <Box marginLeft="-40px">
+                <Image src={CenterMed} alt="Logo" w="306px" h="413px" />
+              </Box>
+              <Box h="5" />
+            </Box>
+
+            <Box w="-20px" />
+            <Box>
+              <Box
+                bg="white"
+                justifyContent="center"
+                alignItems="center"
+                padding="20px"
+                borderRadius="20px"
+                flexDirection="row"
+              >
+                <Box marginRight="40px">
+                  <Image src={Joy} alt="Logo" w="398px" h="191px" />
+                </Box>
+              </Box>
+              <Box w="10" />
+              <Box
+                bg="white"
+                justifyContent="center"
+                alignItems="center"
+                padding="20px"
+                borderRadius="20px"
+                flexDirection="row"
+              >
+                <Box marginRight="40px">
+                  <Image src={Gift} alt="Logo" w="398px" h="191px" />
+                </Box>
+                <Box h="5" />
+              </Box>
+            </Box>
+          </Box>
+          <Box h="60px" />
+        </Box>
+
+        <Box bg="white" >
+          <Box h="60px" />
+          <Box>
+            <Text
+              fontSize="48px"
+              fontWeight="bold"
+              fontFamily="Montserrat"
+              color="black"
+            >
+              Frequently Asked Questions
+            </Text>
+            <Text fontSize="18px" fontFamily="Montserrat" color="black">
+              Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem
+              ipsum dolor sit <br />
+              amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.
+              Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.
+            </Text>
+            <Box h="5" />
+          </Box>
+          <Box h="20px" />
+          <Box display="flex" marginLeft="80px">
+            <Box w="70px" />
+
+            <Box>
+              <Accordion allowToggle w="520px" >
+                <AccordionItem
+                  p={4}
+                  my={5}
+                  fontSize="24px"
+                  className="custom-accordion-item"
+                >
+                  <h2>
+                    <AccordionButton>
+                      <Box as="span" flex="1" textAlign="left" fontSize="21px">
+                        How do I get matched with a medic?
+                      </Box>
+                      <AccordionIcon />
+                    </AccordionButton>
+                  </h2>
+                  <AccordionPanel className="custom-accordion-panel">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                  </AccordionPanel>
+                </AccordionItem>
+
+                <AccordionItem
+                  p={4}
+                  my={5}
+                  fontSize="24px"
+                  className="custom-accordion-item"
+                >
+                  <h2>
+                    <AccordionButton>
+                      <Box as="span" flex="1" textAlign="left" fontSize="21px">
+                        How safe am I?
+                      </Box>
+                      <AccordionIcon />
+                    </AccordionButton>
+                  </h2>
+                  <AccordionPanel className="custom-accordion-panel">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                  </AccordionPanel>
+                </AccordionItem>
+
+                <AccordionItem
+                  p={4}
+                  my={5}
+                  fontSize="24px"
+                  className="custom-accordion-item"
+                >
+                  <h2>
+                    <AccordionButton>
+                      <Box as="span" flex="1" textAlign="left" fontSize="21px">
+                        Can I request for a replacement?
+                      </Box>
+                      <AccordionIcon />
+                    </AccordionButton>
+                  </h2>
+                  <AccordionPanel className="custom-accordion-panel">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                  </AccordionPanel>
+                </AccordionItem>
+
+                <AccordionItem
+                  p={4}
+                  my={5}
+                  fontSize="24px"
+                  className="custom-accordion-item"
+                >
+                  <h2>
+                    <AccordionButton>
+                      <Box as="span" flex="1" textAlign="left" fontSize="21px">
+                        How long does it take to receive care?
+                      </Box>
+                      <AccordionIcon />
+                    </AccordionButton>
+                  </h2>
+                  <AccordionPanel className="custom-accordion-panel">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                  </AccordionPanel>
+                </AccordionItem>
+
+                <AccordionItem
+                  p={4}
+                  my={5}
+                  fontSize="24px"
+                  className="custom-accordion-item"
+                >
+                  <h2>
+                    <AccordionButton>
+                      <Box as="span" flex="1" textAlign="left" fontSize="21px">
+                        Can I get a customized service plan?
+                      </Box>
+                      <AccordionIcon />
+                    </AccordionButton>
+                  </h2>
+                  <AccordionPanel className="custom-accordion-panel">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                  </AccordionPanel>
+                </AccordionItem>
+
+                <AccordionItem
+                  p={4}
+                  my={5}
+                  fontSize="24px"
+                  className="custom-accordion-item"
+                >
+                  <h2>
+                    <AccordionButton>
+                      <Box as="span" flex="1" textAlign="left" fontSize="21px">
+                        What does the refund policy look like?
+                      </Box>
+                      <AccordionIcon />
+                    </AccordionButton>
+                  </h2>
+                  <AccordionPanel className="custom-accordion-panel">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                  </AccordionPanel>
+                </AccordionItem>
+
+                <AccordionItem
+                  p={4}
+                  my={5}
+                  fontSize="18px"
+                  className="custom-accordion-item"
+                >
+                  <h2>
+                    <AccordionButton>
+                      <Box as="span" flex="1" textAlign="left" fontSize="21px">
+                        How qualified are the medics?
+                      </Box>
+                      <AccordionIcon />
+                    </AccordionButton>
+                  </h2>
+                  <AccordionPanel className="custom-accordion-panel">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                  </AccordionPanel>
+                </AccordionItem>
+              </Accordion>
+            </Box>
+
+            <Box w="-20px" />
+            <Box>
+              <Box
+                bg="white"
+                justifyContent="center"
+                alignItems="center"
+                padding="20px"
+                borderRadius="20px"
+                flexDirection="row"
+              >
+                <Box marginRight="30px">
+                  <Image src={Folder} alt="Logo" w="551px" h="329px" />
+                </Box>
+              </Box>
+
+              <Box
+                bg="white"
+                justifyContent="center"
+                alignItems="center"
+                padding="20px"
+                borderRadius="20px"
+                flexDirection="row"
+              >
+                <Box marginRight="30px">
+                  <Image src={Folder} alt="Logo" w="551px" h="329px" />
+                </Box>
+                <Box h="5" />
+              </Box>
+            </Box>
+          </Box>
+          <Box h="60px" />
         </Box>
       </Box>
     </ChakraProvider>
