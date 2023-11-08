@@ -668,6 +668,7 @@ const LandingPage = () => {
           <Box h="60px" />
         </Box>
 
+        {/* Footer */}
         <Box
           bg="#A210C6"
           display="flex"
@@ -691,10 +692,15 @@ const LandingPage = () => {
             </Text>
           </Box>
           <Box marginLeft="380px" marginTop="40px">
-            <Text fontFamily="body" color="white" fontSize="32px">
+            <Text
+              fontFamily="body"
+              color="white"
+              fontSize="32px"
+              textDecoration="underline"
+            >
               Quick Links
             </Text>
-            <a href="https://example.com">
+            <a href="/about">
               <Text
                 fontFamily="Montserrat"
                 color="white"
@@ -746,7 +752,12 @@ const LandingPage = () => {
             </a>
           </Box>
           <Box marginLeft="300px" marginTop="40px">
-            <Text fontFamily="body" color="white" fontSize="32px">
+            <Text
+              fontFamily="body"
+              color="white"
+              fontSize="32px"
+              textDecoration="underline"
+            >
               Socials
             </Text>
             <Box marginLeft="5px" display="flex">
