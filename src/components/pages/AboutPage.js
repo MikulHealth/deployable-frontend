@@ -27,6 +27,10 @@ import Persona from "../../assets/Pesona.svg";
 import Safety from "../../assets/Safety.svg";
 import Quality from "../../assets/Quality.svg";
 import Flexible from "../../assets/Flexible.svg";
+
+import Michael from "../../assets/Michael.svg";
+import Jim from "../../assets/Jim.svg";
+import Hafsie from "../../assets/Hafsie.svg";
 import "../../styles/pages/LandingPage.css";
 
 const customTheme = extendTheme({
@@ -85,7 +89,7 @@ const LandingPage = () => {
             About Us
           </Text>
         </Box>
-        <Box bg="#A210C6" paddingTop="60px">
+        <Box bg="#A210C6" paddingTop="60px" marginLeft="-40px">
           <Box h="60px" />
           <Box marginLeft="-510px">
             <Text
@@ -302,7 +306,7 @@ const LandingPage = () => {
                 Flexibility
               </Text>
               <Text textAlign="center" marginTop="10px" color="white">
-                 We offer flexible scheduling options that fit <br></br>
+                We offer flexible scheduling options that fit <br></br>
                 your busy lifestyle, allowing you to receive <br></br>
                 care when it's most convenient for you.
               </Text>
@@ -314,6 +318,227 @@ const LandingPage = () => {
 
         <Box bg="white">
           <Box h="60px" />
+          <Box marginLeft="-450px">
+            <Text
+              fontSize="64px"
+              fontFamily="body"
+              color="black"
+              marginLeft="-150px"
+            >
+              Meet Our Team
+            </Text>
+          </Box>
+          <Box h="20px" />
+          <Box display="flex">
+            <Box w="70px" />
+            <Box
+              bg="white"
+              justifyContent="center"
+              alignItems="center"
+              padding="20px"
+              borderRadius="20px"
+              flexDirection="row"
+            >
+              <Box marginLeft="80px">
+                <Image src={Michael} alt="Logo" w="462px" h="422px" />
+              </Box>
+              <Box h="5" />
+            </Box>
+            <Box w="10" />
+
+            <Box
+              justifyContent="center"
+              alignItems="center"
+              padding="20px"
+              borderRadius="20px"
+              flexDirection="row"
+              w="656px"
+              h="275px"
+              marginLeft="-70px"
+              marginTop="50px"
+            >
+              <Box h="5" />
+              <Text fontSize="xl" fontWeight="bold" textAlign="center">
+                Michael Joshua. Co-founder, CEO
+              </Text>
+              <Text
+                textAlign="center"
+                marginTop="10px"
+                fontSize="22px"
+                fontFamily="Montserrat"
+              >
+                Software Engineer & a licensed nurse in Nigeria with<br></br>
+                years of clinical experience in general nursing care <br></br>
+                and patient management.<br></br>
+                Passionate about innovative revolution in the health <br></br>
+                industry, he has worked with two successful Health <br></br>
+                Tech startups. He is also the founder of an NGO, Rophe <br></br>
+                Global Foundation.
+              </Text>
+            </Box>
+          </Box>
+        </Box>
+
+        <Box display="flex" marginLeft="100px">
+          <Box
+            justifyContent="center"
+            alignItems="center"
+            padding="20px"
+            borderRadius="20px"
+            flexDirection="row"
+            marginTop="80px"
+          >
+            <Text
+              fontSize="xl"
+              fontWeight="bold"
+              textAlign="center"
+              marginLeft="5px"
+            >
+              Jim Ofodum. Co-founde, Growth
+            </Text>
+            <Text
+              textAlign="center"
+              marginTop="10px"
+              fontSize="22px"
+              fontFamily="Montserrat"
+            >
+              Ejimonye, popularly referred to as Jim, is a trained <br></br>
+              financial technology professional who has worked <br></br>
+              with top African payment & telecoms companies.<br></br>
+              She co-founded a technology-enabled home cleaning <br></br>
+              brand called FICHAYA and co-owns a young <br></br>
+              professional's group called Konnect'd by Professionals.
+            </Text>
+          </Box>
+
+          <Box
+            justifyContent="center"
+            alignItems="center"
+            padding="20px"
+            borderRadius="20px"
+            flexDirection="row"
+            w="656px"
+            h="275px"
+            marginLeft="30px"
+          >
+            <Box>
+              <Image src={Jim} alt="Logo" w="462px" h="422px" />
+            </Box>
+          </Box>
+        </Box>
+
+        <Box display="flex" marginTop="150px">
+          <Box
+            justifyContent="center"
+            alignItems="center"
+            padding="20px"
+            borderRadius="20px"
+            flexDirection="row"
+          >
+            <Box marginLeft="150px">
+              <Image src={Hafsie} alt="Logo" w="462px" h="422px" />
+            </Box>
+          </Box>
+
+          <Box
+            justifyContent="center"
+            alignItems="center"
+            padding="20px"
+            borderRadius="20px"
+            flexDirection="row"
+            w="656px"
+            h="275px"
+            marginLeft="-40px"
+            marginTop="50px"
+          >
+            <Box h="5" />
+            <Text fontSize="xl" fontWeight="bold" textAlign="center">
+              Dr. Hafsat Jijiwa. Medical Director.
+            </Text>
+            <Text
+              textAlign="center"
+              marginTop="10px"
+              fontSize="22px"
+              fontFamily="Montserrat"
+            >
+              She holds a Bachelor of Medicine, Bachelor of Surgery <br></br>
+              (M.B.B.S) from Gulf Medical University, U.A.E. <br></br>
+              Dr. Jijiwa is a board certified family medicine <br></br>
+              physician seasoned with exemplary patient care. She <br></br>
+              has vast experience working with Home care <br></br>
+              companies in the U.S and is also <br></br>
+              passionate about public health.
+            </Text>
+          </Box>
+        </Box>
+        <Box bg="white">
+          <Box>
+            <Text
+              fontSize="48px"
+              fontWeight="bold"
+              fontFamily="body"
+              color="black"
+              marginTop="40px"
+            >
+              Medics
+            </Text>
+            <Box h="5" />
+          </Box>
+          <Box h="20px" />
+          <Box display="flex">
+            <Box w="70px" />
+            <Box
+              bg="white"
+              justifyContent="center"
+              alignItems="center"
+              padding="20px"
+              borderRadius="20px"
+              flexDirection="row"
+              marginLeft="150px"
+            >
+              <Box>
+                <Image src={SignUp} alt="Logo" w="200px" h="200px" />
+              </Box>
+              <Box h="5" />
+              <Text fontSize="xl" fontWeight="bold" textAlign="center">
+                1000+ Caregivers Onboarderd
+              </Text>
+              <Text textAlign="center">
+                Getting started is quick <br />
+                and easy. Sign up with <br />
+                us to receive premium <br />
+                care
+              </Text>
+            </Box>
+            <Box w="10" />
+            <Box
+              bg="white"
+              justifyContent="center"
+              alignItems="center"
+              padding="20px"
+              borderRadius="20px"
+              flexDirection="row"
+              marginLeft="300px"
+            >
+              <Box>
+                <Image src={SelectCare} alt="Logo" w="200px" h="200px" />
+              </Box>
+              <Box h="5" />
+              <Text fontSize="xl" fontWeight="bold" textAlign="center">
+                500+ Vetted
+              </Text>
+              <Text textAlign="center">
+                Now that you are a part <br />
+                of our community, you <br />
+                can find the kind of <br />
+                service you need
+              </Text>
+            </Box>
+          </Box>
+          <Box h="60px" />
+        </Box>
+
+        <Box bg="white">
           <Box>
             <Text
               fontSize="48px"
@@ -321,7 +546,7 @@ const LandingPage = () => {
               fontFamily="body"
               color="black"
             >
-              How it works
+              Partners
             </Text>
             <Box h="5" />
           </Box>
@@ -341,13 +566,7 @@ const LandingPage = () => {
               </Box>
               <Box h="5" />
               <Text fontSize="xl" fontWeight="bold" textAlign="center">
-                Sign up
-              </Text>
-              <Text textAlign="center">
-                Getting started is quick <br />
-                and easy. Sign up with <br />
-                us to receive premium <br />
-                care
+                Over 1000 Medics Onboarderd
               </Text>
             </Box>
             <Box w="10" />
@@ -364,13 +583,7 @@ const LandingPage = () => {
               </Box>
               <Box h="5" />
               <Text fontSize="xl" fontWeight="bold" textAlign="center">
-                Select Care
-              </Text>
-              <Text textAlign="center">
-                Now that you are a part <br />
-                of our community, you <br />
-                can find the kind of <br />
-                service you need
+                Over 500 Vetted
               </Text>
             </Box>
             <Box w="10" />
@@ -389,12 +602,6 @@ const LandingPage = () => {
               <Text fontSize="xl" fontWeight="bold" textAlign="center">
                 Get Matched
               </Text>
-              <Text textAlign="center">
-                Personalized care, just a <br />
-                click away. We match <br />
-                you to a professional <br />
-                tailored to your needs
-              </Text>
             </Box>
             <Box w="10" />
             <Box
@@ -411,12 +618,6 @@ const LandingPage = () => {
               <Box h="5" />
               <Text fontSize="xl" fontWeight="bold" textAlign="center">
                 Receive Care
-              </Text>
-              <Text textAlign="center">
-                Getting started is quick <br />
-                and easy. Sign up with <br />
-                us to receive premium <br />
-                care
               </Text>
             </Box>
           </Box>
