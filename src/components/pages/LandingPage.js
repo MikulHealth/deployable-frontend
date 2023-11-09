@@ -24,6 +24,7 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
+  Popover, PopoverTrigger, PopoverContent, PopoverArrow, PopoverCloseButton, PopoverBody,
 } from "@chakra-ui/react";
 import "animate.css";
 import logo from "../../assets/Whitelogo.png";
@@ -74,6 +75,17 @@ const LandingPage = () => {
   }, []);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [timeoutId, setTimeoutId] = useState(null);
+
+  const handleMouseOver = () => {
+    // Open the modal when the user hovers over the button
+    onOpen();
+  };
+
+  const handleMouseOut = () => {
+    // Close the modal when the user moves the cursor away from the button
+    onClose();
+  };
 
   return (
     <ChakraProvider theme={customTheme}>
@@ -97,14 +109,20 @@ const LandingPage = () => {
             <Spacer />
             <Spacer />
             <Spacer />
-            <Link to="/">Home</Link>
+            <Link to="/" style={{ textDecoration: 'underline', color: 'white' }}>Home</Link>
+
             <Link to="/about">About</Link>
             <Link to="/contact">Contact</Link>
             <Spacer />
-            <Button onClick={onOpen} bg="white">
+            <Button
+            //  onMouseOver={handleMouseOver}
+            //  onMouseOut={handleMouseOut}
+              onClick={onOpen}
+              
+            >
               Get started
             </Button>
-            <Box w="5px" />
+           
           </HStack>
         </Box>
 
@@ -118,7 +136,7 @@ const LandingPage = () => {
                 bg="gray"
                 color="black"
                 w="300px"
-                border="1px solid white" 
+                border="1px solid white"
               >
                 Login
               </Button>
@@ -134,19 +152,19 @@ const LandingPage = () => {
                 bg="gray"
                 color="black"
                 w="300px"
-                border="1px solid white" 
+                border="1px solid white"
               >
                 Sign up
               </Button>
             </ChakraLink>
             <ChakraLink fontStyle="italic" href="/join" color="#A210C6">
               <Button
-                 marginTop="30px"
-                 marginLeft="80px"
-                 bg="gray"
-                 color="black"
-                 w="300px"
-                 border="1px solid white" 
+                marginTop="30px"
+                marginLeft="80px"
+                bg="gray"
+                color="black"
+                w="300px"
+                border="1px solid white"
               >
                 Sign up as medic
               </Button>
@@ -187,9 +205,14 @@ const LandingPage = () => {
                 journey.
               </Text>
               <Box h="20px"></Box>
-              <Button bg="#A210C6" color="white">
-                Get Started
-              </Button>
+               <Button
+            //  onMouseOver={handleMouseOver}
+            //  onMouseOut={handleMouseOut}
+              onClick={onOpen}
+              
+            >
+              Get started
+            </Button>
             </Box>
           </HStack>
           <Spacer />

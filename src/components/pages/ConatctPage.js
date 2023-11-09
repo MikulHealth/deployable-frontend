@@ -103,7 +103,7 @@ const LandingPage = () => {
               <Spacer />
               <Link to="/">Home</Link>
               <Link to="/about">About</Link>
-              <Link to="/contact">Contact</Link>
+              <Link to="/contact"  style={{ textDecoration: 'underline', color: 'white' }}>Contact</Link>
               <Spacer />
               <Button onClick={onOpen} bg="white">
                 Get started
