@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
+  useDisclosure,
   Box,
   Button,
   Link as ChakraLink,
@@ -16,6 +17,13 @@ import {
   AccordionButton,
   AccordionPanel,
   AccordionIcon,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
 } from "@chakra-ui/react";
 import "animate.css";
 import logo from "../../assets/Whitelogo.png";
@@ -65,6 +73,8 @@ const LandingPage = () => {
     AOS.init();
   }, []);
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <ChakraProvider theme={customTheme}>
       <Box>
@@ -83,15 +93,81 @@ const LandingPage = () => {
             <Spacer />
             <Spacer />
             <Spacer />
+            <Spacer />
+            <Spacer />
+            <Spacer />
+            <Spacer />
             <Link to="/">Home</Link>
             <Link to="/about">About</Link>
             <Link to="/contact">Contact</Link>
-            <Link to="/join">Join us</Link>
             <Spacer />
-            <Button bg="white">Get Started</Button>
+            <Button onClick={onOpen} bg="white">
+              Get started
+            </Button>
             <Box w="5px" />
           </HStack>
         </Box>
+
+        <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent bg="gray">
+            <ChakraLink fontStyle="italic" href="/login" color="#A210C6">
+              <Button
+                marginTop="30px"
+                marginLeft="80px"
+                bg="gray"
+                color="black"
+                w="300px"
+                border="1px solid white" 
+              >
+                Login
+              </Button>
+            </ChakraLink>
+            <ChakraLink
+              fontStyle="italic"
+              href="/customer-signUp"
+              color="#A210C6"
+            >
+              <Button
+                marginTop="30px"
+                marginLeft="80px"
+                bg="gray"
+                color="black"
+                w="300px"
+                border="1px solid white" 
+              >
+                Sign up
+              </Button>
+            </ChakraLink>
+            <ChakraLink fontStyle="italic" href="/join" color="#A210C6">
+              <Button
+                 marginTop="30px"
+                 marginLeft="80px"
+                 bg="gray"
+                 color="black"
+                 w="300px"
+                 border="1px solid white" 
+              >
+                Sign up as medic
+              </Button>
+            </ChakraLink>
+            <ModalCloseButton />
+
+            <ModalFooter>
+              <Button
+                marginTop="30px"
+                marginLeft="200px"
+                bg="black"
+                color="white"
+                mr={3}
+                onClick={onClose}
+              >
+                Close
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+
         <Box h="60px" />
         <Box display="flex">
           <HStack spacing={8} alignItems="center">
@@ -267,9 +343,9 @@ const LandingPage = () => {
                     with Mikul Health
                   </Text>
                   <Box h="25px" />
-                  <Button bg="white" color="black">
-                    Join us
-                  </Button>
+                  <ChakraLink href="/join" color="#A210C6">
+                    <Button bg="white">Join us</Button>
+                  </ChakraLink>
                 </Box>
               </Box>
             </Box>

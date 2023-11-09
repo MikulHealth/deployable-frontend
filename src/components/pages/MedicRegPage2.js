@@ -107,9 +107,9 @@ const LandingPage = () => {
               fontFamily="body"
               color="#A210C6"
               marginTop="80px"
-              marginLeft="125px"
+              marginLeft="10px"
             >
-              Create your account
+              Complete Registration 
             </Text>
             <FormControl isRequired marginTop="20px" marginLeft="125px">
               <Box display="flex" marginTop="20px">

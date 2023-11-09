@@ -99,7 +99,7 @@ const LandingPage = () => {
               fontFamily="body"
               color="#A210C6"
               marginTop="30px"
-              marginLeft="125px"
+              marginLeft="20px"
             >
               Create your account
             </Text>
@@ -138,7 +138,7 @@ const LandingPage = () => {
                   </Button>
                 </InputRightElement>
               </InputGroup>
-              <ChakraLink href="/joinComplete">
+              <ChakraLink href="/join-complete">
                 <Button w="350px" bg="#A210C6" marginTop="20px" color="white">
                   Next
                 </Button>

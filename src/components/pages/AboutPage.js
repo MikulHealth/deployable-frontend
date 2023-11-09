@@ -11,6 +11,14 @@ import {
   extendTheme,
   ChakraProvider,
   Text,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
 } from "@chakra-ui/react";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -56,6 +64,8 @@ const LandingPage = () => {
   useEffect(() => {
     AOS.init();
   }, []);
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <ChakraProvider theme={customTheme}>
       <Box>
@@ -74,14 +84,84 @@ const LandingPage = () => {
             <Spacer />
             <Spacer />
             <Spacer />
+            <Spacer />
+            <Spacer />
+            <Spacer />
+            <Spacer />
             <Link to="/">Home</Link>
             <Link to="/about">About</Link>
             <Link to="/contact">Contact</Link>
-            <Link to="/join">Join us</Link>
             <Spacer />
-            <Button bg="white">Get Started</Button>
+            <Button onClick={onOpen} bg="white">
+              Get started
+            </Button>
+            <Box w="5px" />
           </HStack>
         </Box>
+
+        <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent bg="gray">
+            <ChakraLink
+              fontStyle="italic"
+              href="/login"
+              color="#A210C6"
+            >
+              <Button
+                marginTop="30px"
+                marginLeft="80px"
+                bg="gray"
+                color="black"
+                w="300px"
+                border="1px solid white" 
+              >
+                Login
+              </Button>
+            </ChakraLink>
+            <ChakraLink
+              fontStyle="italic"
+              href="/customer-signUp"
+              color="#A210C6"
+            >
+              <Button
+                 marginTop="30px"
+                 marginLeft="80px"
+                 bg="gray"
+                 color="black"
+                 w="300px"
+                 border="1px solid white" 
+              >
+                Sign up
+              </Button>
+            </ChakraLink>
+            <ChakraLink fontStyle="italic" href="/join" color="#A210C6">
+              <Button
+                 marginTop="30px"
+                 marginLeft="80px"
+                 bg="gray"
+                 color="black"
+                 w="300px"
+                 border="1px solid white" 
+              >
+                Sign up as medic
+              </Button>
+            </ChakraLink>
+            <ModalCloseButton />
+
+            <ModalFooter>
+              <Button
+                marginTop="30px"
+                marginLeft="200px"
+                bg="black"
+                color="white"
+                mr={3}
+                onClick={onClose}
+              >
+                Close
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
 
         <Box
           marginTop="-1px"
@@ -221,7 +301,7 @@ const LandingPage = () => {
                   alt="Logo"
                   w="100px"
                   h="103px"
-                  paddingTop="10px"
+                  paddingTop="20px"
                 />
               </Box>
               <Text
