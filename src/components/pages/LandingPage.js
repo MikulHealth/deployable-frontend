@@ -1,4 +1,5 @@
 import React from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   Box,
@@ -16,6 +17,7 @@ import {
   AccordionPanel,
   AccordionIcon,
 } from "@chakra-ui/react";
+import "animate.css";
 import logo from "../../assets/Whitelogo.png";
 import MHNurse from "../../assets/MHNurse.svg";
 import Bar from "../../assets/Bar.svg";
@@ -39,6 +41,8 @@ import FBIcon from "../../assets/FaceBookIcon.svg";
 import IGIcon from "../../assets/InstagramIcon.svg";
 import WHIcon from "../../assets/WAIcon.svg";
 import "../../styles/pages/LandingPage.css";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const customTheme = extendTheme({
   components: {
@@ -57,6 +61,10 @@ const customTheme = extendTheme({
 });
 
 const LandingPage = () => {
+  useEffect(() => {
+    AOS.init();
+  }, []);
+
   return (
     <ChakraProvider theme={customTheme}>
       <Box>
@@ -101,7 +109,7 @@ const LandingPage = () => {
             </Box>
           </HStack>
           <Spacer />
-          <Box>
+          <Box className="animate__animated animate__fadeIn animate__slow">
             <Image src={MHNurse} alt="Logo" w="642px" h="710px" />
           </Box>
           <Spacer />
@@ -129,6 +137,9 @@ const LandingPage = () => {
               padding="20px"
               borderRadius="20px"
               flexDirection="row"
+              className="box"
+              data-aos="fade-up"
+              data-aos-duration="6000"
             >
               <Box marginLeft="40px">
                 <Image src={PostPaturm} alt="Logo" w="100px" h="30px" />
@@ -151,6 +162,9 @@ const LandingPage = () => {
               padding="20px"
               borderRadius="20px"
               flexDirection="row"
+              className="box"
+              data-aos="fade-down"
+              data-aos-duration="6000"
             >
               <Box marginLeft="50px">
                 <Image src={Elderly} alt="Logo" w="100px" h="30px" />
@@ -174,6 +188,9 @@ const LandingPage = () => {
               padding="20px"
               borderRadius="20px"
               flexDirection="row"
+              className="box"
+              data-aos="fade-up"
+              data-aos-duration="6000"
             >
               <Box marginLeft="60px">
                 <Image src={Recovery} alt="Logo" w="100px" h="30px" />
@@ -196,6 +213,9 @@ const LandingPage = () => {
               padding="20px"
               borderRadius="20px"
               flexDirection="row"
+              className="box"
+              data-aos="fade-down"
+              data-aos-duration="6000"
             >
               <Box marginLeft="50px">
                 <Image src={Online} alt="Logo" w="100px" h="30px" />
@@ -214,7 +234,12 @@ const LandingPage = () => {
           <Box h="60px" />
           <Box>
             <Box display="flex">
-              <Box marginLeft="70px">
+              <Box
+                marginLeft="70px"
+                className="box"
+                data-aos="zoom-out"
+                data-aos-duration="10000"
+              >
                 <Image src={Doctor} alt="Logo" w="563px" h="652px" />
               </Box>
               <Box>
@@ -258,7 +283,7 @@ const LandingPage = () => {
             <Box h="5" />
           </Box>
           <Box h="20px" />
-          <Box display="flex">
+          <Box display="flex" data-aos="fade-down" data-aos-duration="30000">
             <Box w="70px" />
             <Box
               bg="white"
@@ -384,7 +409,14 @@ const LandingPage = () => {
                 flexDirection="row"
               >
                 <Box marginLeft="2px">
-                  <Image src={Kudirat} alt="Logo" w="398px" h="191px" />
+                  <Image
+                    src={Kudirat}
+                    alt="Logo"
+                    w="398px"
+                    h="191px"
+                    data-aos="fade-left"
+                    data-aos-duration="10000"
+                  />
                 </Box>
               </Box>
               <Box w="10" />
@@ -397,7 +429,14 @@ const LandingPage = () => {
                 flexDirection="row"
               >
                 <Box marginRight="40px">
-                  <Image src={Adeola} alt="Logo" w="398px" h="191px" />
+                  <Image
+                    src={Adeola}
+                    alt="Logo"
+                    w="398px"
+                    h="191px"
+                    data-aos="fade-right"
+                    data-aos-duration="10000"
+                  />
                 </Box>
                 <Box h="5" />
               </Box>
@@ -413,7 +452,14 @@ const LandingPage = () => {
               flexDirection="row"
             >
               <Box>
-                <Image src={CenterMed} alt="Logo" w="306px" h="413px" />
+                <Image
+                  src={CenterMed}
+                  alt="Logo"
+                  w="306px"
+                  h="413px"
+                  data-aos="zoom-in"
+                  data-aos-duration="10000"
+                />
               </Box>
               <Box h="5" />
             </Box>
@@ -428,7 +474,14 @@ const LandingPage = () => {
                 flexDirection="row"
               >
                 <Box marginRight="40px">
-                  <Image src={Joy} alt="Logo" w="398px" h="191px" />
+                  <Image
+                    src={Joy}
+                    alt="Logo"
+                    w="398px"
+                    h="191px"
+                    data-aos="fade-left"
+                    data-aos-duration="10000"
+                  />
                 </Box>
               </Box>
               <Box w="10" />
@@ -440,7 +493,14 @@ const LandingPage = () => {
                 flexDirection="row"
               >
                 <Box marginRight="10px">
-                  <Image src={Gift} alt="Logo" w="398px" h="191px" />
+                  <Image
+                    src={Gift}
+                    alt="Logo"
+                    w="398px"
+                    h="191px"
+                    data-aos="fade-right"
+                    data-aos-duration="10000"
+                  />
                 </Box>
                 <Box h="5" />
               </Box>
@@ -641,7 +701,8 @@ const LandingPage = () => {
                 flexDirection="row"
               >
                 <Box marginRight="30px">
-                  <Image src={Folder} alt="Logo" w="551px" h="329px" />
+                  <Image src={Folder} alt="Logo" w="551px" h="329px" data-aos="fade-left"
+              data-aos-duration="10000" />
                 </Box>
               </Box>
 
@@ -654,11 +715,13 @@ const LandingPage = () => {
                 flexDirection="row"
               >
                 <Box marginRight="30px">
-                  <Image src={Folder} alt="Logo" w="551px" h="329px" />
+                  <Image src={Folder} alt="Logo" w="551px" h="329px" data-aos="fade-right"
+              data-aos-duration="10000" />
                 </Box>
                 <Box marginLeft="480px" marginTop="-75px">
                   <a href="https://example.com">
-                    <Image src={WhatsAppIcon} alt="Logo" w="150px" h="147px" />
+                    <Image src={WhatsAppIcon} alt="Logo" w="150px" h="147px" data-aos="fade-down"
+              data-aos-duration="10000" />
                   </a>
                 </Box>
                 <Box h="5" />

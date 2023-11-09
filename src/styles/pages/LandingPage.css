@@ -21,4 +21,9 @@
     max-height: 200px;
   }
   
+  .box {
+    /* background-color: #A210C6; */
+    opacity: 0; /* Initial state, invisible */
   
+    /* Other styles */
+  }

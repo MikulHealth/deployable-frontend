@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   Box,
@@ -18,6 +18,8 @@ import {
   Input,
   Textarea,
 } from "@chakra-ui/react";
+import AOS from "aos";
+import "aos/dist/aos.css";
 import logo from "../../assets/Whitelogo.png";
 import SignUp from "../../assets/SignUp.svg";
 import SelectCare from "../../assets/SelectService.svg";
@@ -59,6 +61,10 @@ const LandingPage = () => {
 
   const isError = input === "";
 
+  useEffect(() => {
+    AOS.init();
+  }, []);
+
   return (
     <ChakraProvider theme={customTheme}>
       <Box overflow="hidden">
@@ -86,6 +92,8 @@ const LandingPage = () => {
               textAlign="center"
               color="#A210C6"
               paddingTop="70px"
+              data-aos="fade-left"
+              data-aos-duration="10000"
             >
               CONTACT US
             </Text>
@@ -122,6 +130,7 @@ const LandingPage = () => {
             h="692px"
             overflow="hidden"
             boxShadow={`0px 0px 1px 2px #ECCFF4`}
+            className="animate__animated animate__fadeIn animate__slow"
           >
             <FormControl padding="40px">
               <Input
@@ -254,6 +263,8 @@ const LandingPage = () => {
             w="1369px"
             h="645px"
             marginLeft="10px"
+            data-aos="fade-left"
+            data-aos-duration="10000"
           />
           <a href="https://example.com">
             <Image
@@ -264,6 +275,8 @@ const LandingPage = () => {
               marginTop="-10"
               marginLeft="1100px"
               paddingBottom="100px"
+              data-aos="fade-right"
+              data-aos-duration="10000"
             />
           </a>
         </Box>

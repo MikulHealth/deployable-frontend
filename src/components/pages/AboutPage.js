@@ -1,4 +1,5 @@
 import React from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   Box,
@@ -11,6 +12,8 @@ import {
   ChakraProvider,
   Text,
 } from "@chakra-ui/react";
+import AOS from "aos";
+import "aos/dist/aos.css";
 import logo from "../../assets/Whitelogo.png";
 import SignUp from "../../assets/SignUp.svg";
 import SelectCare from "../../assets/SelectService.svg";
@@ -50,6 +53,9 @@ const customTheme = extendTheme({
 });
 
 const LandingPage = () => {
+  useEffect(() => {
+    AOS.init();
+  }, []);
   return (
     <ChakraProvider theme={customTheme}>
       <Box>
@@ -85,13 +91,19 @@ const LandingPage = () => {
             marginLeft="5px"
             paddingTop="70px"
             textDecoration="underline"
+            data-aos="fade-up"
+            data-aos-duration="10000"
           >
             About Us
           </Text>
         </Box>
         <Box bg="#A210C6" paddingTop="60px" marginLeft="-40px">
           <Box h="60px" />
-          <Box marginLeft="-510px">
+          <Box
+            marginLeft="-510px"
+            data-aos="fade-right"
+            data-aos-duration="10000"
+          >
             <Text
               fontSize="28px"
               fontFamily="body"
@@ -107,7 +119,8 @@ const LandingPage = () => {
           </Box>
 
           <Box h="60px" />
-          <Box display="flex" marginLeft="80px">
+          <Box display="flex" marginLeft="80px"  data-aos="fade-up"
+              data-aos-duration="10000">
             <Box w="70px" />
             <Box
               justifyContent="center"
@@ -115,6 +128,7 @@ const LandingPage = () => {
               padding="20px"
               borderRadius="20px"
               flexDirection="row"
+             
             >
               <Box marginLeft="100px">
                 <Image
@@ -151,6 +165,7 @@ const LandingPage = () => {
               padding="20px"
               borderRadius="20px"
               flexDirection="row"
+              
             >
               <Box marginLeft="90px">
                 <Image
@@ -189,6 +204,7 @@ const LandingPage = () => {
               padding="20px"
               borderRadius="20px"
               flexDirection="row"
+             
             >
               <Box marginLeft="100px">
                 <Image
@@ -215,7 +231,8 @@ const LandingPage = () => {
             </Box>
           </Box>
 
-          <Box display="flex" marginLeft="90px" marginTop="50px">
+          <Box display="flex" marginLeft="90px" marginTop="50px"  data-aos="fade-left"
+              data-aos-duration="10000">
             <Box w="50px" />
             <Box
               justifyContent="center"
@@ -338,6 +355,8 @@ const LandingPage = () => {
               padding="20px"
               borderRadius="20px"
               flexDirection="row"
+              data-aos="fade-left"
+              data-aos-duration="10000"
             >
               <Box marginLeft="80px">
                 <Image src={Michael} alt="Logo" w="462px" h="422px" />
@@ -356,6 +375,8 @@ const LandingPage = () => {
               h="275px"
               marginLeft="-70px"
               marginTop="50px"
+              data-aos="fade-right"
+              data-aos-duration="10000"
             >
               <Box h="5" />
               <Text fontSize="xl" fontWeight="bold" textAlign="center">
@@ -387,6 +408,8 @@ const LandingPage = () => {
             borderRadius="20px"
             flexDirection="row"
             marginTop="80px"
+            data-aos="fade-left"
+            data-aos-duration="10000"
           >
             <Text
               fontSize="xl"
@@ -420,6 +443,8 @@ const LandingPage = () => {
             w="656px"
             h="275px"
             marginLeft="30px"
+            data-aos="fade-right"
+            data-aos-duration="10000"
           >
             <Box>
               <Image src={Jim} alt="Logo" w="462px" h="422px" />
@@ -434,6 +459,8 @@ const LandingPage = () => {
             padding="20px"
             borderRadius="20px"
             flexDirection="row"
+            data-aos="fade-left"
+            data-aos-duration="10000"
           >
             <Box marginLeft="150px">
               <Image src={Hafsie} alt="Logo" w="462px" h="422px" />
@@ -450,6 +477,8 @@ const LandingPage = () => {
             h="275px"
             marginLeft="-40px"
             marginTop="50px"
+            data-aos="fade-right"
+            data-aos-duration="10000"
           >
             <Box h="5" />
             <Text fontSize="xl" fontWeight="bold" textAlign="center">
