@@ -59,7 +59,15 @@ const LandingPage = () => {
   return (
     <ChakraProvider theme={customTheme}>
       <Box>
-        <Box bg="#A210C6" p={3} color="white">
+        <Box
+          bg="#A210C6"
+          p={3}
+          color="white"
+          position="sticky"
+          top="0"
+          zIndex="1000"
+          borderBottom="1px solid white"
+        >
           <HStack spacing={10}>
             <Box w="5px" />
             <Image src={logo} alt="Logo" w="100px" h="30px" />
@@ -119,8 +127,12 @@ const LandingPage = () => {
           </Box>
 
           <Box h="60px" />
-          <Box display="flex" marginLeft="80px"  data-aos="fade-up"
-              data-aos-duration="10000">
+          <Box
+            display="flex"
+            marginLeft="80px"
+            data-aos="fade-up"
+            data-aos-duration="10000"
+          >
             <Box w="70px" />
             <Box
               justifyContent="center"
@@ -128,7 +140,6 @@ const LandingPage = () => {
               padding="20px"
               borderRadius="20px"
               flexDirection="row"
-             
             >
               <Box marginLeft="100px">
                 <Image
@@ -165,7 +176,6 @@ const LandingPage = () => {
               padding="20px"
               borderRadius="20px"
               flexDirection="row"
-              
             >
               <Box marginLeft="90px">
                 <Image
@@ -204,7 +214,6 @@ const LandingPage = () => {
               padding="20px"
               borderRadius="20px"
               flexDirection="row"
-             
             >
               <Box marginLeft="100px">
                 <Image
@@ -231,8 +240,13 @@ const LandingPage = () => {
             </Box>
           </Box>
 
-          <Box display="flex" marginLeft="90px" marginTop="50px"  data-aos="fade-left"
-              data-aos-duration="10000">
+          <Box
+            display="flex"
+            marginLeft="90px"
+            marginTop="50px"
+            data-aos="fade-left"
+            data-aos-duration="10000"
+          >
             <Box w="50px" />
             <Box
               justifyContent="center"

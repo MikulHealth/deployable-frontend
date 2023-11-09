@@ -60,24 +60,38 @@ const LandingPage = () => {
 
   return (
     <ChakraProvider theme={customTheme}>
-      <Box overflow="hidden">
-      <Box bg="#A210C6" p={3} color="white">
-        <HStack spacing={10}>
-          <Box w="5px" />
-          <Image src={logo} alt="Logo" w="100px" h="30px" />
-          <Spacer />
-          <Spacer />
-          <Spacer />
-          <Spacer />
-          <ChakraLink fontStyle="italic" href="/" color="#A210C6">
-            <Button bg="white">Home</Button>
-          </ChakraLink>
-        </HStack>
-      </Box>
+      <Box overflowY="scroll" height="100vh">
+        <Box
+          bg="#A210C6"
+          p={3}
+          color="white"
+          position="sticky"
+          top="0"
+          zIndex="1000"
+          borderBottom="1px solid white"
+        >
+          <HStack spacing={10}>
+            <Box w="5px" />
+            <Image src={logo} alt="Logo" w="100px" h="30px" />
+            <Spacer />
+            <Spacer />
+            <Spacer />
+            <Spacer />
+            <ChakraLink fontStyle="italic" href="/" color="#A210C6">
+              <Button bg="white">Home</Button>
+            </ChakraLink>
+          </HStack>
+        </Box>
         <Box display="flex">
           <Box>
             <Image src={Doctors} alt="Logo" w="715px" h="1024px" />
-            <Image src={Shade} alt="Logo" w="715px" h="1024px" marginTop="-900px" />
+            <Image
+              src={Shade}
+              alt="Logo"
+              w="715px"
+              h="1024px"
+              marginTop="-900px"
+            />
           </Box>
           <Box>
             <Text
@@ -89,7 +103,7 @@ const LandingPage = () => {
             >
               Create your account
             </Text>
-            <FormControl isRequired marginTop="20px" marginLeft="125px">
+            <FormControl isRequired marginTop="20px" marginLeft="100px">
               <FormLabel>First name</FormLabel>
               <Input placeholder="First name" />
               <FormLabel marginTop="20px">Last name</FormLabel>
@@ -125,7 +139,7 @@ const LandingPage = () => {
                 </InputRightElement>
               </InputGroup>
               <ChakraLink href="/joinComplete">
-                <Button w="100px" bg="#A210C6" marginTop="20px" color="white">
+                <Button w="350px" bg="#A210C6" marginTop="20px" color="white">
                   Next
                 </Button>
               </ChakraLink>

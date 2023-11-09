@@ -68,7 +68,15 @@ const LandingPage = () => {
   return (
     <ChakraProvider theme={customTheme}>
       <Box>
-        <Box bg="#A210C6" p={3} color="white">
+        <Box
+          bg="#A210C6"
+          p={3}
+          color="white"
+          position="sticky"
+          top="0"
+          zIndex="1000"
+          borderBottom="1px solid white"
+        >
           <HStack spacing={10}>
             <Box w="5px" />
             <Image src={logo} alt="Logo" w="100px" h="30px" />
@@ -283,7 +291,7 @@ const LandingPage = () => {
             <Box h="5" />
           </Box>
           <Box h="20px" />
-          <Box display="flex" data-aos="fade-down" data-aos-duration="30000">
+          <Box display="flex">
             <Box w="70px" />
             <Box
               bg="white"
@@ -292,6 +300,8 @@ const LandingPage = () => {
               padding="20px"
               borderRadius="20px"
               flexDirection="row"
+              data-aos="flip-left"
+              data-aos-duration="30000"
             >
               <Box marginLeft="20px">
                 <Image src={SignUp} alt="Logo" w="200px" h="200px" />
@@ -315,6 +325,8 @@ const LandingPage = () => {
               padding="20px"
               borderRadius="20px"
               flexDirection="row"
+              data-aos="flip-left"
+              data-aos-duration="30000"
             >
               <Box marginLeft="20px">
                 <Image src={SelectCare} alt="Logo" w="200px" h="200px" />
@@ -338,6 +350,8 @@ const LandingPage = () => {
               padding="20px"
               borderRadius="20px"
               flexDirection="row"
+              data-aos="flip-right"
+              data-aos-duration="30000"
             >
               <Box marginLeft="15px">
                 <Image src={GetMatched} alt="Logo" w="200px" h="200px" />
@@ -361,6 +375,8 @@ const LandingPage = () => {
               padding="20px"
               borderRadius="20px"
               flexDirection="row"
+              data-aos="flip-right"
+              data-aos-duration="30000"
             >
               <Box marginLeft="15px">
                 <Image src={ReceieveCare} alt="Logo" w="200px" h="200px" />
@@ -701,8 +717,14 @@ const LandingPage = () => {
                 flexDirection="row"
               >
                 <Box marginRight="30px">
-                  <Image src={Folder} alt="Logo" w="551px" h="329px" data-aos="fade-left"
-              data-aos-duration="10000" />
+                  <Image
+                    src={Folder}
+                    alt="Logo"
+                    w="551px"
+                    h="329px"
+                    data-aos="fade-left"
+                    data-aos-duration="10000"
+                  />
                 </Box>
               </Box>
 
@@ -715,13 +737,25 @@ const LandingPage = () => {
                 flexDirection="row"
               >
                 <Box marginRight="30px">
-                  <Image src={Folder} alt="Logo" w="551px" h="329px" data-aos="fade-right"
-              data-aos-duration="10000" />
+                  <Image
+                    src={Folder}
+                    alt="Logo"
+                    w="551px"
+                    h="329px"
+                    data-aos="fade-right"
+                    data-aos-duration="10000"
+                  />
                 </Box>
                 <Box marginLeft="480px" marginTop="-75px">
                   <a href="https://example.com">
-                    <Image src={WhatsAppIcon} alt="Logo" w="150px" h="147px" data-aos="fade-down"
-              data-aos-duration="10000" />
+                    <Image
+                      src={WhatsAppIcon}
+                      alt="Logo"
+                      w="150px"
+                      h="147px"
+                      data-aos="fade-down"
+                      data-aos-duration="10000"
+                    />
                   </a>
                 </Box>
                 <Box h="5" />
