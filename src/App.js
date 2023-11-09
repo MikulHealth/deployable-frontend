@@ -10,6 +10,8 @@ import VerifyNumber from './components/pages/VerifyNumber'
 import MedicRegConfirmation from './components/pages/MedicConfirmationPage'
 import CustomerReg from './components/pages/CustomerReg'
 import Login from './components/pages/LoginPage'
+import ForgotPassword from './components/pages/ForgotPassowrd'
+import ResetPassword from './components/pages/ResetPassword'
 function App() {
   return (
     <div className="App">
@@ -24,6 +26,8 @@ function App() {
         <Route path="/confirm-medic-reg" element={<MedicRegConfirmation />}></Route>
         <Route path="/customer-signUp" element={<CustomerReg />}></Route>
         <Route path="/login" element={<Login />}></Route>
+        <Route path="/forgot-password" element={<ForgotPassword />}></Route>
+        <Route path="/reset-password" element={<ResetPassword />}></Route>
         </Routes>
         </BrowserRouter>
         

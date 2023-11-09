@@ -114,7 +114,8 @@ const LandingPage = () => {
             <Link to="/about">About</Link>
             <Link to="/contact">Contact</Link>
             <Spacer />
-            <Button
+            <Button bg="white"
+            color="#A210C6"
             //  onMouseOver={handleMouseOver}
             //  onMouseOut={handleMouseOut}
               onClick={onOpen}
@@ -206,6 +207,8 @@ const LandingPage = () => {
               </Text>
               <Box h="20px"></Box>
                <Button
+               bg="#A210C6"
+               color="white"
             //  onMouseOver={handleMouseOver}
             //  onMouseOut={handleMouseOut}
               onClick={onOpen}

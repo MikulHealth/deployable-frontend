@@ -12,27 +12,18 @@ import {
   ChakraProvider,
   Text,
   FormControl,
-  FormLabel,
-  FormErrorMessage,
-  FormHelperText,
   Input,
   Textarea,
   Modal,
   ModalOverlay,
   ModalContent,
-  ModalHeader,
   ModalFooter,
-  ModalBody,
   ModalCloseButton,
   useDisclosure,
 } from "@chakra-ui/react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import logo from "../../assets/Whitelogo.png";
-import SignUp from "../../assets/SignUp.svg";
-import SelectCare from "../../assets/SelectService.svg";
-import GetMatched from "../../assets/GetMatched.svg";
-import ReceieveCare from "../../assets/RecieveCare.svg";
 import WhatsAppIcon from "../../assets/WhatsApp.svg";
 import FBIcon from "../../assets/FaceBookIcon.svg";
 import IGIcon from "../../assets/InstagramIcon.svg";
@@ -41,9 +32,6 @@ import AddressIcon from "../../assets/Address.svg";
 import EmailIcon from "../../assets/Email.svg";
 import PhoneIcon from "../../assets/Phone.svg";
 import MHSteth from "../../assets/MHSteth.svg";
-import Michael from "../../assets/Michael.svg";
-import Jim from "../../assets/Jim.svg";
-import Hafsie from "../../assets/Hafsie.svg";
 import "../../styles/pages/LandingPage.css";
 
 const customTheme = extendTheme({

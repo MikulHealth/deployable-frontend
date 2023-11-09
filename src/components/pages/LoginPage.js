@@ -132,7 +132,7 @@ const LandingPage = () => {
                 <ChakraLink
                   margingLeft="150px"
                   fontStyle="italic"
-                  href="/login"
+                  href="/forgot-password"
                   color="#A210C6"
                 >
                   forgot password?
