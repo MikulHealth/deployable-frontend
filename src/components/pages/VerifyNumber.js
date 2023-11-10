@@ -81,7 +81,9 @@ const LandingPage = () => {
         >
           <HStack spacing={10}>
             <Box w="5px" />
+            <a href="/">
             <Image src={logo} alt="Logo" w="100px" h="30px" />
+            </a>
             <Spacer />
             <Spacer />
             <Spacer />
