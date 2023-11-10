@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import {
   useDisclosure,
   Box,
+  Input,
   Button,
   Link as ChakraLink,
   HStack,
@@ -24,7 +25,10 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
-  Popover, PopoverTrigger, PopoverContent, PopoverArrow, PopoverCloseButton, PopoverBody,
+  Divider,
+  Switch,
+  FormControl,
+  FormLabel,
 } from "@chakra-ui/react";
 import "animate.css";
 import logo from "../../assets/Whitelogo.png";
@@ -49,6 +53,8 @@ import WhatsAppIcon from "../../assets/WhatsApp.svg";
 import FBIcon from "../../assets/FaceBookIcon.svg";
 import IGIcon from "../../assets/InstagramIcon.svg";
 import WHIcon from "../../assets/WAIcon.svg";
+import Shade from "../../assets/LandingShade.svg";
+import Shade1 from "../../assets/landingShade1.svg";
 import "../../styles/pages/LandingPage.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -76,6 +82,12 @@ const LandingPage = () => {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [timeoutId, setTimeoutId] = useState(null);
+
+  const [isSwitchOn, setIsSwitchOn] = useState(false);
+
+  const handleSwitchToggle = () => {
+    setIsSwitchOn((prev) => !prev);
+  };
 
   const handleMouseOver = () => {
     // Open the modal when the user hovers over the button
@@ -109,21 +121,25 @@ const LandingPage = () => {
             <Spacer />
             <Spacer />
             <Spacer />
-            <Link to="/" style={{ textDecoration: 'underline', color: 'white' }}>Home</Link>
+            <Link
+              to="/"
+              style={{ textDecoration: "underline", color: "white" }}
+            >
+              Home
+            </Link>
 
             <Link to="/about">About</Link>
             <Link to="/contact">Contact</Link>
             <Spacer />
-            <Button bg="white"
-            color="#A210C6"
-            //  onMouseOver={handleMouseOver}
-            //  onMouseOut={handleMouseOut}
+            <Button
+              bg="white"
+              color="#A210C6"
+              //  onMouseOver={handleMouseOver}
+              //  onMouseOut={handleMouseOut}
               onClick={onOpen}
-              
             >
               Get started
             </Button>
-           
           </HStack>
         </Box>
 
@@ -188,42 +204,57 @@ const LandingPage = () => {
         </Modal>
 
         <Box h="60px" />
-        <Box display="flex">
-          <HStack spacing={8} alignItems="center">
-            <Box w="25px" />
-            <Box>
-              <Text fontSize="6xl" fontWeight="bold" fontFamily="body">
-                <span style={{ color: "#A210C6" }}>Healthcare</span> that you{" "}
-                <br />
-                deserve at your
-                <br />
-                fingertips
-              </Text>
-              <Text fontSize="20px" color="#A210C6" fontFamily="Montserrat">
-                We source carefully trained medics to help <br />
-                you and your loved ones on their health
-                <br />
-                journey.
-              </Text>
-              <Box h="20px"></Box>
-               <Button
-               bg="#A210C6"
-               color="white"
-            //  onMouseOver={handleMouseOver}
-            //  onMouseOut={handleMouseOut}
-              onClick={onOpen}
-              
-            >
-              Get started
-            </Button>
+        <Box>
+          {/* <Image
+            src={Shade}
+            alt="Logo"
+            marginTop="550px"
+            w="1759px"
+            h="219px"
+          />
+          <Image
+            src={Shade1}
+            alt="Logo"
+            marginTop="650px"
+            w="1759px"
+            h="219px"
+          /> */}
+          <Box display="flex">
+            <HStack spacing={8} alignItems="center">
+              <Box w="25px" />
+              <Box>
+                <Text fontSize="6xl" fontWeight="bold" fontFamily="body">
+                  <span style={{ color: "#A210C6" }}>Healthcare</span> that you{" "}
+                  <br />
+                  deserve at your
+                  <br />
+                  fingertips
+                </Text>
+                <Text fontSize="20px" color="#A210C6" fontFamily="Montserrat">
+                  We source carefully trained medics to help <br />
+                  you and your loved ones on their health
+                  <br />
+                  journey.
+                </Text>
+                <Box h="20px"></Box>
+                <Button
+                  bg="#A210C6"
+                  color="white"
+                  //  onMouseOver={handleMouseOver}
+                  //  onMouseOut={handleMouseOut}
+                  onClick={onOpen}
+                >
+                  Get started
+                </Button>
+              </Box>
+            </HStack>
+            <Spacer />
+            <Box className="animate__animated animate__fadeIn animate__slow">
+              <Image src={MHNurse} alt="Logo" w="642px" h="710px" />
             </Box>
-          </HStack>
-          <Spacer />
-          <Box className="animate__animated animate__fadeIn animate__slow">
-            <Image src={MHNurse} alt="Logo" w="642px" h="710px" />
           </Box>
-          <Spacer />
         </Box>
+
         <Box h="60px" />
         <Box bg="#A210C6">
           <Box h="60px" />
@@ -378,7 +409,7 @@ const LandingPage = () => {
           </Box>
           <Box h="60px" />
         </Box>
-
+        <Divider />
         <Box bg="white">
           <Box h="60px" />
           <Box>
@@ -499,6 +530,7 @@ const LandingPage = () => {
         </Box>
 
         <Box bg="white">
+          <Divider />
           <Box h="60px" />
           <Box>
             <Text
@@ -628,6 +660,7 @@ const LandingPage = () => {
         </Box>
 
         <Box bg="white">
+          <Divider />
           <Box h="60px" />
           <Box>
             <Text
@@ -638,12 +671,6 @@ const LandingPage = () => {
             >
               Frequently Asked Questions
             </Text>
-            <Text fontSize="18px" fontFamily="Montserrat" color="black">
-              Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem
-              ipsum dolor sit <br />
-              amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.
-              Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.
-            </Text>
             <Box h="5" />
           </Box>
           <Box h="20px" />
@@ -651,7 +678,12 @@ const LandingPage = () => {
             <Box w="70px" />
 
             <Box>
-              <Accordion allowToggle w="520px">
+              <Accordion
+                allowToggle
+                w="520px"
+                data-aos="fade-down"
+                data-aos-duration="10000"
+              >
                 <AccordionItem
                   p={4}
                   my={5}
@@ -667,10 +699,9 @@ const LandingPage = () => {
                     </AccordionButton>
                   </h2>
                   <AccordionPanel className="custom-accordion-panel">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    Upon a successful registeration, you can request and get
+                    matched to a medic to recieve care by booking any of the
+                    services we offer from your dashboard.
                   </AccordionPanel>
                 </AccordionItem>
 
@@ -688,11 +719,15 @@ const LandingPage = () => {
                       <AccordionIcon />
                     </AccordionButton>
                   </h2>
-                  <AccordionPanel className="custom-accordion-panel">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                  <AccordionPanel
+                    className="custom-accordion-panel"
+                    style={{ whiteSpace: "pre-line" }}
+                  >
+                    To ensure you are safe while you receive care from any
+                    Mikul&nbsp;Health care provider, we make sure our caregivers
+                    are vetted and their background checked. We also have an
+                    insurance policy for any theft and damages during the course
+                    of our service.
                   </AccordionPanel>
                 </AccordionItem>
 
@@ -711,10 +746,9 @@ const LandingPage = () => {
                     </AccordionButton>
                   </h2>
                   <AccordionPanel className="custom-accordion-panel">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    Yes you can have a replacement when asigned a caregiver that
+                    you do not like. We can provide a replace within 72 hours
+                    upon your request for a replacement.
                   </AccordionPanel>
                 </AccordionItem>
 
@@ -733,10 +767,8 @@ const LandingPage = () => {
                     </AccordionButton>
                   </h2>
                   <AccordionPanel className="custom-accordion-panel">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    Upon booking and making payment for the choosen service, you
+                    would receive care within 48 hours.
                   </AccordionPanel>
                 </AccordionItem>
 
@@ -755,32 +787,10 @@ const LandingPage = () => {
                     </AccordionButton>
                   </h2>
                   <AccordionPanel className="custom-accordion-panel">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                  </AccordionPanel>
-                </AccordionItem>
-
-                <AccordionItem
-                  p={4}
-                  my={5}
-                  fontSize="24px"
-                  className="custom-accordion-item"
-                >
-                  <h2>
-                    <AccordionButton>
-                      <Box as="span" flex="1" textAlign="left" fontSize="21px">
-                        What does the refund policy look like?
-                      </Box>
-                      <AccordionIcon />
-                    </AccordionButton>
-                  </h2>
-                  <AccordionPanel className="custom-accordion-panel">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    Yes, aside our standadized service plans. We also have
+                    provision for customizing a service plan that would best
+                    suit you or your loved according to the peculiarity of the
+                    care needs.
                   </AccordionPanel>
                 </AccordionItem>
 
@@ -799,10 +809,12 @@ const LandingPage = () => {
                     </AccordionButton>
                   </h2>
                   <AccordionPanel className="custom-accordion-panel">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    <Text>
+                      We work with Registred Nurses and Medical Docters who are
+                      acreditated and certified with valid licenses and a proven
+                      record of good conduct and expertise. We also ensure that
+                      our Nurse assistant caregivers are well trained.
+                    </Text>
                   </AccordionPanel>
                 </AccordionItem>
               </Accordion>
@@ -823,7 +835,7 @@ const LandingPage = () => {
                     src={Folder}
                     alt="Logo"
                     w="551px"
-                    h="329px"
+                    h="280px"
                     data-aos="fade-left"
                     data-aos-duration="10000"
                   />
@@ -843,7 +855,7 @@ const LandingPage = () => {
                     src={Folder}
                     alt="Logo"
                     w="551px"
-                    h="329px"
+                    h="280px"
                     data-aos="fade-right"
                     data-aos-duration="10000"
                   />
@@ -864,9 +876,33 @@ const LandingPage = () => {
               </Box>
             </Box>
           </Box>
-          <Box h="60px" />
+          <Box h="40px" />
         </Box>
+        <Box marginLeft="300px" marginBottom="80px" bg="#D087E2" padding="40px" w="800px" borderRadius="10px">
+          <FormControl display="flex" alignItems="center">
+            <FormLabel htmlFor="email-alerts" mb="0" fontFamily="body" fontSize="20px">
+              Don't want miss out on any information from us? Subscribe to our newsletter
+            </FormLabel>
+            <Switch
+              size="lg"
+              id="email-alerts"
+              isChecked={isSwitchOn}
+              onChange={handleSwitchToggle}
+              colorScheme={isSwitchOn ? 'green' : 'gray'}
+            />
+          </FormControl>
 
+          {isSwitchOn && (
+            <form >
+              <FormControl marginLeft="150px" w="400px" marginTop="10px">
+                <Input type="email" id="email" placeholder="Enter your email" />
+              </FormControl>
+              <Button type="submit" mt="4" color="white" bg="#A210C6" marginLeft="-45px">
+                Subscribe
+              </Button>
+            </form>
+          )}
+        </Box>
         {/* Footer */}
         <Box
           bg="#A210C6"
@@ -909,7 +945,7 @@ const LandingPage = () => {
                 About
               </Text>
             </a>
-            <a href="https://example.com">
+            <a href="/contact">
               <Text
                 fontFamily="Montserrat"
                 color="white"
@@ -919,16 +955,7 @@ const LandingPage = () => {
                 Contact us
               </Text>
             </a>
-            <a href="https://example.com">
-              <Text
-                fontFamily="Montserrat"
-                color="white"
-                fontSize="20px"
-                marginTop="40px"
-              >
-                Support
-              </Text>
-            </a>
+
             <a href="https://example.com">
               <Text
                 fontFamily="Montserrat"
@@ -939,7 +966,7 @@ const LandingPage = () => {
                 FAQs
               </Text>
             </a>
-            <a href="https://example.com">
+            <a href="/join">
               <Text
                 fontFamily="Montserrat"
                 color="white"
@@ -947,6 +974,16 @@ const LandingPage = () => {
                 marginTop="40px"
               >
                 Join Mikul Health
+              </Text>
+            </a>
+            <a href="https://example.com">
+              <Text
+                fontFamily="Montserrat"
+                color="white"
+                fontSize="20px"
+                marginTop="40px"
+              >
+                Terms and Privacy policy
               </Text>
             </a>
           </Box>
@@ -960,7 +997,7 @@ const LandingPage = () => {
               Socials
             </Text>
             <Box marginLeft="5px" display="flex">
-              <a href="https://example.com">
+              <a href="https://web.facebook.com/mikulhealthcare/?_rdc=1&_rdr://example.com">
                 <Image
                   src={FBIcon}
                   alt="Logo"
@@ -970,7 +1007,7 @@ const LandingPage = () => {
                   marginLeft="20px"
                 />
               </a>
-              <a href="https://example.com">
+              <a href="https://www.instagram.com/mikulhealth/">
                 <Image
                   src={IGIcon}
                   alt="Logo"
@@ -980,7 +1017,7 @@ const LandingPage = () => {
                   marginLeft="20px"
                 />
               </a>
-              <a href="https://example.com">
+              <a href="https://wa.me/message/3VO5QNBR2AB4L1://example.com">
                 <Image
                   src={WHIcon}
                   alt="Logo"

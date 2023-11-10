@@ -789,7 +789,7 @@ const LandingPage = () => {
                 About
               </Text>
             </a>
-            <a href="https://example.com">
+            <a href="/contact">
               <Text
                 fontFamily="Montserrat"
                 color="white"
@@ -799,16 +799,7 @@ const LandingPage = () => {
                 Contact us
               </Text>
             </a>
-            <a href="https://example.com">
-              <Text
-                fontFamily="Montserrat"
-                color="white"
-                fontSize="20px"
-                marginTop="40px"
-              >
-                Support
-              </Text>
-            </a>
+          
             <a href="https://example.com">
               <Text
                 fontFamily="Montserrat"
@@ -819,7 +810,7 @@ const LandingPage = () => {
                 FAQs
               </Text>
             </a>
-            <a href="https://example.com">
+            <a href="/join">
               <Text
                 fontFamily="Montserrat"
                 color="white"
@@ -827,6 +818,16 @@ const LandingPage = () => {
                 marginTop="40px"
               >
                 Join Mikul Health
+              </Text>
+            </a>
+            <a href="https://example.com">
+              <Text
+                fontFamily="Montserrat"
+                color="white"
+                fontSize="20px"
+                marginTop="40px"
+              >
+                Terms and Privacy policy
               </Text>
             </a>
           </Box>
@@ -840,7 +841,7 @@ const LandingPage = () => {
               Socials
             </Text>
             <Box marginLeft="5px" display="flex">
-              <a href="https://example.com">
+              <a href="https://web.facebook.com/mikulhealthcare/?_rdc=1&_rdr://example.com">
                 <Image
                   src={FBIcon}
                   alt="Logo"
@@ -850,7 +851,7 @@ const LandingPage = () => {
                   marginLeft="20px"
                 />
               </a>
-              <a href="https://example.com">
+              <a href="https://www.instagram.com/mikulhealth/">
                 <Image
                   src={IGIcon}
                   alt="Logo"
@@ -860,7 +861,7 @@ const LandingPage = () => {
                   marginLeft="20px"
                 />
               </a>
-              <a href="https://example.com">
+              <a href="https://wa.me/message/3VO5QNBR2AB4L1://example.com">
                 <Image
                   src={WHIcon}
                   alt="Logo"

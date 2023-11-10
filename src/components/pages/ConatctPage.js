@@ -20,6 +20,7 @@ import {
   ModalFooter,
   ModalCloseButton,
   useDisclosure,
+  AspectRatio,
 } from "@chakra-ui/react";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -63,9 +64,6 @@ const LandingPage = () => {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  
-
-
   return (
     <ChakraProvider theme={customTheme}>
       <Box overflow="hidden">
@@ -91,7 +89,12 @@ const LandingPage = () => {
               <Spacer />
               <Link to="/">Home</Link>
               <Link to="/about">About</Link>
-              <Link to="/contact"  style={{ textDecoration: 'underline', color: 'white' }}>Contact</Link>
+              <Link
+                to="/contact"
+                style={{ textDecoration: "underline", color: "white" }}
+              >
+                Contact
+              </Link>
               <Spacer />
               <Button onClick={onOpen} bg="white">
                 Get started
@@ -103,18 +106,14 @@ const LandingPage = () => {
           <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
             <ModalContent bg="gray">
-              <ChakraLink
-                fontStyle="italic"
-                href="/login"
-                color="#A210C6"
-              >
+              <ChakraLink fontStyle="italic" href="/login" color="#A210C6">
                 <Button
                   marginTop="30px"
                   marginLeft="80px"
                   bg="gray"
                   color="black"
                   w="300px"
-                  border="1px solid white" 
+                  border="1px solid white"
                 >
                   Login
                 </Button>
@@ -130,19 +129,19 @@ const LandingPage = () => {
                   bg="gray"
                   color="black"
                   w="300px"
-                  border="1px solid white" 
+                  border="1px solid white"
                 >
                   Sign up
                 </Button>
               </ChakraLink>
               <ChakraLink fontStyle="italic" href="/join" color="#A210C6">
                 <Button
-                   marginTop="30px"
-                   marginLeft="80px"
-                   bg="gray"
-                   color="black"
-                   w="300px"
-                   border="1px solid white" 
+                  marginTop="30px"
+                  marginLeft="80px"
+                  bg="gray"
+                  color="black"
+                  w="300px"
+                  border="1px solid white"
                 >
                   Sign up as medic
                 </Button>
@@ -263,7 +262,7 @@ const LandingPage = () => {
           <Box
             bg="#A210C6"
             paddingTop="60px"
-            marginLeft="-5px"
+            marginLeft="-55px"
             marginTop="-250px"
             display="flex"
             color="white"
@@ -333,162 +332,156 @@ const LandingPage = () => {
                   +2349160596636
                 </Text>
               </Box>
+              <a href="https://example.com">
+                <Image
+                  src={WhatsAppIcon}
+                  alt="Logo"
+                  w="150px"
+                  h="150px"
+                  marginTop="2px"
+                  marginLeft="300px"
+                  marginBottom="-150px"
+                  
+                />
+              </a>
             </Box>
           </Box>
 
-          <Box bg="#A210C6">
-            <Image
-              src={MHSteth}
-              alt="Logo"
-              w="1369px"
-              h="645px"
-              marginLeft="10px"
-              data-aos="fade-left"
-              data-aos-duration="10000"
-            />
-            <a href="https://example.com">
-              <Image
-                src={WhatsAppIcon}
-                alt="Logo"
-                w="250px"
-                h="250px"
-                marginTop="-10"
-                marginLeft="1100px"
-                paddingBottom="100px"
-                data-aos="fade-right"
-                data-aos-duration="10000"
-              />
-            </a>
+          <Box bg="#A210C6" padding="10px" marginTop="-30px">
+            <AspectRatio ratio={16 / 9}>
+              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.952912260219!2d3.375295414770757!3d6.5276316452784755!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103b8b2ae68280c1%3A0xdc9e87a367c3d9cb!2sLagos!5e0!3m2!1sen!2sng!4v1567723392506!5m2!1sen!2sng" />
+            </AspectRatio>
           </Box>
 
           <Box h="10px" bg="white"></Box>
 
           {/* Footer */}
           <Box
-            bg="#A210C6"
-            display="flex"
-            w="1441"
-            h="543"
-            pd="48px, 84px, 32px, 60px"
-          >
-            <Box marginLeft="40px" marginTop="40px">
-              <Text fontFamily="body" color="white" fontSize="32px">
-                MIKUL HEALTH
-              </Text>
+          bg="#A210C6"
+          display="flex"
+          w="1441"
+          h="543"
+          pd="48px, 84px, 32px, 60px"
+        >
+          <Box marginLeft="40px" marginTop="40px">
+            <Text fontFamily="body" color="white" fontSize="32px">
+              MIKUL HEALTH
+            </Text>
+            <Text
+              fontFamily="Montserrat"
+              color="white"
+              fontSize="20px"
+              marginTop="40px"
+            >
+              We leverage technological <br></br>
+              advancement to provide care<br></br>
+              for you and your loved ones.
+            </Text>
+          </Box>
+          <Box marginLeft="380px" marginTop="40px">
+            <Text
+              fontFamily="body"
+              color="white"
+              fontSize="32px"
+              textDecoration="underline"
+            >
+              Quick Links
+            </Text>
+            <a href="/about">
               <Text
                 fontFamily="Montserrat"
                 color="white"
                 fontSize="20px"
                 marginTop="40px"
               >
-                We leverage technological <br></br>
-                advancement to provide care<br></br>
-                for you and your loved ones.
+                About
               </Text>
-            </Box>
-            <Box marginLeft="380px" marginTop="40px">
+            </a>
+            <a href="/contact">
               <Text
-                fontFamily="body"
+                fontFamily="Montserrat"
                 color="white"
-                fontSize="32px"
-                textDecoration="underline"
+                fontSize="20px"
+                marginTop="40px"
               >
-                Quick Links
+                Contact us
               </Text>
-              <a href="/about">
-                <Text
-                  fontFamily="Montserrat"
-                  color="white"
-                  fontSize="20px"
-                  marginTop="40px"
-                >
-                  About
-                </Text>
-              </a>
-              <a href="https://example.com">
-                <Text
-                  fontFamily="Montserrat"
-                  color="white"
-                  fontSize="20px"
-                  marginTop="40px"
-                >
-                  Contact us
-                </Text>
-              </a>
-              <a href="https://example.com">
-                <Text
-                  fontFamily="Montserrat"
-                  color="white"
-                  fontSize="20px"
-                  marginTop="40px"
-                >
-                  Support
-                </Text>
-              </a>
-              <a href="https://example.com">
-                <Text
-                  fontFamily="Montserrat"
-                  color="white"
-                  fontSize="20px"
-                  marginTop="40px"
-                >
-                  FAQs
-                </Text>
-              </a>
-              <a href="https://example.com">
-                <Text
-                  fontFamily="Montserrat"
-                  color="white"
-                  fontSize="20px"
-                  marginTop="40px"
-                >
-                  Join Mikul Health
-                </Text>
-              </a>
-            </Box>
-            <Box marginLeft="300px" marginTop="40px">
+            </a>
+          
+            <a href="https://example.com">
               <Text
-                fontFamily="body"
+                fontFamily="Montserrat"
                 color="white"
-                fontSize="32px"
-                textDecoration="underline"
+                fontSize="20px"
+                marginTop="40px"
               >
-                Socials
+                FAQs
               </Text>
-              <Box marginLeft="5px" display="flex">
-                <a href="https://example.com">
-                  <Image
-                    src={FBIcon}
-                    alt="Logo"
-                    w="32px"
-                    h="32px"
-                    marginTop="40px"
-                    marginLeft="20px"
-                  />
-                </a>
-                <a href="https://example.com">
-                  <Image
-                    src={IGIcon}
-                    alt="Logo"
-                    w="32px"
-                    h="32px"
-                    marginTop="40px"
-                    marginLeft="20px"
-                  />
-                </a>
-                <a href="https://example.com">
-                  <Image
-                    src={WHIcon}
-                    alt="Logo"
-                    w="32px"
-                    h="32px"
-                    marginTop="40px"
-                    marginLeft="20px"
-                  />
-                </a>
-              </Box>
+            </a>
+            <a href="/join">
+              <Text
+                fontFamily="Montserrat"
+                color="white"
+                fontSize="20px"
+                marginTop="40px"
+              >
+                Join Mikul Health
+              </Text>
+            </a>
+            <a href="https://example.com">
+              <Text
+                fontFamily="Montserrat"
+                color="white"
+                fontSize="20px"
+                marginTop="40px"
+              >
+                Terms and Privacy policy
+              </Text>
+            </a>
+          </Box>
+          <Box marginLeft="300px" marginTop="40px">
+            <Text
+              fontFamily="body"
+              color="white"
+              fontSize="32px"
+              textDecoration="underline"
+            >
+              Socials
+            </Text>
+            <Box marginLeft="5px" display="flex">
+              <a href="https://web.facebook.com/mikulhealthcare/?_rdc=1&_rdr://example.com">
+                <Image
+                  src={FBIcon}
+                  alt="Logo"
+                  w="32px"
+                  h="32px"
+                  marginTop="40px"
+                  marginLeft="20px"
+                />
+              </a>
+              <a href="https://www.instagram.com/mikulhealth/">
+                <Image
+                  src={IGIcon}
+                  alt="Logo"
+                  w="32px"
+                  h="32px"
+                  marginTop="40px"
+                  marginLeft="20px"
+                />
+              </a>
+              <a href="https://wa.me/message/3VO5QNBR2AB4L1://example.com">
+                <Image
+                  src={WHIcon}
+                  alt="Logo"
+                  w="32px"
+                  h="32px"
+                  marginTop="40px"
+                  marginLeft="20px"
+                />
+              </a>
             </Box>
           </Box>
+        </Box>
         </Box>
       </Box>
     </ChakraProvider>
