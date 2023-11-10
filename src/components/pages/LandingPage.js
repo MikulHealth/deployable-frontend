@@ -878,10 +878,10 @@ const LandingPage = () => {
           </Box>
           <Box h="40px" />
         </Box>
-        <Box marginLeft="300px" marginBottom="80px" bg="#D087E2" padding="40px" w="800px" borderRadius="10px">
+        <Box marginLeft="300px" marginBottom="80px" bg="#D087E2" padding="40px" w="750px" borderRadius="10px">
           <FormControl display="flex" alignItems="center">
             <FormLabel htmlFor="email-alerts" mb="0" fontFamily="body" fontSize="20px">
-              Don't want miss out on any information from us? Subscribe to our newsletter
+              Don't want to miss out on any information? Subscribe to our newsletter
             </FormLabel>
             <Switch
               size="lg"
