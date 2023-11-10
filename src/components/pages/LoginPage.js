@@ -115,7 +115,7 @@ const LandingPage = () => {
               marginTop="30px"
               marginLeft="20px"
             >
-              Create your account
+              Login to your account
             </Text>
             <FormControl isRequired marginTop="20px" marginLeft="100px">
               {/* <FormLabel marginTop="20px">Email address</FormLabel> */}
