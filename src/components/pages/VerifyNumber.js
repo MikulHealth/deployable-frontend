@@ -70,7 +70,7 @@ const LandingPage = () => {
       setLoading(true);
       const enteredOtp = inputs.join("");
 
-      const number = localStorage.getItem("phoneNumber")
+      const number = localStorage.getItem("phonePhumber")
       // Make an API call with the entered OTP code
       const response = await axios.post(
         "http://localhost:8080/api/v1/sms/verify-otp",
