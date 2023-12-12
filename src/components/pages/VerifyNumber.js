@@ -62,6 +62,22 @@ const LandingPage = () => {
   };
   const [loading, setLoading] = useState(false);
   const toast = useToast();
+
+  const resendOtp = async () => {
+          // Make a second API call to "http://localhost:8080/api/v1/sms/verify-number"
+          const number = localStorage.getItem("phoneNumber")
+          const verifyNumberResponse = await axios.post(
+            "http://localhost:8080/api/v1/sms/verify-number",
+            {
+              phoneNumber: number, // Use the user's phone number
+            },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+  }
  
 
   const handleVerify = async () => {
@@ -70,7 +86,7 @@ const LandingPage = () => {
       setLoading(true);
       const enteredOtp = inputs.join("");
 
-      const number = localStorage.getItem("phonePhumber")
+      const number = localStorage.getItem("phoneNumber")
       // Make an API call with the entered OTP code
       const response = await axios.post(
         "http://localhost:8080/api/v1/sms/verify-otp",
@@ -167,7 +183,7 @@ const LandingPage = () => {
             color="#A210C6"
             marginTop="50px"
           >
-            Verify you phone number
+            Verify your phone number
           </Text>
           <Text
             fontFamily="Montserrat"
@@ -186,7 +202,7 @@ const LandingPage = () => {
               <PinInputField w="140px" h="125px" />
               <PinInputField w="140px" h="125px" />
             </PinInput> */}
-           <PinInput type="alphanumeric" mask>
+           <PinInput type="alphanumeric" mask={['1', '2', '3', '4', '5', '6']}>
               {inputs.map((input, index) => (
                 <PinInputField
                   key={index}
@@ -204,9 +220,9 @@ const LandingPage = () => {
           </HStack>
           <Text fontSize="20px" fontFamily="Montserrat" marginTop="20px">
             Didn’t receive a code?{" "}
-            <ChakraLink fontStyle="italic" href="/resend-otp" color="#A210C6">
+            <Button fontStyle="italic" color="#A210C6" onClick={resendOtp}>
               resend code
-            </ChakraLink>
+            </Button>
           </Text>
           {/* <ChakraLink href="/verify-otp"> */}
             <Button

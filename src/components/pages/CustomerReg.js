@@ -110,7 +110,7 @@ const LandingPage = () => {
           },
         }
       );
-      localStorage.setItem("phonePhumber", formData.phoneNumber);
+      localStorage.setItem("phoneNumber", formData.phoneNumber);
       // Handle the response for the second API call as needed
       console.log(verifyNumberResponse);
 
