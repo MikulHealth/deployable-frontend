@@ -1,6 +1,8 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { useToast } from "@chakra-ui/react";
 import {
   Box,
   Button,
@@ -46,15 +48,75 @@ const customTheme = extendTheme({
   },
 });
 
+
 const LandingPage = () => {
   const [input, setInput] = useState("");
+  const [inputs, setInputs] = useState(["", "", "", "", "", ""]);
+  
+  const handleInputChange = (index, value) => {
+    setInputs((prevInputs) => {
+      const newInputs = [...prevInputs];
+      newInputs[index] = value;
+      return newInputs;
+    });
+  };
+  const [loading, setLoading] = useState(false);
+  const toast = useToast();
+ 
 
-  const handleInputChange = (e) => setInput(e.target.value);
+  const handleVerify = async () => {
+    try {
+      // Set loading to true when starting the API call
+      setLoading(true);
+      const enteredOtp = inputs.join("");
 
-  const isError = input === "";
+      const number = localStorage.getItem("phoneNumber")
+      // Make an API call with the entered OTP code
+      const response = await axios.post(
+        "http://localhost:8080/api/v1/sms/verify-otp",
+        {
+          phoneNumber: number,
+          otpNumber: enteredOtp,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-  const [show, setShow] = React.useState(false);
-  const handleClick = () => setShow(!show);
+      // Handle the response as needed
+      console.log(response);
+
+      // Display success toast
+      toast({
+        title: "Verification Successful",
+        description: "Your phone number has been verified.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+
+      // Redirect or perform other actions based on the response
+    } catch (error) {
+      console.error("Error verifying OTP:", error);
+      console.log("Full error object:", error);
+
+      // Display error toast
+      toast({
+        title: "Verification Failed",
+        description: error.response
+          ? error.response.data.message
+          : "Something went wrong",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    } finally {
+      // Set loading back to false regardless of success or failure
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     AOS.init();
@@ -82,7 +144,7 @@ const LandingPage = () => {
           <HStack spacing={10}>
             <Box w="5px" />
             <a href="/">
-            <Image src={logo} alt="Logo" w="100px" h="30px" />
+              <Image src={logo} alt="Logo" w="100px" h="30px" />
             </a>
             <Spacer />
             <Spacer />
@@ -93,7 +155,12 @@ const LandingPage = () => {
             </ChakraLink>
           </HStack>
         </Box>
-        <Box overflow="hidden" alignContent="center" alignItems="center" marginTop="30px">
+        <Box
+          overflow="hidden"
+          alignContent="center"
+          alignItems="center"
+          marginTop="30px"
+        >
           <Text
             fontFamily="body"
             fontSize="32px"
@@ -108,35 +175,53 @@ const LandingPage = () => {
             color="black"
             marginTop="30px"
           >
-            Please input the 6 digit code sent to phone number +23470xxxxxxxx
+            Please input the 6 digit code sent to your phone number
           </Text>
           <HStack marginLeft="250px" marginTop="50px">
-            <PinInput type="alphanumeric" mask>
+            {/* <PinInput type="alphanumeric" mask>
               <PinInputField w="140px" h="125px" />
               <PinInputField w="140px" h="125px" />
               <PinInputField w="140px" h="125px" />
               <PinInputField w="140px" h="125px" />
               <PinInputField w="140px" h="125px" />
               <PinInputField w="140px" h="125px" />
+            </PinInput> */}
+           <PinInput type="alphanumeric" mask>
+              {inputs.map((input, index) => (
+                <PinInputField
+                  key={index}
+                  w="140px"
+                  h="125px"
+                  type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  maxLength="1"
+                  onChange={(e) => handleInputChange(index, e.target.value)}
+                  value={input}
+                />
+              ))}
             </PinInput>
           </HStack>
           <Text fontSize="20px" fontFamily="Montserrat" marginTop="20px">
-            Didn’t receive a code? {" "}
+            Didn’t receive a code?{" "}
             <ChakraLink fontStyle="italic" href="/resend-otp" color="#A210C6">
               resend code
             </ChakraLink>
           </Text>
-          <ChakraLink href="/verify-otp">
+          {/* <ChakraLink href="/verify-otp"> */}
             <Button
               w="250px"
               h="50px"
               bg="#A210C6"
               marginTop="20px"
               color="white"
+              onClick={handleVerify} // Call handleVerify when the button is clicked
+              isLoading={loading} // Display loading spinner when loading is true
+              loadingText="Verifying..."
             >
               Verify
             </Button>
-          </ChakraLink>
+          {/* </ChakraLink> */}
         </Box>
       </Box>
     </ChakraProvider>
