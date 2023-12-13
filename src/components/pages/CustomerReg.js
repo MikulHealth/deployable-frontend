@@ -91,18 +91,18 @@ const LandingPage = () => {
       // Handle response as needed
       console.log(response);
       toast({
-        title: "Registration Completed",
+        title: "Registration Successful",
         description: response.data.message,
         status: "success",
         duration: 5000,
         isClosable: true,
       });
 
-      // Make a second API call to "http://localhost:8080/api/v1/sms/verify-number"
+
       const verifyNumberResponse = await axios.post(
         "http://localhost:8080/api/v1/sms/verify-number",
         {
-          phoneNumber: formData.phoneNumber, // Use the user's phone number
+          phoneNumber: formData.phoneNumber, 
         },
         {
           headers: {
@@ -119,13 +119,10 @@ const LandingPage = () => {
       }, 5000);
       // Redirect or perform other actions based on the response
     } catch (error) {
-      console.error("Error submitting form:", error);
-      console.log("Full error object:", error); // Add this line
+    
       toast({
         title: "Registration Failed",
-        description: error.response
-          ? error.response.data.message
-          : "Something went wrong",
+        description: error.response.data,
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -259,6 +256,8 @@ const LandingPage = () => {
                     bg="#A210C6"
                     marginTop="20px"
                     color="white"
+                    isLoading={loading}
+                    loadingText="Registering..."
                   >
                     {loading ? "Loading..." : "Submit"}
                   </Button>

@@ -48,11 +48,10 @@ const customTheme = extendTheme({
   },
 });
 
-
 const LandingPage = () => {
   const [input, setInput] = useState("");
   const [inputs, setInputs] = useState(["", "", "", "", "", ""]);
-  
+
   const handleInputChange = (index, value) => {
     setInputs((prevInputs) => {
       const newInputs = [...prevInputs];
@@ -64,21 +63,19 @@ const LandingPage = () => {
   const toast = useToast();
 
   const resendOtp = async () => {
-          // Make a second API call to "http://localhost:8080/api/v1/sms/verify-number"
-          const number = localStorage.getItem("phoneNumber")
-          const verifyNumberResponse = await axios.post(
-            "http://localhost:8080/api/v1/sms/verify-number",
-            {
-              phoneNumber: number, // Use the user's phone number
-            },
-            {
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          );
-  }
- 
+    const number = localStorage.getItem("phoneNumber");
+    const verifyNumberResponse = await axios.post(
+      "http://localhost:8080/api/v1/sms/verify-number",
+      {
+        phoneNumber: number, // Use the user's phone number
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+  };
 
   const handleVerify = async () => {
     try {
@@ -86,7 +83,7 @@ const LandingPage = () => {
       setLoading(true);
       const enteredOtp = inputs.join("");
 
-      const number = localStorage.getItem("phoneNumber")
+      const number = localStorage.getItem("phoneNumber");
       // Make an API call with the entered OTP code
       const response = await axios.post(
         "http://localhost:8080/api/v1/sms/verify-otp",
@@ -112,7 +109,7 @@ const LandingPage = () => {
         duration: 5000,
         isClosable: true,
       });
-
+      localStorage.removeItem("phoneNumber");
       // Redirect or perform other actions based on the response
     } catch (error) {
       console.error("Error verifying OTP:", error);
@@ -194,15 +191,7 @@ const LandingPage = () => {
             Please input the 6 digit code sent to your phone number
           </Text>
           <HStack marginLeft="250px" marginTop="50px">
-            {/* <PinInput type="alphanumeric" mask>
-              <PinInputField w="140px" h="125px" />
-              <PinInputField w="140px" h="125px" />
-              <PinInputField w="140px" h="125px" />
-              <PinInputField w="140px" h="125px" />
-              <PinInputField w="140px" h="125px" />
-              <PinInputField w="140px" h="125px" />
-            </PinInput> */}
-           <PinInput type="alphanumeric" mask={['1', '2', '3', '4', '5', '6']}>
+            <PinInput type="alphanumeric" mask={["1", "2", "3", "4", "5", "6"]}>
               {inputs.map((input, index) => (
                 <PinInputField
                   key={index}
@@ -220,23 +209,29 @@ const LandingPage = () => {
           </HStack>
           <Text fontSize="20px" fontFamily="Montserrat" marginTop="20px">
             Didn’t receive a code?{" "}
-            <Button fontStyle="italic" color="#A210C6" onClick={resendOtp}>
+            <Button
+              fontStyle="italic"
+              color="#A210C6"
+              onClick={resendOtp}
+              isLoading={loading} // Display loading spinner when loading is true
+              loadingText="Resending..."
+            >
               resend code
             </Button>
           </Text>
           {/* <ChakraLink href="/verify-otp"> */}
-            <Button
-              w="250px"
-              h="50px"
-              bg="#A210C6"
-              marginTop="20px"
-              color="white"
-              onClick={handleVerify} // Call handleVerify when the button is clicked
-              isLoading={loading} // Display loading spinner when loading is true
-              loadingText="Verifying..."
-            >
-              Verify
-            </Button>
+          <Button
+            w="250px"
+            h="50px"
+            bg="#A210C6"
+            marginTop="20px"
+            color="white"
+            onClick={handleVerify} // Call handleVerify when the button is clicked
+            isLoading={loading} // Display loading spinner when loading is true
+            loadingText="Verifying..."
+          >
+            Verify
+          </Button>
           {/* </ChakraLink> */}
         </Box>
       </Box>
