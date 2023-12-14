@@ -109,7 +109,7 @@ const LandingPage = () => {
         duration: 5000,
         isClosable: true,
       });
-      localStorage.removeItem("phoneNumber");
+      // localStorage.removeItem("phoneNumber");
       // Redirect or perform other actions based on the response
     } catch (error) {
       console.error("Error verifying OTP:", error);
@@ -118,9 +118,7 @@ const LandingPage = () => {
       // Display error toast
       toast({
         title: "Verification Failed",
-        description: error.response
-          ? error.response.data.message
-          : "Something went wrong",
+        description: "Wrong or expired OTP,  confirm the code sent or click 'resend code' for a new code",
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -214,7 +212,7 @@ const LandingPage = () => {
               color="#A210C6"
               onClick={resendOtp}
               isLoading={loading} // Display loading spinner when loading is true
-              loadingText="Resending..."
+             
             >
               resend code
             </Button>
