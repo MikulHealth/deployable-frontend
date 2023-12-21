@@ -106,7 +106,7 @@ const LandingPage = () => {
 
       setTimeout(() => {
         navigate("/confirm-medic-reg");
-      }, 5000);
+      }, 3000);
       // Redirect or perform other actions based on the response
     } catch (error) {
       toast({
@@ -262,7 +262,7 @@ const LandingPage = () => {
                   </Select>
                   <Box>
                     <Input
-                    name="accountNumber"
+                      name="accountNumber"
                       placeholder="Account number"
                       htmlSize={20}
                       width="auto"
@@ -272,15 +272,26 @@ const LandingPage = () => {
                   </Box>
                 </Box>
 
-                <FormControl marginLeft="-5px">
+                <Box display="flex" marginTop="30px">
+                  <Box >
+                    <Input
+                      name="accountName"
+                      placeholder="Account Name"
+                      htmlSize={20}
+                      width="auto"
+                     
+                      onChange={handleInputChange}
+                    />
+                  </Box>
                   <Box>
-                    <FormLabel>NIN Number</FormLabel>
                     <Input
                       name="NIN"
                       placeholder="NIN ID"
                       htmlSize={20}
                       width="auto"
+                      marginLeft="10px"
                     />
+                  </Box>
                   </Box>
                   <FormLabel marginLeft="10px" marginTop="30px">
                     Upload CV
@@ -292,7 +303,9 @@ const LandingPage = () => {
                     type="file"
                     onChange={handleFileChange}
                   />
+               
 
+                <FormControl marginLeft="-5px">
                   <FormLabel marginLeft="10px" marginTop="30px">
                     Upload valid licence
                   </FormLabel>
@@ -333,6 +346,7 @@ const LandingPage = () => {
                   w="350px"
                   bg="#A210C6"
                   marginTop="20px"
+                  marginLeft="-140px"
                   color="white"
                   isLoading={loading}
                   loadingText="Creating..."

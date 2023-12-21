@@ -113,7 +113,7 @@ const LandingPage = () => {
       });
       setTimeout(() => {
         navigate("/medic-reg");
-      }, 5000);
+      }, 3000);
       // localStorage.removeItem("phoneNumber");
       // Redirect or perform other actions based on the response
     } catch (error) {

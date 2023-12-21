@@ -116,7 +116,7 @@ const LandingPage = () => {
 
       setTimeout(() => {
         navigate("/verify-medic-number");
-      }, 5000);
+      }, 3000);
       // Redirect or perform other actions based on the response
     } catch (error) {
     
