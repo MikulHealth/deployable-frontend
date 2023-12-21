@@ -7,6 +7,7 @@ import ConatactPage from './components/pages/ConatctPage'
 import MedicRegPage from './components/pages/MedicRegPage'
 import MedicRegPage2 from './components/pages/MedicRegPage2'
 import VerifyNumber from './components/pages/VerifyNumber'
+import VerifyMedicNumber from './components/pages/VerifyMedicNumber'
 import MedicRegConfirmation from './components/pages/MedicConfirmationPage'
 import CustomerReg from './components/pages/CustomerReg'
 import Login from './components/pages/LoginPage'
@@ -23,6 +24,8 @@ function App() {
         <Route path="/join" element={<MedicRegPage />}></Route>
         <Route path="/join-complete" element={<MedicRegPage2 />}></Route>
         <Route path="/verify-number" element={<VerifyNumber />}></Route>
+        <Route path="/verify-medic-number" element={<VerifyMedicNumber />}></Route>
+        <Route path="/medic-reg" element={<MedicRegPage2 />}></Route>
         <Route path="/confirm-medic-reg" element={<MedicRegConfirmation />}></Route>
         <Route path="/customer-signUp" element={<CustomerReg />}></Route>
         <Route path="/login" element={<Login />}></Route>

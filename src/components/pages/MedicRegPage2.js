@@ -1,5 +1,7 @@
 import React from "react";
+import axios from "axios";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import {
   Box,
@@ -20,6 +22,7 @@ import {
   InputLeftAddon,
   InputRightElement,
   Textarea,
+  useToast,
   Select,
 } from "@chakra-ui/react";
 import AOS from "aos";
@@ -46,14 +49,78 @@ const customTheme = extendTheme({
 });
 
 const LandingPage = () => {
-  const [input, setInput] = useState("");
+  const [formData, setFormData] = useState({
+  IDCopy: "",
+  license: "",
+  guarantorFullName: "",
+  guarantorPhone: "",
+  guarantorEmail: "",
+  medicType: "",
+  specialization: "",
+  bankName: "",
+  accountNumber: "",
+  accountName: "",
+ homeAddress: "",
+  phoneNumber: "",
+  headShot: ""
+  });
 
-  const handleInputChange = (e) => setInput(e.target.value);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const [show, setShow] = useState(false);
 
-  const isError = input === "";
-
-  const [show, setShow] = React.useState(false);
+  const handleInputChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+  const toast = useToast();
   const handleClick = () => setShow(!show);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    setLoading(true);
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/v1/angel/verify-medic",
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      // Handle response as needed
+      console.log(response);
+      toast({
+        title: "Successful",
+        description: response.data.message,
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+
+      setTimeout(() => {
+        navigate("/confirm-medic-reg");
+      }, 5000);
+      // Redirect or perform other actions based on the response
+    } catch (error) {
+    
+      toast({
+        title: "Failed",
+        description: error.response.data,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    } finally {
+      // Set loading back to false regardless of success or failure
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     AOS.init();
@@ -115,47 +182,61 @@ const LandingPage = () => {
             </Text>
             <FormControl isRequired marginTop="20px" marginLeft="125px">
               <Box display="flex" marginTop="20px">
-                <Box>
-                  <FormLabel>NIN ID</FormLabel>
-                  <Input placeholder="NIN ID" htmlSize={20} width="auto" />
+              <Box>
+                  <FormLabel>Your Home address</FormLabel>
+                  <Input
+                  name="HomeAddress"
+                    placeholder="Home address"
+                    htmlSize={20}
+                    width="auto"
+                    onChange={handleInputChange}
+                  />
                 </Box>
                 <Box>
                   <FormLabel>Guaranto's Name</FormLabel>
                   <Input
+                  name="gurantorName"
                     placeholder="Full name"
                     htmlSize={20}
                     width="auto"
                     marginLeft="10px"
+                    onChange={handleInputChange}
                   />
                 </Box>
               </Box>
               <Box display="flex" marginTop="30px">
+               
                 <Box>
                   <FormLabel>Guarantor's email address</FormLabel>
                   <Input
+                  name="guarantorEmail"
                     placeholder="email address"
                     htmlSize={20}
                     width="auto"
+                    onChange={handleInputChange}
                   />
                 </Box>
                 <Box>
-                  <FormLabel>Guaranto's Phone number</FormLabel>
-                  <Input
+                  <FormLabel>Guarantor's Phone number</FormLabel>
+                  <Input name="guarantorPhone"
                     placeholder="Phone number"
                     htmlSize={20}
                     width="auto"
                     marginLeft="10px"
+                    onChange={handleInputChange}
                   />
                 </Box>
               </Box>
-              <Box display="flex" marginTop="30px">
+              <Box name="medicType" display="flex" marginTop="30px">
                 <Select placeholder="Medic Type" w="205px">
                   <option value="option1">Option 1</option>
                   <option value="option2">Option 2</option>
                   <option value="option3">Option 3</option>
+                  onChange={handleInputChange}
                 </Select>
                 <Box>
                   <Select
+                  name="specialization"
                     placeholder="Specialization"
                     w="205px"
                     marginLeft="10px"
@@ -163,14 +244,17 @@ const LandingPage = () => {
                     <option value="option1">Option 1</option>
                     <option value="option2">Option 2</option>
                     <option value="option3">Option 3</option>
+                    onChange={handleInputChange}
                   </Select>
                 </Box>
               </Box>
               <Box display="flex" marginTop="30px">
-                <Select placeholder="Your Bank name" w="205px">
+                <Select  name= "bankName" placeholder="Your Bank name" w="205px">
+                 
                   <option value="option1">Option 1</option>
                   <option value="option2">Option 2</option>
                   <option value="option3">Option 3</option>
+                  onChange={handleInputChange}
                 </Select>
                 <Box>
                   <Input
@@ -178,15 +262,26 @@ const LandingPage = () => {
                     htmlSize={20}
                     width="auto"
                     marginLeft="10px"
+
+                    onChange={handleInputChange}
                   />
                 </Box>
               </Box>
 
               <FormControl marginLeft="-5px">
+              <Box>
+                  <FormLabel>NIN ID</FormLabel>
+                  <Input 
+                  name="IDCopy"
+                  placeholder="NIN ID" 
+                  htmlSize={20} width="auto"
+                   />
+                </Box>
                 <FormLabel marginLeft="10px" marginTop="30px">
                   Upload CV
                 </FormLabel>
                 <Input
+                name="CV"
                   marginLeft="-123px"
                   w="422px"
                   type="file"
@@ -197,6 +292,7 @@ const LandingPage = () => {
                   Upload valid licence
                 </FormLabel>
                 <Input
+                name="License"
                   marginLeft="-123px"
                   w="422px"
                   type="file"
@@ -207,6 +303,7 @@ const LandingPage = () => {
                   Upload headshort (only PNG and JPG files are accepted)
                 </FormLabel>
                 <Input
+                name="image"
                   marginLeft="-123px"
                   w="422px"
                   type="file"

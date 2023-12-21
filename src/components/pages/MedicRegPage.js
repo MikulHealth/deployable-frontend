@@ -1,5 +1,7 @@
 import React from "react";
+import axios from "axios";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import {
   Box,
@@ -20,6 +22,8 @@ import {
   InputLeftAddon,
   InputRightElement,
   Textarea,
+  useToast,
+  Select,
 } from "@chakra-ui/react";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -45,18 +49,94 @@ const customTheme = extendTheme({
 });
 
 const LandingPage = () => {
-  const [input, setInput] = useState("");
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phoneNumber: "",
+    password: "",
+    confirmPassword: "",
+    gender: "",
+    image: "",
+  });
 
-  const handleInputChange = (e) => setInput(e.target.value);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const [show, setShow] = useState(false);
 
-  const isError = input === "";
-
-  const [show, setShow] = React.useState(false);
+  const handleInputChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+  const toast = useToast();
   const handleClick = () => setShow(!show);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    setLoading(true);
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/v1/angel/join",
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      // Handle response as needed
+      console.log(response);
+      toast({
+        title: "Registration Successful",
+        description: response.data.message,
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+
+
+      const verifyNumberResponse = await axios.post(
+        "http://localhost:8080/api/v1/sms/verify-number",
+        {
+          phoneNumber: formData.phoneNumber, 
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      localStorage.setItem("phoneNumber", formData.phoneNumber);
+      // Handle the response for the second API call as needed
+      console.log(verifyNumberResponse);
+
+      setTimeout(() => {
+        navigate("/verify-medic-number");
+      }, 5000);
+      // Redirect or perform other actions based on the response
+    } catch (error) {
+    
+      toast({
+        title: "Registration Failed",
+        description: error.response.data,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    } finally {
+      // Set loading back to false regardless of success or failure
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     AOS.init();
   }, []);
+
 
   return (
     <ChakraProvider theme={customTheme}>
@@ -105,54 +185,95 @@ const LandingPage = () => {
             >
               Create your account
             </Text>
+            <form onSubmit={handleSubmit}>
+       
             <FormControl isRequired marginTop="20px" marginLeft="100px">
-              <FormLabel>First name</FormLabel>
-              <Input placeholder="First name" />
-              <FormLabel marginTop="20px">Last name</FormLabel>
-              <Input placeholder="Last name" />
-              <FormLabel marginTop="20px">Email address</FormLabel>
-              <Input placeholder="Email" />
-              <InputGroup marginTop="20px">
-                <InputLeftAddon children="+234" />
-                <Input type="tel" placeholder="phone number" />
-              </InputGroup>
-              <InputGroup size="md" marginTop="20px">
+                <FormLabel>First name</FormLabel>
                 <Input
-                  pr="4.5rem"
-                  type={show ? "text" : "password"}
-                  placeholder="Enter password"
+                  name="firstName"
+                  placeholder="First name"
+                  onChange={handleInputChange}
                 />
-                <InputRightElement width="4.5rem">
-                  <Button h="1.75rem" size="sm" onClick={handleClick}>
-                    {show ? "Hide" : "Show"}
-                  </Button>
-                </InputRightElement>
-              </InputGroup>
-              <InputGroup size="md" marginTop="20px">
+                <FormLabel marginTop="20px">Last name</FormLabel>
                 <Input
-                  pr="4.5rem"
-                  type={show ? "text" : "password"}
-                  placeholder="Confirm password"
+                  name="lastName"
+                  placeholder="Last name"
+                  onChange={handleInputChange}
                 />
-                <InputRightElement width="4.5rem">
-                  <Button h="1.75rem" size="sm" onClick={handleClick}>
-                    {show ? "Hide" : "Show"}
-                  </Button>
-                </InputRightElement>
-              </InputGroup>
-              <ChakraLink href="/join-complete">
-                <Button w="350px" bg="#A210C6" marginTop="20px" color="white">
-                  Next
-                </Button>
-              </ChakraLink>
+                <FormLabel marginTop="20px">Email address</FormLabel>
+                <Input
+                  name="email"
+                  placeholder="Email"
+                  type="email"
+                  onChange={handleInputChange}
+                />
+                <FormLabel marginTop="20px">Gender </FormLabel>
+                <Select placeholder="Select your gender" w="205px">
+                  <option value="option1">Male</option>
+                  <option value="option2">Female</option>
+                  onChange={handleInputChange}
+                </Select>
+                <InputGroup marginTop="20px">
+                  <InputLeftAddon children="+234" />
+                  <Input
+                    name="phoneNumber"
+                    type="tel"
+                    placeholder="Phone number"
+                    onChange={handleInputChange}
+                  />
+                </InputGroup>
+                <InputGroup size="md" marginTop="20px">
+                  <Input
+                    name="password"
+                    pr="4.5rem"
+                    type={show ? "text" : "password"}
+                    placeholder="Enter password"
+                    onChange={handleInputChange}
+                  />
+                  <InputRightElement width="4.5rem">
+                    <Button h="1.75rem" size="sm" onClick={handleClick}>
+                      {show ? "Hide" : "Show"}
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
 
-              <Text fontSize="16px" fontFamily="Montserrat" marginTop="10px">
-                Already have an account?{" "}
-                <ChakraLink fontStyle="italic" href="/login" color="#A210C6">
-                  Login
-                </ChakraLink>
-              </Text>
-            </FormControl>
+                <InputGroup size="md" marginTop="20px">
+                  <Input
+                    name="confirmPassword"
+                    pr="4.5rem"
+                    type={show ? "text" : "password"}
+                    placeholder="Confirm password"
+                    onChange={handleInputChange}
+                  />
+                  <InputRightElement width="4.5rem">
+                    <Button h="1.75rem" size="sm" onClick={handleClick}>
+                      {show ? "Hide" : "Show"}
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
+                {/* <ChakraLink href="/join-complete"> */}
+                  <Button
+                    type="submit"
+                    w="350px"
+                    bg="#A210C6"
+                    marginTop="20px"
+                    color="white"
+                    isLoading={loading}
+                    loadingText="Registering..."
+                  >
+                    {loading ? "Loading..." : "Submit"}
+                  </Button>
+                {/* </ChakraLink> */}
+
+                <Text fontSize="16px" fontFamily="Montserrat" marginTop="10px">
+                  Already have an account?{" "}
+                  <ChakraLink fontStyle="italic" href="/login" color="#A210C6">
+                    Login
+                  </ChakraLink>
+                </Text>
+              </FormControl>
+                     
+            </form>
           </Box>
         </Box>
       </Box>
