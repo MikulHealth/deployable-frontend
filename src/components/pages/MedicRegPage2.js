@@ -196,7 +196,7 @@ const LandingPage = () => {
                   <Box>
                     <FormLabel>Guaranto's Name</FormLabel>
                     <Input
-                      name="gurantorName"
+                      name="guarantorName"
                       placeholder="Full name"
                       htmlSize={20}
                       width="auto"
@@ -305,7 +305,7 @@ const LandingPage = () => {
                   />
                
 
-                <FormControl marginLeft="-5px">
+                {/* <FormControl marginLeft="-5px"> */}
                   <FormLabel marginLeft="10px" marginTop="30px">
                     Upload valid licence
                   </FormLabel>
@@ -327,7 +327,7 @@ const LandingPage = () => {
                     type="file"
                     onChange={handleFileChange}
                   />
-                </FormControl>
+                {/* </FormControl> */}
                 <Text
                   marginLeft="-123px"
                   fontSize="18px"
