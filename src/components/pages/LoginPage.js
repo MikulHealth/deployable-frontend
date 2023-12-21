@@ -33,6 +33,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import Login1 from "../../assets/Login1.svg";
 import Shade from "../../assets/Shade.svg";
+import Google from "../../assets/GoogleIcon.svg";
 import logo from "../../assets/Whitelogo.png";
 import "../../styles/pages/LandingPage.css";
 
@@ -83,9 +84,9 @@ const LandingPage = () => {
           <HStack spacing={10}>
             <Box w="5px" />
             <a href="/">
-            <a href="/">
-            <Image src={logo} alt="Logo" w="100px" h="30px" />
-            </a>
+              <a href="/">
+                <Image src={logo} alt="Logo" w="100px" h="30px" />
+              </a>
             </a>
             <Spacer />
             <Spacer />
@@ -143,13 +144,38 @@ const LandingPage = () => {
                 </ChakraLink>
               </Box>
 
-              <ChakraLink href="/join-complete">
+              <ChakraLink href="/login">
                 <Button w="350px" bg="#A210C6" marginTop="20px" color="white">
                   Login
                 </Button>
               </ChakraLink>
+              <Box marginTop="30px">
+                <Text>or</Text>
+                <Box
+                  border={`1px solid #A210C6`}
+                  padding="8px"
+                  // paddingLeft="10px"
+                  marginTop="20px"
+                  display="flex"
+                  borderRadius="10px"
+                  marginLeft="120px"
+                  w="250px"
+                  h="45px"
+                >
+                  <Image
+                    src={Google}
+                    alt="GoogleIcon"
+                    w="20px"
+                    h="20px"
+                    marginLeft="25px"
+                    marginTop="2px"
+                    
+                  />
+                  <Text marginTop="2px" marginLeft="5px">Continue with Google</Text>
+                </Box>
+              </Box>
 
-              <Text fontSize="16px" fontFamily="Montserrat" marginTop="10px">
+              <Text fontSize="16px" fontFamily="Montserrat" marginTop="30px">
                 Dont have an account?{" "}
                 <ChakraLink onClick={onOpen} fontStyle="italic" color="#A210C6">
                   Sign Up
@@ -174,19 +200,19 @@ const LandingPage = () => {
                       bg="gray"
                       color="black"
                       w="300px"
-                      border="1px solid white" 
+                      border="1px solid white"
                     >
                       Sign up
                     </Button>
                   </ChakraLink>
                   <ChakraLink fontStyle="italic" href="/join" color="#A210C6">
                     <Button
-                       marginTop="30px"
-                       marginLeft="80px"
-                       bg="gray"
-                       color="black"
-                       w="300px"
-                       border="1px solid white" 
+                      marginTop="30px"
+                      marginLeft="80px"
+                      bg="gray"
+                      color="black"
+                      w="300px"
+                      border="1px solid white"
                     >
                       Sign up as medic
                     </Button>

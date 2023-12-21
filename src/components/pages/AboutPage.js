@@ -170,15 +170,15 @@ const LandingPage = () => {
           bgImage={`url(${AbtPic})`}
           bgSize="cover"
           bgPosition="center"
-          w="1464px"
+          w="1350px"
           h="1140px"
         >
           <Text
             fontSize="64px"
             fontWeight="bold"
             textAlign="center"
-            color="#A210C6"
-            marginLeft="5px"
+            color="white"
+            // marginLeft="3px"
             paddingTop="70px"
             textDecoration="underline"
             data-aos="fade-up"
