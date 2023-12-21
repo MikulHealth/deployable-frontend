@@ -50,19 +50,20 @@ const customTheme = extendTheme({
 
 const LandingPage = () => {
   const [formData, setFormData] = useState({
-  IDCopy: "",
-  license: "",
-  guarantorFullName: "",
-  guarantorPhone: "",
-  guarantorEmail: "",
-  medicType: "",
-  specialization: "",
-  bankName: "",
-  accountNumber: "",
-  accountName: "",
- homeAddress: "",
-  phoneNumber: "",
-  headShot: ""
+    NIN: "",
+    license: "",
+    guarantorName: "",
+    guarantorPhone: "",
+    guarantorEmail: "",
+    medicType: "",
+    specialization: "",
+    CVCopy: "",
+    bankName: "",
+    accountNumber: "",
+    accountName: "",
+    homeAddress: "",
+    phoneNumber: localStorage.getItem("phoneNumber"),
+    image: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -108,7 +109,6 @@ const LandingPage = () => {
       }, 5000);
       // Redirect or perform other actions based on the response
     } catch (error) {
-    
       toast({
         title: "Failed",
         description: error.response.data,
@@ -148,7 +148,7 @@ const LandingPage = () => {
           <HStack spacing={10}>
             <Box w="5px" />
             <a href="/">
-            <Image src={logo} alt="Logo" w="100px" h="30px" />
+              <Image src={logo} alt="Logo" w="100px" h="30px" />
             </a>
             <Spacer />
             <Spacer />
@@ -178,173 +178,181 @@ const LandingPage = () => {
               marginTop="80px"
               marginLeft="10px"
             >
-              Complete Registration 
+              Complete Registration
             </Text>
-            <FormControl isRequired marginTop="20px" marginLeft="125px">
-              <Box display="flex" marginTop="20px">
-              <Box>
-                  <FormLabel>Your Home address</FormLabel>
-                  <Input
-                  name="HomeAddress"
-                    placeholder="Home address"
-                    htmlSize={20}
-                    width="auto"
-                    onChange={handleInputChange}
-                  />
+            <form onSubmit={handleSubmit}>
+              <FormControl isRequired marginTop="20px" marginLeft="125px">
+                <Box display="flex" marginTop="20px">
+                  <Box>
+                    <FormLabel>Your Home address</FormLabel>
+                    <Input
+                      name="homeAddress"
+                      placeholder="Home address"
+                      htmlSize={20}
+                      width="auto"
+                      onChange={handleInputChange}
+                    />
+                  </Box>
+                  <Box>
+                    <FormLabel>Guaranto's Name</FormLabel>
+                    <Input
+                      name="gurantorName"
+                      placeholder="Full name"
+                      htmlSize={20}
+                      width="auto"
+                      marginLeft="10px"
+                      onChange={handleInputChange}
+                    />
+                  </Box>
                 </Box>
-                <Box>
-                  <FormLabel>Guaranto's Name</FormLabel>
-                  <Input
-                  name="gurantorName"
-                    placeholder="Full name"
-                    htmlSize={20}
-                    width="auto"
-                    marginLeft="10px"
-                    onChange={handleInputChange}
-                  />
+                <Box display="flex" marginTop="30px">
+                  <Box>
+                    <FormLabel>Guarantor's email address</FormLabel>
+                    <Input
+                      name="guarantorEmail"
+                      placeholder="email address"
+                      htmlSize={20}
+                      width="auto"
+                      onChange={handleInputChange}
+                    />
+                  </Box>
+                  <Box>
+                    <FormLabel>Guarantor's Phone number</FormLabel>
+                    <Input
+                      name="guarantorPhone"
+                      placeholder="Phone number"
+                      htmlSize={20}
+                      width="auto"
+                      marginLeft="10px"
+                      onChange={handleInputChange}
+                    />
+                  </Box>
                 </Box>
-              </Box>
-              <Box display="flex" marginTop="30px">
-               
-                <Box>
-                  <FormLabel>Guarantor's email address</FormLabel>
-                  <Input
-                  name="guarantorEmail"
-                    placeholder="email address"
-                    htmlSize={20}
-                    width="auto"
+                <Box name="medicType" display="flex" marginTop="30px">
+                  <Select placeholder="Medic Type" w="205px">
+                    <option value="option1">Option 1</option>
+                    <option value="option2">Option 2</option>
+                    <option value="option3">Option 3</option>
                     onChange={handleInputChange}
-                  />
+                  </Select>
+                  <Box>
+                    <Select
+                      name="specialization"
+                      placeholder="Specialization"
+                      w="205px"
+                      marginLeft="10px"
+                    >
+                      <option value="option1">Option 1</option>
+                      <option value="option2">Option 2</option>
+                      <option value="option3">Option 3</option>
+                      onChange={handleInputChange}
+                    </Select>
+                  </Box>
                 </Box>
-                <Box>
-                  <FormLabel>Guarantor's Phone number</FormLabel>
-                  <Input name="guarantorPhone"
-                    placeholder="Phone number"
-                    htmlSize={20}
-                    width="auto"
-                    marginLeft="10px"
-                    onChange={handleInputChange}
-                  />
-                </Box>
-              </Box>
-              <Box name="medicType" display="flex" marginTop="30px">
-                <Select placeholder="Medic Type" w="205px">
-                  <option value="option1">Option 1</option>
-                  <option value="option2">Option 2</option>
-                  <option value="option3">Option 3</option>
-                  onChange={handleInputChange}
-                </Select>
-                <Box>
+                <Box display="flex" marginTop="30px">
                   <Select
-                  name="specialization"
-                    placeholder="Specialization"
+                    name="bankName"
+                    placeholder="Your Bank name"
                     w="205px"
-                    marginLeft="10px"
                   >
                     <option value="option1">Option 1</option>
                     <option value="option2">Option 2</option>
                     <option value="option3">Option 3</option>
                     onChange={handleInputChange}
                   </Select>
+                  <Box>
+                    <Input
+                    name="accountNumber"
+                      placeholder="Account number"
+                      htmlSize={20}
+                      width="auto"
+                      marginLeft="10px"
+                      onChange={handleInputChange}
+                    />
+                  </Box>
                 </Box>
-              </Box>
-              <Box display="flex" marginTop="30px">
-                <Select  name= "bankName" placeholder="Your Bank name" w="205px">
-                 
-                  <option value="option1">Option 1</option>
-                  <option value="option2">Option 2</option>
-                  <option value="option3">Option 3</option>
-                  onChange={handleInputChange}
-                </Select>
-                <Box>
+
+                <FormControl marginLeft="-5px">
+                  <Box>
+                    <FormLabel>NIN Number</FormLabel>
+                    <Input
+                      name="NIN"
+                      placeholder="NIN ID"
+                      htmlSize={20}
+                      width="auto"
+                    />
+                  </Box>
+                  <FormLabel marginLeft="10px" marginTop="30px">
+                    Upload CV
+                  </FormLabel>
                   <Input
-                    placeholder="Account number"
-                    htmlSize={20}
-                    width="auto"
-                    marginLeft="10px"
-
-                    onChange={handleInputChange}
+                    name="CVCopy"
+                    marginLeft="-123px"
+                    w="422px"
+                    type="file"
+                    onChange={handleFileChange}
                   />
-                </Box>
-              </Box>
 
-              <FormControl marginLeft="-5px">
-              <Box>
-                  <FormLabel>NIN ID</FormLabel>
-                  <Input 
-                  name="IDCopy"
-                  placeholder="NIN ID" 
-                  htmlSize={20} width="auto"
-                   />
-                </Box>
-                <FormLabel marginLeft="10px" marginTop="30px">
-                  Upload CV
-                </FormLabel>
-                <Input
-                name="CV"
-                  marginLeft="-123px"
-                  w="422px"
-                  type="file"
-                  onChange={handleFileChange}
-                />
+                  <FormLabel marginLeft="10px" marginTop="30px">
+                    Upload valid licence
+                  </FormLabel>
+                  <Input
+                    name="License"
+                    marginLeft="-123px"
+                    w="422px"
+                    type="file"
+                    onChange={handleFileChange}
+                  />
 
-                <FormLabel marginLeft="10px" marginTop="30px">
-                  Upload valid licence
-                </FormLabel>
-                <Input
-                name="License"
+                  <FormLabel marginLeft="10px" marginTop="30px">
+                    Upload headshort (only PNG and JPG files are accepted)
+                  </FormLabel>
+                  <Input
+                    name="image"
+                    marginLeft="-123px"
+                    w="422px"
+                    type="file"
+                    onChange={handleFileChange}
+                  />
+                </FormControl>
+                <Text
                   marginLeft="-123px"
-                  w="422px"
-                  type="file"
-                  onChange={handleFileChange}
-                />
-
-                <FormLabel marginLeft="10px" marginTop="30px">
-                  Upload headshort (only PNG and JPG files are accepted)
-                </FormLabel>
-                <Input
-                name="image"
+                  fontSize="18px"
+                  fontFamily="Montserrat"
+                  marginTop="20px"
+                  // fontWeight="bold"
+                >
+                  By clicking the “create account” button, you agree to our{" "}
+                  <br></br>
+                  <ChakraLink fontStyle="italic" href="/login" color="#A210C6">
+                    terms and conditions
+                  </ChakraLink>
+                </Text>
+                <Button
+                  type="submit"
+                  w="350px"
+                  bg="#A210C6"
+                  marginTop="20px"
+                  color="white"
+                  isLoading={loading}
+                  loadingText="Creating..."
+                >
+                  {loading ? "Loading..." : "Create Account"}
+                </Button>
+                <Text
                   marginLeft="-123px"
-                  w="422px"
-                  type="file"
-                  onChange={handleFileChange}
-                />
+                  fontSize="16px"
+                  fontFamily="Montserrat"
+                  marginTop="10px"
+                  fontWeight="bold"
+                >
+                  Already have an account?{" "}
+                  <ChakraLink fontStyle="italic" href="/login" color="#A210C6">
+                    Login
+                  </ChakraLink>
+                </Text>
               </FormControl>
-              <Text
-                marginLeft="-123px"
-                fontSize="18px"
-                fontFamily="Montserrat"
-                marginTop="20px"
-                // fontWeight="bold"
-              >
-                By clicking the “create account” button, you agree to our{" "}
-                <br></br>
-                <ChakraLink fontStyle="italic" href="/login" color="#A210C6">
-                  terms and conditions
-                </ChakraLink>
-              </Text>
-              <Button
-                marginLeft="-123px"
-                w="350px"
-                bg="#A210C6"
-                marginTop="20px"
-                color="white"
-              >
-                Create account
-              </Button>
-              <Text
-                marginLeft="-123px"
-                fontSize="16px"
-                fontFamily="Montserrat"
-                marginTop="10px"
-                fontWeight="bold"
-              >
-                Already have an account?{" "}
-                <ChakraLink fontStyle="italic" href="/login" color="#A210C6">
-                  Login
-                </ChakraLink>
-              </Text>
-            </FormControl>
+            </form>
           </Box>
         </Box>
       </Box>
