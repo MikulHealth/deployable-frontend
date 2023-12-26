@@ -50,14 +50,14 @@ const customTheme = extendTheme({
 
 const LandingPage = () => {
   const [formData, setFormData] = useState({
-    NIN: "",
+    nin: "",
     license: "",
     guarantorName: "",
     guarantorPhone: "",
     guarantorEmail: "",
     medicType: "",
     specialization: "",
-    CVCopy: "",
+    cvCopy: "",
     bankName: "",
     accountNumber: "",
     accountName: "",
@@ -285,7 +285,7 @@ const LandingPage = () => {
                   </Box>
                   <Box>
                     <Input
-                      name="NIN"
+                      name="nin"
                       placeholder="NIN ID"
                       htmlSize={20}
                       width="auto"
@@ -297,7 +297,7 @@ const LandingPage = () => {
                     Upload CV
                   </FormLabel>
                   <Input
-                    name="CVCopy"
+                    name="cvCopy"
                     marginLeft="-123px"
                     w="422px"
                     type="file"
@@ -310,7 +310,7 @@ const LandingPage = () => {
                     Upload valid licence
                   </FormLabel>
                   <Input
-                    name="License"
+                    name="license"
                     marginLeft="-123px"
                     w="422px"
                     type="file"

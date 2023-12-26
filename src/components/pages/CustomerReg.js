@@ -57,6 +57,7 @@ const LandingPage = () => {
     password: "",
     confirmPassword: "",
     gender: "",
+    address: "",
     image: "",
   });
 
@@ -203,6 +204,13 @@ const LandingPage = () => {
                   name="email"
                   placeholder="Email"
                   type="email"
+                  onChange={handleInputChange}
+                />
+                    <FormLabel marginTop="20px">Home address</FormLabel>
+                <Input
+                  name="address"
+                  placeholder="Home address"
+                  type="address"
                   onChange={handleInputChange}
                 />
                 <FormLabel marginTop="20px">Gender </FormLabel>

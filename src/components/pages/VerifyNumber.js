@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useToast } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Button,
@@ -50,6 +51,7 @@ const customTheme = extendTheme({
 
 const LandingPage = () => {
   const [input, setInput] = useState("");
+  const navigate = useNavigate();
   const [inputs, setInputs] = useState(["", "", "", "", "", ""]);
 
   const handleInputChange = (index, value) => {
@@ -111,6 +113,7 @@ const LandingPage = () => {
       });
       // localStorage.removeItem("phoneNumber");
       // Redirect or perform other actions based on the response
+      navigate("/");
     } catch (error) {
       console.error("Error verifying OTP:", error);
       console.log("Full error object:", error);
