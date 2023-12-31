@@ -69,6 +69,10 @@ const LandingPage = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [image, setPic] = useState();
+  const [cvCopy, setCv] = useState();
+  const [license, setLicense] = useState();
 
   const handleInputChange = (e) => {
     setFormData({
@@ -81,7 +85,9 @@ const LandingPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    await postImage(image, formData, setFormData);
+    await postCv(cvCopy, formData, setFormData);
+    await postLicense(license, formData, setFormData);
     setLoading(true);
     try {
       const response = await axios.post(
@@ -126,11 +132,137 @@ const LandingPage = () => {
     AOS.init();
   }, []);
 
-  const handleFileChange = (event) => {
-    // Access the selected file using event.target.files
-    const selectedFile = event.target.files[0];
-    console.log(selectedFile);
-    // Perform any additional logic or state updates as needed
+  const postLicense = async (license, formData, setFormData) => {
+  
+    if (license === undefined) {
+      // toast.error("Please select an image")
+      return;
+    }
+    console.log(license);
+    if (
+      license.type === "image/jpeg" ||
+      license.type === "image/png" ||
+      license.type === "application/pdf"
+    ) {
+      const data = new FormData();
+      data.append("file", license);
+      data.append("upload_preset", "license");
+      data.append("cloud_name", "dmfewrwla");
+      
+      try {
+        const response = await fetch(
+          "https://api.cloudinary.com/v1_1/dmfewrwla/image/upload",
+          {
+            method: "post",
+            body: data,
+          }
+        );
+
+        const imageData = await response.json();
+
+        setFormData({
+          ...formData,
+          license: imageData.url.toString(),
+        });
+
+        console.log(imageData.url.toString());
+      
+      } catch (err) {
+        console.log(err);
+      
+      }
+    } else {
+      // toast.error("Please select an image");
+  
+      return;
+    }
+  };
+
+  const postCv = async (cvCopy, formData, setFormData) => {
+  
+    if (cvCopy === undefined) {
+      // toast.error("Please select an image")
+      return;
+    }
+    console.log(cvCopy);
+    if (
+      cvCopy.type === "image/jpeg" ||
+      cvCopy.type === "image/png" ||
+      cvCopy.type === "application/pdf"
+    ) {
+      const data = new FormData();
+      data.append("file", cvCopy);
+      data.append("upload_preset", "medicCv");
+      data.append("cloud_name", "dmfewrwla");
+      // setLoading(true);
+      try {
+        const response = await fetch(
+          "https://api.cloudinary.com/v1_1/dmfewrwla/image/upload",
+          {
+            method: "post",
+            body: data,
+          }
+        );
+
+        const imageData = await response.json();
+
+        setFormData({
+          ...formData,
+          cvCopy: imageData.url.toString(),
+        });
+        
+        console.log(imageData.url.toString());
+    
+      } catch (err) {
+        console.log(err);
+      
+      }
+    } else {
+      // toast.error("Please select an image");
+    
+      return;
+    }
+  };
+
+  const postImage = async (image, formData, setFormData) => {
+    
+    if (image === undefined) {
+      // toast.error("Please select an image")
+      return;
+    }
+    console.log(image);
+    if (image.type === "image/jpeg" || image.type === "image/png") {
+      const data = new FormData();
+      data.append("file", image);
+      data.append("upload_preset", "profileImage");
+      data.append("cloud_name", "dmfewrwla");
+
+      try {
+        const response = await fetch(
+          "https://api.cloudinary.com/v1_1/dmfewrwla/image/upload",
+          {
+            method: "post",
+            body: data,
+          }
+        );
+
+        const imageData = await response.json();
+
+        setFormData({
+          ...formData,
+          image: imageData.url.toString(),
+        });
+
+        console.log(imageData.url.toString());
+      } catch (err) {
+        console.log(err);
+     
+      }
+    } else {
+      // toast.error("Please select an image");
+     
+      return;
+    }
   };
 
   return (
@@ -230,9 +362,9 @@ const LandingPage = () => {
                 </Box>
                 <Box name="medicType" display="flex" marginTop="30px">
                   <Select placeholder="Medic Type" w="205px">
-                    <option value="option1">Option 1</option>
-                    <option value="option2">Option 2</option>
-                    <option value="option3">Option 3</option>
+                    <option value="option1">Registered Nurse</option>
+                    <option value="option2">Physiotherapist</option>
+                    <option value="option3">Assistant Nurse</option>
                     onChange={handleInputChange}
                   </Select>
                   <Box>
@@ -242,22 +374,23 @@ const LandingPage = () => {
                       w="205px"
                       marginLeft="10px"
                     >
-                      <option value="option1">Option 1</option>
-                      <option value="option2">Option 2</option>
-                      <option value="option3">Option 3</option>
+                      <option value="option1">Midwife</option>
+                      <option value="option2">Accident and Emergency</option>
+                      <option value="option3">Other</option>
                       onChange={handleInputChange}
                     </Select>
                   </Box>
                 </Box>
+                
                 <Box display="flex" marginTop="30px">
                   <Select
                     name="bankName"
                     placeholder="Your Bank name"
                     w="205px"
                   >
-                    <option value="option1">Option 1</option>
-                    <option value="option2">Option 2</option>
-                    <option value="option3">Option 3</option>
+                    <option value="option1">Access Bank</option>
+                    <option value="option2">Bankly</option>
+                    <option value="option3">Zeneith Bank</option>
                     onChange={handleInputChange}
                   </Select>
                   <Box>
@@ -271,15 +404,13 @@ const LandingPage = () => {
                     />
                   </Box>
                 </Box>
-
                 <Box display="flex" marginTop="30px">
-                  <Box >
+                  <Box>
                     <Input
                       name="accountName"
                       placeholder="Account Name"
                       htmlSize={20}
                       width="auto"
-                     
                       onChange={handleInputChange}
                     />
                   </Box>
@@ -292,42 +423,49 @@ const LandingPage = () => {
                       marginLeft="10px"
                     />
                   </Box>
-                  </Box>
-                  <FormLabel marginLeft="10px" marginTop="30px">
-                    Upload CV
-                  </FormLabel>
-                  <Input
-                    name="cvCopy"
-                    marginLeft="-123px"
-                    w="422px"
-                    type="file"
-                    onChange={handleFileChange}
-                  />
-               
-
-                {/* <FormControl marginLeft="-5px"> */}
-                  <FormLabel marginLeft="10px" marginTop="30px">
-                    Upload valid licence
-                  </FormLabel>
-                  <Input
-                    name="license"
-                    marginLeft="-123px"
-                    w="422px"
-                    type="file"
-                    onChange={handleFileChange}
-                  />
-
-                  <FormLabel marginLeft="10px" marginTop="30px">
-                    Upload headshort (only PNG and JPG files are accepted)
-                  </FormLabel>
-                  <Input
-                    name="image"
-                    marginLeft="-123px"
-                    w="422px"
-                    type="file"
-                    onChange={handleFileChange}
-                  />
-                {/* </FormControl> */}
+                </Box>
+                <FormLabel marginLeft="10px" marginTop="30px">
+                  Upload CV (only PNG, JPG and PDF files are accepted)
+                </FormLabel>
+                <Input
+                  name="cvCopy"
+                  marginLeft="-123px"
+                  w="422px"
+                  type="file"
+                  onChange={(e) => {
+                    postCv(e.target.files[0], formData, setFormData);
+                  }}
+                />
+                {/* {uploading && <p>Uploading CV...</p>} */}
+                <FormLabel marginLeft="10px" marginTop="30px">
+                  Upload valid licence (only PNG, JPG and PDF files are accepted)
+                </FormLabel>
+                <Input
+                  name="license"
+                  marginLeft="-123px"
+                  w="422px"
+                  type="file"
+                  onChange={(e) => {
+                    postLicense(e.target.files[0], formData, setFormData);
+                  }}
+                  
+                />
+                {/* {uploading && <p>Uploading license...</p>} */}
+                <FormLabel marginLeft="10px" marginTop="30px">
+                  Upload headshort (only PNG and JPG files are accepted)
+                </FormLabel>
+                <Input
+                  name="image"
+                  marginLeft="-123px"
+                  w="422px"
+                  type="file"
+                  accept="image/*"
+                  placeholder="Image"
+                  onChange={(e) => {
+                    postImage(e.target.files[0], formData, setFormData);
+                  }}
+                />
+                {/* {uploading && <p>Uploading image...</p>} */}
                 <Text
                   marginLeft="-123px"
                   fontSize="18px"

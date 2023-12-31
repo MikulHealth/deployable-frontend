@@ -454,7 +454,7 @@ const LandingPage = () => {
               data-aos="fade-left"
               data-aos-duration="10000"
             >
-              <Box marginLeft="80px">
+              <Box    padding="8px" border={`1px solid #A210C6`} marginLeft="80px">
                 <Image src={Michael} alt="Logo" w="462px" h="422px" />
               </Box>
               <Box h="5" />

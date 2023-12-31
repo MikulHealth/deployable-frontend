@@ -63,6 +63,7 @@ const LandingPage = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
+  
 
   const handleInputChange = (e) => {
     setFormData({
@@ -122,7 +123,7 @@ const LandingPage = () => {
     
       toast({
         title: "Registration Failed",
-        description: error.response.data,
+        description: error.response.data.message,
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -136,6 +137,8 @@ const LandingPage = () => {
   useEffect(() => {
     AOS.init();
   }, []);
+
+  
 
 
   return (
