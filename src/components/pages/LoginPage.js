@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import {
   Box,
@@ -28,6 +29,7 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -55,10 +57,70 @@ const customTheme = extendTheme({
 
 const LandingPage = () => {
   const [input, setInput] = useState("");
+  const toast = useToast();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [phoneInput, setPhoneInput] = useState("");
+  const [passwordInput, setPasswordInput] = useState("");
 
-  const handleInputChange = (e) => setInput(e.target.value);
-
+  const handlePhoneInputChange = (e) => setPhoneInput(e.target.value);
+  const handlePasswordInputChange = (e) => setPasswordInput(e.target.value);
   const isError = input === "";
+
+  const handleLogin = async () => {
+    setLoading(true);
+    try {
+      const apiUrl = "http://localhost:8080/login";
+      const headers = {
+        "Content-Type": "application/json",
+      };
+
+      const requestBody = {
+        phoneNumber: phoneInput,
+        password: passwordInput,
+      };
+
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(requestBody),
+      });
+
+      if (response.ok) {
+        const responseData = await response.json(); // Parse JSON response
+        console.log("Login successful:", responseData.message);
+
+        toast({
+          title: "Login successful",
+          description: responseData.message,
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
+
+        setLoading(false);
+        setTimeout(() => {
+          navigate("/");
+        }, 3000);
+      } else {
+        const errorData = await response.json(); // Parse JSON error response
+        console.error("Login failed:", errorData.message);
+
+        toast({
+          title: "Login failed",
+          description: errorData.message,
+          status: "failed",
+          duration: 5000,
+          isClosable: true,
+        });
+
+        setLoading(false);
+      }
+    } catch (error) {
+      console.error("Error during login:", error);
+      setLoading(false);
+    }
+  };
 
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
@@ -120,12 +182,17 @@ const LandingPage = () => {
             </Text>
             <FormControl isRequired marginTop="20px" marginLeft="100px">
               {/* <FormLabel marginTop="20px">Email address</FormLabel> */}
-              <Input placeholder="Enter Email" />
+              <Input
+                placeholder="Phone number"
+                value={phoneInput}
+                onChange={handlePhoneInputChange}
+              />
               <InputGroup size="md" marginTop="30px">
                 <Input
                   pr="4.5rem"
                   type={show ? "text" : "password"}
                   placeholder="Enter password"
+                  onChange={handlePasswordInputChange}
                 />
                 <InputRightElement width="4.5rem">
                   <Button h="1.75rem" size="sm" onClick={handleClick}>
@@ -144,11 +211,19 @@ const LandingPage = () => {
                 </ChakraLink>
               </Box>
 
-              <ChakraLink href="/login">
-                <Button w="350px" bg="#A210C6" marginTop="20px" color="white">
-                  Login
-                </Button>
-              </ChakraLink>
+              {/* <ChakraLink href="/login"> */}
+              <Button
+                isLoading={loading}
+                loadingText="Loading..."
+                onClick={handleLogin}
+                w="350px"
+                bg="#A210C6"
+                marginTop="20px"
+                color="white"
+              >
+                {loading ? "Loading..." : "Login"}
+              </Button>
+              {/* </ChakraLink> */}
               <Box marginTop="30px">
                 <Text>or</Text>
                 <Box
@@ -169,9 +244,10 @@ const LandingPage = () => {
                     h="20px"
                     marginLeft="25px"
                     marginTop="2px"
-                    
                   />
-                  <Text marginTop="2px" marginLeft="5px">Continue with Google</Text>
+                  <Text marginTop="2px" marginLeft="5px">
+                    Continue with Google
+                  </Text>
                 </Box>
               </Box>
 
