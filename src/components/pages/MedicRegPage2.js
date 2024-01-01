@@ -31,6 +31,7 @@ import Nurse from "../../assets/Nurse.svg";
 import Shade from "../../assets/Shade.svg";
 import logo from "../../assets/Whitelogo.png";
 import "../../styles/pages/LandingPage.css";
+import LoadingSpinner from "../../utils/Spiner";
 
 const customTheme = extendTheme({
   components: {
@@ -73,6 +74,9 @@ const LandingPage = () => {
   const [image, setPic] = useState();
   const [cvCopy, setCv] = useState();
   const [license, setLicense] = useState();
+  const [cvLoading, setCvLoading] = useState(false);
+  const [licenseLoading, setLicenseLoading] = useState(false);
+  const [imageLoading, setImageLoading] = useState(false);
 
   const handleInputChange = (e) => {
     setFormData({
@@ -133,7 +137,7 @@ const LandingPage = () => {
   }, []);
 
   const postLicense = async (license, formData, setFormData) => {
-  
+    setLicenseLoading(true);
     if (license === undefined) {
       // toast.error("Please select an image")
       return;
@@ -148,7 +152,7 @@ const LandingPage = () => {
       data.append("file", license);
       data.append("upload_preset", "license");
       data.append("cloud_name", "dmfewrwla");
-      
+
       try {
         const response = await fetch(
           "https://api.cloudinary.com/v1_1/dmfewrwla/image/upload",
@@ -164,22 +168,21 @@ const LandingPage = () => {
           ...formData,
           license: imageData.url.toString(),
         });
-
+        setLicenseLoading(false);
         console.log(imageData.url.toString());
-      
       } catch (err) {
         console.log(err);
-      
+        setLicenseLoading(false);
       }
     } else {
       // toast.error("Please select an image");
-  
+
       return;
     }
   };
 
   const postCv = async (cvCopy, formData, setFormData) => {
-  
+    setCvLoading(true);
     if (cvCopy === undefined) {
       // toast.error("Please select an image")
       return;
@@ -210,22 +213,21 @@ const LandingPage = () => {
           ...formData,
           cvCopy: imageData.url.toString(),
         });
-        
+        setCvLoading(false);
         console.log(imageData.url.toString());
-    
       } catch (err) {
         console.log(err);
-      
+        setCvLoading(false);
       }
     } else {
       // toast.error("Please select an image");
-    
+
       return;
     }
   };
 
   const postImage = async (image, formData, setFormData) => {
-    
+    setImageLoading(true);
     if (image === undefined) {
       // toast.error("Please select an image")
       return;
@@ -252,15 +254,15 @@ const LandingPage = () => {
           ...formData,
           image: imageData.url.toString(),
         });
-
+        setImageLoading(false);
         console.log(imageData.url.toString());
       } catch (err) {
         console.log(err);
-     
+        setImageLoading(false);
       }
     } else {
       // toast.error("Please select an image");
-     
+
       return;
     }
   };
@@ -361,11 +363,15 @@ const LandingPage = () => {
                   </Box>
                 </Box>
                 <Box name="medicType" display="flex" marginTop="30px">
-                  <Select placeholder="Medic Type" w="205px">
-                    <option value="option1">Registered Nurse</option>
-                    <option value="option2">Physiotherapist</option>
-                    <option value="option3">Assistant Nurse</option>
+                  <Select
+                    name="medicType"
+                    placeholder="Medic Type"
+                    w="205px"
                     onChange={handleInputChange}
+                  >
+                    <option value="Registered Nurse">Registered Nurse</option>
+                    <option value="Physiotherapist">Physiotherapist</option>
+                    <option value="Assistant Nurse">Assistant Nurse</option>
                   </Select>
                   <Box>
                     <Select
@@ -373,25 +379,28 @@ const LandingPage = () => {
                       placeholder="Specialization"
                       w="205px"
                       marginLeft="10px"
-                    >
-                      <option value="option1">Midwife</option>
-                      <option value="option2">Accident and Emergency</option>
-                      <option value="option3">Other</option>
                       onChange={handleInputChange}
+                    >
+                      <option value="Midwife">Midwife</option>
+                      <option value="Accident and Emergency">
+                        Accident and Emergency
+                      </option>
+                      <option value="General Nurse">General Nurse</option>
+                      <option value="Other">Other</option>
                     </Select>
                   </Box>
                 </Box>
-                
+
                 <Box display="flex" marginTop="30px">
                   <Select
                     name="bankName"
                     placeholder="Your Bank name"
                     w="205px"
-                  >
-                    <option value="option1">Access Bank</option>
-                    <option value="option2">Bankly</option>
-                    <option value="option3">Zeneith Bank</option>
                     onChange={handleInputChange}
+                  >
+                    <option value="Access Bank">Access Bank</option>
+                    <option value="Bankly">Bankly</option>
+                    <option value="Zeneith Bank">Zeneith Bank</option>
                   </Select>
                   <Box>
                     <Input
@@ -421,6 +430,7 @@ const LandingPage = () => {
                       htmlSize={20}
                       width="auto"
                       marginLeft="10px"
+                      onChange={handleInputChange}
                     />
                   </Box>
                 </Box>
@@ -436,9 +446,10 @@ const LandingPage = () => {
                     postCv(e.target.files[0], formData, setFormData);
                   }}
                 />
-                {/* {uploading && <p>Uploading CV...</p>} */}
+                {cvLoading && <LoadingSpinner size={20} />}
                 <FormLabel marginLeft="10px" marginTop="30px">
-                  Upload valid licence (only PNG, JPG and PDF files are accepted)
+                  Upload valid licence (only PNG, JPG and PDF files are
+                  accepted)
                 </FormLabel>
                 <Input
                   name="license"
@@ -448,9 +459,8 @@ const LandingPage = () => {
                   onChange={(e) => {
                     postLicense(e.target.files[0], formData, setFormData);
                   }}
-                  
                 />
-                {/* {uploading && <p>Uploading license...</p>} */}
+                {licenseLoading && <LoadingSpinner size={20} />}
                 <FormLabel marginLeft="10px" marginTop="30px">
                   Upload headshort (only PNG and JPG files are accepted)
                 </FormLabel>
@@ -465,7 +475,8 @@ const LandingPage = () => {
                     postImage(e.target.files[0], formData, setFormData);
                   }}
                 />
-                {/* {uploading && <p>Uploading image...</p>} */}
+                {imageLoading && <LoadingSpinner size={20} />}
+
                 <Text
                   marginLeft="-123px"
                   fontSize="18px"

@@ -63,7 +63,6 @@ const LandingPage = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
-  
 
   const handleInputChange = (e) => {
     setFormData({
@@ -99,11 +98,10 @@ const LandingPage = () => {
         isClosable: true,
       });
 
-
       const verifyNumberResponse = await axios.post(
         "http://localhost:8080/api/v1/sms/verify-number",
         {
-          phoneNumber: formData.phoneNumber, 
+          phoneNumber: formData.phoneNumber,
         },
         {
           headers: {
@@ -120,7 +118,6 @@ const LandingPage = () => {
       }, 3000);
       // Redirect or perform other actions based on the response
     } catch (error) {
-    
       toast({
         title: "Registration Failed",
         description: error.response.data.message,
@@ -138,9 +135,6 @@ const LandingPage = () => {
     AOS.init();
   }, []);
 
-  
-
-
   return (
     <ChakraProvider theme={customTheme}>
       <Box overflowY="scroll" height="100vh">
@@ -156,7 +150,7 @@ const LandingPage = () => {
           <HStack spacing={10}>
             <Box w="5px" />
             <a href="/">
-            <Image src={logo} alt="Logo" w="100px" h="30px" />
+              <Image src={logo} alt="Logo" w="100px" h="30px" />
             </a>
             <Spacer />
             <Spacer />
@@ -189,8 +183,7 @@ const LandingPage = () => {
               Create your account
             </Text>
             <form onSubmit={handleSubmit}>
-       
-            <FormControl isRequired marginTop="20px" marginLeft="100px">
+              <FormControl isRequired marginTop="20px" marginLeft="100px">
                 <FormLabel>First name</FormLabel>
                 <Input
                   name="firstName"
@@ -211,10 +204,14 @@ const LandingPage = () => {
                   onChange={handleInputChange}
                 />
                 <FormLabel marginTop="20px">Gender </FormLabel>
-                <Select placeholder="Select your gender" w="205px">
-                  <option value="option1">Male</option>
-                  <option value="option2">Female</option>
+                <Select
+                  name="gender"
+                  placeholder="Select your gender"
+                  w="205px"
                   onChange={handleInputChange}
+                >
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
                 </Select>
                 <InputGroup marginTop="20px">
                   <InputLeftAddon children="+234" />
@@ -255,17 +252,17 @@ const LandingPage = () => {
                   </InputRightElement>
                 </InputGroup>
                 {/* <ChakraLink href="/join-complete"> */}
-                  <Button
-                    type="submit"
-                    w="350px"
-                    bg="#A210C6"
-                    marginTop="20px"
-                    color="white"
-                    isLoading={loading}
-                    loadingText="Registering..."
-                  >
-                    {loading ? "Loading..." : "Submit"}
-                  </Button>
+                <Button
+                  type="submit"
+                  w="350px"
+                  bg="#A210C6"
+                  marginTop="20px"
+                  color="white"
+                  isLoading={loading}
+                  loadingText="Registering..."
+                >
+                  {loading ? "Loading..." : "Submit"}
+                </Button>
                 {/* </ChakraLink> */}
 
                 <Text fontSize="16px" fontFamily="Montserrat" marginTop="10px">
@@ -275,7 +272,6 @@ const LandingPage = () => {
                   </ChakraLink>
                 </Text>
               </FormControl>
-                     
             </form>
           </Box>
         </Box>
