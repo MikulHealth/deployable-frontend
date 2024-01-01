@@ -38,7 +38,7 @@ import Persona from "../../assets/Pesona.svg";
 import Safety from "../../assets/Safety.svg";
 import Quality from "../../assets/Quality.svg";
 import Flexible from "../../assets/Flexible.svg";
-
+import Sylvia from "../../assets/Sylvia.svg";
 import Michael from "../../assets/Michael.svg";
 import Jim from "../../assets/Jim.svg";
 import Hafsie from "../../assets/Hafsie.svg";
@@ -81,7 +81,7 @@ const LandingPage = () => {
           <HStack spacing={10}>
             <Box w="5px" />
             <a href="/">
-            <Image src={logo} alt="Logo" w="100px" h="30px" />
+              <Image src={logo} alt="Logo" w="100px" h="30px" />
             </a>
             <Spacer />
             <Spacer />
@@ -91,7 +91,12 @@ const LandingPage = () => {
             <Spacer />
             <Spacer />
             <Link to="/">Home</Link>
-            <Link to="/about"  style={{ textDecoration: 'underline', color: 'white' }}>About</Link>
+            <Link
+              to="/about"
+              style={{ textDecoration: "underline", color: "white" }}
+            >
+              About
+            </Link>
             <Link to="/contact">Contact</Link>
             <Spacer />
             <Button onClick={onOpen} bg="white">
@@ -104,18 +109,14 @@ const LandingPage = () => {
         <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent bg="gray">
-            <ChakraLink
-              fontStyle="italic"
-              href="/login"
-              color="#A210C6"
-            >
+            <ChakraLink fontStyle="italic" href="/login" color="#A210C6">
               <Button
                 marginTop="30px"
                 marginLeft="80px"
                 bg="gray"
                 color="black"
                 w="300px"
-                border="1px solid white" 
+                border="1px solid white"
               >
                 Login
               </Button>
@@ -126,24 +127,24 @@ const LandingPage = () => {
               color="#A210C6"
             >
               <Button
-                 marginTop="30px"
-                 marginLeft="80px"
-                 bg="gray"
-                 color="black"
-                 w="300px"
-                 border="1px solid white" 
+                marginTop="30px"
+                marginLeft="80px"
+                bg="gray"
+                color="black"
+                w="300px"
+                border="1px solid white"
               >
                 Sign up
               </Button>
             </ChakraLink>
             <ChakraLink fontStyle="italic" href="/join" color="#A210C6">
               <Button
-                 marginTop="30px"
-                 marginLeft="80px"
-                 bg="gray"
-                 color="black"
-                 w="300px"
-                 border="1px solid white" 
+                marginTop="30px"
+                marginLeft="80px"
+                bg="gray"
+                color="black"
+                w="300px"
+                border="1px solid white"
               >
                 Sign up as medic
               </Button>
@@ -454,9 +455,15 @@ const LandingPage = () => {
               data-aos="fade-left"
               data-aos-duration="10000"
             >
-              <Box    padding="8px" border={`1px solid #A210C6`} marginLeft="80px">
+              <Box
+                padding="25px"
+                marginLeft="80px"
+                boxShadow="0px 4px 8px rgba(162, 16, 198, 0.5)"
+                borderRadius="10"
+              >
                 <Image src={Michael} alt="Logo" w="462px" h="422px" />
               </Box>
+
               <Box h="5" />
             </Box>
             <Box w="10" />
@@ -542,13 +549,24 @@ const LandingPage = () => {
             data-aos="fade-right"
             data-aos-duration="10000"
           >
-            <Box>
-              <Image src={Jim} alt="Logo" w="462px" h="422px" />
+            <Box
+              padding="25px"
+              marginLeft="70px"
+              boxShadow="0px 4px 8px rgba(162, 16, 198, 0.5)"
+              borderRadius="10"
+            >
+              <Image
+                src={Jim}
+                alt="Logo"
+                w="462px"
+                h="422px"
+                marginLeft="10px"
+              />
             </Box>
           </Box>
         </Box>
 
-        <Box display="flex" marginTop="150px">
+        <Box display="flex" marginTop="200px">
           <Box
             justifyContent="center"
             alignItems="center"
@@ -558,7 +576,12 @@ const LandingPage = () => {
             data-aos="fade-left"
             data-aos-duration="10000"
           >
-            <Box marginLeft="150px">
+            <Box
+              marginLeft="150px"
+              padding="25px"
+              boxShadow="0px 4px 8px rgba(162, 16, 198, 0.5)"
+              borderRadius="10"
+            >
               <Image src={Hafsie} alt="Logo" w="462px" h="422px" />
             </Box>
           </Box>
@@ -596,7 +619,74 @@ const LandingPage = () => {
             </Text>
           </Box>
         </Box>
-        <Box bg="white">
+
+        <Box display="flex" marginLeft="100px">
+          <Box
+            justifyContent="center"
+            alignItems="center"
+            padding="20px"
+            borderRadius="20px"
+            flexDirection="row"
+            marginTop="80px"
+            data-aos="fade-left"
+            data-aos-duration="10000"
+            marginLeft="-5px"
+          >
+            <Text
+              fontSize="xl"
+              fontWeight="bold"
+              textAlign="center"
+              marginLeft="5px"
+            >
+              Dr. Sylvia Onoabhagbe. Product Designer
+            </Text>
+            <Text
+              textAlign="center"
+              marginTop="10px"
+              fontSize="22px"
+              fontFamily="Montserrat"
+            >
+              She holds a Doctor of Optometry (O. D) degree, <br></br>
+              from the University of Benin, Edo state, Nigeria. <br></br>
+              She spent the first few years of her career<br></br>
+              working as a clinical optometrist, and has a lot of patient care
+              experience. <br></br>
+              She is also a trained product designer and is very<br></br>
+              passionate about building healthcare solutions for everyone.
+              <br></br>
+            </Text>
+          </Box>
+
+          <Box
+            justifyContent="center"
+            alignItems="center"
+            padding="20px"
+            borderRadius="20px"
+            flexDirection="row"
+            w="656px"
+            h="275px"
+            marginLeft="30px"
+            data-aos="fade-right"
+            data-aos-duration="10000"
+          >
+            <Box
+              padding="25px"
+              marginLeft="2px"
+              boxShadow="0px 4px 8px rgba(162, 16, 198, 0.5)"
+              borderRadius="10"
+            >
+              <Image
+                src={Sylvia}
+                alt="Logo"
+                w="462px"
+                h="422px"
+                marginLeft="10px"
+              />
+            </Box>
+          </Box>
+        </Box>
+
+        <Box bg="white" marginTop="200px">
           <Box>
             <Text
               fontSize="48px"
@@ -801,7 +891,7 @@ const LandingPage = () => {
                 Contact us
               </Text>
             </a>
-          
+
             <a href="https://example.com">
               <Text
                 fontFamily="Montserrat"
