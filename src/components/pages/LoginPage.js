@@ -89,7 +89,7 @@ const LandingPage = () => {
       if (response.ok) {
         const responseData = await response.json(); // Parse JSON response
         console.log("Login successful:", responseData.message);
-
+        localStorage.setItem("token", responseData.access_token); // Corrected line
         toast({
           title: "Login successful",
           description: responseData.message,
@@ -97,10 +97,10 @@ const LandingPage = () => {
           duration: 5000,
           isClosable: true,
         });
-
+      
         setLoading(false);
         setTimeout(() => {
-          navigate("/");
+          window.location.href = "/client-dashboard";
         }, 3000);
       } else {
         const errorData = await response.json(); // Parse JSON error response
@@ -117,8 +117,15 @@ const LandingPage = () => {
         setLoading(false);
       }
     } catch (error) {
-      console.error("Error during login:", error);
       setLoading(false);
+      alert("Network Error, kindly check your internet connection");
+      // toast({
+      //   title: "Network Error",
+      //   description: "Kindly check your internet connection",
+      //   status: "failed",
+      //   duration: 5000,
+      //   isClosable: true,
+      // });
     }
   };
 

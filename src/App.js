@@ -13,6 +13,8 @@ import CustomerReg from './components/pages/CustomerReg'
 import Login from './components/pages/LoginPage'
 import ForgotPassword from './components/pages/ForgotPassowrd'
 import ResetPassword from './components/pages/ResetPassword'
+import ClientDash from './components/pages/ClientDashboad';
+
 function App() {
   return (
     <div className="App">
@@ -31,6 +33,7 @@ function App() {
         <Route path="/login" element={<Login />}></Route>
         <Route path="/forgot-password" element={<ForgotPassword />}></Route>
         <Route path="/reset-password" element={<ResetPassword />}></Route>
+        <Route path="/client-dashboard" element={<ClientDash />}></Route>
         </Routes>
         </BrowserRouter>
         
