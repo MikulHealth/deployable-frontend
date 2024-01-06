@@ -100,10 +100,10 @@ const LandingPage = () => {
       
         setLoading(false);
         setTimeout(() => {
-          window.location.href = "/client-dashboard";
+          navigate("/dashboard");
         }, 3000);
       } else {
-        const errorData = await response.json(); // Parse JSON error response
+        const errorData = await response.json(); 
         console.error("Login failed:", errorData.message);
 
         toast({

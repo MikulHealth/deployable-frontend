@@ -14,6 +14,7 @@ import Login from './components/pages/LoginPage'
 import ForgotPassword from './components/pages/ForgotPassowrd'
 import ResetPassword from './components/pages/ResetPassword'
 import ClientDash from './components/pages/ClientDashboad';
+import UserDetailsModal from './components/sections/UserDetails';
 
 function App() {
   return (
@@ -33,7 +34,8 @@ function App() {
         <Route path="/login" element={<Login />}></Route>
         <Route path="/forgot-password" element={<ForgotPassword />}></Route>
         <Route path="/reset-password" element={<ResetPassword />}></Route>
-        <Route path="/client-dashboard" element={<ClientDash />}></Route>
+        <Route path="/dashboard" element={<ClientDash />}></Route>
+        <Route path="/details" element={<UserDetailsModal/>}></Route>
         </Routes>
         </BrowserRouter>
         
