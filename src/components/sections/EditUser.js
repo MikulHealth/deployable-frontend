@@ -167,18 +167,20 @@ const EditProfileModal = ({ isOpen, onClose }) => {
           <Box display="flex">
             <Button
               marginLeft="50px"
-              colorScheme="teal"
+              bg="gray"
               onClick={handleBack}
               marginBottom="4"
+              color="white"
             >
               Cancel
             </Button>
 
             <Button
-              marginLeft="80px"
-              colorScheme="teal"
+              marginLeft="140px"
+              bg="#A210C6"
               onClick={handleSubmit}
               marginBottom="4"
+              color="white"
             >
               Save Changes
             </Button>

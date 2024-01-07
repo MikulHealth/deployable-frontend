@@ -73,7 +73,7 @@ const UserDetailsModal = ({ isOpen, onClose }) => {
               <Image
                 src={user?.image || defaultImage}
                 alt="User Image"
-                borderRadius="full"
+                borderRadius="8px"
                 h="45vh"
                 w="20vw"
               />
@@ -83,7 +83,7 @@ const UserDetailsModal = ({ isOpen, onClose }) => {
             </VStack>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="teal" onClick={handleEditClick}>
+            <Button bg="#A210C6" color="white" onClick={handleEditClick}>
               Edit Profile
             </Button>
           </ModalFooter>
