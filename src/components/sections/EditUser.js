@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { GetCurrentUser } from "../../apiCalls/UserApis";
+import { GetCurrentUser, UpdateCustomer } from "../../apiCalls/UserApis";
 import {
   Modal,
   ModalOverlay,
@@ -14,19 +14,27 @@ import {
   Image,
   Box,
   Text,
+  FormControl,
+  FormLabel,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import UserDeatails from "./UserDetails";
+import LoadingSpinner from "../../utils/Spiner";
 
 const EditProfileModal = ({ isOpen, onClose }) => {
+  const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);
+  const [image, setPic] = useState();
+  const [imageLoading, setImageLoading] = useState(false);
   const [editedUser, setEditedUser] = useState({
     firstName: "",
     lastName: "",
     address: "",
+    email: "",
     phoneNumber: "",
     image: "",
   });
+  const toast = useToast();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,12 +60,12 @@ const EditProfileModal = ({ isOpen, onClose }) => {
     fetchData();
   }, []);
 
-
   useEffect(() => {
     setEditedUser({
       firstName: user?.firstName || "",
       lastName: user?.lastName || "",
       address: user?.address || "",
+      email: user?.email || "",
       phoneNumber: user?.phoneNumber || "",
       image: user?.image || "",
     });
@@ -73,17 +81,44 @@ const EditProfileModal = ({ isOpen, onClose }) => {
 
   const navigate = useNavigate();
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setEditedUser((prevUser) => ({
-          ...prevUser,
-          image: reader.result,
-        }));
-      };
-      reader.readAsDataURL(file);
+  const handleImageChange = async (image, editedUser, setEditedUser) => {
+    setImageLoading(true);
+    if (image === undefined) {
+      // toast.error("Please select an image")
+      return;
+    }
+    console.log(image);
+    if (image.type === "image/jpeg" || image.type === "image/png") {
+      const data = new FormData();
+      data.append("file", image);
+      data.append("upload_preset", "profileImage");
+      data.append("cloud_name", "dmfewrwla");
+
+      try {
+        const response = await fetch(
+          "https://api.cloudinary.com/v1_1/dmfewrwla/image/upload",
+          {
+            method: "post",
+            body: data,
+          }
+        );
+
+        const imageData = await response.json();
+
+        setEditedUser({
+          ...editedUser,
+          image: imageData.url.toString(),
+        });
+        setImageLoading(false);
+        console.log(imageData.url.toString());
+      } catch (err) {
+        console.log(err);
+        setImageLoading(false);
+      }
+    } else {
+      // toast.error("Please select an image");
+
+      return;
     }
   };
 
@@ -98,18 +133,28 @@ const EditProfileModal = ({ isOpen, onClose }) => {
     setUserModalOpen(false);
   };
 
-  const handleSubmit = () => {
-    // Perform logic to send updated details to the server
-    console.log("Updated user details:", editedUser);
-    // You can make an API call here to update the user details
-
-    // Close the modal after updating
+  const handleBack = () => {
     onClose();
   };
 
-  const handleBack = () => {
-    // navigate("/details");
-    onClose();
+  const handleSubmit = async () => {
+    setLoading(true); // Set loading to true before calling UpdateCustomer
+    try {
+      await handleImageChange(image, editedUser, setEditedUser);
+      const response = await UpdateCustomer(editedUser, toast, setLoading);
+
+      if (response.success) {
+        setLoading(false); // Set loading to false after UpdateCustomer is complete
+        console.log("User details updated successfully:", response.data);
+        navigate("/dashboard");
+        window.location.reload();
+        // onClose();
+      } else {
+        console.error("Failed to update user details:", response.error);
+      }
+    } catch (error) {
+      console.error("Failed to update user details:", error);
+    }
   };
 
   return (
@@ -130,14 +175,25 @@ const EditProfileModal = ({ isOpen, onClose }) => {
                 borderRadius="8px"
                 marginBottom="-2"
               />
-              <Text>Kindly make the changes below</Text>
+              <FormLabel marginLeft="10px" marginTop="30px">
+                Update picture (only PNG and JPG files are accepted)
+              </FormLabel>
               <Input
-                type="file"
                 name="image"
-                onChange={handleImageChange}
+                marginLeft="-6px"
+                w="398px"
+                type="file"
                 accept="image/*"
+                placeholder="Image"
+                onChange={(e) => {
+                  handleImageChange(
+                    e.target.files[0],
+                    editedUser,
+                    setEditedUser
+                  );
+                }}
               />
-              {/* Other Input Fields */}
+              {imageLoading && <LoadingSpinner size={20} />}
               <Input
                 name="firstName"
                 value={editedUser.firstName}
@@ -154,7 +210,13 @@ const EditProfileModal = ({ isOpen, onClose }) => {
                 name="address"
                 value={editedUser.address}
                 onChange={handleInputChange}
-                placeholder="Address"
+                placeholder="Home address"
+              />
+              <Input
+                name="email"
+                value={editedUser.email}
+                onChange={handleInputChange}
+                placeholder="email address"
               />
               <Input
                 name="phoneNumber"
@@ -181,8 +243,10 @@ const EditProfileModal = ({ isOpen, onClose }) => {
               onClick={handleSubmit}
               marginBottom="4"
               color="white"
+              isLoading={loading}
+              loadingText="Updating..."
             >
-              Save Changes
+              {loading ? "Loading..." : "Save Changes"}
             </Button>
           </Box>
         </ModalContent>

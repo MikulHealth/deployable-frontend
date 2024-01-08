@@ -113,7 +113,7 @@ const LandingPage = () => {
       });
       // localStorage.removeItem("phoneNumber");
       // Redirect or perform other actions based on the response
-      navigate("/");
+      navigate("/dashboard");
     } catch (error) {
       console.error("Error verifying OTP:", error);
       console.log("Full error object:", error);

@@ -31,6 +31,7 @@ import Customer from "../../assets/UserSignUp.svg";
 import Shade from "../../assets/Shade.svg";
 import logo from "../../assets/Whitelogo.png";
 import "../../styles/pages/LandingPage.css";
+import LoadingSpinner from "../../utils/Spiner";
 
 const customTheme = extendTheme({
   components: {
@@ -63,8 +64,9 @@ const LandingPage = () => {
 
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [image, setPic] = useState();
   const [show, setShow] = useState(false);
-
+  const [imageLoading, setImageLoading] = useState(false);
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
@@ -76,7 +78,7 @@ const LandingPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    await postImage(image, formData, setFormData);
     setLoading(true);
     try {
       const response = await axios.post(
@@ -89,7 +91,7 @@ const LandingPage = () => {
         }
       );
 
-      // Handle response as needed
+      localStorage.setItem("phoneNumber", formData.phoneNumber);
       console.log(response);
       toast({
         title: "Registration Successful",
@@ -99,11 +101,10 @@ const LandingPage = () => {
         isClosable: true,
       });
 
-
       const verifyNumberResponse = await axios.post(
         "http://localhost:8080/api/v1/sms/verify-number",
         {
-          phoneNumber: formData.phoneNumber, 
+          phoneNumber: formData.phoneNumber,
         },
         {
           headers: {
@@ -120,7 +121,6 @@ const LandingPage = () => {
       }, 5000);
       // Redirect or perform other actions based on the response
     } catch (error) {
-    
       toast({
         title: "Registration Failed",
         description: error.response.data,
@@ -137,6 +137,47 @@ const LandingPage = () => {
   useEffect(() => {
     AOS.init();
   }, []);
+
+  const postImage = async (image, formData, setFormData) => {
+    setImageLoading(true);
+    if (image === undefined) {
+      // toast.error("Please select an image")
+      return;
+    }
+    console.log(image);
+    if (image.type === "image/jpeg" || image.type === "image/png") {
+      const data = new FormData();
+      data.append("file", image);
+      data.append("upload_preset", "profileImage");
+      data.append("cloud_name", "dmfewrwla");
+
+      try {
+        const response = await fetch(
+          "https://api.cloudinary.com/v1_1/dmfewrwla/image/upload",
+          {
+            method: "post",
+            body: data,
+          }
+        );
+
+        const imageData = await response.json();
+
+        setFormData({
+          ...formData,
+          image: imageData.url.toString(),
+        });
+        setImageLoading(false);
+        console.log(imageData.url.toString());
+      } catch (err) {
+        console.log(err);
+        setImageLoading(false);
+      }
+    } else {
+      // toast.error("Please select an image");
+
+      return;
+    }
+  };
 
   return (
     <ChakraProvider theme={customTheme}>
@@ -206,7 +247,7 @@ const LandingPage = () => {
                   type="email"
                   onChange={handleInputChange}
                 />
-                    <FormLabel marginTop="20px">Home address</FormLabel>
+                <FormLabel marginTop="20px">Home address</FormLabel>
                 <Input
                   name="address"
                   placeholder="Home address"
@@ -214,9 +255,13 @@ const LandingPage = () => {
                   onChange={handleInputChange}
                 />
                 <FormLabel marginTop="20px">Gender </FormLabel>
-                <Select placeholder="Select your gender" w="205px">
-                  <option value="option1">Male</option>
-                  <option value="option2">Female</option>
+                <Select
+                 name="gender"
+                  placeholder="Select your gender"
+                  w="205px"
+                >
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
                   onChange={handleInputChange}
                 </Select>
                 <InputGroup marginTop="20px">
@@ -257,6 +302,23 @@ const LandingPage = () => {
                     </Button>
                   </InputRightElement>
                 </InputGroup>
+
+                <FormLabel marginLeft="10px" marginTop="30px">
+                  Upload headshort (only PNG and JPG files are accepted)
+                </FormLabel>
+                <Input
+                  name="image"
+                  marginLeft="-123px"
+                  w="422px"
+                  type="file"
+                  accept="image/*"
+                  placeholder="Image"
+                  onChange={(e) => {
+                    postImage(e.target.files[0], formData, setFormData);
+                  }}
+                />
+                {imageLoading && <LoadingSpinner size={20} />}
+
                 <ChakraLink href="/join-complete">
                   <Button
                     type="submit"

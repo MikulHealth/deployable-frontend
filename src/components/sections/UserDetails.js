@@ -78,7 +78,8 @@ const UserDetailsModal = ({ isOpen, onClose }) => {
                 w="20vw"
               />
               <Text>{`Name: ${user?.firstName} ${user?.lastName}`}</Text>
-              <Text>{`Address: ${user?.address}`}</Text>
+              <Text>{`Home address: ${user?.address}`}</Text>
+              <Text>{`Email: ${user?.email}`}</Text>
               <Text>{`Phone Number: ${user?.phoneNumber}`}</Text>
             </VStack>
           </ModalBody>

@@ -63,6 +63,7 @@ const ClientDash = () => {
   const toast = useToast();
   const { user } = useSelector((state) => state.userReducer);
   const [showUserDetailsModal, setShowUserDetailsModal] = useState(false);
+  const balance = 0.0;
 
   const userDetails = async () => {
     try {
@@ -144,12 +145,10 @@ const ClientDash = () => {
     setUserModal(false);
   };
 
-  // Function to open the modal
   const handleOpenUserDetailsModal = () => {
     setShowUserDetailsModal(true);
   };
 
-  // Function to close the modal
   const handleCloseUserDetailsModal = () => {
     setShowUserDetailsModal(false);
   };
@@ -162,9 +161,9 @@ const ClientDash = () => {
           <Image
             src={logo}
             alt="Logo"
-            w="100px"
-            h="30px"
-            marginLeft="120px"
+            w="160px"
+            h="60px"
+            marginLeft="90px"
             marginTop="10px"
           />
 
@@ -178,54 +177,104 @@ const ClientDash = () => {
               alignItems="center"
               w="17vw"
             >
-              <Image marginLeft="65px" src={HelpIcon} alt="HelpIcon" />
+              <Image
+                marginLeft="65px"
+                w="20px"
+                h="20px"
+                src={HelpIcon}
+                alt="HelpIcon"
+              />
               <Text marginLeft="15px" color="black">
                 HOME
               </Text>
             </Box>
-            <Image
-              marginLeft="65px"
-              src={AppointmentsIcon}
-              alt="Appointments"
-            />
-            <Text
-              marginTop="30px"
-              marginLeft="15px"
-              color="black"
-              onClick={handleOpenAppointmentsModal}
-            >
-              Appointments
-            </Text>
-            <Image marginLeft="65px" src={SettingsIcon} alt="Settings" />
-            <Text
-              onClick={handleOpenSettingsModal}
-              marginLeft="15px"
-              color="black"
-              marginTop="30px"
-            >
-              Settings
-            </Text>
-            <Image marginLeft="65px" src={HelpIcon} alt="Help" />
-            <Text
-              onClick={handleOpenHelpModal}
-              marginLeft="15px"
-              color="black"
-              marginTop="30px"
-            >
-              Help
-            </Text>
-
-            <Link onClick={handleLogout}>
-              <Image marginLeft="65px" src={LogoutIcon} alt="Logout" />
+            <Flex alignItems="center" marginTop="30px">
+              <Image
+                marginLeft="10px"
+                w="20px"
+                h="20px"
+                src={AppointmentsIcon}
+                alt="Appointments"
+              />
               <Text
-                // onClick={handleLogout}
-                marginTop="40px"
                 marginLeft="15px"
                 color="black"
+                onClick={handleOpenAppointmentsModal}
               >
-                Logout
+                Appointments
               </Text>
-            </Link>
+            </Flex>
+
+            <Flex alignItems="center" marginTop="30px" marginLeft="-46px">
+              <Image
+                marginLeft="10px"
+                w="20px"
+                h="20px"
+                src={SettingsIcon}
+                alt="Settings"
+              />
+              <Text
+                marginLeft="15px"
+                color="black"
+                onClick={handleOpenSettingsModal}
+              >
+                Settings
+              </Text>
+            </Flex>
+
+            <Flex alignItems="center" marginTop="30px" marginLeft="-54px">
+              <Image
+                marginLeft="10px"
+                w="20px"
+                h="20px"
+                src={SettingsIcon}
+                alt="Settings"
+              />
+              <Text
+                marginLeft="15px"
+                color="black"
+                onClick={handleOpenSettingsModal}
+              >
+                Wallet
+              </Text>
+            </Flex>
+
+
+            <Flex alignItems="center" marginTop="30px" marginLeft="-60px">
+              <Image
+                marginLeft="10px"
+                w="20px"
+                h="20px"
+                src={HelpIcon}
+                alt="Help"
+              />
+              <Text
+                marginLeft="15px"
+                color="black"
+                onClick={handleOpenHelpModal}
+              >
+                Help
+              </Text>
+            </Flex>
+
+            <Flex alignItems="center" marginTop="100px" marginLeft="-55px">
+              {/* <Link onClick={handleLogout}> */}
+                <Image
+                  marginLeft="10px"
+                  w="20px"
+                  h="20px"
+                  src={LogoutIcon}
+                  alt="Logout"
+                />
+                <Text
+                  onClick={handleLogout}
+                  marginLeft="15px"
+                  color="black"
+                >
+                  Logout
+                </Text>
+              {/* </Link> */}
+            </Flex>
           </VStack>
         </Box>
 
@@ -260,18 +309,22 @@ const ClientDash = () => {
                     fontFamily="body"
                     color="#A210C6"
                     marginTop="10px"
-                    style={{ marginLeft: "2px" }}
+                    style={{ marginLeft: "5px" }}
                   >
-                    Article Title
+                    My Wallet
                   </Text>
-                  <Text fontSize="16px" style={{ marginLeft: "2px" }}>
-                    Lorem Ipsum Dolor Sit
+                  <Text fontSize="16px" style={{ marginLeft: "20px" }}>
+                    Balance: ₦{balance.toFixed(2)}
                   </Text>
                   <Text
                     fontSize="16px"
-                    style={{ marginLeft: "2px", marginTop: "30px" }}
+                    style={{
+                      marginLeft: "-18px",
+                      marginTop: "28px",
+                      fontStyle: "italic",
+                    }}
                   >
-                    Read more
+                    Details
                   </Text>
                 </Box>
 
@@ -293,18 +346,22 @@ const ClientDash = () => {
                       fontFamily="body"
                       color="#A210C6"
                       marginTop="10px"
-                      style={{ marginLeft: "2px" }}
+                      style={{ marginLeft: "-35px" }}
                     >
-                      Article Title
+                      Book Appointment
                     </Text>
-                    <Text fontSize="16px" style={{ marginLeft: "2px" }}>
-                      Lorem Ipsum Dolor Sit Amet
+                    <Text fontSize="16px" style={{ marginLeft: "-12px" }}>
+                      Schedule your appointment
                     </Text>
                     <Text
                       fontSize="16px"
-                      style={{ marginLeft: "2px", marginTop: "30px" }}
+                      style={{
+                        marginLeft: "130px",
+                        marginTop: "30px",
+                        fontStyle: "italic",
+                      }}
                     >
-                      Read more
+                      Book now
                     </Text>
                   </Box>
                   <Box
@@ -320,18 +377,22 @@ const ClientDash = () => {
                       fontFamily="body"
                       color="#A210C6"
                       marginTop="10px"
-                      style={{ marginLeft: "2px" }}
+                      style={{ marginLeft: "-130px" }}
                     >
-                      Article Title
+                      Refferals
                     </Text>
                     <Text fontSize="16px" style={{ marginLeft: "2px" }}>
-                      Lorem Ipsum Dolor Sit Amet
+                      Refer friends and earn rewards
                     </Text>
                     <Text
                       fontSize="16px"
-                      style={{ marginLeft: "2px", marginTop: "30px" }}
+                      style={{
+                        marginLeft: "130px",
+                        marginTop: "30px",
+                        fontStyle: "italic",
+                      }}
                     >
-                      Read more
+                      Learn more
                     </Text>
                   </Box>
                 </Box>
@@ -343,18 +404,22 @@ const ClientDash = () => {
                       fontFamily="body"
                       color="#A210C6"
                       marginTop="10px"
-                      style={{ marginLeft: "2px" }}
+                      style={{ marginLeft: "-105px" }}
                     >
-                      Article Title
+                      Our services
                     </Text>
                     <Text fontSize="16px" style={{ marginLeft: "2px" }}>
-                      Lorem Ipsum Dolor Sit Amet
+                      Explore a variety of our services
                     </Text>
                     <Text
                       fontSize="16px"
-                      style={{ marginLeft: "2px", marginTop: "30px" }}
+                      style={{
+                        marginLeft: "130px",
+                        marginTop: "30px",
+                        fontStyle: "italic",
+                      }}
                     >
-                      Read more
+                      View services
                     </Text>
                   </Box>
                   <Box
@@ -370,18 +435,22 @@ const ClientDash = () => {
                       fontFamily="body"
                       color="#A210C6"
                       marginTop="10px"
-                      style={{ marginLeft: "2px" }}
+                      style={{ marginLeft: "-125px" }}
                     >
-                      Article Title
+                      Medical Report
                     </Text>
-                    <Text fontSize="16px" style={{ marginLeft: "2px" }}>
-                      Lorem Ipsum Dolor Sit Amet
+                    <Text fontSize="16px" style={{ marginLeft: "-50px" }}>
+                      Access and view your reports
                     </Text>
                     <Text
                       fontSize="16px"
-                      style={{ marginLeft: "2px", marginTop: "30px" }}
+                      style={{
+                        marginLeft: "130px",
+                        marginTop: "30px",
+                        fontStyle: "italic",
+                      }}
                     >
-                      Read more
+                      View reports
                     </Text>
                   </Box>
                 </Box>
@@ -444,7 +513,7 @@ const ClientDash = () => {
               h="45vh"
               w="20vw"
             >
-              <Box paddingTop="5px">
+              <Box paddingTop="5px" bg="white" borderRadius="10" h="25vh">
                 <Text
                   fontSize="20px"
                   fontFamily="body"
@@ -454,11 +523,17 @@ const ClientDash = () => {
                 >
                   Activity Log
                 </Text>
-                <Text>No of booking: </Text>
-                <Text>No of care recieved: </Text>
+                <ul style={{ paddingLeft: "20px", marginTop: "10px" }}>
+                  <li style={{ listStyleType: "none" }}>
+                    <Text>No. of booking: 0</Text>
+                  </li>
+                  <li style={{ listStyleType: "none" }}>
+                    <Text>No. of care received: 0</Text>
+                  </li>
+                </ul>
               </Box>
 
-              <Box marginTop="10px">
+              <Box marginTop="10px" bg="white" borderRadius="10" h="25vh">
                 <Text
                   fontSize="20px"
                   fontFamily="body"
@@ -468,7 +543,13 @@ const ClientDash = () => {
                 >
                   Appointments
                 </Text>
-                <Text>You no appointment at the moment: </Text>
+                <Text
+                  style={{
+                    fontStyle: "italic",
+                  }}
+                >
+                  You have no appointment at the moment:{" "}
+                </Text>
               </Box>
             </Box>
           </Box>
