@@ -14,18 +14,21 @@ import {
   Image,
   Box,
   Text,
+  Flex,
   FormControl,
   FormLabel,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import UserDeatails from "./UserDetails";
 import LoadingSpinner from "../../utils/Spiner";
+import UpdatePhoneNumber from "./UpdatePhoneNumber"
 
 const EditProfileModal = ({ isOpen, onClose }) => {
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);
   const [image, setPic] = useState();
   const [imageLoading, setImageLoading] = useState(false);
+  const [isPhoneModalOpen, setPhoneModalOpen] = useState(false);
   const [editedUser, setEditedUser] = useState({
     firstName: "",
     lastName: "",
@@ -122,15 +125,15 @@ const EditProfileModal = ({ isOpen, onClose }) => {
     }
   };
 
-  const [isUserModalOpen, setUserModalOpen] = useState(false);
 
-  const handleBackClick = () => {
-    setUserModalOpen(true);
+
+  const handlePhoneModalOpen = () => {
+    setPhoneModalOpen(true);
     onClose();
   };
 
-  const handleUserModalClose = () => {
-    setUserModalOpen(false);
+  const handlePhoneModalClose = () => {
+    setPhoneModalOpen(false);
   };
 
   const handleBack = () => {
@@ -138,17 +141,16 @@ const EditProfileModal = ({ isOpen, onClose }) => {
   };
 
   const handleSubmit = async () => {
-    setLoading(true); // Set loading to true before calling UpdateCustomer
+    setLoading(true);
     try {
       await handleImageChange(image, editedUser, setEditedUser);
       const response = await UpdateCustomer(editedUser, toast, setLoading);
 
       if (response.success) {
-        setLoading(false); // Set loading to false after UpdateCustomer is complete
+        setLoading(false);
         console.log("User details updated successfully:", response.data);
         navigate("/dashboard");
         window.location.reload();
-        // onClose();
       } else {
         console.error("Failed to update user details:", response.error);
       }
@@ -159,14 +161,16 @@ const EditProfileModal = ({ isOpen, onClose }) => {
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose} size="md">
+      <Modal isOpen={isOpen} onClose={onClose} size="xl">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Edit Profile</ModalHeader>
           <ModalCloseButton />
-          <ModalBody marginTop="-5px">
+          <ModalBody marginTop="-2px">
             <VStack align="center" spacing={4}>
-              {/* Profile Picture Input */}
+              <Text marginLeft="2px" marginTop="2px">
+                Only update the field(s) you want to change before saving the change(s)
+              </Text>
               <Image
                 src={editedUser.image}
                 alt="Profile Preview"
@@ -175,7 +179,8 @@ const EditProfileModal = ({ isOpen, onClose }) => {
                 borderRadius="8px"
                 marginBottom="-2"
               />
-              <FormLabel marginLeft="10px" marginTop="30px">
+
+              <FormLabel marginLeft="8px" marginTop="2px">
                 Update picture (only PNG and JPG files are accepted)
               </FormLabel>
               <Input
@@ -194,36 +199,52 @@ const EditProfileModal = ({ isOpen, onClose }) => {
                 }}
               />
               {imageLoading && <LoadingSpinner size={20} />}
-              <Input
-                name="firstName"
-                value={editedUser.firstName}
-                onChange={handleInputChange}
-                placeholder="First Name"
-              />
-              <Input
-                name="lastName"
-                value={editedUser.lastName}
-                onChange={handleInputChange}
-                placeholder="Last Name"
-              />
+             
+              <Flex direction="row" justify="space-between" w="100%">
+                <FormControl>
+                  <Input
+                    name="firstName"
+                    value={editedUser.firstName}
+                    onChange={handleInputChange}
+                    placeholder="First Name"
+                  />
+                </FormControl>
+                <FormControl>
+                  
+                  <Input
+                    name="lastName"
+                    value={editedUser.lastName}
+                    onChange={handleInputChange}
+                    placeholder="Last Name"
+                  />
+                </FormControl>
+              </Flex>
+
+             
               <Input
                 name="address"
                 value={editedUser.address}
                 onChange={handleInputChange}
                 placeholder="Home address"
               />
-              <Input
-                name="email"
-                value={editedUser.email}
-                onChange={handleInputChange}
-                placeholder="email address"
-              />
-              <Input
-                name="phoneNumber"
-                value={editedUser.phoneNumber}
-                onChange={handleInputChange}
-                placeholder="Phone Number"
-              />
+            
+              <Flex direction="row" justify="space-between" w="100%">
+                <FormControl>
+                  <Input
+                    name="email"
+                    value={editedUser.email}
+                    onChange={handleInputChange}
+                    placeholder="email address"
+                  />
+                   </FormControl>
+                  <FormControl>
+                 <Button onClick={handlePhoneModalOpen}>
+                  Change phone number
+                 </Button>
+                  </FormControl>
+                 
+               
+              </Flex>
             </VStack>
           </ModalBody>
           <Box display="flex">
@@ -238,7 +259,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
             </Button>
 
             <Button
-              marginLeft="140px"
+              marginLeft="260px"
               bg="#A210C6"
               onClick={handleSubmit}
               marginBottom="4"
@@ -251,6 +272,10 @@ const EditProfileModal = ({ isOpen, onClose }) => {
           </Box>
         </ModalContent>
       </Modal>
+      <UpdatePhoneNumber
+        isOpen={isPhoneModalOpen}
+        onClose={handlePhoneModalClose}
+      />
     </>
   );
 };

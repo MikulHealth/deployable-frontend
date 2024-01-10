@@ -15,6 +15,7 @@ import ForgotPassword from './components/pages/ForgotPassowrd'
 import ResetPassword from './components/pages/ResetPassword'
 import ClientDash from './components/pages/ClientDashboad';
 import UserDetailsModal from './components/sections/UserDetails';
+import VerifyOtpDash from './components/sections/VerifyOTP'
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
         <Route path="/reset-password" element={<ResetPassword />}></Route>
         <Route path="/dashboard" element={<ClientDash />}></Route>
         <Route path="/details" element={<UserDetailsModal/>}></Route>
+        <Route path="/verifyPhone" element={<VerifyOtpDash/>}></Route>
         </Routes>
         </BrowserRouter>
         
