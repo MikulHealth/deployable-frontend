@@ -118,10 +118,10 @@ const LandingPage = () => {
       }
     } catch (error) {
       setLoading(false);
-      alert("Network Error, kindly check your internet connection");
+      alert("Login failed, confirm your login details or check your internet connection");
       // toast({
-      //   title: "Network Error",
-      //   description: "Kindly check your internet connection",
+      //   title: "Login failed",
+      //   description:error.message,
       //   status: "failed",
       //   duration: 5000,
       //   isClosable: true,

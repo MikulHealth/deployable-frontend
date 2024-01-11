@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useToast } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import { GetCurrentUser, UpdateCustomer } from "../../apiCalls/UserApis";
 import {
   Box,
   Button,
@@ -53,7 +54,8 @@ const LandingPage = () => {
   const [input, setInput] = useState("");
   const navigate = useNavigate();
   const [inputs, setInputs] = useState(["", "", "", "", "", ""]);
-
+  const toast = useToast();
+  const [loading, setLoading] = useState(false);
   const handleInputChange = (index, value) => {
     setInputs((prevInputs) => {
       const newInputs = [...prevInputs];
@@ -61,8 +63,8 @@ const LandingPage = () => {
       return newInputs;
     });
   };
-  const [loading, setLoading] = useState(false);
-  const toast = useToast();
+
+ 
 
   const resendOtp = async () => {
     const number = localStorage.getItem("phoneNumber");
@@ -81,12 +83,10 @@ const LandingPage = () => {
 
   const handleVerify = async () => {
     try {
-      // Set loading to true when starting the API call
       setLoading(true);
       const enteredOtp = inputs.join("");
-
       const number = localStorage.getItem("phoneNumber");
-      // Make an API call with the entered OTP code
+
       const response = await axios.post(
         "http://localhost:8080/api/v1/sms/verify-otp",
         {
@@ -100,25 +100,20 @@ const LandingPage = () => {
         }
       );
 
-      // Handle the response as needed
       console.log(response);
 
-      // Display success toast
       toast({
         title: "Verification Successful",
-        description: "Your phone number has been verified.",
+        description: "Your phone number has been verified. Kindly login with the new number",
         status: "success",
         duration: 5000,
         isClosable: true,
       });
-      // localStorage.removeItem("phoneNumber");
-      // Redirect or perform other actions based on the response
-      navigate("/dashboard");
-    } catch (error) {
-      console.error("Error verifying OTP:", error);
-      console.log("Full error object:", error);
+      setTimeout(() => {
+        navigate("/login");
+      }, 8000);
 
-      // Display error toast
+    } catch (error) {
       toast({
         title: "Verification Failed",
         description: "Wrong or expired OTP,  confirm the code sent or click 'resend code' for a new code",
@@ -126,22 +121,17 @@ const LandingPage = () => {
         duration: 5000,
         isClosable: true,
       });
+
     } finally {
-      // Set loading back to false regardless of success or failure
       setLoading(false);
     }
   };
+
 
   useEffect(() => {
     AOS.init();
   }, []);
 
-  const handleFileChange = (event) => {
-    // Access the selected file using event.target.files
-    const selectedFile = event.target.files[0];
-    console.log(selectedFile);
-    // Perform any additional logic or state updates as needed
-  };
 
   return (
     <ChakraProvider theme={customTheme}>

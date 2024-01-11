@@ -28,9 +28,13 @@ const SettingsModal = ({ isOpen, onClose }) => {
   const toast = useToast();
   const navigate = useNavigate();
   const [editedUser, setEditedUser] = useState({
+    firstName: "",
+    lastName: "",
+    address: "",
+    email: "",
     phoneNumber: "",
+    image: "",
   });
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,7 +62,12 @@ const SettingsModal = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     setEditedUser({
+      firstName: user?.firstName || "",
+      lastName: user?.lastName || "",
+      address: user?.address || "",
+      email: user?.email || "",
       phoneNumber: user?.phoneNumber || "",
+      image: user?.image || "",
     });
   }, [user]);
 
@@ -74,6 +83,33 @@ const SettingsModal = ({ isOpen, onClose }) => {
     onClose();
   };
 
+  const handleSubmit = async () => {
+    setLoading(true);
+    try {
+      const response = await UpdateCustomer(
+        editedUser,
+        toast,
+        setLoading,
+        "Phone number updated. Sending OTP..."
+      );
+
+      if (response.success) {
+        localStorage.setItem("token", response.data.data);
+        console.log(response.data);
+
+        setLoading(false);
+        console.log("User details updated successfully:", response.data);
+
+        handleVerify();
+      } else {
+        console.error("Failed to update user details:", response.error);
+      }
+    } catch (error) {
+      console.error("Failed to update user details:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleVerify = async () => {
     try {
@@ -102,12 +138,12 @@ const SettingsModal = ({ isOpen, onClose }) => {
 
       setTimeout(() => {
         navigate("/verifyPhone");
-      }, 5000);
+      }, 2000);
       // Redirect or perform other actions based on the response
     } catch (error) {
       toast({
         title: "Update Failed",
-        description: error.response.data,
+        description: error.response.data.message,
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -119,16 +155,15 @@ const SettingsModal = ({ isOpen, onClose }) => {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="xl">
+    <Modal isOpen={isOpen} onClose={onClose} size="md">
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Update phone Number</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Text>
-            Kindly enter a valid phone number, as you would have to verify the
-            phone number with secret code that would be sent to the number upon
-            submition.
+            Kindly enter a valid phone number. We would send an OTP to verify
+            the new phone number upon submition.
           </Text>
           <FormControl>
             <Input
@@ -142,7 +177,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
         <ModalFooter>
           <Box display="flex">
             <Button
-            //   marginLeft="200px"
+              //   marginLeft="200px"
               bg="gray"
               onClick={handleBack}
               marginBottom="4"
@@ -154,7 +189,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
             <Button
               marginLeft="150px"
               bg="#A210C6"
-              onClick={handleVerify}
+              onClick={handleSubmit}
               marginBottom="4"
               color="white"
               isLoading={loading}

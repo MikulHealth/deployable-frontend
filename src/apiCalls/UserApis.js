@@ -23,7 +23,8 @@ export const GetCurrentUser = async () => {
   }
   // http://localhost:8080/v1/angel/updateCustomer
 };
-export const UpdateCustomer = async (editedUser, toast, setLoading) => {
+
+export const UpdateCustomer = async (editedUser, toast, setLoading, toastMessage) => {
 	try {
 	  const config = {
 		headers: {
@@ -44,7 +45,7 @@ export const UpdateCustomer = async (editedUser, toast, setLoading) => {
 	  if (response && response.data) {
 		toast({
 		  title: "Update Successful",
-		  description: response.data.message,
+		  description: toastMessage || response.data.message,
 		  status: "success",
 		  duration: 5000,
 		  isClosable: true,
