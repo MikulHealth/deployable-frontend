@@ -21,7 +21,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import UserDeatails from "./UserDetails";
 import LoadingSpinner from "../../utils/Spiner";
-import UpdatePhoneNumber from "./UpdatePhoneNumber"
+import UpdatePhoneNumber from "./UpdatePhoneNumber";
 
 const EditProfileModal = ({ isOpen, onClose }) => {
   const [loading, setLoading] = useState(false);
@@ -125,8 +125,6 @@ const EditProfileModal = ({ isOpen, onClose }) => {
     }
   };
 
-
-
   const handlePhoneModalOpen = () => {
     setPhoneModalOpen(true);
     onClose();
@@ -161,7 +159,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose} size="xl">
+      <Modal isOpen={isOpen} onClose={onClose} size="md">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Edit Profile</ModalHeader>
@@ -169,20 +167,24 @@ const EditProfileModal = ({ isOpen, onClose }) => {
           <ModalBody marginTop="-2px">
             <VStack align="center" spacing={4}>
               <Text marginLeft="2px" marginTop="2px">
-                Only update the field(s) you want to change before saving the change(s)
+                Only update the field(s) you want to change before saving the
+                change(s)
               </Text>
-              <Image
-                src={editedUser.image}
-                alt="Profile Preview"
-                boxSize="100px"
-                objectFit="cover"
-                borderRadius="8px"
-                marginBottom="-2"
-              />
+              <Flex direction="row" justify="space-between">
+                <Image
+                  src={editedUser.image}
+                  alt="Profile Preview"
+                  boxSize="100px"
+                  objectFit="cover"
+                  borderRadius="8px"
+                  marginBottom="-2"
+                />
 
-              <FormLabel marginLeft="8px" marginTop="2px">
-                Update picture (only PNG and JPG files are accepted)
-              </FormLabel>
+                <FormLabel marginLeft="8px" marginTop="2px">
+                  Update picture <br>
+                  </br>(only PNG and JPG files are accepted)
+                </FormLabel>
+              </Flex>
               <Input
                 name="image"
                 marginLeft="-6px"
@@ -199,7 +201,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
                 }}
               />
               {imageLoading && <LoadingSpinner size={20} />}
-             
+
               <Flex direction="row" justify="space-between" w="100%">
                 <FormControl>
                   <Input
@@ -210,7 +212,6 @@ const EditProfileModal = ({ isOpen, onClose }) => {
                   />
                 </FormControl>
                 <FormControl>
-                  
                   <Input
                     name="lastName"
                     value={editedUser.lastName}
@@ -220,14 +221,13 @@ const EditProfileModal = ({ isOpen, onClose }) => {
                 </FormControl>
               </Flex>
 
-             
               <Input
                 name="address"
                 value={editedUser.address}
                 onChange={handleInputChange}
                 placeholder="Home address"
               />
-            
+
               <Flex direction="row" justify="space-between" w="100%">
                 <FormControl>
                   <Input
@@ -236,14 +236,12 @@ const EditProfileModal = ({ isOpen, onClose }) => {
                     onChange={handleInputChange}
                     placeholder="email address"
                   />
-                   </FormControl>
-                  <FormControl>
-                 <Button onClick={handlePhoneModalOpen}>
-                  Change phone number
-                 </Button>
-                  </FormControl>
-                 
-               
+                </FormControl>
+                <FormControl>
+                  <Button onClick={handlePhoneModalOpen}>
+                    Change phone number
+                  </Button>
+                </FormControl>
               </Flex>
             </VStack>
           </ModalBody>
@@ -259,7 +257,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
             </Button>
 
             <Button
-              marginLeft="260px"
+              marginLeft="130px"
               bg="#A210C6"
               onClick={handleSubmit}
               marginBottom="4"

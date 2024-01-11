@@ -163,7 +163,8 @@ const SettingsModal = ({ isOpen, onClose }) => {
         <ModalBody>
           <Text>
             Kindly enter a valid phone number. We would send an OTP to verify
-            the new phone number upon submition.
+            the new phone number upon submition. You will also have to login
+            again after verifying the new phone number.
           </Text>
           <FormControl>
             <Input
@@ -177,7 +178,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
         <ModalFooter>
           <Box display="flex">
             <Button
-              //   marginLeft="200px"
+              marginLeft="-50px"
               bg="gray"
               onClick={handleBack}
               marginBottom="4"
@@ -187,7 +188,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
             </Button>
 
             <Button
-              marginLeft="150px"
+              marginLeft="110px"
               bg="#A210C6"
               onClick={handleSubmit}
               marginBottom="4"

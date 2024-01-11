@@ -33,7 +33,8 @@ import AppointmentsModal from "../sections/Appointments";
 import HelpModal from "../sections/Help";
 import UserModal from "../sections/UserDetailspage";
 import UserDetailsModal from "../sections/UserDetails";
-
+import ServicesPage from "./Services";
+import ServicesModal from "../sections/ServicePageModal";
 import { Link } from "react-router-dom";
 
 const customTheme = extendTheme({
@@ -64,6 +65,7 @@ const ClientDash = () => {
   const { user } = useSelector((state) => state.userReducer);
   const [showUserDetailsModal, setShowUserDetailsModal] = useState(false);
   const balance = 0.0;
+  const [showServicesModal, setShowServicesModal] = useState(false);
 
   const userDetails = async () => {
     try {
@@ -200,6 +202,10 @@ const ClientDash = () => {
                 marginLeft="15px"
                 color="black"
                 onClick={handleOpenAppointmentsModal}
+                style={{
+                  cursor: "pointer",
+                }}
+                _hover={{ color: "#A210C6" }}
               >
                 Appointments
               </Text>
@@ -217,6 +223,10 @@ const ClientDash = () => {
                 marginLeft="15px"
                 color="black"
                 onClick={handleOpenSettingsModal}
+                style={{
+                  cursor: "pointer",
+                }}
+                _hover={{ color: "#A210C6" }}
               >
                 Settings
               </Text>
@@ -234,11 +244,14 @@ const ClientDash = () => {
                 marginLeft="15px"
                 color="black"
                 onClick={handleOpenSettingsModal}
+                style={{
+                  cursor: "pointer",
+                }}
+                _hover={{ color: "#A210C6" }}
               >
                 Wallet
               </Text>
             </Flex>
-
 
             <Flex alignItems="center" marginTop="30px" marginLeft="-60px">
               <Image
@@ -252,6 +265,10 @@ const ClientDash = () => {
                 marginLeft="15px"
                 color="black"
                 onClick={handleOpenHelpModal}
+                style={{
+                  cursor: "pointer",
+                }}
+                _hover={{ color: "#A210C6" }}
               >
                 Help
               </Text>
@@ -259,25 +276,28 @@ const ClientDash = () => {
 
             <Flex alignItems="center" marginTop="100px" marginLeft="-55px">
               {/* <Link onClick={handleLogout}> */}
-                <Image
-                  marginLeft="10px"
-                  w="20px"
-                  h="20px"
-                  src={LogoutIcon}
-                  alt="Logout"
-                />
-                <Text
-                  onClick={handleLogout}
-                  marginLeft="15px"
-                  color="black"
-                >
-                  Logout
-                </Text>
+              <Image
+                marginLeft="10px"
+                w="20px"
+                h="20px"
+                src={LogoutIcon}
+                alt="Logout"
+              />
+              <Text
+                onClick={handleLogout}
+                marginLeft="15px"
+                color="black"
+                style={{
+                  cursor: "pointer",
+                }}
+                _hover={{ color: "#A210C6" }}
+              >
+                Logout
+              </Text>
               {/* </Link> */}
             </Flex>
           </VStack>
         </Box>
-
         {/* Second Section (Middle) */}
         <VStack align="center" width="50%" h="100vh">
           <Box>
@@ -322,7 +342,9 @@ const ClientDash = () => {
                       marginLeft: "-18px",
                       marginTop: "28px",
                       fontStyle: "italic",
+                      cursor: "pointer",
                     }}
+                    _hover={{ color: "#A210C6" }}
                   >
                     Details
                   </Text>
@@ -359,7 +381,9 @@ const ClientDash = () => {
                         marginLeft: "130px",
                         marginTop: "30px",
                         fontStyle: "italic",
+                        cursor: "pointer",
                       }}
+                      _hover={{ color: "#A210C6" }}
                     >
                       Book now
                     </Text>
@@ -390,7 +414,9 @@ const ClientDash = () => {
                         marginLeft: "130px",
                         marginTop: "30px",
                         fontStyle: "italic",
+                        cursor: "pointer", // Add pointer style
                       }}
+                      _hover={{ color: "#A210C6" }} // Change color on hover
                     >
                       Learn more
                     </Text>
@@ -417,10 +443,17 @@ const ClientDash = () => {
                         marginLeft: "130px",
                         marginTop: "30px",
                         fontStyle: "italic",
+                        cursor: "pointer", // Add pointer style
                       }}
+                      _hover={{ color: "#A210C6" }} // Change color on hover
+                      onClick={() => setShowServicesModal(true)}
                     >
                       View services
                     </Text>
+                    <ServicesModal
+                      isOpen={showServicesModal}
+                      onClose={() => setShowServicesModal(false)}
+                    />
                   </Box>
                   <Box
                     bg="#F6E4FC"
@@ -448,7 +481,9 @@ const ClientDash = () => {
                         marginLeft: "130px",
                         marginTop: "30px",
                         fontStyle: "italic",
+                        cursor: "pointer", // Add pointer style
                       }}
+                      _hover={{ color: "#A210C6" }} // Change color on hover
                     >
                       View reports
                     </Text>
@@ -498,9 +533,16 @@ const ClientDash = () => {
               )}
               <Box marginLeft="-85px" marginTop="10px">
                 <Link onClick={handleOpenUserDetailsModal}>
-                  <Button color="#A210C6">
+                  <Text
+                   fontSize="18px"
+                    style={{
+                      cursor: "pointer",
+                    }}
+                    _hover={{ color: "#A210C6" }}
+                    color="#A210C6"
+                  >
                     <Text>Profile</Text>
-                  </Button>
+                  </Text>
                 </Link>
               </Box>
             </Box>
