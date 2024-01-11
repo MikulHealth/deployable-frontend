@@ -37,6 +37,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
     phoneNumber: "",
     image: "",
   });
+  const [isConfirmationModalOpen, setConfirmationModalOpen] = useState(false);
   const toast = useToast();
 
   useEffect(() => {
@@ -138,7 +139,16 @@ const EditProfileModal = ({ isOpen, onClose }) => {
     onClose();
   };
 
+  const handleOpenConfirmationModal = () => {
+    setConfirmationModalOpen(true);
+  };
+
+  const handleCloseConfirmationModal = () => {
+    setConfirmationModalOpen(false);
+  };
+
   const handleSubmit = async () => {
+    handleCloseConfirmationModal(); // Close the confirmation modal
     setLoading(true);
     try {
       await handleImageChange(image, editedUser, setEditedUser);
@@ -181,8 +191,8 @@ const EditProfileModal = ({ isOpen, onClose }) => {
                 />
 
                 <FormLabel marginLeft="8px" marginTop="2px">
-                  Update picture <br>
-                  </br>(only PNG and JPG files are accepted)
+                  Update picture <br />
+                  (only PNG and JPG files are accepted)
                 </FormLabel>
               </Flex>
               <Input
@@ -259,7 +269,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
             <Button
               marginLeft="130px"
               bg="#A210C6"
-              onClick={handleSubmit}
+              onClick={handleOpenConfirmationModal} // Open confirmation modal
               marginBottom="4"
               color="white"
               isLoading={loading}
@@ -270,6 +280,36 @@ const EditProfileModal = ({ isOpen, onClose }) => {
           </Box>
         </ModalContent>
       </Modal>
+
+      {/* Confirmation Modal */}
+      <Modal
+        isOpen={isConfirmationModalOpen}
+        onClose={handleCloseConfirmationModal}
+        size="sm"
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Confirm Changes</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            Are you sure you want to save the changes?
+          </ModalBody>
+          <Box display="flex" justifyContent="flex-end" p="2">
+            <Button
+              mr={3}
+              onClick={handleCloseConfirmationModal}
+              colorScheme="gray"
+              color="#A210C6"
+            >
+              Cancel
+            </Button>
+            <Button onClick={handleSubmit} color="white" bg="#A210C6" isLoading={loading}>
+              Save Changes
+            </Button>
+          </Box>
+        </ModalContent>
+      </Modal>
+
       <UpdatePhoneNumber
         isOpen={isPhoneModalOpen}
         onClose={handlePhoneModalClose}

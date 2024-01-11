@@ -36,6 +36,7 @@ import UserDetailsModal from "../sections/UserDetails";
 import ServicesPage from "./Services";
 import ServicesModal from "../sections/ServicePageModal";
 import { Link } from "react-router-dom";
+import LogoutModal from "../sections/LogoutModal";
 
 const customTheme = extendTheme({
   components: {
@@ -66,6 +67,7 @@ const ClientDash = () => {
   const [showUserDetailsModal, setShowUserDetailsModal] = useState(false);
   const balance = 0.0;
   const [showServicesModal, setShowServicesModal] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const userDetails = async () => {
     try {
@@ -78,12 +80,18 @@ const ClientDash = () => {
       alert(error.response);
     }
   };
+  const handleOpenLogoutModal = () => {
+    setShowLogoutModal(true);
+  };
 
-  const handleLogout = () => {
+  const handleConfirmLogout = () => {
+    // Close the logout confirmation modal
+    setShowLogoutModal(false);
+
+    // Perform the actual logout
     localStorage.removeItem("token");
     localStorage.removeItem("phoneNumber");
     localStorage.removeItem("orderId");
-
     navigate("/");
   };
 
@@ -284,7 +292,7 @@ const ClientDash = () => {
                 alt="Logout"
               />
               <Text
-                onClick={handleLogout}
+                onClick={handleOpenLogoutModal} 
                 marginLeft="15px"
                 color="black"
                 style={{
@@ -613,6 +621,11 @@ const ClientDash = () => {
         onClose={handleCloseUserDetailsModal}
         defaultImage={userImageIcon}
       />
+       <LogoutModal
+          isOpen={showLogoutModal}
+          onClose={() => setShowLogoutModal(false)}
+          onConfirm={handleConfirmLogout}
+        />
     </ChakraProvider>
   );
 };

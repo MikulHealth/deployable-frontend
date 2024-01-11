@@ -22,6 +22,28 @@ import {
 import LoadingSpinner from "../../utils/Spiner";
 import { useNavigate } from "react-router-dom";
 
+// New ConfirmationModal component
+const ConfirmationModal = ({ isOpen, onClose, onConfirm }) => {
+  return (
+    <Modal isOpen={isOpen} onClose={onClose} size="sm">
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>Confirm Changes</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>Are you sure you want to submit the changes?</ModalBody>
+        <ModalFooter>
+          <Button colorScheme="gray" onClick={onClose}>
+            Cancel
+          </Button>
+          <Button colorScheme="purple" onClick={onConfirm}>
+            Submit
+          </Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+  );
+};
+
 const SettingsModal = ({ isOpen, onClose }) => {
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);
@@ -35,6 +57,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
     phoneNumber: "",
     image: "",
   });
+  const [isConfirmationModalOpen, setConfirmationModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -81,6 +104,19 @@ const SettingsModal = ({ isOpen, onClose }) => {
 
   const handleBack = () => {
     onClose();
+  };
+
+  const handleOpenConfirmationModal = () => {
+    setConfirmationModalOpen(true);
+  };
+
+  const handleCloseConfirmationModal = () => {
+    setConfirmationModalOpen(false);
+  };
+
+  const handleConfirm = async () => {
+    handleCloseConfirmationModal();
+    handleSubmit();
   };
 
   const handleSubmit = async () => {
@@ -139,7 +175,6 @@ const SettingsModal = ({ isOpen, onClose }) => {
       setTimeout(() => {
         navigate("/verifyPhone");
       }, 2000);
-      // Redirect or perform other actions based on the response
     } catch (error) {
       toast({
         title: "Update Failed",
@@ -149,59 +184,67 @@ const SettingsModal = ({ isOpen, onClose }) => {
         isClosable: true,
       });
     } finally {
-      // Set loading back to false regardless of success or failure
       setLoading(false);
     }
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="md">
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Update phone Number</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>
-          <Text>
-            Kindly enter a valid phone number. We would send an OTP to verify
-            the new phone number upon submition. You will also have to login
-            again after verifying the new phone number.
-          </Text>
-          <FormControl>
-            <Input
-              name="phoneNumber"
-              value={editedUser.phoneNumber}
-              onChange={handleInputChange}
-              placeholder="Phone Number"
-            />
-          </FormControl>
-        </ModalBody>
-        <ModalFooter>
-          <Box display="flex">
-            <Button
-              marginLeft="-50px"
-              bg="gray"
-              onClick={handleBack}
-              marginBottom="4"
-              color="white"
-            >
-              Cancel
-            </Button>
+    <>
+      <Modal isOpen={isOpen} onClose={onClose} size="md">
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Update Phone Number</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text>
+              Kindly enter a valid phone number. We would send an OTP to verify
+              the new phone number upon submission. You will also have to log in
+              again after verifying the new phone number.
+            </Text>
+            <FormControl>
+              <Input
+                name="phoneNumber"
+                value={editedUser.phoneNumber}
+                onChange={handleInputChange}
+                placeholder="Phone Number"
+              />
+            </FormControl>
+          </ModalBody>
+          <ModalFooter>
+            <Box display="flex">
+              <Button
+                marginLeft="-50px"
+                bg="gray"
+                onClick={handleBack}
+                marginBottom="4"
+                color="white"
+              >
+                Cancel
+              </Button>
 
-            <Button
-              marginLeft="110px"
-              bg="#A210C6"
-              onClick={handleSubmit}
-              marginBottom="4"
-              color="white"
-              isLoading={loading}
-              loadingText="Updating..."
-            >
-              {loading ? "Loading..." : "Submit"}
-            </Button>
-          </Box>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+              <Button
+                marginLeft="110px"
+                bg="#A210C6"
+                onClick={handleOpenConfirmationModal}
+                marginBottom="4"
+                color="white"
+                isLoading={loading}
+                loadingText="Updating..."
+              >
+                {loading ? "Loading..." : "Submit"}
+              </Button>
+            </Box>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      {/* Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={isConfirmationModalOpen}
+        onClose={handleCloseConfirmationModal}
+        onConfirm={handleConfirm}
+      />
+    </>
   );
 };
 
