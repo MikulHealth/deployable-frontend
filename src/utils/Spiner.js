@@ -6,7 +6,7 @@ import "./spiner.css";
 const LoadingSpinner = ({ size }) => {
   const spinnerSize = `${size}px`;
   return (
-    <div className="loading-spinner" style={{ width: spinnerSize, height: spinnerSize, marginLeft: '40%' }}>
+    <div className="loading-spinner" style={{ width: spinnerSize, height: spinnerSize }}>
       <div className="spinner-inner" />
     </div>
   );

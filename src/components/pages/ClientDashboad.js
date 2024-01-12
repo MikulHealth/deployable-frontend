@@ -38,6 +38,7 @@ import ServicesPage from "./Services";
 import ServicesModal from "../sections/ServicePageModal";
 import { Link } from "react-router-dom";
 import LogoutModal from "../sections/LogoutModal";
+import LoadingSpinner from "../../utils/Spiner";
 
 const customTheme = extendTheme({
   components: {
@@ -99,12 +100,12 @@ const ClientDash = () => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-  
+
       if (localStorage.getItem("token")) {
         try {
           console.log("Calling GetCurrentUser API");
           const response = await GetCurrentUser();
-  
+
           if (response.success) {
             console.log("API response:", response.data);
             dispatch(SetUser(response.data));
@@ -120,10 +121,9 @@ const ClientDash = () => {
         navigate("/login");
       }
     };
-  
+
     fetchData();
   }, []);
-  
 
   const handleOpenUserDetails = () => {
     navigate("/user-details");
@@ -316,7 +316,16 @@ const ClientDash = () => {
         )}
 
         {loading ? (
-          <Skeleton height="100vh" width="50%" />
+          <Flex
+            align="center"
+            justify="center"
+            width="50%"
+            height="100vh"
+            // bg="white"
+          
+          >
+            <LoadingSpinner size={100} />
+          </Flex>
         ) : (
           //  Second Section (Middle)
           <VStack align="center" width="50%" h="100vh">
