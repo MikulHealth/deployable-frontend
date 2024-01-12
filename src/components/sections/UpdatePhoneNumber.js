@@ -22,7 +22,6 @@ import {
 import LoadingSpinner from "../../utils/Spiner";
 import { useNavigate } from "react-router-dom";
 
-// New ConfirmationModal component
 const ConfirmationModal = ({ isOpen, onClose, onConfirm }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="sm">
@@ -32,11 +31,11 @@ const ConfirmationModal = ({ isOpen, onClose, onConfirm }) => {
         <ModalCloseButton />
         <ModalBody>Are you sure you want to submit the changes?</ModalBody>
         <ModalFooter>
-          <Button colorScheme="gray" onClick={onClose}>
+          <Button bg="gray" color="white" onClick={onClose}>
             Cancel
           </Button>
-          <Button colorScheme="purple" onClick={onConfirm}>
-            Submit
+          <Button marginLeft="5px" color="white" bg="#A210C6" onClick={onConfirm}>
+            Confirm
           </Button>
         </ModalFooter>
       </ModalContent>
@@ -213,7 +212,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
           <ModalFooter>
             <Box display="flex">
               <Button
-                marginLeft="-50px"
+                marginLeft="5px"
                 bg="gray"
                 onClick={handleBack}
                 marginBottom="4"
@@ -223,7 +222,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
               </Button>
 
               <Button
-                marginLeft="110px"
+                marginLeft="5px"
                 bg="#A210C6"
                 onClick={handleOpenConfirmationModal}
                 marginBottom="4"
@@ -238,7 +237,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
         </ModalContent>
       </Modal>
 
-      {/* Confirmation Modal */}
+    
       <ConfirmationModal
         isOpen={isConfirmationModalOpen}
         onClose={handleCloseConfirmationModal}

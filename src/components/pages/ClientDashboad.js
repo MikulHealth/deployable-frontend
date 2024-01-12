@@ -13,6 +13,7 @@ import {
   ChakraProvider,
   Text,
   useToast,
+  Skeleton,
 } from "@chakra-ui/react";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -97,11 +98,13 @@ const ClientDash = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
+  
       if (localStorage.getItem("token")) {
         try {
           console.log("Calling GetCurrentUser API");
           const response = await GetCurrentUser();
-
+  
           if (response.success) {
             console.log("API response:", response.data);
             dispatch(SetUser(response.data));
@@ -110,14 +113,17 @@ const ClientDash = () => {
           }
         } catch (error) {
           console.error("Error in GetCurrentUser API:", error);
+        } finally {
+          setLoading(false);
         }
       } else {
         navigate("/login");
       }
     };
-
+  
     fetchData();
   }, []);
+  
 
   const handleOpenUserDetails = () => {
     navigate("/user-details");
@@ -167,465 +173,474 @@ const ClientDash = () => {
     <ChakraProvider theme={customTheme}>
       <Flex overflowY="scroll" height="100vh">
         {/* First Section (Left) */}
-        <Box bg="#F6E4FC" width="25%" p={3} color="white" h="100vh">
-          <Image
-            src={logo}
-            alt="Logo"
-            w="160px"
-            h="60px"
-            marginLeft="90px"
-            marginTop="10px"
-          />
+        {loading ? (
+          <Skeleton height="100vh" width="25%" />
+        ) : (
+          <Box bg="#F6E4FC" width="25%" p={3} color="white" h="100vh">
+            <Image
+              src={logo}
+              alt="Logo"
+              w="160px"
+              h="60px"
+              marginLeft="90px"
+              marginTop="10px"
+            />
 
-          <VStack spacing={3} align="center" mt={5}>
-            <Box
-              marginTop="50px"
-              bg="white"
-              p={3}
-              borderRadius="md"
-              display="flex"
-              alignItems="center"
-              w="17vw"
-            >
-              <Image
-                marginLeft="65px"
-                w="20px"
-                h="20px"
-                src={HelpIcon}
-                alt="HelpIcon"
-              />
-              <Text marginLeft="15px" color="black">
-                HOME
-              </Text>
-            </Box>
-            <Flex alignItems="center" marginTop="30px">
-              <Image
-                marginLeft="10px"
-                w="20px"
-                h="20px"
-                src={AppointmentsIcon}
-                alt="Appointments"
-              />
-              <Text
-                marginLeft="15px"
-                color="black"
-                onClick={handleOpenAppointmentsModal}
-                style={{
-                  cursor: "pointer",
-                }}
-                _hover={{ color: "#A210C6" }}
-              >
-                Appointments
-              </Text>
-            </Flex>
-
-            <Flex alignItems="center" marginTop="30px" marginLeft="-46px">
-              <Image
-                marginLeft="10px"
-                w="20px"
-                h="20px"
-                src={SettingsIcon}
-                alt="Settings"
-              />
-              <Text
-                marginLeft="15px"
-                color="black"
-                onClick={handleOpenSettingsModal}
-                style={{
-                  cursor: "pointer",
-                }}
-                _hover={{ color: "#A210C6" }}
-              >
-                Settings
-              </Text>
-            </Flex>
-
-            <Flex alignItems="center" marginTop="30px" marginLeft="-54px">
-              <Image
-                marginLeft="10px"
-                w="20px"
-                h="20px"
-                src={SettingsIcon}
-                alt="Settings"
-              />
-              <Text
-                marginLeft="15px"
-                color="black"
-                onClick={handleOpenSettingsModal}
-                style={{
-                  cursor: "pointer",
-                }}
-                _hover={{ color: "#A210C6" }}
-              >
-                Wallet
-              </Text>
-            </Flex>
-
-            <Flex alignItems="center" marginTop="30px" marginLeft="-60px">
-              <Image
-                marginLeft="10px"
-                w="20px"
-                h="20px"
-                src={HelpIcon}
-                alt="Help"
-              />
-              <Text
-                marginLeft="15px"
-                color="black"
-                onClick={handleOpenHelpModal}
-                style={{
-                  cursor: "pointer",
-                }}
-                _hover={{ color: "#A210C6" }}
-              >
-                Help
-              </Text>
-            </Flex>
-
-            <Flex alignItems="center" marginTop="100px" marginLeft="-55px">
-              {/* <Link onClick={handleLogout}> */}
-              <Image
-                marginLeft="10px"
-                w="20px"
-                h="20px"
-                src={LogoutIcon}
-                alt="Logout"
-              />
-              <Text
-                onClick={handleOpenLogoutModal} 
-                marginLeft="15px"
-                color="black"
-                style={{
-                  cursor: "pointer",
-                }}
-                _hover={{ color: "#A210C6" }}
-              >
-                Logout
-              </Text>
-              {/* </Link> */}
-            </Flex>
-          </VStack>
-        </Box>
-        {/* Second Section (Middle) */}
-        <VStack align="center" width="50%" h="100vh">
-          <Box>
-            <Box>
-              <Text
-                fontSize="32px"
-                fontFamily="body"
-                color="#A210C6"
-                marginTop="30px"
-                marginLeft="-370px"
-              >
-                Hello {user?.firstName},
-              </Text>
-              <Text marginLeft="-380px">How are you doing today?</Text>
-            </Box>
-            <Box>
+            <VStack spacing={3} align="center" mt={5}>
               <Box
                 marginTop="50px"
-                bg="#F6E4FC"
-                w="40vw"
-                h="20vh"
-                borderRadius="10px"
+                bg="white"
+                p={3}
+                borderRadius="md"
                 display="flex"
+                alignItems="center"
+                w="17vw"
               >
-                <Box>
-                  {" "}
-                  <Text
-                    fontSize="20px"
-                    fontFamily="body"
-                    color="#A210C6"
-                    marginTop="10px"
-                    style={{ marginLeft: "5px" }}
-                  >
-                    My Wallet
-                  </Text>
-                  <Text fontSize="16px" style={{ marginLeft: "20px" }}>
-                    Balance: ₦{balance.toFixed(2)}
-                  </Text>
-                  <Text
-                    fontSize="16px"
-                    style={{
-                      marginLeft: "-18px",
-                      marginTop: "28px",
-                      fontStyle: "italic",
-                      cursor: "pointer",
-                    }}
-                    _hover={{ color: "#A210C6" }}
-                  >
-                    Details
-                  </Text>
-                </Box>
-
                 <Image
-                  src={NurseAndPatient}
-                  alt="Nurse and Patient"
-                  w="100px"
-                  h="100px"
-                  marginLeft="280px"
-                  marginTop="18px"
+                  marginLeft="65px"
+                  w="20px"
+                  h="20px"
+                  src={HelpIcon}
+                  alt="HelpIcon"
                 />
+                <Text marginLeft="15px" color="black">
+                  HOME
+                </Text>
+              </Box>
+              <Flex alignItems="center" marginTop="30px">
+                <Image
+                  marginLeft="10px"
+                  w="20px"
+                  h="20px"
+                  src={AppointmentsIcon}
+                  alt="Appointments"
+                />
+                <Text
+                  marginLeft="15px"
+                  color="black"
+                  onClick={handleOpenAppointmentsModal}
+                  style={{
+                    cursor: "pointer",
+                  }}
+                  _hover={{ color: "#A210C6" }}
+                >
+                  Appointments
+                </Text>
+              </Flex>
+
+              <Flex alignItems="center" marginTop="30px" marginLeft="-46px">
+                <Image
+                  marginLeft="10px"
+                  w="20px"
+                  h="20px"
+                  src={SettingsIcon}
+                  alt="Settings"
+                />
+                <Text
+                  marginLeft="15px"
+                  color="black"
+                  onClick={handleOpenSettingsModal}
+                  style={{
+                    cursor: "pointer",
+                  }}
+                  _hover={{ color: "#A210C6" }}
+                >
+                  Settings
+                </Text>
+              </Flex>
+
+              <Flex alignItems="center" marginTop="30px" marginLeft="-54px">
+                <Image
+                  marginLeft="10px"
+                  w="20px"
+                  h="20px"
+                  src={SettingsIcon}
+                  alt="Settings"
+                />
+                <Text
+                  marginLeft="15px"
+                  color="black"
+                  onClick={handleOpenSettingsModal}
+                  style={{
+                    cursor: "pointer",
+                  }}
+                  _hover={{ color: "#A210C6" }}
+                >
+                  Wallet
+                </Text>
+              </Flex>
+
+              <Flex alignItems="center" marginTop="30px" marginLeft="-60px">
+                <Image
+                  marginLeft="10px"
+                  w="20px"
+                  h="20px"
+                  src={HelpIcon}
+                  alt="Help"
+                />
+                <Text
+                  marginLeft="15px"
+                  color="black"
+                  onClick={handleOpenHelpModal}
+                  style={{
+                    cursor: "pointer",
+                  }}
+                  _hover={{ color: "#A210C6" }}
+                >
+                  Help
+                </Text>
+              </Flex>
+
+              <Flex alignItems="center" marginTop="100px" marginLeft="-55px">
+                <Image
+                  marginLeft="10px"
+                  w="20px"
+                  h="20px"
+                  src={LogoutIcon}
+                  alt="Logout"
+                />
+                <Text
+                  onClick={handleOpenLogoutModal}
+                  marginLeft="15px"
+                  color="black"
+                  style={{
+                    cursor: "pointer",
+                  }}
+                  _hover={{ color: "#A210C6" }}
+                >
+                  Logout
+                </Text>
+              </Flex>
+            </VStack>
+          </Box>
+        )}
+
+        {loading ? (
+          <Skeleton height="100vh" width="50%" />
+        ) : (
+          //  Second Section (Middle)
+          <VStack align="center" width="50%" h="100vh">
+            <Box>
+              <Box>
+                <Text
+                  fontSize="32px"
+                  fontFamily="body"
+                  color="#A210C6"
+                  marginTop="30px"
+                  marginLeft="-370px"
+                >
+                  Hello {user?.firstName},
+                </Text>
+                <Text marginLeft="-380px">How are you doing today?</Text>
               </Box>
               <Box>
-                <Box display="flex" marginTop="30px">
-                  <Box bg="#F6E4FC" w="19.5vw" h="20vh" borderRadius="10px">
+                <Box
+                  marginTop="50px"
+                  bg="#F6E4FC"
+                  w="40vw"
+                  h="20vh"
+                  borderRadius="10px"
+                  display="flex"
+                >
+                  <Box>
                     {" "}
                     <Text
                       fontSize="20px"
                       fontFamily="body"
                       color="#A210C6"
                       marginTop="10px"
-                      style={{ marginLeft: "-35px" }}
+                      style={{ marginLeft: "5px" }}
                     >
-                      Book Appointment
+                      My Wallet
                     </Text>
-                    <Text fontSize="16px" style={{ marginLeft: "-12px" }}>
-                      Schedule your appointment
+                    <Text fontSize="16px" style={{ marginLeft: "20px" }}>
+                      Balance: ₦{balance.toFixed(2)}
                     </Text>
                     <Text
                       fontSize="16px"
                       style={{
-                        marginLeft: "130px",
-                        marginTop: "30px",
+                        marginLeft: "-18px",
+                        marginTop: "28px",
                         fontStyle: "italic",
                         cursor: "pointer",
                       }}
                       _hover={{ color: "#A210C6" }}
                     >
-                      Book now
+                      Details
                     </Text>
                   </Box>
-                  <Box
-                    bg="#F6E4FC"
-                    w="19.5vw"
-                    h="20vh"
-                    marginLeft="10px"
-                    borderRadius="10px"
-                  >
-                    {" "}
-                    <Text
-                      fontSize="20px"
-                      fontFamily="body"
-                      color="#A210C6"
-                      marginTop="10px"
-                      style={{ marginLeft: "-130px" }}
+
+                  <Image
+                    src={NurseAndPatient}
+                    alt="Nurse and Patient"
+                    w="100px"
+                    h="100px"
+                    marginLeft="280px"
+                    marginTop="18px"
+                  />
+                </Box>
+                <Box>
+                  <Box display="flex" marginTop="30px">
+                    <Box bg="#F6E4FC" w="19.5vw" h="20vh" borderRadius="10px">
+                      {" "}
+                      <Text
+                        fontSize="20px"
+                        fontFamily="body"
+                        color="#A210C6"
+                        marginTop="10px"
+                        style={{ marginLeft: "-35px" }}
+                      >
+                        Book Appointment
+                      </Text>
+                      <Text fontSize="16px" style={{ marginLeft: "-12px" }}>
+                        Schedule your appointment
+                      </Text>
+                      <Text
+                        fontSize="16px"
+                        style={{
+                          marginLeft: "130px",
+                          marginTop: "30px",
+                          fontStyle: "italic",
+                          cursor: "pointer",
+                        }}
+                        _hover={{ color: "#A210C6" }}
+                      >
+                        Book now
+                      </Text>
+                    </Box>
+                    <Box
+                      bg="#F6E4FC"
+                      w="19.5vw"
+                      h="20vh"
+                      marginLeft="10px"
+                      borderRadius="10px"
                     >
-                      Refferals
-                    </Text>
-                    <Text fontSize="16px" style={{ marginLeft: "2px" }}>
-                      Refer friends and earn rewards
-                    </Text>
-                    <Text
-                      fontSize="16px"
-                      style={{
-                        marginLeft: "130px",
-                        marginTop: "30px",
-                        fontStyle: "italic",
-                        cursor: "pointer", // Add pointer style
-                      }}
-                      _hover={{ color: "#A210C6" }} // Change color on hover
+                      {" "}
+                      <Text
+                        fontSize="20px"
+                        fontFamily="body"
+                        color="#A210C6"
+                        marginTop="10px"
+                        style={{ marginLeft: "-130px" }}
+                      >
+                        Refferals
+                      </Text>
+                      <Text fontSize="16px" style={{ marginLeft: "2px" }}>
+                        Refer friends and earn rewards
+                      </Text>
+                      <Text
+                        fontSize="16px"
+                        style={{
+                          marginLeft: "130px",
+                          marginTop: "30px",
+                          fontStyle: "italic",
+                          cursor: "pointer",
+                        }}
+                        _hover={{ color: "#A210C6" }}
+                      >
+                        Learn more
+                      </Text>
+                    </Box>
+                  </Box>
+                  <Box display="flex" marginTop="30px">
+                    <Box bg="#F6E4FC" w="19.5vw" h="20vh" borderRadius="10px">
+                      {" "}
+                      <Text
+                        fontSize="20px"
+                        fontFamily="body"
+                        color="#A210C6"
+                        marginTop="10px"
+                        style={{ marginLeft: "-105px" }}
+                      >
+                        Our services
+                      </Text>
+                      <Text fontSize="16px" style={{ marginLeft: "2px" }}>
+                        Explore a variety of our services
+                      </Text>
+                      <Text
+                        fontSize="16px"
+                        style={{
+                          marginLeft: "130px",
+                          marginTop: "30px",
+                          fontStyle: "italic",
+                          cursor: "pointer",
+                        }}
+                        _hover={{ color: "#A210C6" }}
+                        onClick={() => setShowServicesModal(true)}
+                      >
+                        View services
+                      </Text>
+                      <ServicesModal
+                        isOpen={showServicesModal}
+                        onClose={() => setShowServicesModal(false)}
+                      />
+                    </Box>
+                    <Box
+                      bg="#F6E4FC"
+                      w="19.5vw"
+                      h="20vh"
+                      marginLeft="10px"
+                      borderRadius="10px"
                     >
-                      Learn more
-                    </Text>
+                      {" "}
+                      <Text
+                        fontSize="20px"
+                        fontFamily="body"
+                        color="#A210C6"
+                        marginTop="10px"
+                        style={{ marginLeft: "-125px" }}
+                      >
+                        Medical Report
+                      </Text>
+                      <Text fontSize="16px" style={{ marginLeft: "-50px" }}>
+                        Access and view your reports
+                      </Text>
+                      <Text
+                        fontSize="16px"
+                        style={{
+                          marginLeft: "130px",
+                          marginTop: "30px",
+                          fontStyle: "italic",
+                          cursor: "pointer",
+                        }}
+                        _hover={{ color: "#A210C6" }}
+                      >
+                        View reports
+                      </Text>
+                    </Box>
                   </Box>
                 </Box>
-                <Box display="flex" marginTop="30px">
-                  <Box bg="#F6E4FC" w="19.5vw" h="20vh" borderRadius="10px">
-                    {" "}
-                    <Text
-                      fontSize="20px"
-                      fontFamily="body"
-                      color="#A210C6"
-                      marginTop="10px"
-                      style={{ marginLeft: "-105px" }}
-                    >
-                      Our services
-                    </Text>
-                    <Text fontSize="16px" style={{ marginLeft: "2px" }}>
-                      Explore a variety of our services
-                    </Text>
-                    <Text
-                      fontSize="16px"
-                      style={{
-                        marginLeft: "130px",
-                        marginTop: "30px",
-                        fontStyle: "italic",
-                        cursor: "pointer", // Add pointer style
-                      }}
-                      _hover={{ color: "#A210C6" }} // Change color on hover
-                      onClick={() => setShowServicesModal(true)}
-                    >
-                      View services
-                    </Text>
-                    <ServicesModal
-                      isOpen={showServicesModal}
-                      onClose={() => setShowServicesModal(false)}
+              </Box>
+            </Box>
+          </VStack>
+        )}
+        {loading ? (
+          <Skeleton height="100vh" width="25%" />
+        ) : (
+          //  Third Section (Right)
+          <VStack bg="#F6E4FC" width="25%" spacing={3} h="100vh">
+            <Box marginTop="30px" marginLeft="200px">
+              <Image
+                src={NotificationIcon}
+                alt="Notificatio icon"
+                h="25px"
+                w="25px"
+                marginTop="10px"
+                marginBottom="10px"
+              />
+            </Box>
+            <Box marginLeft="90px" marginTop="10px">
+              <Box>
+                {user?.image ? (
+                  <Link onClick={handleOpenUserDetailsModal}>
+                    <Image
+                      borderRadius="8px"
+                      h="100px"
+                      w="100px"
+                      src={user?.image}
+                      alt="User Image"
                     />
-                  </Box>
-                  <Box
-                    bg="#F6E4FC"
-                    w="19.5vw"
-                    h="20vh"
-                    marginLeft="10px"
-                    borderRadius="10px"
-                  >
-                    {" "}
+                  </Link>
+                ) : (
+                  <Link onClick={handleOpenUserDetailsModal}>
+                    <Image
+                      src={userImageIcon}
+                      alt="User Image Icon"
+                      boxSize="50px"
+                      marginBottom="2%"
+                      h="100px"
+                      w="100px"
+                      borderRadius="50%"
+                    />
+                  </Link>
+                )}
+                <Box marginLeft="-85px" marginTop="10px">
+                  <Link onClick={handleOpenUserDetailsModal}>
                     <Text
-                      fontSize="20px"
-                      fontFamily="body"
-                      color="#A210C6"
-                      marginTop="10px"
-                      style={{ marginLeft: "-125px" }}
-                    >
-                      Medical Report
-                    </Text>
-                    <Text fontSize="16px" style={{ marginLeft: "-50px" }}>
-                      Access and view your reports
-                    </Text>
-                    <Text
-                      fontSize="16px"
+                      fontSize="18px"
                       style={{
-                        marginLeft: "130px",
-                        marginTop: "30px",
-                        fontStyle: "italic",
-                        cursor: "pointer", // Add pointer style
+                        cursor: "pointer",
                       }}
-                      _hover={{ color: "#A210C6" }} // Change color on hover
+                      _hover={{ color: "#A210C6" }}
+                      color="#A210C6"
                     >
-                      View reports
+                      <Text>Profile</Text>
                     </Text>
-                  </Box>
+                  </Link>
+                </Box>
+              </Box>
+
+              <Box
+                marginLeft="-85px"
+                marginTop="20px"
+                borderRadius="10px"
+                h="45vh"
+                w="20vw"
+              >
+                <Box paddingTop="5px" bg="white" borderRadius="10" h="25vh">
+                  <Text
+                    fontSize="20px"
+                    fontFamily="body"
+                    color="#A210C6"
+                    marginTop="20px"
+                    marginLeft="20px"
+                  >
+                    Activity Log
+                  </Text>
+                  <ul style={{ paddingLeft: "20px", marginTop: "10px" }}>
+                    <li style={{ listStyleType: "none" }}>
+                      <Text>No. of booking: 0</Text>
+                    </li>
+                    <li style={{ listStyleType: "none" }}>
+                      <Text>No. of care received: 0</Text>
+                    </li>
+                  </ul>
+                </Box>
+
+                <Box marginTop="10px" bg="white" borderRadius="10" h="25vh">
+                  <Text
+                    fontSize="20px"
+                    fontFamily="body"
+                    color="#A210C6"
+                    marginTop="30px"
+                    marginLeft="20px"
+                  >
+                    Appointments
+                  </Text>
+                  <Text
+                    style={{
+                      fontStyle: "italic",
+                    }}
+                  >
+                    You have no appointment at the moment:{" "}
+                  </Text>
                 </Box>
               </Box>
             </Box>
-          </Box>
-        </VStack>
 
-        {/* Third Section (Right) */}
-        <VStack bg="#F6E4FC" width="25%" spacing={3} h="100vh">
-          <Box marginTop="30px" marginLeft="200px">
-            <Image
-              src={NotificationIcon}
-              alt="Notificatio icon"
-              h="25px"
-              w="25px"
-              marginTop="10px"
-              marginBottom="10px"
+            <SettingsModal
+              isOpen={showSettingsModal}
+              onClose={handleCloseSettingsModal}
             />
-          </Box>
-          <Box marginLeft="90px" marginTop="10px">
-            <Box>
-              {user?.image ? (
-                <Link onClick={handleOpenUserDetailsModal}>
-                  <Image
-                    borderRadius="8px"
-                    h="100px"
-                    w="100px"
-                    src={user?.image}
-                    alt="User Image"
-                  />
-                </Link>
-              ) : (
-                <Link onClick={handleOpenUserDetailsModal}>
-                  <Image
-                    src={userImageIcon}
-                    alt="User Image Icon"
-                    boxSize="50px"
-                    marginBottom="2%"
-                    h="100px"
-                    w="100px"
-                    borderRadius="50%"
-                  />
-                </Link>
-              )}
-              <Box marginLeft="-85px" marginTop="10px">
-                <Link onClick={handleOpenUserDetailsModal}>
-                  <Text
-                   fontSize="18px"
-                    style={{
-                      cursor: "pointer",
-                    }}
-                    _hover={{ color: "#A210C6" }}
-                    color="#A210C6"
-                  >
-                    <Text>Profile</Text>
-                  </Text>
-                </Link>
-              </Box>
-            </Box>
-
-            <Box
-              marginLeft="-85px"
-              marginTop="20px"
-              // bg="#F5D9FE"
-              borderRadius="10px"
-              h="45vh"
-              w="20vw"
-            >
-              <Box paddingTop="5px" bg="white" borderRadius="10" h="25vh">
-                <Text
-                  fontSize="20px"
-                  fontFamily="body"
-                  color="#A210C6"
-                  marginTop="20px"
-                  marginLeft="20px"
-                >
-                  Activity Log
-                </Text>
-                <ul style={{ paddingLeft: "20px", marginTop: "10px" }}>
-                  <li style={{ listStyleType: "none" }}>
-                    <Text>No. of booking: 0</Text>
-                  </li>
-                  <li style={{ listStyleType: "none" }}>
-                    <Text>No. of care received: 0</Text>
-                  </li>
-                </ul>
-              </Box>
-
-              <Box marginTop="10px" bg="white" borderRadius="10" h="25vh">
-                <Text
-                  fontSize="20px"
-                  fontFamily="body"
-                  color="#A210C6"
-                  marginTop="30px"
-                  marginLeft="20px"
-                >
-                  Appointments
-                </Text>
-                <Text
-                  style={{
-                    fontStyle: "italic",
-                  }}
-                >
-                  You have no appointment at the moment:{" "}
-                </Text>
-              </Box>
-            </Box>
-          </Box>
-
-          <SettingsModal
-            isOpen={showSettingsModal}
-            onClose={handleCloseSettingsModal}
-          />
-          <AppointmentsModal
-            isOpen={showAppointmentsModal}
-            onClose={handleCloseAppointmentsModal}
-          />
-          <HelpModal isOpen={showHelpModal} onClose={handleCloseHelpModal} />
-          <UserModal isOpen={showUserModal} onClose={handleCloseUserModal} />
-        </VStack>
+            <AppointmentsModal
+              isOpen={showAppointmentsModal}
+              onClose={handleCloseAppointmentsModal}
+            />
+            <HelpModal isOpen={showHelpModal} onClose={handleCloseHelpModal} />
+            <UserModal isOpen={showUserModal} onClose={handleCloseUserModal} />
+          </VStack>
+        )}
       </Flex>
       <UserDetailsModal
         isOpen={showUserDetailsModal}
         onClose={handleCloseUserDetailsModal}
         defaultImage={userImageIcon}
       />
-       <LogoutModal
-          isOpen={showLogoutModal}
-          onClose={() => setShowLogoutModal(false)}
-          onConfirm={handleConfirmLogout}
-        />
+      <LogoutModal
+        isOpen={showLogoutModal}
+        onClose={() => setShowLogoutModal(false)}
+        onConfirm={handleConfirmLogout}
+      />
     </ChakraProvider>
   );
 };

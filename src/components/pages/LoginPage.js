@@ -97,13 +97,13 @@ const LandingPage = () => {
           duration: 5000,
           isClosable: true,
         });
-      
+
         setLoading(false);
         setTimeout(() => {
           navigate("/dashboard");
         }, 3000);
       } else {
-        const errorData = await response.json(); 
+        const errorData = await response.json();
         console.error("Login failed:", errorData.message);
 
         toast({
@@ -118,7 +118,9 @@ const LandingPage = () => {
       }
     } catch (error) {
       setLoading(false);
-      alert("Login failed, confirm your login details or check your internet connection");
+      alert(
+        "Login failed, confirm your login details or check your internet connection"
+      );
       // toast({
       //   title: "Login failed",
       //   description:error.message,
@@ -167,15 +169,25 @@ const LandingPage = () => {
           </HStack>
         </Box>
         <Box display="flex">
-          <Box>
-            <Image src={Login1} alt="Logo" w="715px" h="1024px" />
+          <Box marginLeft="-110px">
             <Image
+              src={Login1}
+              alt="Logo"
+              w="715px"
+              h="1000px"
+              maxH="89vh"
+              objectFit="contain"
+              marginLeft="-50px"
+            />
+            {/* <Image
               src={Shade}
               alt="Logo"
               w="715px"
               h="1024px"
-              marginTop="-900px"
-            />
+              marginTop="-640px"
+              maxH="100vh"
+              objectFit="contain"
+            /> */}
           </Box>
           <Box>
             <Text
