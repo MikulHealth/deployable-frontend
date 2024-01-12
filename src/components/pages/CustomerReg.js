@@ -3,6 +3,9 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
 import {
   Box,
   Button,
@@ -17,6 +20,7 @@ import {
   FormLabel,
   FormErrorMessage,
   FormHelperText,
+  Flex,
   Input,
   InputGroup,
   InputLeftAddon,
@@ -58,10 +62,15 @@ const LandingPage = () => {
     password: "",
     confirmPassword: "",
     gender: "",
+    DOB: "",
     address: "",
     image: "",
   });
+  const [selectedDate, setSelectedDate] = useState(null);
 
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [image, setPic] = useState();
@@ -206,14 +215,20 @@ const LandingPage = () => {
           </HStack>
         </Box>
         <Box display="flex">
-          <Box>
-            <Image src={Customer} alt="Logo" w="715px" h="1024px" />
+          <Box w="55%">
+            <Image
+              src={Customer}
+              alt="Logo"
+              w="650px"
+              h="1050px"
+              marginTop="-70px"
+            />
             <Image
               src={Shade}
               alt="Logo"
-              w="715px"
-              h="1024px"
-              marginTop="-900px"
+              w="700px"
+              h="1050px"
+              marginTop="-1000px"
             />
           </Box>
           <Box>
@@ -222,12 +237,12 @@ const LandingPage = () => {
               fontFamily="body"
               color="#A210C6"
               marginTop="30px"
-              marginLeft="20px"
+              marginLeft="-80px"
             >
               Create your account
             </Text>
             <form onSubmit={handleSubmit}>
-              <FormControl isRequired marginTop="20px" marginLeft="100px">
+              <FormControl isRequired marginTop="20px" w="110%">
                 <FormLabel>First name</FormLabel>
                 <Input
                   name="firstName"
@@ -240,13 +255,36 @@ const LandingPage = () => {
                   placeholder="Last name"
                   onChange={handleInputChange}
                 />
-                <FormLabel marginTop="20px">Email address</FormLabel>
-                <Input
-                  name="email"
-                  placeholder="Email"
-                  type="email"
-                  onChange={handleInputChange}
-                />
+
+                <Flex>
+                  <Box>
+                    <FormLabel fontSize="15px" marginLeft="10px" marginTop="30px">
+                      Upload headshort 
+                    </FormLabel>
+                    <Input
+                      name="image"
+                    
+                      w="250px"
+                      type="file"
+                      accept="image/*"
+                      placeholder="Image"
+                      onChange={(e) => {
+                        postImage(e.target.files[0], formData, setFormData);
+                      }}
+                    />
+                    {imageLoading && <LoadingSpinner size={20} />}
+                  </Box>
+                  <Box>
+                    <FormLabel  marginLeft="45px" marginTop="28px">Email address</FormLabel>
+                    <Input
+                      name="email"
+                      placeholder="Email"
+                      type="email"
+                      onChange={handleInputChange}
+                      marginLeft="46px"
+                    />
+                  </Box>
+                </Flex>
                 <FormLabel marginTop="20px">Home address</FormLabel>
                 <Input
                   name="address"
@@ -254,16 +292,37 @@ const LandingPage = () => {
                   type="address"
                   onChange={handleInputChange}
                 />
-                <FormLabel marginTop="20px">Gender </FormLabel>
-                <Select
-                 name="gender"
-                  placeholder="Select your gender"
-                  w="205px"
-                >
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                  onChange={handleInputChange}
-                </Select>
+                <Flex direction="row" justify="space-between">
+                  <Box>
+                    <FormLabel marginTop="20px">Gender </FormLabel>
+                    <Select
+                      name="gender"
+                      placeholder="Select your gender"
+                      w="300px"
+                    >
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                      onChange={handleInputChange}
+                    </Select>
+                  </Box>
+                  <Box>
+                    <FormLabel marginTop="20px">Date of Birth</FormLabel>
+                    <DatePicker
+                      name="DOB"
+                      selected={selectedDate}
+                      onChange={handleDateChange}
+                      maxDate={new Date()} // Disable future dates
+                      peekNextMonth
+                      showMonthDropdown
+                      showYearDropdown
+                      dropdownMode="select"
+                      dateFormat="yyyy-MM-dd"
+                      placeholderText="Select your date of birth"
+                      className="form-control"
+                    />
+                  </Box>
+                </Flex>
+
                 <InputGroup marginTop="20px">
                   <InputLeftAddon children="+234" />
                   <Input
@@ -302,22 +361,6 @@ const LandingPage = () => {
                     </Button>
                   </InputRightElement>
                 </InputGroup>
-
-                <FormLabel marginLeft="10px" marginTop="30px">
-                  Upload headshort (only PNG and JPG files are accepted)
-                </FormLabel>
-                <Input
-                  name="image"
-                  marginLeft="-123px"
-                  w="422px"
-                  type="file"
-                  accept="image/*"
-                  placeholder="Image"
-                  onChange={(e) => {
-                    postImage(e.target.files[0], formData, setFormData);
-                  }}
-                />
-                {imageLoading && <LoadingSpinner size={20} />}
 
                 <ChakraLink href="/join-complete">
                   <Button

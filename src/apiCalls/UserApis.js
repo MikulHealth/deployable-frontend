@@ -21,7 +21,7 @@ export const GetCurrentUser = async () => {
     console.log(error);
     return error.response.data;
   }
-  // http://localhost:8080/v1/angel/updateCustomer
+ 
 };
 
 export const UpdateCustomer = async (editedUser, toast, setLoading, toastMessage) => {
@@ -32,7 +32,7 @@ export const UpdateCustomer = async (editedUser, toast, setLoading, toastMessage
 		},
 	  };
   
-	  setLoading(true); // Set loading to true before making the request
+	  setLoading(true); 
   
 	  const response = await axios.put(
 		"http://localhost:8080/v1/angel/updateCustomer",
@@ -40,14 +40,14 @@ export const UpdateCustomer = async (editedUser, toast, setLoading, toastMessage
 		config
 	  );
   
-	  setLoading(false); // Set loading to false after the request is complete
+	  setLoading(false);
   
 	  if (response && response.data) {
 		toast({
 		  title: "Update Successful",
 		  description: toastMessage || response.data.message,
 		  status: "success",
-		  duration: 5000,
+		  duration: 6000,
 		  isClosable: true,
 		});
 		return { success: true, data: response.data };
@@ -71,7 +71,7 @@ export const UpdateCustomer = async (editedUser, toast, setLoading, toastMessage
 		duration: 5000,
 		isClosable: true,
 	  });
-	  setLoading(false); // Set loading to false in case of an error
+	  setLoading(false); 
 	  return { success: false, error: error.response?.data || "Unknown error occurred" };
 	}
   };

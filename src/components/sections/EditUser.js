@@ -152,7 +152,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
     setLoading(true);
     try {
       await handleImageChange(image, editedUser, setEditedUser);
-      const response = await UpdateCustomer(editedUser, toast, setLoading);
+      const response = await UpdateCustomer(editedUser, toast, setLoading, "You will be re-directed to the dashboard");
 
       if (response.success) {
         setLoading(false);

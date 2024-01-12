@@ -74,8 +74,8 @@ const UserDetailsModal = ({ isOpen, onClose }) => {
                 src={user?.image || defaultImage}
                 alt="User Image"
                 borderRadius="8px"
-                h="38vh"
-                w="20vw"
+                h="35vh"
+                w="15vw"
               />
               <Text>{`Name: ${user?.firstName} ${user?.lastName}`}</Text>
               <Text>{`Home address: ${user?.address}`}</Text>
