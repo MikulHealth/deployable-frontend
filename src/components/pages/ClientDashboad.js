@@ -3,6 +3,7 @@ import { GetCurrentUser } from "../../apiCalls/UserApis";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { SetUser } from "../../redux/userSlice";
+import AppointmentPage from "./AppointmentPage";
 import {
   Box,
   Button,
@@ -30,9 +31,9 @@ import NurseAndPatient from "../../assets/NurseAndPatient.svg";
 import NotificationIcon from "../../assets/notification.svg";
 import "../../styles/pages/LandingPage.css";
 import SettingsModal from "../sections/Settings";
-import AppointmentsModal from "../sections/Appointments";
+import AppointmentsModal from "../sections/AppointmentForm";
 import HelpModal from "../sections/Help";
-import UserModal from "../sections/UserDetailspage";
+// import UserModal from "../sections/UserDetailspage";
 import UserDetailsModal from "../sections/UserDetails";
 import ServicesPage from "./Services";
 import ServicesModal from "../sections/ServicePageModal";
@@ -59,7 +60,10 @@ const customTheme = extendTheme({
 const ClientDash = () => {
   const [loading, setLoading] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
-  const [showAppointmentsModal, setShowAppointmentsModal] = useState(false);
+  const [activePage, setActivePage] = useState("home");
+
+  const [showAppointmentPage, setShowAppointmentPage] = useState(false);
+  const [showDashboard, setShowDashbaord] = useState(false);
   const [showHelpModal, setShowHelpModal] = useState(false);
   const [showUserModal, setUserModal] = useState(false);
   const navigate = useNavigate();
@@ -138,12 +142,16 @@ const ClientDash = () => {
   };
 
   const handleOpenAppointmentsModal = () => {
-    setShowAppointmentsModal(true);
+    setShowAppointmentPage(true);
   };
 
-  const handleCloseAppointmentsModal = () => {
-    setShowAppointmentsModal(false);
+  const handleOpenDashboard = () => {
+    navigate("/dashboard");
+    window.location.reload();
   };
+  // const handleCloseAppointmentsModal = () => {
+  //   setShowAppointmentsModal(false);
+  // };
 
   const handleOpenHelpModal = () => {
     setShowHelpModal(true);
@@ -187,13 +195,11 @@ const ClientDash = () => {
             />
 
             <VStack spacing={3} align="center" mt={5}>
-              <Box
+              <Flex
                 marginTop="50px"
                 bg="white"
                 p={3}
                 borderRadius="md"
-                display="flex"
-                alignItems="center"
                 w="17vw"
               >
                 <Image
@@ -203,11 +209,31 @@ const ClientDash = () => {
                   src={HelpIcon}
                   alt="HelpIcon"
                 />
-                <Text marginLeft="15px" color="black">
-                  HOME
+
+                <Text
+                  onClick={() => {
+                    handleOpenDashboard();
+                    setActivePage("home");
+                  }}
+                  style={{
+                    cursor: "pointer",
+                  }}
+                  _hover={{ color: "#A210C6" }}
+                  marginLeft="15px"
+                  color="black"
+                >
+                  Dashbaord
                 </Text>
-              </Box>
-              <Flex alignItems="center" marginTop="30px">
+              </Flex>
+              {/* <Flex
+                borderRadius="md"
+                p={3}
+                w="17vw"
+                alignItems="center"
+                marginTop="30px"
+                // bg={activePage ? "white" : "#F6E4FC"}
+              > */}
+              <Flex alignItems="center" marginTop="30px" marginLeft="-46px">
                 <Image
                   marginLeft="10px"
                   w="20px"
@@ -218,7 +244,10 @@ const ClientDash = () => {
                 <Text
                   marginLeft="15px"
                   color="black"
-                  onClick={handleOpenAppointmentsModal}
+                  onClick={() => {
+                    handleOpenAppointmentsModal();
+                    // setActivePage("appointments");
+                  }}
                   style={{
                     cursor: "pointer",
                   }}
@@ -239,7 +268,10 @@ const ClientDash = () => {
                 <Text
                   marginLeft="15px"
                   color="black"
-                  onClick={handleOpenSettingsModal}
+                  onClick={() => {
+                    handleOpenSettingsModal();
+                    setActivePage("appointments");
+                  }}
                   style={{
                     cursor: "pointer",
                   }}
@@ -322,7 +354,6 @@ const ClientDash = () => {
             width="50%"
             height="100vh"
             // bg="white"
-          
           >
             <LoadingSpinner size={100} />
           </Flex>
@@ -631,14 +662,26 @@ const ClientDash = () => {
               isOpen={showSettingsModal}
               onClose={handleCloseSettingsModal}
             />
-            <AppointmentsModal
-              isOpen={showAppointmentsModal}
-              onClose={handleCloseAppointmentsModal}
-            />
+
             <HelpModal isOpen={showHelpModal} onClose={handleCloseHelpModal} />
-            <UserModal isOpen={showUserModal} onClose={handleCloseUserModal} />
+            {/* <UserModal isOpen={showUserModal} onClose={handleCloseUserModal} /> */}
           </VStack>
         )}
+        {showAppointmentPage && (
+          <Box
+            position="fixed"
+            top="0"
+            left="25%"
+            width="75%"
+            height="100%"
+            backgroundColor="white"
+            zIndex="1000"
+          >
+            <AppointmentPage />
+          </Box>
+        )}
+
+        {/* {showDashboard && <AppointmentPage />} */}
       </Flex>
       <UserDetailsModal
         isOpen={showUserDetailsModal}

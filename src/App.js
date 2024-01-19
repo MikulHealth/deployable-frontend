@@ -14,6 +14,7 @@ import Login from './components/pages/LoginPage'
 import ForgotPassword from './components/pages/ForgotPassowrd'
 import ResetPassword from './components/pages/ResetPassword'
 import ClientDash from './components/pages/ClientDashboad';
+import AppointmentPage from './components/pages/AppointmentPage';
 import UserDetailsModal from './components/sections/UserDetails';
 import VerifyOtpDash from './components/sections/VerifyOTP'
 
@@ -38,6 +39,7 @@ function App() {
         <Route path="/dashboard" element={<ClientDash />}></Route>
         <Route path="/details" element={<UserDetailsModal/>}></Route>
         <Route path="/verifyPhone" element={<VerifyOtpDash/>}></Route>
+          <Route path="/appointments" element={<AppointmentPage />} />
         </Routes>
         </BrowserRouter>
         

@@ -66,16 +66,17 @@ const LandingPage = () => {
     address: "",
     image: "",
   });
-  const [selectedDate, setSelectedDate] = useState(null);
-
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-  };
+ 
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [image, setPic] = useState();
   const [show, setShow] = useState(false);
   const [imageLoading, setImageLoading] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null);
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
