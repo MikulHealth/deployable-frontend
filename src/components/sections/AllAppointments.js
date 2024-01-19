@@ -11,6 +11,7 @@ import {
   ModalBody,
   ModalFooter,
   Box,
+  Flex,
 } from "@chakra-ui/react";
 import axios from "axios";
 
@@ -46,26 +47,50 @@ const AppointmentModal = ({ isOpen, onClose }) => {
     }
   }, [isOpen]);
 
+  const formatDate = (dateString) => {
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    const formattedDate = new Date(dateString).toLocaleDateString(
+      undefined,
+      options
+    );
+    return formattedDate;
+  };
+
   const handleViewMore = (id) => {
     // Implement logic to show more details for the selected appointment
     console.log(`View more details for appointment with ID: ${id}`);
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="md">
+    <Modal isOpen={isOpen} onClose={onClose} size="md" borderRadius="0px">
       <ModalOverlay />
       <ModalContent maxH="80vh" overflowY="auto">
-        <ModalHeader>Appointments</ModalHeader>
+        <ModalHeader color="#A210C6">All your appointments.</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <VStack align="start" spacing={4}>
             {appointments.map((appointment) => (
               <Box key={appointment.id}>
-                <Text>
-                  {`Name: ${appointment.recipientFirstname} ${appointment.recipientLastname}`}
-                </Text>
-                <Text>{`Date Created: ${appointment.createdAt}`}</Text>
-                <Button onClick={() => handleViewMore(appointment.id)}>
+                <Flex>
+                  <Text fontWeight="bold" color="black">
+                    Care beneficiary:
+                  </Text>
+                  <Text marginLeft="5px" color="black">
+                    {`${appointment.recipientFirstname} ${appointment.recipientLastname}`}
+                  </Text>
+                </Flex>
+                <Flex>
+                  <Text fontWeight="bold" color="black">
+                    Created on:
+                  </Text>
+                  <Text marginLeft="5px" color="black">{formatDate(appointment.createdAt)}</Text>
+                </Flex>
+                <Button
+                  marginLeft="280px"
+                  color="white"
+                  bg="gray"
+                  onClick={() => handleViewMore(appointment.id)}
+                >
                   View More
                 </Button>
               </Box>
@@ -73,7 +98,7 @@ const AppointmentModal = ({ isOpen, onClose }) => {
           </VStack>
         </ModalBody>
         <ModalFooter>
-          <Button colorScheme="blue" onClick={onClose}>
+          <Button marginLeft="280px" colorScheme="red" onClick={onClose}>
             Close
           </Button>
         </ModalFooter>
