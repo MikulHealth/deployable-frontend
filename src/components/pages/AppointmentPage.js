@@ -6,6 +6,8 @@ import { SetUser } from "../../redux/userSlice";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import AppointmentModal from "../sections/AppointmentForm";
+import AllAppointments from "../sections/AllAppointments"; // Adjust the import path
+
 import { PhoneIcon, AddIcon, WarningIcon, SearchIcon } from "@chakra-ui/icons";
 import {
   ChakraProvider,
@@ -35,6 +37,9 @@ const AppointmentPage = () => {
   const [showUserDetailsModal, setShowUserDetailsModal] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [showAppointmentModal, setShowAppointmentModal] = useState(false);
+   const [showViewAllModal, setShowViewAllModal] = useState(false);  
+
+  
 
   const handleOpenUserDetailsModal = () => {
     setShowUserDetailsModal(true);
@@ -185,7 +190,131 @@ const AppointmentPage = () => {
             />
           </Box>
         </Flex>
-        <Box></Box>
+        <Box marginLeft="69px">
+          <Box display="flex" marginTop="30px">
+            <Box bg="#F6E4FC" w="29vw" h="15vh" borderRadius="10px"  cursor="pointer"
+              onClick={() => setShowViewAllModal(true)} // Open "View All Appointments" modal
+           >
+              {" "}
+              <Text
+                fontSize="20px"
+                fontFamily="body"
+                color="#A210C6"
+                marginTop="10px"
+                style={{ marginLeft: "-195px" }}
+              >
+                All Appointments
+              </Text>
+              
+              <Text
+                fontSize="16px"
+                style={{
+                  marginLeft: "250px",
+                  marginTop: "25px",
+                  fontStyle: "italic",
+                  cursor: "pointer",
+                }}
+                _hover={{ color: "#A210C6" }}
+              >
+                View all
+              </Text>
+            </Box>
+            <Box
+              bg="#F6E4FC"
+              w="29vw"
+              h="15vh"
+              marginLeft="26px"
+              borderRadius="10px"
+            >
+              {" "}
+              <Text
+                fontSize="20px"
+                fontFamily="body"
+                color="#A210C6"
+                marginTop="10px"
+                style={{ marginLeft: "-155px" }}
+              >
+               Active Appointments
+              </Text>
+             
+              <Text
+                fontSize="16px"
+                style={{
+                  marginLeft: "250px",
+                  marginTop: "25px",
+                  fontStyle: "italic",
+                  cursor: "pointer",
+                }}
+                _hover={{ color: "#A210C6" }}
+              >
+                View
+              </Text>
+            </Box>
+          </Box>
+          <Box display="flex" marginTop="30px">
+            <Box bg="#F6E4FC" w="29vw" h="15vh" borderRadius="10px">
+              {" "}
+              <Text
+                fontSize="20px"
+                fontFamily="body"
+                color="#A210C6"
+                marginTop="10px"
+                style={{ marginLeft: "-125px" }}
+              >
+                Completed Appointments
+              </Text>
+             
+              <Text
+                fontSize="16px"
+                style={{
+                  marginLeft: "250px",
+                  marginTop: "25px",
+                  fontStyle: "italic",
+                  cursor: "pointer",
+                }}
+                _hover={{ color: "#A210C6" }}
+                // onClick={() => setShowServicesModal(true)}
+              >
+              View 
+              </Text>
+              {/* <ServicesModal
+                isOpen={showServicesModal}
+                onClose={() => setShowServicesModal(false)}
+              /> */}
+            </Box>
+            <Box
+              bg="#F6E4FC"
+              w="29vw"
+              h="15vh"
+              marginLeft="26px"
+              borderRadius="10px"
+            >
+              {" "}
+              <Text
+                fontSize="20px"
+                fontFamily="body"
+                color="#A210C6"
+                marginTop="10px"
+                style={{ marginLeft: "-125px" }}
+              >
+                 Cancelled Appointments
+              </Text>
+              
+              <Text
+                fontSize="16px"
+                style={{
+                  marginLeft: "250px",
+                  marginTop: "25px",
+                  fontStyle: "italic",
+                  cursor: "pointer",
+                }}
+                _hover={{ color: "#A210C6" }}
+              >
+                View 
+              </Text>
+            </Box>
+          </Box>
+        </Box>
       </Box>
       <UserDetailsModal
         isOpen={showUserDetailsModal}
@@ -194,6 +323,10 @@ const AppointmentPage = () => {
       <AppointmentModal
         isOpen={showAppointmentModal}
         onClose={handleCloseAppointmentModal}
+      />
+       <AllAppointments
+        isOpen={showViewAllModal}
+        onClose={() => setShowViewAllModal(false)}
       />
     </ChakraProvider>
   );

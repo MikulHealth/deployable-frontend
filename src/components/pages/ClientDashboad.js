@@ -419,6 +419,8 @@ const ClientDash = () => {
                     marginTop="18px"
                   />
                 </Box>
+
+
                 <Box>
                   <Box display="flex" marginTop="30px">
                     <Box bg="#F6E4FC" w="19.5vw" h="20vh" borderRadius="10px">
@@ -550,6 +552,8 @@ const ClientDash = () => {
                     </Box>
                   </Box>
                 </Box>
+
+                
               </Box>
             </Box>
           </VStack>
