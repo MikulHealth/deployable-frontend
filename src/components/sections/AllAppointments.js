@@ -98,7 +98,7 @@ const AppointmentModal = ({ isOpen, onClose }) => {
           </VStack>
         </ModalBody>
         <ModalFooter>
-          <Button marginLeft="280px" colorScheme="red" onClick={onClose}>
+          <Button marginRight="280px" colorScheme="red" onClick={onClose}>
             Close
           </Button>
         </ModalFooter>
