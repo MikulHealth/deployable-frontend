@@ -22,6 +22,7 @@ import {
   Box,
   Select,
   useToast,
+  Textarea,
 } from "@chakra-ui/react";
 import { SetUser } from "../../redux/userSlice";
 
@@ -266,7 +267,7 @@ const AppointmentsModal = ({ isOpen, onClose }) => {
                   <FormLabel marginTop="20px">Doctor's phone number </FormLabel>
                   <Input
                     name="recipientDoctorNumber"
-                    type="text"
+                    type="tel"
                     placeholder="Personal Doctor's phone number"
                     onChange={handleInputChange}
                     w="250px"
@@ -297,7 +298,7 @@ const AppointmentsModal = ({ isOpen, onClose }) => {
               <Flex marginTop="1px">
                 <Box>
                   <FormLabel marginTop="20px">Health History </FormLabel>
-                  <Input
+                  <Textarea
                     name="recipientHealthHistory"
                     type="text"
                     placeholder="Health History"

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import userImageIcon from "../../assets/userImage.svg";
+import EditAppointmentModal from "../sections/EditAppointmentModal";
 import {
   VStack,
   Text,
@@ -24,7 +25,9 @@ const AppointmentModal = ({ isOpen, onClose }) => {
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [loading, setLoading] = useState(true);
   const toast = useToast();
-
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [editingAppointmentId, setEditingAppointmentId] = useState(null);
+  const [confirmationModalOpen, setConfirmationModalOpen] = useState(false); 
   const [detailsModalOpen, setDetailsModalOpen] = useState(false);
 
   useEffect(() => {
@@ -139,14 +142,70 @@ const AppointmentModal = ({ isOpen, onClose }) => {
     return formattedDateTime;
   };
 
+  const handleEditAppointment = (appointmentId) => {
+    setEditingAppointmentId(appointmentId);
+    setEditModalOpen(true);
+  };
+
+  const handleCancelRequest = async (appointmentId) => {
+    // Open the confirmation modal before canceling
+    setConfirmationModalOpen(true);
+    // Set the appointment ID to be canceled
+    setEditingAppointmentId(appointmentId);
+  };
+
+  const handleCancelConfirmation = async () => {
+    // Close the confirmation modal
+    setConfirmationModalOpen(false);
+
+    try {
+      const token = localStorage.getItem("token");
+      const apiUrl = `http://localhost:8080/v1/appointment/cancelAppointment/${editingAppointmentId}`;
+
+      const headers = {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      };
+
+      const response = await axios.post(apiUrl, {}, { headers });
+
+      if (response && response.data && response.data.success) {
+        toast({
+          title: response.data.message,
+          status: "success",
+          duration: 6000,
+        });
+        // Optionally, you can refresh the appointments list after canceling
+        // fetchData();
+      } else {
+        toast({
+          title: "Error canceling appointment",
+          description: response.data.message,
+          status: "error",
+          duration: 6000,
+        });
+        console.error("Error canceling appointment");
+      }
+    } catch (error) {
+      console.error("An error occurred while canceling appointment:", error);
+    }
+  };
+
+  const handleCancelModalClose = () => {
+    // Close the confirmation modal
+    setConfirmationModalOpen(false);
+    // Clear the editing appointment ID
+    setEditingAppointmentId(null);
+  };
+
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose} size="md" borderRadius="0px">
+      <Modal isOpen={isOpen} onClose={onClose} size="2xl" borderRadius="0px">
         <ModalOverlay />
         <ModalContent maxH="80vh" overflowY="auto">
           <ModalHeader color="#A210C6">All your appointments.</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
+          <ModalBody  marginLeft="25px">
             {loading ? (
               <Flex align="center" justify="center" height="200px">
                 <Spinner size="xl" />
@@ -171,26 +230,57 @@ const AppointmentModal = ({ isOpen, onClose }) => {
                         {formatDateTime(appointment.createdAt)}
                       </Text>
                     </Flex>
-                    <Button
-                      marginLeft="280px"
-                      color="white"
-                      bg="gray"
-                      onClick={() => handleViewMore(appointment.id)}
-                    >
-                      Details
-                    </Button>
+                    <Flex>
+                      <Button
+                        marginLeft="280px"
+                        color="white"
+                        bg="gray"
+                        onClick={() => handleViewMore(appointment.id)}
+                      >
+                        Details
+                      </Button>
+                      <Button marginLeft="8px"
+                        colorScheme="red"
+                        onClick={() => handleCancelRequest(appointment.id)}
+                      >
+                        Cancel Appointment
+                      </Button>
+                    </Flex>
                   </Box>
                 ))}
               </VStack>
             )}
           </ModalBody>
           <ModalFooter>
-            <Button marginRight="320px" colorScheme="red" onClick={onClose}>
+            {/* <Button marginRight="320px" colorScheme="red" onClick={onClose}>
               Close
-            </Button>
+            </Button> */}
           </ModalFooter>
         </ModalContent>
       </Modal>
+
+      {confirmationModalOpen && (
+        <Modal
+          isOpen={confirmationModalOpen}
+          onClose={handleCancelModalClose}
+          size="md"
+        >
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Confirmation</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              Are you sure you want to cancel this appointment?
+            </ModalBody>
+            <ModalFooter>
+              <Button colorScheme="red" onClick={handleCancelConfirmation}>
+                Confirm
+              </Button>
+              <Button marginLeft="5px" onClick={handleCancelModalClose}>Cancel</Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      )}
 
       {detailsModalOpen && selectedAppointment && (
         <Modal
@@ -336,13 +426,27 @@ const AppointmentModal = ({ isOpen, onClose }) => {
                       {formatDateTime(selectedAppointment.createdAt)}
                     </Text>
                   </Flex>
-                  <Button
-                    marginTop="4"
-                    colorScheme="blue"
-                    onClick={handleBackToAllAppointments}
-                  >
-                    Back to All Appointments
-                  </Button>
+
+                  <Flex>
+                    <Button
+                      marginTop="4px"
+                      colorScheme="blue"
+                      onClick={handleBackToAllAppointments}
+                    >
+                      All appointments
+                    </Button>
+
+                    <Button
+                      marginTop="4px"
+                      marginLeft="4px"
+                      colorScheme="blue"
+                      onClick={() =>
+                        handleEditAppointment(selectedAppointment.id)
+                      }
+                    >
+                      Edit appointment
+                    </Button>
+                  </Flex>
                 </Box>
                 <Box marginLeft="5px">
                   {selectedAppointment?.createdAt ? (
@@ -370,6 +474,16 @@ const AppointmentModal = ({ isOpen, onClose }) => {
           </ModalContent>
         </Modal>
       )}
+      <EditAppointmentModal
+        isOpen={editModalOpen}
+        onClose={() => setEditModalOpen(false)}
+        appointmentId={editingAppointmentId}
+        onSave={(editedAppointment) => {
+          // Handle the API call to save the edited appointment
+          // Update your state or trigger a refetch of appointments
+          setEditModalOpen(false);
+        }}
+      />
     </>
   );
 };

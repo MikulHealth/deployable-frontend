@@ -242,7 +242,7 @@ const ClientDash = () => {
                   alt="Appointments"
                 />
                 <Text
-                  marginLeft="15px"
+                  marginLeft="25px"
                   color="black"
                   onClick={() => {
                     handleOpenAppointmentsModal();

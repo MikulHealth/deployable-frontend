@@ -6,7 +6,7 @@ import { SetUser } from "../../redux/userSlice";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import AppointmentModal from "../sections/AppointmentForm";
-import AllAppointments from "../sections/AllAppointments"; // Adjust the import path
+import AllAppointments from "../sections/AllAppointments"; 
 
 import { PhoneIcon, AddIcon, WarningIcon, SearchIcon } from "@chakra-ui/icons";
 import {
@@ -168,15 +168,27 @@ const AppointmentPage = () => {
             <Text fontSize="15px" marginTop="2px" marginLeft="-195px">
               for yourself or a loved one?
             </Text>
+            <Flex marginLeft="10px">
             <Button
               onClick={handleOpenAppointmentModal}
               bg="#A210C6"
               color="white"
-              marginLeft="-220px"
+              
               marginTop="30px"
             >
               Book appointment
             </Button>
+            <Button
+              onClick={() => setShowViewAllModal(true)}
+              bg="gray"
+              color="white"
+              marginLeft="5px"
+              marginTop="30px"
+            >
+              All appointment
+            </Button>
+            </Flex>
+          
           </Box>
           <Box>
             <Image
@@ -193,7 +205,7 @@ const AppointmentPage = () => {
         <Box marginLeft="69px">
           <Box display="flex" marginTop="30px">
             <Box bg="#F6E4FC" w="29vw" h="15vh" borderRadius="10px"  cursor="pointer"
-              onClick={() => setShowViewAllModal(true)} // Open "View All Appointments" modal
+              onClick={() => setShowViewAllModal(true)}
            >
               {" "}
               <Text
@@ -201,9 +213,9 @@ const AppointmentPage = () => {
                 fontFamily="body"
                 color="#A210C6"
                 marginTop="10px"
-                style={{ marginLeft: "-195px" }}
+                style={{ marginLeft: "-190px" }}
               >
-                All Appointments
+                Pending Appointments
               </Text>
               
               <Text
