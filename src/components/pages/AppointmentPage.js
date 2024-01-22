@@ -7,6 +7,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import AppointmentModal from "../sections/AppointmentForm";
 import AllAppointments from "../sections/AllAppointments"; 
+import PendingAppointmentModal from "../sections/PendingAppointments";
+import CanceledAppointmentsModal from "../sections/CanceledAppointments";
 
 import { PhoneIcon, AddIcon, WarningIcon, SearchIcon } from "@chakra-ui/icons";
 import {
@@ -38,8 +40,9 @@ const AppointmentPage = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [showAppointmentModal, setShowAppointmentModal] = useState(false);
    const [showViewAllModal, setShowViewAllModal] = useState(false);  
+   const [showPendingModal, setShowPendingModal] = useState(false);  
+   const [showCanceledModal, setShowCanceledModal] = useState(false);  
 
-  
 
   const handleOpenUserDetailsModal = () => {
     setShowUserDetailsModal(true);
@@ -205,7 +208,7 @@ const AppointmentPage = () => {
         <Box marginLeft="69px">
           <Box display="flex" marginTop="30px">
             <Box bg="#F6E4FC" w="29vw" h="15vh" borderRadius="10px"  cursor="pointer"
-              onClick={() => setShowViewAllModal(true)}
+              onClick={() => setShowPendingModal(true)}
            >
               {" "}
               <Text
@@ -213,7 +216,7 @@ const AppointmentPage = () => {
                 fontFamily="body"
                 color="#A210C6"
                 marginTop="10px"
-                style={{ marginLeft: "-190px" }}
+                style={{ marginLeft: "-150px" }}
               >
                 Pending Appointments
               </Text>
@@ -300,6 +303,8 @@ const AppointmentPage = () => {
               h="15vh"
               marginLeft="26px"
               borderRadius="10px"
+              cursor="pointer"
+              onClick={() => setShowCanceledModal(true)}
             >
               {" "}
               <Text
@@ -335,6 +340,14 @@ const AppointmentPage = () => {
       <AppointmentModal
         isOpen={showAppointmentModal}
         onClose={handleCloseAppointmentModal}
+      />
+         <PendingAppointmentModal
+        isOpen={showPendingModal}
+        onClose={() => setShowPendingModal(false)}
+      />
+          <CanceledAppointmentsModal
+        isOpen={showCanceledModal}
+        onClose={() => setShowCanceledModal(false)}
       />
        <AllAppointments
         isOpen={showViewAllModal}

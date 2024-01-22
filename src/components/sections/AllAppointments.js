@@ -200,12 +200,12 @@ const AppointmentModal = ({ isOpen, onClose }) => {
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose} size="2xl" borderRadius="0px">
+      <Modal isOpen={isOpen} onClose={onClose} size="md" borderRadius="0px">
         <ModalOverlay />
         <ModalContent maxH="80vh" overflowY="auto">
           <ModalHeader color="#A210C6">All your appointments.</ModalHeader>
           <ModalCloseButton />
-          <ModalBody  marginLeft="25px">
+          <ModalBody  marginLeft="15px">
             {loading ? (
               <Flex align="center" justify="center" height="200px">
                 <Spinner size="xl" />
@@ -239,12 +239,12 @@ const AppointmentModal = ({ isOpen, onClose }) => {
                       >
                         Details
                       </Button>
-                      <Button marginLeft="8px"
+                      {/* <Button marginLeft="8px"
                         colorScheme="red"
                         onClick={() => handleCancelRequest(appointment.id)}
                       >
                         Cancel Appointment
-                      </Button>
+                      </Button> */}
                     </Flex>
                   </Box>
                 ))}
@@ -353,10 +353,18 @@ const AppointmentModal = ({ isOpen, onClose }) => {
                   </Flex>
                   <Flex marginTop="5px">
                     <Text fontWeight="bold" color="black">
-                      Doctor:
+                      Doctor's name:
                     </Text>
                     <Text marginLeft="5px" color="black">
                       {selectedAppointment.recipientDoctor || "Not availabe"}
+                    </Text>
+                  </Flex>
+                  <Flex marginTop="5px">
+                    <Text fontWeight="bold" color="black">
+                      Doctor's phone number:
+                    </Text>
+                    <Text marginLeft="5px" color="black">
+                      {selectedAppointment.recipientPhoneNumber || "Not availabe"}
                     </Text>
                   </Flex>
                   <Flex marginTop="5px">
@@ -418,7 +426,7 @@ const AppointmentModal = ({ isOpen, onClose }) => {
                       {selectedAppointment.medicalReport || "Not availabe"}
                     </Text>
                   </Flex>
-                  <Flex marginTop="5px">
+                  <Flex marginTop="5px" marginBottom="10px">
                     <Text fontWeight="bold" color="black">
                       Created on:
                     </Text>
@@ -426,7 +434,7 @@ const AppointmentModal = ({ isOpen, onClose }) => {
                       {formatDateTime(selectedAppointment.createdAt)}
                     </Text>
                   </Flex>
-
+{/* 
                   <Flex>
                     <Button
                       marginTop="4px"
@@ -446,15 +454,15 @@ const AppointmentModal = ({ isOpen, onClose }) => {
                     >
                       Edit appointment
                     </Button>
-                  </Flex>
+                  </Flex> */}
                 </Box>
                 <Box marginLeft="5px">
-                  {selectedAppointment?.createdAt ? (
+                  {selectedAppointment?.image ? (
                     <Image
                       borderRadius="8px"
                       h="35vh"
                       w="15vw"
-                      src={selectedAppointment?.createdAt}
+                      src={selectedAppointment?.image}
                       alt="Image"
                     />
                   ) : (
