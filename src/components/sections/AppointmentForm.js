@@ -198,7 +198,7 @@ const AppointmentsModal = ({ isOpen, onClose }) => {
         setLoading(false);
 
         toast({
-          title: "Appointment booked successfully",
+          title: "Booked successfully",
           description: response.data.message,
           status: "success",
           duration: 6000,

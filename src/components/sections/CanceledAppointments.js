@@ -14,6 +14,7 @@ import {
   Flex,
   Spinner,
   useToast,
+  Divider,
 } from "@chakra-ui/react";
 import axios from "axios";
 
@@ -79,7 +80,7 @@ const CanceledAppointmentsModal = ({ isOpen, onClose }) => {
         <ModalContent maxH="80vh" overflowY="auto">
           <ModalHeader color="#A210C6">Canceled Appointments</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
+          <ModalBody marginLeft="40px">
             {loading ? (
               <Flex align="center" justify="center" height="200px">
                 <Spinner size="xl" />
@@ -114,6 +115,7 @@ const CanceledAppointmentsModal = ({ isOpen, onClose }) => {
                         Details
                       </Button> */}
                     </Flex>
+                    <Divider my={4} borderColor="gray.500" /> 
                   </Box>
                 ))}
               </VStack>

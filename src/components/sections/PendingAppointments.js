@@ -17,6 +17,7 @@ import {
   Spinner,
   useToast,
   Image,
+  Divider,
 } from "@chakra-ui/react";
 import axios from "axios";
 
@@ -228,6 +229,7 @@ const PendingAppointmentModal = ({ isOpen, onClose }) => {
                         Cancel Appointment
                       </Button>
                     </Flex>
+                    <Divider my={4} borderColor="gray.500" /> 
                   </Box>
                 ))}
               </VStack>

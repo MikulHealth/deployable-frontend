@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { SetUser } from "../../redux/userSlice";
 import AppointmentPage from "./AppointmentPage";
+import AppointmentModal from "../sections/AppointmentForm";
 import {
   Box,
   Button,
@@ -33,7 +34,7 @@ import "../../styles/pages/LandingPage.css";
 import SettingsModal from "../sections/Settings";
 import AppointmentsModal from "../sections/AppointmentForm";
 import HelpModal from "../sections/Help";
-// import UserModal from "../sections/UserDetailspage";
+import BeneficiariesModal from "../sections/Beneficiaries";
 import UserDetailsModal from "../sections/UserDetails";
 import ServicesPage from "./Services";
 import ServicesModal from "../sections/ServicePageModal";
@@ -61,7 +62,8 @@ const ClientDash = () => {
   const [loading, setLoading] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [activePage, setActivePage] = useState("home");
-
+  const [isBeneficiariesModalOpen, setBeneficiariesModalOpen] = useState(false);
+  const [showAppointmentModal, setShowAppointmentModal] = useState(false);
   const [showAppointmentPage, setShowAppointmentPage] = useState(false);
   const [showDashboard, setShowDashbaord] = useState(false);
   const [showHelpModal, setShowHelpModal] = useState(false);
@@ -74,6 +76,7 @@ const ClientDash = () => {
   const balance = 0.0;
   const [showServicesModal, setShowServicesModal] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [showViewAllModal, setShowViewAllModal] = useState(false);
 
   const userDetails = async () => {
     try {
@@ -90,6 +93,15 @@ const ClientDash = () => {
     setShowLogoutModal(true);
   };
 
+  const handleOpenAppointmentModal = () => {
+    setShowAppointmentModal(true);
+  };
+
+
+  const handleCloseAppointmentModal = () => {
+    setShowAppointmentModal(false);
+  };
+
   const handleConfirmLogout = () => {
     // Close the logout confirmation modal
     setShowLogoutModal(false);
@@ -99,6 +111,10 @@ const ClientDash = () => {
     localStorage.removeItem("phoneNumber");
     localStorage.removeItem("orderId");
     navigate("/");
+  };
+
+  const handleBeneficiariesButtonClick = () => {
+    setBeneficiariesModalOpen(true);
   };
 
   useEffect(() => {
@@ -420,7 +436,6 @@ const ClientDash = () => {
                   />
                 </Box>
 
-
                 <Box>
                   <Box display="flex" marginTop="30px">
                     <Box bg="#F6E4FC" w="19.5vw" h="20vh" borderRadius="10px">
@@ -445,6 +460,7 @@ const ClientDash = () => {
                           fontStyle: "italic",
                           cursor: "pointer",
                         }}
+                        onClick={handleOpenAppointmentModal}
                         _hover={{ color: "#A210C6" }}
                       >
                         Book now
@@ -456,6 +472,7 @@ const ClientDash = () => {
                       h="20vh"
                       marginLeft="10px"
                       borderRadius="10px"
+                      onClick={handleBeneficiariesButtonClick}
                     >
                       {" "}
                       <Text
@@ -465,10 +482,10 @@ const ClientDash = () => {
                         marginTop="10px"
                         style={{ marginLeft: "-130px" }}
                       >
-                        Refferals
+                        Beneficiaries
                       </Text>
-                      <Text fontSize="16px" style={{ marginLeft: "2px" }}>
-                        Refer friends and earn rewards
+                      <Text fontSize="16px" style={{ marginLeft: "-45px" }}>
+                        Your friends and loved ones
                       </Text>
                       <Text
                         fontSize="16px"
@@ -480,7 +497,7 @@ const ClientDash = () => {
                         }}
                         _hover={{ color: "#A210C6" }}
                       >
-                        Learn more
+                        view all
                       </Text>
                     </Box>
                   </Box>
@@ -552,8 +569,6 @@ const ClientDash = () => {
                     </Box>
                   </Box>
                 </Box>
-
-                
               </Box>
             </Box>
           </VStack>
@@ -666,6 +681,10 @@ const ClientDash = () => {
               isOpen={showSettingsModal}
               onClose={handleCloseSettingsModal}
             />
+            <BeneficiariesModal
+              isOpen={isBeneficiariesModalOpen}
+              onClose={() => setBeneficiariesModalOpen(false)}
+            />
 
             <HelpModal isOpen={showHelpModal} onClose={handleCloseHelpModal} />
             {/* <UserModal isOpen={showUserModal} onClose={handleCloseUserModal} /> */}
@@ -691,6 +710,16 @@ const ClientDash = () => {
         isOpen={showUserDetailsModal}
         onClose={handleCloseUserDetailsModal}
         defaultImage={userImageIcon}
+      />
+
+      <AppointmentsModal
+        isOpen={showAppointmentModal}
+        onClose={handleCloseAppointmentModal}
+      />
+
+      <AppointmentModal
+        isOpen={showAppointmentModal}
+        onClose={handleCloseAppointmentModal}
       />
       <LogoutModal
         isOpen={showLogoutModal}
