@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import userImageIcon from "../../assets/userImage.svg";
 import {
   VStack,
   Text,
@@ -343,19 +344,26 @@ const AppointmentModal = ({ isOpen, onClose }) => {
                     Back to All Appointments
                   </Button>
                 </Box>
-                <Box  marginLeft="5px">
-                  <Image
-                    marginLeft="5px"
-                    src={
-                      selectedAppointment.recipientImage || "Image not availabe"
-                    }
-                    alt="image"
-                    boxSize="100px"
-                    objectFit="cover"
-                    borderRadius="8px"
-                    marginBottom="5px"
-                    marginTop="5px"
-                  />
+                <Box marginLeft="5px">
+                  {selectedAppointment?.createdAt ? (
+                    <Image
+                      borderRadius="8px"
+                      h="35vh"
+                      w="15vw"
+                      src={selectedAppointment?.createdAt}
+                      alt="Image"
+                    />
+                  ) : (
+                    <Image
+                      src={userImageIcon}
+                      alt="Image Icon"
+                      boxSize="50px"
+                      marginBottom="2%"
+                      h="35vh"
+                      w="15vw"
+                      borderRadius="50%"
+                    />
+                  )}
                 </Box>
               </Flex>
             </ModalBody>
