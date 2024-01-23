@@ -168,9 +168,9 @@ const BeneficiariesModal = ({ isOpen, onClose }) => {
           )}
         </ModalBody>
         <ModalFooter>
-          <Button colorScheme="purple" onClick={onClose}>
+          {/* <Button colorScheme="purple" onClick={onClose}>
             Close
-          </Button>
+          </Button> */}
         </ModalFooter>
       </ModalContent>
     </Modal>

@@ -206,7 +206,7 @@ const PendingAppointmentModal = ({ isOpen, onClose }) => {
                     </Flex>
                     <Flex>
                       <Text fontWeight="bold" color="black">
-                        Created on:
+                        Booked on:
                       </Text>
                       <Text marginLeft="5px" color="black">
                         {formatDateTime(appointment.createdAt)}
@@ -293,7 +293,7 @@ const PendingAppointmentModal = ({ isOpen, onClose }) => {
                       Date of Birth:
                     </Text>
                     <Text marginLeft="5px" color="black">
-                      {formatDate(selectedAppointment.DOB) || "Not available"}
+                      {formatDate(selectedAppointment.recipientDOB) || "Not available"}
                     </Text>
                   </Flex>
 
@@ -390,7 +390,7 @@ const PendingAppointmentModal = ({ isOpen, onClose }) => {
                   </Flex>
                   <Flex marginTop="5px">
                     <Text fontWeight="bold" color="black">
-                      Created on:
+                      Booked on:
                     </Text>
                     <Text marginLeft="5px" color="black">
                       {formatDateTime(selectedAppointment.createdAt)}

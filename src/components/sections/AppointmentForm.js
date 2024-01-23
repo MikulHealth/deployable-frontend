@@ -58,7 +58,7 @@ const AppointmentsModal = ({ isOpen, onClose }) => {
     const adjustedDate = new Date(selectedDate);
     adjustedDate.setDate(adjustedDate.getDate() + 1);
 
-    return adjustedDate.toISOString().split('T')[0];
+    return adjustedDate.toISOString().split("T")[0];
   };
 
   const [formData, setFormData] = useState({
@@ -80,6 +80,8 @@ const AppointmentsModal = ({ isOpen, onClose }) => {
     startDate: "",
     endDate: "",
     medicalReport: "",
+    kinName: "",
+    kinNumber: "",
   });
 
   const handleInputChange = (e) => {
@@ -107,6 +109,8 @@ const AppointmentsModal = ({ isOpen, onClose }) => {
         startDate: "",
         endDate: "",
         medicalReport: "",
+        kinName: "",
+        kinNumber: "",
       });
     } else {
       setFormData({
@@ -127,6 +131,8 @@ const AppointmentsModal = ({ isOpen, onClose }) => {
         startDate: "",
         endDate: "",
         medicalReport: "",
+        kinName: "",
+        kinNumber: "",
       });
     }
   }, [isOpen, bookForSelf, user]);
@@ -140,6 +146,7 @@ const AppointmentsModal = ({ isOpen, onClose }) => {
       recipientGender: "",
       recipientDOB: "",
       recipientImage: "",
+      relationship: "",
       currentLocation: "",
       shift: "",
       recipientDoctor: "",
@@ -150,6 +157,9 @@ const AppointmentsModal = ({ isOpen, onClose }) => {
       startDate: "",
       endDate: "",
       medicalReport: "",
+      kinName: "",
+      kinNumber: "",
+      language: "",
     });
     setSelectedDate(null);
     setBookForSelf(false);
@@ -178,6 +188,8 @@ const AppointmentsModal = ({ isOpen, onClose }) => {
             recipientGender: user?.gender,
             recipientDOB: user?.dob,
             recipientImage: user?.image,
+            kinName: user?.kinName,
+            kinNumber: user?.kinNumber,
           }
         : {};
 
@@ -185,7 +197,9 @@ const AppointmentsModal = ({ isOpen, onClose }) => {
         ...formData,
         startDate: formatDateWithDayAdjustment(selectedStartDate),
         endDate: formatDateWithDayAdjustment(selectedEndDate),
-        ...(bookForSelf ? {} : { recipientDOB: formatDateWithDayAdjustment(selectedDob) }),
+        ...(bookForSelf
+          ? {}
+          : { recipientDOB: formatDateWithDayAdjustment(selectedDob) }),
         customerPhoneNumber: user?.phoneNumber,
         ...userFieldsForBookForSelf,
       };
@@ -209,7 +223,9 @@ const AppointmentsModal = ({ isOpen, onClose }) => {
         setLoading(false);
 
         console.error("Error booking appointment");
-        const errorMessage = response.data ? response.data.message : "Unknown error";
+        const errorMessage = response.data
+          ? response.data.message
+          : "Unknown error";
         toast({
           title: "Booking failed",
           description: errorMessage,
@@ -228,9 +244,7 @@ const AppointmentsModal = ({ isOpen, onClose }) => {
       });
     }
   };
-  
-  
-  
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="xl">
       <ModalOverlay />
@@ -387,7 +401,6 @@ const AppointmentsModal = ({ isOpen, onClose }) => {
                 <Input
                   name="recipientFirstname"
                   placeholder="First name"
-                
                   onChange={handleInputChange}
                   w="250px"
                 />
@@ -452,7 +465,83 @@ const AppointmentsModal = ({ isOpen, onClose }) => {
                   />
                 </Box>
               </Flex>
+              <Flex marginTop="1px">
+                <Box>
+                  <FormLabel marginTop="20px">Next of kin </FormLabel>
+                  <Input
+                    name="kinName"
+                    type="text"
+                    placeholder="Next of kin name"
+                    onChange={handleInputChange}
+                    w="250px"
+                  />
+                </Box>
+                <Box marginLeft="5px">
+                  <FormLabel marginTop="20px">Phone number </FormLabel>
+                  <Input
+                    name="kinNumber"
+                    type="text"
+                    placeholder="Next of kin phone number"
+                    onChange={handleInputChange}
+                    w="250px"
+                  />
+                </Box>
+              </Flex>
+              <Flex>
+              <Box>
+                <FormLabel marginTop="20px">
+                  Relationship with beneficiary{" "}
+                </FormLabel>
+                <Select
+                  name="relationship"
+                  placeholder="Select the appropriate relationship type"
+                  w="250px"
+                  onChange={handleInputChange}
+                >
+                  <option value="Mum">Mum</option>
+                  <option value="Dad">Dad</option>
 
+                  <option value="Wife">Wife</option>
+                  <option value="Husband">Husband</option>
+
+                  <option value="Sister">Sister</option>
+                  <option value="Brother">Brother</option>
+                  <option value="Uncle">Uncle</option>
+                  <option value="Aunt">Aunt</option>
+                  <option value="Son">Son</option>
+                  <option value="Daughter">Daughter</option>
+                  <option value="Niece">Niece</option>
+                  <option value="Nephew">Nephew</option>
+                  <option value="Cousin">Cousin</option>
+                  <option value="Friend">Friend</option>
+                  <option value="Colleague">Colleague</option>
+                  <option value="Neighbour">Neighbour</option>
+
+                  <option value="MotherInLaw">Mother in-law</option>
+                  <option value="FatherInLaw">Father in-law</option>
+                  <option value="Grandmother">Grand mother</option>
+                  <option value="Grandfather">Grand father</option>
+                </Select>
+              </Box>
+              <Box>
+              <FormLabel marginTop="20px">Preferred Language</FormLabel>
+                  <Select
+                    name="language"
+                    placeholder="Select preferred language"
+                    w="250px"
+                    onChange={handleInputChange}
+                  >
+                    <option value="eng">English</option>
+                    <option value="igbo">Igbo</option>
+                    <option value="yoruba">Yoruba</option>
+                    <option value="housa">Hausa</option>
+                    <option value="Pigeon">Pidgeon</option>
+                    <option value="other">Others</option>
+
+                  </Select>
+              </Box>
+              </Flex>
+             
               <Flex marginTop="1px">
                 <Box>
                   <FormLabel marginTop="20px">

@@ -65,6 +65,8 @@ const LandingPage = () => {
     DOB: "",
     address: "",
     image: "",
+    kinName: "",
+    kinNumber: "",
   });
  
   const [loading, setLoading] = useState(false);
@@ -347,6 +349,28 @@ const LandingPage = () => {
                     </Button>
                   </InputRightElement>
                 </InputGroup>
+                <Flex marginTop="1px">
+                <Box>
+                  <FormLabel marginTop="20px">Next of kin </FormLabel>
+                  <Input
+                    name="kinName"
+                    type="text"
+                    placeholder="Next of kin name"
+                    onChange={handleInputChange}
+                    w="250px"
+                  />
+                </Box>
+                <Box marginLeft="5px">
+                  <FormLabel marginTop="20px">Phone number </FormLabel>
+                  <Input
+                    name="kinNumber"
+                    type="text"
+                    placeholder="Next of kin phone number"
+                    onChange={handleInputChange}
+                    w="250px"
+                  />
+                </Box>
+              </Flex>
 
                 <InputGroup size="md" marginTop="20px">
                   <Input
