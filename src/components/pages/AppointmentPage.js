@@ -6,7 +6,7 @@ import { SetUser } from "../../redux/userSlice";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import AppointmentModal from "../sections/AppointmentForm";
-import AllAppointments from "../sections/AllAppointments"; 
+import AllAppointments from "../sections/AllAppointments";
 import PendingAppointmentModal from "../sections/PendingAppointments";
 import CanceledAppointmentsModal from "../sections/CanceledAppointments";
 
@@ -30,6 +30,7 @@ import NotificationIcon from "../../assets/notification.svg";
 import familyIcon from "../../assets/family.svg";
 import UserDetailsModal from "../sections/UserDetails";
 import LoadingSpinner from "../../utils/Spiner";
+import SearchAppointmentsModal from "../sections/SearchAppointmentByDate";
 
 const AppointmentPage = () => {
   const navigate = useNavigate();
@@ -39,10 +40,12 @@ const AppointmentPage = () => {
   const [showUserDetailsModal, setShowUserDetailsModal] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [showAppointmentModal, setShowAppointmentModal] = useState(false);
-   const [showViewAllModal, setShowViewAllModal] = useState(false);  
-   const [showPendingModal, setShowPendingModal] = useState(false);  
-   const [showCanceledModal, setShowCanceledModal] = useState(false);  
-
+  const [showViewAllModal, setShowViewAllModal] = useState(false);
+  const [showPendingModal, setShowPendingModal] = useState(false);
+  const [showCanceledModal, setShowCanceledModal] = useState(false);
+  // Add these lines to your existing state declarations
+  const [showSearchAppointmentsModal, setShowSearchAppointmentsModal] =
+    useState(false);
 
   const handleOpenUserDetailsModal = () => {
     setShowUserDetailsModal(true);
@@ -58,6 +61,14 @@ const AppointmentPage = () => {
 
   const handleOpenAppointmentModal = () => {
     setShowAppointmentModal(true);
+  };
+
+  const handleOpenSearchAppointmentsModal = () => {
+    setShowSearchAppointmentsModal(true);
+  };
+
+  const handleCloseSearchAppointmentsModal = () => {
+    setShowSearchAppointmentsModal(false);
   };
 
   const handleCloseAppointmentModal = () => {
@@ -126,26 +137,22 @@ const AppointmentPage = () => {
         >
           <Flex marginLeft="10px">
             <SearchIcon boxSize={4} marginRight="10px" marginTop="5px" />
-            <DatePicker
-              name="DOB"
-              selected={selectedDate}
-              onChange={handleDateChange}
-              maxDate={new Date()}
-              peekNextMonth
-              showMonthDropdown
-              showYearDropdown
-              dropdownMode="select"
-              dateFormat="yyyy-MM-dd"
-              placeholderText="search by date"
-              className="form-control"
+            <Text
+              fontSize="16px"
               style={{
+                marginLeft: "5px",
+                marginTop: "2px",
                 fontStyle: "italic",
-                border: "1px solid #ced4da",
-                borderRadius: "4px",
+                cursor: "pointer",
               }}
-            />
+              _hover={{ color: "#A210C6" }}
+              onClick={handleOpenSearchAppointmentsModal}
+            >
+              Search Appointment by date
+            </Text>
           </Flex>
         </Box>
+
         <Flex
           marginLeft="70px"
           marginTop="20px"
@@ -172,26 +179,24 @@ const AppointmentPage = () => {
               for yourself or a loved one?
             </Text>
             <Flex marginLeft="10px">
-            <Button
-              onClick={handleOpenAppointmentModal}
-              bg="#A210C6"
-              color="white"
-              
-              marginTop="30px"
-            >
-              Book appointment
-            </Button>
-            <Button
-              onClick={() => setShowViewAllModal(true)}
-              bg="gray"
-              color="white"
-              marginLeft="5px"
-              marginTop="30px"
-            >
-              All appointment
-            </Button>
+              <Button
+                onClick={handleOpenAppointmentModal}
+                bg="#A210C6"
+                color="white"
+                marginTop="30px"
+              >
+                Book appointment
+              </Button>
+              <Button
+                onClick={() => setShowViewAllModal(true)}
+                bg="gray"
+                color="white"
+                marginLeft="5px"
+                marginTop="30px"
+              >
+                All appointment
+              </Button>
             </Flex>
-          
           </Box>
           <Box>
             <Image
@@ -207,9 +212,14 @@ const AppointmentPage = () => {
         </Flex>
         <Box marginLeft="69px">
           <Box display="flex" marginTop="30px">
-            <Box bg="#F6E4FC" w="29vw" h="15vh" borderRadius="10px"  cursor="pointer"
+            <Box
+              bg="#F6E4FC"
+              w="29vw"
+              h="15vh"
+              borderRadius="10px"
+              cursor="pointer"
               onClick={() => setShowPendingModal(true)}
-           >
+            >
               {" "}
               <Text
                 fontSize="20px"
@@ -220,7 +230,6 @@ const AppointmentPage = () => {
               >
                 Pending Appointments
               </Text>
-              
               <Text
                 fontSize="16px"
                 style={{
@@ -249,9 +258,8 @@ const AppointmentPage = () => {
                 marginTop="10px"
                 style={{ marginLeft: "-155px" }}
               >
-               Active Appointments
+                Active Appointments
               </Text>
-             
               <Text
                 fontSize="16px"
                 style={{
@@ -278,7 +286,6 @@ const AppointmentPage = () => {
               >
                 Completed Appointments
               </Text>
-             
               <Text
                 fontSize="16px"
                 style={{
@@ -290,7 +297,7 @@ const AppointmentPage = () => {
                 _hover={{ color: "#A210C6" }}
                 // onClick={() => setShowServicesModal(true)}
               >
-              View 
+                View
               </Text>
               {/* <ServicesModal
                 isOpen={showServicesModal}
@@ -314,9 +321,8 @@ const AppointmentPage = () => {
                 marginTop="10px"
                 style={{ marginLeft: "-125px" }}
               >
-                 Cancelled Appointments
+                Cancelled Appointments
               </Text>
-              
               <Text
                 fontSize="16px"
                 style={{
@@ -327,7 +333,7 @@ const AppointmentPage = () => {
                 }}
                 _hover={{ color: "#A210C6" }}
               >
-                View 
+                View
               </Text>
             </Box>
           </Box>
@@ -341,17 +347,21 @@ const AppointmentPage = () => {
         isOpen={showAppointmentModal}
         onClose={handleCloseAppointmentModal}
       />
-         <PendingAppointmentModal
+      <PendingAppointmentModal
         isOpen={showPendingModal}
         onClose={() => setShowPendingModal(false)}
       />
-          <CanceledAppointmentsModal
+      <CanceledAppointmentsModal
         isOpen={showCanceledModal}
         onClose={() => setShowCanceledModal(false)}
       />
-       <AllAppointments
+      <AllAppointments
         isOpen={showViewAllModal}
         onClose={() => setShowViewAllModal(false)}
+      />
+      <SearchAppointmentsModal
+        isOpen={showSearchAppointmentsModal}
+        onClose={handleCloseSearchAppointmentsModal}
       />
     </ChakraProvider>
   );

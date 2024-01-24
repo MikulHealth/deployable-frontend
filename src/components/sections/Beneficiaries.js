@@ -113,14 +113,50 @@ const BeneficiariesModal = ({ isOpen, onClose }) => {
                       {beneficiary.recipientDOB}
                     </Text>
                   </Flex>
-                  <Flex>
+                                     
+                  <Flex marginTop="5px">
+                    <Text fontWeight="bold" color="black">
+                      Next of kin name:
+                    </Text>
+                    <Text marginLeft="5px" color="black">
+                      {beneficiary.kinName || "Not available"}
+                    </Text>
+                  </Flex>
+
+                  <Flex marginTop="5px">
+                    <Text fontWeight="bold" color="black">
+                    Next of kin number:
+                    </Text>
+                    <Text marginLeft="5px" color="black">
+                      {beneficiary.kinNumber || "Not availabe"}
+                    </Text>
+                  </Flex>
+
+                  <Flex marginTop="5px">
+                    <Text fontWeight="bold" color="black">
+                      Language:
+                    </Text>
+                    <Text marginLeft="5px" color="black">
+                      {beneficiary.language || "Not available"}
+                    </Text>
+                  </Flex>
+
+                  <Flex marginTop="5px">
+                    <Text fontWeight="bold" color="black">
+                    Relationship:
+                    </Text>
+                    <Text marginLeft="5px" color="black">
+                      {beneficiary.relationship || "Not availabe"}
+                    </Text>
+                  </Flex>
+                  <Flex marginTop="5px">
                     <Text fontWeight="bold" color="black">
                       Current Location:{" "}
                     </Text>
                     <Text marginLeft="5px" color="black">
                       {beneficiary.currentLocation}
                     </Text>
-                  </Flex>
+                    </Flex>
                   <Flex>
                     <Text fontWeight="bold" color="black">
                       Shift:{" "}
