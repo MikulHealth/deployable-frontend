@@ -258,226 +258,232 @@ const PendingAppointmentModal = ({ isOpen, onClose }) => {
               </VStack>
             )}
           </ModalBody>
-          <ModalFooter>
-          </ModalFooter>
+          <ModalFooter></ModalFooter>
         </ModalContent>
       </Modal>
 
       {detailsModalOpen && selectedAppointment && (
-    <Modal
-    isOpen={detailsModalOpen}
-    onClose={() => setDetailsModalOpen(false)}
-    size="5xl"
-  >
-    <ModalOverlay />
-    <ModalContent overflowY="auto">
-      <ModalHeader color="#A210C6">Appointment Details</ModalHeader>
-      <ModalCloseButton />
-      <ModalBody>
-        <Flex>
-          <Box>
-            <Flex>
-              <Box>
-                <Flex>
-                  <Text fontWeight="bold" color="black">
-                    Care beneficiary:
-                  </Text>
-                  <Text marginLeft="5px" color="black">
-                    {selectedAppointment.recipientFirstname &&
-                    selectedAppointment.recipientLastname
-                      ? `${selectedAppointment.recipientFirstname} ${selectedAppointment.recipientLastname}`
-                      : "Not available"}
-                  </Text>
-                </Flex>
+        <Modal
+          isOpen={detailsModalOpen}
+          onClose={() => setDetailsModalOpen(false)}
+          size="6xl"
+        >
+          <ModalOverlay />
+          <ModalContent overflowY="auto">
+            <ModalHeader color="#A210C6">Appointment Details</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Flex>
+                <Box>
+                  <Flex>
+                    <Box marginRight="20px">
+                      <Flex>
+                        <Text fontWeight="bold" color="black">
+                          Care beneficiary:
+                        </Text>
+                        <Text marginLeft="5px" color="black">
+                          {selectedAppointment.recipientFirstname &&
+                          selectedAppointment.recipientLastname
+                            ? `${selectedAppointment.recipientFirstname} ${selectedAppointment.recipientLastname}`
+                            : "Not available"}
+                        </Text>
+                      </Flex>
 
-                <Flex marginTop="5px">
-                  <Text fontWeight="bold" color="black">
-                    Phone Number:
-                  </Text>
-                  <Text marginLeft="5px" color="black">
-                    {selectedAppointment.recipientPhoneNumber ||
-                      "Not available"}
-                  </Text>
-                </Flex>
+                      <Flex marginTop="5px">
+                        <Text fontWeight="bold" color="black">
+                          Phone Number:
+                        </Text>
+                        <Text marginLeft="5px" color="black">
+                          {selectedAppointment.recipientPhoneNumber ||
+                            "Not available"}
+                        </Text>
+                      </Flex>
 
-                <Flex marginTop="5px">
-                  <Text fontWeight="bold" color="black">
-                    Gender:
-                  </Text>
-                  <Text marginLeft="5px" color="black">
-                    {selectedAppointment.recipientGender ||
-                      "Not available"}
-                  </Text>
-                </Flex>
+                      <Flex marginTop="5px">
+                        <Text fontWeight="bold" color="black">
+                          Gender:
+                        </Text>
+                        <Text marginLeft="5px" color="black">
+                          {selectedAppointment.recipientGender ||
+                            "Not available"}
+                        </Text>
+                      </Flex>
 
-                <Flex marginTop="5px">
-                  <Text fontWeight="bold" color="black">
-                    Date of Birth:
-                  </Text>
-                  <Text marginLeft="5px" color="black">
-                    {formatDate(selectedAppointment.recipientDOB) ||
-                      "Not available"}
-                  </Text>
-                </Flex>
+                      <Flex marginTop="5px">
+                        <Text fontWeight="bold" color="black">
+                          Date of Birth:
+                        </Text>
+                        <Text marginLeft="5px" color="black">
+                          {formatDate(selectedAppointment.recipientDOB) ||
+                            "Not available"}
+                        </Text>
+                      </Flex>
 
-                <Flex marginTop="5px">
-                  <Text fontWeight="bold" color="black">
-                    Current Location:
-                  </Text>
-                  <Text marginLeft="5px" color="black">
-                    {selectedAppointment.currentLocation ||
-                      "Not availabe"}
-                  </Text>
-                </Flex>
+                      <Flex marginTop="5px">
+                        <Text fontWeight="bold" color="black">
+                          Current Location:
+                        </Text>
+                        <Text marginLeft="5px" color="black">
+                          {selectedAppointment.currentLocation ||
+                            "Not availabe"}
+                        </Text>
+                      </Flex>
 
-                <Flex marginTop="5px">
-                  <Text fontWeight="bold" color="black">
-                    Next of kin name:
-                  </Text>
-                  <Text marginLeft="5px" color="black">
-                    {selectedAppointment.kinName || "Not available"}
-                  </Text>
-                </Flex>
+                      <Flex marginTop="5px">
+                        <Text fontWeight="bold" color="black">
+                          Next of kin name:
+                        </Text>
+                        <Text marginLeft="5px" color="black">
+                          {selectedAppointment.kinName || "Not available"}
+                        </Text>
+                      </Flex>
 
-                <Flex marginTop="5px">
-                  <Text fontWeight="bold" color="black">
-                    Next of kin number:
-                  </Text>
-                  <Text marginLeft="5px" color="black">
-                    {selectedAppointment.kinNumber || "Not availabe"}
-                  </Text>
-                </Flex>
+                      <Flex marginTop="5px">
+                        <Text fontWeight="bold" color="black">
+                          Next of kin number:
+                        </Text>
+                        <Text marginLeft="5px" color="black">
+                          {selectedAppointment.kinNumber || "Not availabe"}
+                        </Text>
+                      </Flex>
 
-                <Flex marginTop="5px">
-                  <Text fontWeight="bold" color="black">
-                    Language:
-                  </Text>
-                  <Text marginLeft="5px" color="black">
-                    {selectedAppointment.language || "Not available"}
-                  </Text>
-                </Flex>
+                      <Flex marginTop="5px">
+                        <Text fontWeight="bold" color="black">
+                          Language:
+                        </Text>
+                        <Text marginLeft="5px" color="black">
+                          {selectedAppointment.language || "Not available"}
+                        </Text>
+                      </Flex>
 
-                <Flex marginTop="5px">
-                  <Text fontWeight="bold" color="black">
-                    Relationship:
-                  </Text>
-                  <Text marginLeft="5px" color="black">
-                    {selectedAppointment.relationship || "Not availabe"}
-                  </Text>
-                </Flex>
-                <Flex marginTop="5px" marginBottom="10px">
-                  <Text fontWeight="bold" color="black">
-                    Booked on:
-                  </Text>
-                  <Text marginLeft="5px" color="black">
-                    {formatDateTime(selectedAppointment.createdAt)}
-                  </Text>
-                </Flex>
-              </Box>
+                      <Flex marginTop="5px">
+                        <Text fontWeight="bold" color="black">
+                          Relationship:
+                        </Text>
+                        <Text marginLeft="5px" color="black">
+                          {selectedAppointment.relationship || "Not availabe"}
+                        </Text>
+                      </Flex>
+                      <Flex marginTop="5px" marginBottom="10px">
+                        <Text fontWeight="bold" color="black">
+                          Booked on:
+                        </Text>
+                        <Text marginLeft="5px" color="black">
+                          {formatDateTime(selectedAppointment.createdAt)}
+                        </Text>
+                      </Flex>
+                    </Box>
 
-              <Box marginLeft="30px">
-                <Flex marginTop="2px">
-                  <Text fontWeight="bold" color="black">
-                    Shift:
-                  </Text>
-                  <Text marginLeft="5px" color="black">
-                    {selectedAppointment.shift || "Not availabe"}
-                  </Text>
-                </Flex>
-                <Flex marginTop="5px">
-                  <Text fontWeight="bold" color="black">
-                    Doctor's name:
-                  </Text>
-                  <Text marginLeft="5px" color="black">
-                    {selectedAppointment.recipientDoctor ||
-                      "Not availabe"}
-                  </Text>
-                </Flex>
-                <Flex marginTop="5px">
-                  <Text fontWeight="bold" color="black">
-                    Doctor's phone number:
-                  </Text>
-                  <Text marginLeft="5px" color="black">
-                    {selectedAppointment.recipientPhoneNumber ||
-                      "Not availabe"}
-                  </Text>
-                </Flex>
-                <Flex marginTop="5px">
-                  <Text fontWeight="bold" color="black">
-                    Hospital:
-                  </Text>
-                  <Text marginLeft="5px" color="black">
-                    {selectedAppointment.recipientHospital ||
-                      "Not availabe"}
-                  </Text>
-                </Flex>
-                <Flex marginTop="5px">
-                  <Text fontWeight="bold" color="black">
-                    Health History:
-                  </Text>
-                  <Text marginLeft="5px" color="black">
-                    {selectedAppointment.recipientHealthHistory ||
-                      "Not availabe"}
-                  </Text>
-                </Flex>
-                <Flex marginTop="5px">
-                  <Text fontWeight="bold" color="black">
-                    Service Plan
-                  </Text>
-                  <Text marginLeft="5px" color="black">
-                    {selectedAppointment.servicePlan || "Not availabe"}
-                  </Text>
-                </Flex>
-                <Flex marginTop="5px">
-                  <Text fontWeight="bold" color="black">
-                    Cost of service
-                  </Text>
-                  <Text marginLeft="5px" color="black">
-                    {selectedAppointment.costOfService || "Not availabe"}
-                  </Text>
-                </Flex>
-                <Flex marginTop="5px">
-                  <Text fontWeight="bold" color="black">
-                    Start Date:
-                  </Text>
-                  <Text marginLeft="5px" color="black">
-                    {formatDateTime(selectedAppointment.startDate) ||
-                      "Not availabe"}
-                  </Text>
-                </Flex>
-                <Flex marginTop="5px">
-                  <Text fontWeight="bold" color="black">
-                    End Date:
-                  </Text>
-                  <Text marginLeft="5px" color="black">
-                    {formatDateTime(selectedAppointment.endDate) ||
-                      "Not availabe"}
-                  </Text>
-                </Flex>
-                <Flex marginTop="5px">
-                  <Text fontWeight="bold" color="black">
-                    Medical Report:
-                  </Text>
-                  <Text marginLeft="5px" color="black">
-                    {selectedAppointment.medicalReport || "Not availabe"}
-                  </Text>
-                </Flex>
-              </Box>
-            </Flex>
-          </Box>
-          <Box marginLeft="55px">
-            <Image
-              src={selectedAppointment?.recipientImage || userImageIcon}
-              alt="User Image"
-              borderRadius="8px"
-              h="40vh"
-              w="15vw"
-            />
-          </Box>
-        </Flex>
-      </ModalBody>
-    </ModalContent>
-  </Modal>
+                    <Box marginLeft="30px">
+                      <Flex marginTop="2px">
+                        <Text fontWeight="bold" color="black">
+                          Shift:
+                        </Text>
+                        <Text marginLeft="5px" color="black">
+                          {selectedAppointment.shift || "Not availabe"}
+                        </Text>
+                      </Flex>
+                      <Flex marginTop="5px">
+                        <Text fontWeight="bold" color="black">
+                          Doctor's name:
+                        </Text>
+                        <Text marginLeft="5px" color="black">
+                          {selectedAppointment.recipientDoctor ||
+                            "Not availabe"}
+                        </Text>
+                      </Flex>
+                      <Flex marginTop="5px">
+                        <Text fontWeight="bold" color="black">
+                          Doctor's phone number:
+                        </Text>
+                        <Text marginLeft="5px" color="black">
+                          {selectedAppointment.recipientPhoneNumber ||
+                            "Not availabe"}
+                        </Text>
+                      </Flex>
+                      <Flex marginTop="5px">
+                        <Text fontWeight="bold" color="black">
+                          Hospital:
+                        </Text>
+                        <Text marginLeft="5px" color="black">
+                          {selectedAppointment.recipientHospital ||
+                            "Not availabe"}
+                        </Text>
+                      </Flex>
+                     
+                      <Flex marginTop="5px">
+                        <Text fontWeight="bold" color="black">
+                          Service Plan
+                        </Text>
+                        <Text marginLeft="5px" color="black">
+                          {selectedAppointment.servicePlan || "Not availabe"}
+                        </Text>
+                      </Flex>
+                      <Flex marginTop="5px">
+                        <Text fontWeight="bold" color="black">
+                          Cost of service
+                        </Text>
+                        <Text marginLeft="5px" color="black">
+                          {selectedAppointment.costOfService || "Not availabe"}
+                        </Text>
+                      </Flex>
+                      <Flex marginTop="5px">
+                        <Text fontWeight="bold" color="black">
+                          Start Date:
+                        </Text>
+                        <Text marginLeft="5px" color="black">
+                          {formatDateTime(selectedAppointment.startDate) ||
+                            "Not availabe"}
+                        </Text>
+                      </Flex>
+                      <Flex marginTop="5px">
+                        <Text fontWeight="bold" color="black">
+                          End Date:
+                        </Text>
+                        <Text marginLeft="5px" color="black">
+                          {formatDateTime(selectedAppointment.endDate) ||
+                            "Not availabe"}
+                        </Text>
+                      </Flex>
+                      <Flex marginTop="5px">
+                        <Text fontWeight="bold" color="black">
+                          Medical Report:
+                        </Text>
+                        <Text marginLeft="5px" color="black">
+                          {selectedAppointment.medicalReport || "Not availabe"}
+                        </Text>
+                      </Flex>
+                      <Flex marginTop="5px">
+                        <Text fontWeight="bold" color="black">
+                          Health History:
+                        </Text>
+                        <Text
+                          marginLeft="5px"
+                          color="black"
+                          maxW="300px"
+                          maxH="1000px"
+                         
+                        >
+                          {selectedAppointment.recipientHealthHistory ||
+                            "Not available"}
+                        </Text>
+                      </Flex>
+                    </Box>
+                  </Flex>
+                </Box>
+                <Box marginLeft="40px">
+                  <Image
+                    src={selectedAppointment?.recipientImage || userImageIcon}
+                    alt="User Image"
+                    borderRadius="8px"
+                    h="40vh"
+                    w="15vw"
+                  />
+                </Box>
+              </Flex>
+            </ModalBody>
+          </ModalContent>
+        </Modal>
       )}
       <EditAppointmentModal
         isOpen={editModalOpen}

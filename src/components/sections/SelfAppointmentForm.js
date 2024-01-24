@@ -40,23 +40,6 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
   const [selectedEndDate, setSelectedEndDate] = useState(null);
   const [selectedDob, setSelectedDob] = useState(null);
 
-  const handleStartDateChange = (date) => {
-    setSelectedStartDate(date);
-  };
-
-  const handleEndDateChange = (date) => {
-    setSelectedEndDate(date);
-  };
-
-
-  const handleNextPage = () => {
-    setCurrentPage(currentPage + 1);
-  };
-
-  const handlePreviousPage = () => {
-    setCurrentPage(currentPage - 1);
-  };
-
   const formatDateToUTC = (selectedDate) => {
     if (!selectedDate) return "";
 
@@ -81,71 +64,106 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
     medicalReport: "",
   });
 
+  const [formPages, setFormPages] = useState([
+    {
+      currentLocation: "",
+      shift: "",
+      startDate: "",
+      endDate: "",
+      servicePlan: "",
+      recipientHealthHistory: "",
+    },
+    {
+      recipientDoctor: "",
+      recipientDoctorNumber: "",
+      recipientHospital: "",
+      medicalReport: "",
+    },
+  ]);
+
+  const handleStartDateChange = (date) => {
+    updateFormData("startDate", date);
+  };
+
+  const handleEndDateChange = (date) => {
+    updateFormData("endDate", date);
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage(currentPage + 1);
+  };
+
+  const handlePreviousPage = () => {
+    setCurrentPage(currentPage - 1);
+  };
+
+  const updateFormData = (name, value) => {
+    setFormPages((prevPages) => {
+      const updatedPages = [...prevPages];
+      updatedPages[currentPage - 1][name] = value;
+      return updatedPages;
+    });
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevUser) => ({
-      ...prevUser,
-      [name]: value,
-    }));
+    updateFormData(name, value);
   };
 
   const handleFormSubmit = async () => {
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
-
+  
       const apiUrl = "http://localhost:8080/v1/appointment/save";
-
+  
       const headers = {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       };
-
+  
       const formatDateWithDayAdjustment = (selectedDate) =>
         formatDateToUTC(new Date(selectedDate));
-
-      const userFieldsForBookForSelf = bookForSelf
-        ? {
-            recipientFirstname: user?.firstName,
-            recipientLastname: user?.lastName,
-            recipientPhoneNumber: user?.phoneNumber,
-            recipientGender: user?.gender,
-            recipientDOB: user?.dob,
-            recipientImage: user?.image,
-            kinName: user?.kinName,
-            kinNumber: user?.kinNumber,
-          }
-        : {};
-
+  
+      const userFieldsForBookForSelf = {
+        recipientFirstname: user?.firstName,
+        recipientLastname: user?.lastName,
+        recipientPhoneNumber: user?.phoneNumber,
+        recipientGender: user?.gender,
+        recipientDOB: user?.dob,
+        recipientImage: user?.image,
+        kinName: user?.kinName,
+        kinNumber: user?.kinNumber,
+      };
+  
       const formDataWithDates = {
-        ...formData,
+        ...formPages[0],
         startDate: formatDateWithDayAdjustment(selectedStartDate),
         endDate: formatDateWithDayAdjustment(selectedEndDate),
-        ...(bookForSelf
-          ? {}
-          : { recipientDOB: formatDateWithDayAdjustment(selectedDob) }),
+        recipientDOB: formatDateWithDayAdjustment(selectedDob), 
         customerPhoneNumber: user?.phoneNumber,
         ...userFieldsForBookForSelf,
+        ...formPages[1],
       };
-
+  
       const requestBody = JSON.stringify(formDataWithDates);
-
+  
       const response = await axios.post(apiUrl, requestBody, { headers });
-
+  
       if (response && response.data) {
         setLoading(false);
-
+  
         toast({
           title: "Booked successfully",
           description: response.data.message,
           status: "success",
           duration: 6000,
         });
-
+  
         onClose();
       } else {
         setLoading(false);
-
+  
         console.error("Error booking appointment");
         const errorMessage = response.data
           ? response.data.message
@@ -168,7 +186,7 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
       });
     }
   };
-
+  
   const handleOpenConfirmation = () => {
     setIsConfirmationOpen(true);
   };
@@ -197,8 +215,8 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
                     <FormLabel marginTop="20px">Start Date</FormLabel>
                     <DatePicker
                       name="startDate"
-                      selected={selectedStartDate}
-                      onChange={(date) => handleStartDateChange(date)}
+                      selected={formPages[0].startDate}
+                      onChange={(e) => handleStartDateChange(e)}
                       peekNextMonth
                       showMonthDropdown
                       showYearDropdown
@@ -212,8 +230,8 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
                     <FormLabel marginTop="20px">End Date</FormLabel>
                     <DatePicker
                       name="endDate"
-                      selected={selectedEndDate}
-                      onChange={(date) => handleEndDateChange(date)}
+                      selected={formPages[0].endDate}
+                      onChange={(e) => handleEndDateChange(e)}
                       peekNextMonth
                       showMonthDropdown
                       showYearDropdown
@@ -231,7 +249,8 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
                       name="shift"
                       placeholder="Select preferred shift"
                       w="250px"
-                      onChange={handleInputChange}
+                      value={formPages[0].shift}
+                      onChange={(e) => handleInputChange(e)}
                     >
                       <option value="Day Shift">Day Shift (8hrs)</option>
                       <option value="Night Shift">Night Shift (12hrs)</option>
@@ -244,7 +263,8 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
                       name="servicePlan"
                       placeholder="Preferred service plan"
                       w="250px"
-                      onChange={handleInputChange}
+                      value={formPages[0].servicePlan}
+                      onChange={(e) => handleInputChange(e)}
                     >
                       <option value="Elderly care">Elderly care</option>
                       <option value="Postpartum care">Postpartum care</option>
@@ -259,7 +279,8 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
                     name="currentLocation"
                     type="text"
                     placeholder="Current Location"
-                    onChange={handleInputChange}
+                    value={formPages[0].currentLocation}
+                    onChange={(e) => handleInputChange(e)}
                     w="500px"
                   />
                 </Box>
@@ -271,7 +292,8 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
                       name="recipientHealthHistory"
                       type="text"
                       placeholder="Please share health history and any special need we should be aware of"
-                      onChange={handleInputChange}
+                      value={formPages[0].recipientHealthHistory}
+                      onChange={(e) => handleInputChange(e)}
                       w="500px"
                     />
                   </Box>
@@ -289,7 +311,8 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
                       name="recipientDoctor"
                       type="text"
                       placeholder="Personal Doctor's name"
-                      onChange={handleInputChange}
+                      value={formPages[1].recipientDoctor}
+                      onChange={(e) => handleInputChange(e)}
                       w="250px"
                     />
                   </Box>
@@ -301,7 +324,8 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
                       name="recipientDoctorNumber"
                       type="tel"
                       placeholder="Personal Doctor's phone number"
-                      onChange={handleInputChange}
+                      value={formPages[1].recipientDoctorNumber}
+                      onChange={(e) => handleInputChange(e)}
                       w="250px"
                     />
                   </Box>
@@ -313,7 +337,8 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
                       name="recipientHospital"
                       type="text"
                       placeholder="Hospital name"
-                      onChange={handleInputChange}
+                      value={formPages[1].recipientHospital}
+                      onChange={(e) => handleInputChange(e)}
                       w="250px"
                     />
                   </Box>
@@ -324,7 +349,7 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
                     <Input
                       name="medicalReport"
                       type="file"
-                      onChange={handleInputChange}
+                      onChange={(e) => handleInputChange(e)}
                       w="250px"
                     />
                   </Box>
@@ -333,6 +358,7 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
             )}
           </FormControl>
         </ModalBody>
+
         <ModalFooter>
           {currentPage === 1 ? (
             <Button
@@ -354,34 +380,42 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
             </Button>
           )}
           {currentPage === 2 && (
-             <>
-            <Button
-            isLoading={loading}
-            loadingText="Processing..."
-            bg="#A210C6"
-            color="white"
-            onClick={handleOpenConfirmation}
-          >
-            {loading ? "Processing..." : "Submit"}
-          </Button>
-           <Modal isOpen={isConfirmationOpen} onClose={handleCloseConfirmation}>
-           <ModalOverlay />
-           <ModalContent>
-             <ModalHeader>Confirm Submission</ModalHeader>
-             <ModalCloseButton />
-             <ModalBody>
-               Are you sure you want to submit the form? <br></br>
-               Please note that you would have to make payment immidiately after submit before we can match you with a caregiver.
-             </ModalBody>
-             <ModalFooter>
-               <Button colorScheme="blue" mr={3} onClick={handleConfirmSubmit}>
-                 Confirm
-               </Button>
-               <Button onClick={handleCloseConfirmation}>Cancel</Button>
-             </ModalFooter>
-           </ModalContent>
-         </Modal>
-          </>
+            <>
+              <Button
+                isLoading={loading}
+                loadingText="Processing..."
+                bg="#A210C6"
+                color="white"
+                onClick={handleOpenConfirmation}
+              >
+                {loading ? "Processing..." : "Submit"}
+              </Button>
+              <Modal
+                isOpen={isConfirmationOpen}
+                onClose={handleCloseConfirmation}
+              >
+                <ModalOverlay />
+                <ModalContent>
+                  <ModalHeader>Confirm Submission</ModalHeader>
+                  <ModalCloseButton />
+                  <ModalBody>
+                    Are you sure you want to submit the form? <br></br>
+                    Please note that you would have to make payment immidiately
+                    after submit before we can match you with a caregiver.
+                  </ModalBody>
+                  <ModalFooter>
+                    <Button
+                      colorScheme="blue"
+                      mr={3}
+                      onClick={handleConfirmSubmit}
+                    >
+                      Confirm
+                    </Button>
+                    <Button onClick={handleCloseConfirmation}>Cancel</Button>
+                  </ModalFooter>
+                </ModalContent>
+              </Modal>
+            </>
           )}
         </ModalFooter>
       </ModalContent>

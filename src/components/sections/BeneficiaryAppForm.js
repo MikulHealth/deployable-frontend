@@ -24,19 +24,16 @@ import {
   useToast,
   Textarea,
 } from "@chakra-ui/react";
-import { SetUser } from "../../redux/userSlice";
+
 const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
-    const toast = useToast();
-    const dispatch = useDispatch();
-    const { user } = useSelector((state) => state.userReducer);
-    const [loading, setLoading] = useState(false);
-    const [selectedStartDate, setSelectedStartDate] = useState(null);
-    const [selectedEndDate, setSelectedEndDate] = useState(null);
-    const [selectedDob, setSelectedDob] = useState(null);
-    const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
-    const [currentPage, setCurrentPage] = useState(1);
-  
-    const [page1FormData, setPage1FormData] = useState({
+  const toast = useToast();
+  const { user } = useSelector((state) => state.userReducer);
+  const [loading, setLoading] = useState(false);
+  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const [formPages, setFormPages] = useState([
+    {
       recipientFirstname: "",
       recipientLastname: "",
       recipientPhoneNumber: "",
@@ -44,326 +41,276 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
       recipientDOB: "",
       currentLocation: "",
       shift: "",
-    });
-  
-    const [page2FormData, setPage2FormData] = useState({
+    },
+    {
       relationship: "",
       language: "",
       recipientDoctor: "",
       recipientDoctorNumber: "",
       recipientHospital: "",
       medicalReport: "",
-    });
-  
-    const [page3FormData, setPage3FormData] = useState({
+    },
+    {
       recipientHealthHistory: "",
       recipientImage: "",
       startDate: "",
       endDate: "",
-    });
-  
-    const [page4FormData, setPage4FormData] = useState({
+    },
+    {
       kinName: "",
       kinNumber: "",
+    },
+  ]);
+
+  const handleStartDateChange = (date) => {
+    updateFormData("startDate", date);
+  };
+
+  const handleEndDateChange = (date) => {
+    updateFormData("endDate", date);
+  };
+
+  const handleDobChange = (date) => {
+    updateFormData("recipientDOB", date);
+  };
+
+
+  const handleNextPage = () => {
+    setCurrentPage(currentPage + 1);
+  };
+
+  const handlePreviousPage = () => {
+    setCurrentPage(currentPage - 1);
+  };
+
+  const updateFormData = (name, value) => {
+    setFormPages((prevPages) => {
+      const updatedPages = [...prevPages];
+      updatedPages[currentPage - 1][name] = value;
+      return updatedPages;
     });
+  };
+
+  const formatDateToUTC = (selectedDate) => {
+    if (!selectedDate) return "";
   
-    const handleNextPage = () => {
-      setCurrentPage((prevPage) => prevPage + 1);
-    };
+    // Use isNaN to check if the selectedDate is a valid date object
+    if (isNaN(new Date(selectedDate))) {
+      console.error("Invalid date:", selectedDate);
+      return "";
+    }
   
-    const handlePreviousPage = () => {
-      setCurrentPage((prevPage) => prevPage - 1);
-    };
+    // Add one day to the selected date
+    const adjustedDate = new Date(selectedDate);
+    adjustedDate.setDate(adjustedDate.getDate() + 1);
   
-    const handleStartDateChange = (date) => {
-      setSelectedStartDate(date);
-    };
+    return adjustedDate.toISOString().split("T")[0];
+  };
   
-    const handleEndDateChange = (date) => {
-      setSelectedEndDate(date);
-    };
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    updateFormData(name, value);
+  };
+
+  const handleFormSubmit = async () => {
+    setLoading(true);
+    try {
+      const token = localStorage.getItem("token");
+      const apiUrl = "http://localhost:8080/v1/appointment/save";
+      const headers = {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      };
   
-    const handleDobChange = (date) => {
-      setSelectedDob(date);
-    };
+      const formatDateWithDayAdjustment = (selectedDate) =>
+        formatDateToUTC(new Date(selectedDate));
   
-    const handleInputChange = (e) => {
-      const { name, value } = e.target;
+      const formDataWithDates = {
+        ...formPages[0],
+        startDate: formatDateWithDayAdjustment(formPages[2].startDate),
+        endDate: formatDateWithDayAdjustment(formPages[2].endDate),
+        recipientDOB: formatDateWithDayAdjustment(formPages[2].recipientDOB),
+        customerPhoneNumber: user.phoneNumber, // Use form data directly
+        // Add other form data properties as needed
+      };
   
-      switch (currentPage) {
-        case 1:
-          setPage1FormData((prevData) => ({ ...prevData, [name]: value }));
-          break;
-        case 2:
-          setPage2FormData((prevData) => ({ ...prevData, [name]: value }));
-          break;
-        case 3:
-          setPage3FormData((prevData) => ({ ...prevData, [name]: value }));
-          break;
-        case 4:
-          setPage4FormData((prevData) => ({ ...prevData, [name]: value }));
-          break;
-        default:
-          break;
-      }
-    };
+      const requestBody = JSON.stringify(formDataWithDates);
   
-    const handleFormSubmit = async () => {
-      setLoading(true);
+      const response = await axios.post(apiUrl, requestBody, { headers });
   
-      try {
-        const token = localStorage.getItem("token");
-        const apiUrl = "http://localhost:8080/v1/appointment/save";
-  
-        const headers = {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        };
-  
-        const formatDateWithDayAdjustment = (selectedDate) => {
-          if (!selectedDate) return "";
-  
-          // Add one day to the selected date
-          const adjustedDate = new Date(selectedDate);
-          adjustedDate.setDate(adjustedDate.getDate() + 1);
-  
-          return adjustedDate.toISOString().split("T")[0];
-        };
-  
-        const formDataWithDates = {
-          ...page1FormData,
-          ...page2FormData,
-          ...page3FormData,
-          ...page4FormData,
-          startDate: formatDateWithDayAdjustment(selectedStartDate),
-          endDate: formatDateWithDayAdjustment(selectedEndDate),
-          recipientDOB: formatDateWithDayAdjustment(selectedDob),
-        };
-  
-        const requestBody = JSON.stringify(formDataWithDates);
-  
-        const response = await axios.post(apiUrl, requestBody, { headers });
-  
-        if (response && response.data) {
-          setLoading(false);
-  
-          toast({
-            title: "Booked successfully",
-            description: response.data.message,
-            status: "success",
-            duration: 6000,
-          });
-  
-          onClose();
-        } else {
-          setLoading(false);
-  
-          console.error("Error booking appointment");
-          const errorMessage = response.data
-            ? response.data.message
-            : "Unknown error";
-          toast({
-            title: "Booking failed",
-            description: errorMessage,
-            status: "error",
-            duration: 6000,
-          });
-        }
-      } catch (error) {
+      if (response && response.data) {
         setLoading(false);
-        console.error("An error occurred:", error);
+  
         toast({
-          title: "Error booking appointment",
-          description: error.response?.data?.message || "Unknown error",
+          title: "Appointment Booked",
+          description: response.data.message,
+          status: "success",
+          duration: 6000,
+        });
+  
+        onClose();
+      } else {
+        setLoading(false);
+  
+        console.error("Error booking appointment");
+        const errorMessage = response.data
+          ? response.data.message
+          : "Unknown error";
+        toast({
+          title: "Booking failed",
+          description: errorMessage,
           status: "error",
           duration: 6000,
         });
       }
-    };
+    } catch (error) {
+      setLoading(false);
+      console.error("An error occurred:", error);
+      toast({
+        title: "Error booking appointment",
+        description: error.response?.data?.message || "Unknown error",
+        status: "error",
+        duration: 6000,
+      });
+    }
+  };
   
-    const handleOpenConfirmation = () => {
-      setIsConfirmationOpen(true);
-    };
-  
-    const handleCloseConfirmation = () => {
-      setIsConfirmationOpen(false);
-    };
-  
-    const handleConfirmSubmit = () => {
-      handleFormSubmit();
-      handleCloseConfirmation();
-    };
-  
+  const handleOpenConfirmation = () => {
+    setIsConfirmationOpen(true);
+   
+  };
+  const handleConfirmSubmit = () => {
+    handleFormSubmit();
+    handleCloseConfirmation();
+  };
+
+  const handleCloseConfirmation = () => {
+    setIsConfirmationOpen(false);
+  };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="3xl">
+    <Modal isOpen={isOpen} onClose={onClose} size="2xl">
       <ModalOverlay />
       <ModalContent>
         <ModalHeader color="#A210C6">Book Appointment</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          {currentPage === 1 && (
-            <FormControl marginLeft="80px">
+          <FormControl>
+            {currentPage === 1 && (
+               <FormControl marginLeft="80px">
+               <Box>
+                 <FormLabel> Enter Beneficiary name</FormLabel>
+                 <Flex>
+                   <Input
+                     name="recipientFirstname"
+                     placeholder="First name"
+                     value={formPages[0].recipientFirstname}
+                     onChange={(e) => handleInputChange(e)}
+                     w="250px"
+                   />
+                   <Input
+                     name="recipientLastname"
+                     marginLeft="2px"
+                     placeholder="Last name"
+                     value={formPages[0].recipientLastname}
+                     onChange={(e) => handleInputChange(e)}
+                     w="250px"
+                   />
+                 </Flex>
+                 <Flex>
+                   <Box>
+                     <FormLabel marginTop="20px">Gender </FormLabel>
+                     <Select
+                       name="recipientGender"
+                       placeholder="Select your gender"
+                       w="250px"
+                       value={formPages[0].recipientGender}
+                       onChange={(e) => handleInputChange(e)}
+                     >
+                       <option value="Male">Male</option>
+                       <option value="Female">Female</option>
+                     </Select>
+                   </Box>
+                   <Box marginLeft="5px" w="250px">
+                     <FormLabel marginTop="20px">Date of Birth</FormLabel>
+                     <DatePicker
+                       name="recipientDOB"
+                        selected={formPages[0].recipientDOB}
+                       onChange={(date) => handleDobChange(date)}
+                       maxDate={new Date()}
+                       peekNextMonth
+                       showMonthDropdown
+                       showYearDropdown
+                       dropdownMode="select"
+                       dateFormat="yyyy-MM-dd"
+                       placeholderText="Select your date of birth"
+                       className="form-control"
+                     />
+                   </Box>
+                 </Flex>
+                 <Flex marginTop="1px">
+                   <Box>
+                     <FormLabel marginTop="20px">Contact Number </FormLabel>
+                     <Input
+                       name="recipientPhoneNumber"
+                       type="tel"
+                       placeholder="Beneficiary PhoneNumber"
+                       value={formPages[0].recipientPhoneNumber}
+                      onChange={(e) => handleInputChange(e)}
+                       w="250px"
+                     />
+                   </Box>
+ 
+                   <Box marginLeft="5px">
+                     <FormLabel marginTop="20px">Current Location </FormLabel>
+                     <Input
+                       name="currentLocation"
+                       type="text"
+                       placeholder="Current Location"
+                       value={formPages[0].currentLocation}
+                      onChange={(e) => handleInputChange(e)}
+                       w="250px"
+                     />
+                   </Box>
+                 </Flex>
+ 
+                 <Flex marginTop="1px">
+                   <Box>
+                     <FormLabel marginTop="20px">Shift </FormLabel>
+                     <Select
+                       name="shift"
+                       placeholder="Select preferred shift"
+                       w="250px"
+                       value={formPages[0].shift}
+                       onChange={(e) => handleInputChange(e)}
+                     >
+                       <option value="Day Shift">Day Shift (8hrs)</option>
+                       <option value="Night Shift">Night Shift (12hrs)</option>
+                       <option value="Live in">Live in (24hrs)</option>
+                     </Select>
+                   </Box>
+                   <Box marginLeft="5px">
+                     <FormLabel marginTop="20px">Service Plan </FormLabel>
+                     <Select
+                       name="servicePlan"
+                       placeholder="preferred service plan"
+                       w="250px"
+                       value={formPages[0].servicePlan}
+                      onChange={(e) => handleInputChange(e)}
+                     >
+                       <option value="Elderly care">Elderly care</option>
+                       <option value="Postpartum care">Postpartum care</option>
+                       <option value="Recovery care">Recovery care</option>
+                       <option value="Nanny care">Nanny care</option>
+                     </Select>
+                   </Box>
+                 </Flex>
+               </Box>
+             </FormControl>
+            )}
+            {currentPage === 2 && (
               <Box>
-                <FormLabel> Enter Beneficiary name</FormLabel>
                 <Flex>
-                  <Input
-                    name="recipientFirstname"
-                    placeholder="First name"
-                    onChange={handleInputChange}
-                    w="250px"
-                  />
-                  <Input
-                    name="recipientLastname"
-                    marginLeft="2px"
-                    placeholder="Last name"
-                    onChange={handleInputChange}
-                    w="250px"
-                  />
-                </Flex>
-                <Flex>
-                  <Box>
-                    <FormLabel marginTop="20px">Gender </FormLabel>
-                    <Select
-                      name="recipientGender"
-                      placeholder="Select your gender"
-                      w="250px"
-                      onChange={handleInputChange}
-                    >
-                      <option value="Male">Male</option>
-                      <option value="Female">Female</option>
-                    </Select>
-                  </Box>
-                  <Box marginLeft="5px" w="250px">
-                    <FormLabel marginTop="20px">Date of Birth</FormLabel>
-                    <DatePicker
-                      name="recipientDOB"
-                      selected={selectedDob}
-                      onChange={(date) => handleDobChange(date)}
-                      maxDate={new Date()}
-                      peekNextMonth
-                      showMonthDropdown
-                      showYearDropdown
-                      dropdownMode="select"
-                      dateFormat="yyyy-MM-dd"
-                      placeholderText="Select your date of birth"
-                      className="form-control"
-                    />
-                  </Box>
-                </Flex>
-                <Flex marginTop="1px">
-                  <Box>
-                    <FormLabel marginTop="20px">Contact Number </FormLabel>
-                    <Input
-                      name="recipientPhoneNumber"
-                      type="tel"
-                      placeholder="Beneficiary PhoneNumber"
-                      onChange={handleInputChange}
-                      w="250px"
-                    />
-                  </Box>
-
-                  <Box marginLeft="5px">
-                    <FormLabel marginTop="20px">Current Location </FormLabel>
-                    <Input
-                      name="currentLocation"
-                      type="text"
-                      placeholder="Current Location"
-                      onChange={handleInputChange}
-                      w="250px"
-                    />
-                  </Box>
-                </Flex>
-
-                <Flex marginTop="1px">
-                  <Box>
-                    <FormLabel marginTop="20px">Shift </FormLabel>
-                    <Select
-                      name="shift"
-                      placeholder="Select preferred shift"
-                      w="250px"
-                      onChange={handleInputChange}
-                    >
-                      <option value="Day Shift">Day Shift (8hrs)</option>
-                      <option value="Night Shift">Night Shift (12hrs)</option>
-                      <option value="Live in">Live in (24hrs)</option>
-                    </Select>
-                  </Box>
-                  <Box marginLeft="5px">
-                    <FormLabel marginTop="20px">Service Plan </FormLabel>
-                    <Select
-                      name="servicePlan"
-                      placeholder="preferred service plan"
-                      w="250px"
-                      onChange={handleInputChange}
-                    >
-                      <option value="Elderly care">Elderly care</option>
-                      <option value="Postpartum care">Postpartum care</option>
-                      <option value="Recovery care">Recovery care</option>
-                      <option value="Nanny care">Nanny care</option>
-                    </Select>
-                  </Box>
-                </Flex>
-              </Box>
-            </FormControl>
-          )}
-          {currentPage === 2 && (
-            <FormControl marginLeft="40px">
-              <Flex marginLeft="50px">
-                <Box>
-                  <FormLabel marginTop="20px">
-                    Relationship with beneficiary{" "}
-                  </FormLabel>
-                  <Select
-                    name="relationship"
-                    placeholder="Select the appropriate relationship type"
-                    w="250px"
-                    onChange={handleInputChange}
-                  >
-                    <option value="Mum">Mum</option>
-                    <option value="Dad">Dad</option>
-
-                    <option value="Wife">Wife</option>
-                    <option value="Husband">Husband</option>
-
-                    <option value="Sister">Sister</option>
-                    <option value="Brother">Brother</option>
-                    <option value="Uncle">Uncle</option>
-                    <option value="Aunt">Aunt</option>
-                    <option value="Son">Son</option>
-                    <option value="Daughter">Daughter</option>
-                    <option value="Niece">Niece</option>
-                    <option value="Nephew">Nephew</option>
-                    <option value="Cousin">Cousin</option>
-                    <option value="Friend">Friend</option>
-                    <option value="Colleague">Colleague</option>
-                    <option value="Neighbour">Neighbour</option>
-
-                    <option value="MotherInLaw">Mother in-law</option>
-                    <option value="FatherInLaw">Father in-law</option>
-                    <option value="Grandmother">Grand mother</option>
-                    <option value="Grandfather">Grand father</option>
-                  </Select>
-                </Box>
-                <Box marginLeft="5px">
-                  <FormLabel marginTop="20px">Preferred Language</FormLabel>
-                  <Select
-                    name="language"
-                    placeholder="Select preferred language"
-                    w="250px"
-                    onChange={handleInputChange}
-                  >
-                    <option value="eng">English</option>
-                    <option value="igbo">Igbo</option>
-                    <option value="yoruba">Yoruba</option>
-                    <option value="housa">Hausa</option>
-                    <option value="Pigeon">Pidgeon</option>
-                    <option value="other">Others</option>
-                  </Select>
-                </Box>
-              </Flex>
-              <Box marginLeft="50px">
-                <Flex marginTop="1px">
                   <Box>
                     <FormLabel marginTop="20px">
                       Personal Doctor's name{" "}
@@ -372,208 +319,197 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
                       name="recipientDoctor"
                       type="text"
                       placeholder="Personal Doctor's name"
-                      onChange={handleInputChange}
+                      value={formPages[1].recipientDoctor}
+                      onChange={(e) => handleInputChange(e)}
                       w="250px"
                     />
                   </Box>
-                  <Box marginLeft="5px">
+                  <Box marginLeft="50px">
                     <FormLabel marginTop="20px">
                       Doctor's phone number{" "}
                     </FormLabel>
                     <Input
                       name="recipientDoctorNumber"
-                      type="text"
+                      type="tel"
                       placeholder="Personal Doctor's phone number"
-                      onChange={handleInputChange}
+                      value={formPages[1].recipientDoctorNumber}
+                      onChange={(e) => handleInputChange(e)}
                       w="250px"
                     />
                   </Box>
                 </Flex>
-                <Flex marginTop="1px">
+                <Flex>
                   <Box>
                     <FormLabel marginTop="20px">Personal hospital </FormLabel>
                     <Input
                       name="recipientHospital"
                       type="text"
                       placeholder="Hospital name"
-                      onChange={handleInputChange}
+                      value={formPages[1].recipientHospital}
+                      onChange={(e) => handleInputChange(e)}
                       w="250px"
                     />
                   </Box>
-                  <Box marginLeft="5px">
+                  <Box marginLeft="50px">
                     <FormLabel marginTop="20px">
                       Upload medical report{" "}
                     </FormLabel>
                     <Input
                       name="medicalReport"
                       type="file"
-                      onChange={handleInputChange}
+                      onChange={(e) => handleInputChange(e)}
                       w="250px"
                     />
                   </Box>
                 </Flex>
               </Box>
-            </FormControl>
-          )}
-          {currentPage === 3 && (
-            <FormControl marginLeft="40px">
-              <Box marginLeft="50px">
-                <Box>
-                  <FormLabel marginTop="20px">Health History </FormLabel>
-                  <Textarea
-                    name="recipientHealthHistory"
-                    type="text"
-                    placeholder="Please share health history and any special need we should be aware of"
-                    onChange={handleInputChange}
-                    w="500px"
-                  />
-                </Box>
-                <Box marginLeft="5px">
-                  <FormLabel marginTop="20px">
-                    Upload beneficiary's picture{" "}
-                  </FormLabel>
-                  <Input
-                    name="recipientImage"
-                    type="file"
-                    placeholder="Recipient Image"
-                    onChange={handleInputChange}
-                    w="500px"
-                  />
-                </Box>
+            )}
+            {currentPage === 3 && (
+              <Box>
+                <FormControl marginLeft="40px">
+                  <Box marginLeft="50px">
+                    <Box>
+                      <FormLabel marginTop="20px">Health History </FormLabel>
+                      <Textarea
+                        name="recipientHealthHistory"
+                        type="text"
+                        placeholder="Please share health history and any special need we should be aware of"
+                        value={formPages[2].recipientHealthHistory}
+                        onChange={(e) => handleInputChange(e)}
+                        w="500px"
+                      />
+                    </Box>
+                    <Box marginLeft="5px">
+                      <FormLabel marginTop="20px">
+                        Upload beneficiary's picture{" "}
+                      </FormLabel>
+                      <Input
+                        name="recipientImage"
+                        type="file"
+                        placeholder="Recipient Image"
+                        value={formPages[2].recipientHospital}
+                        onChange={(e) => handleInputChange(e)}
+                        w="500px"
+                      />
+                    </Box>
 
-                <Flex marginTop="1px">
-                  <Box w="250px">
-                    <FormLabel marginTop="20px">Start Date</FormLabel>
-                    <DatePicker
-                      name="startDate"
-                      selected={selectedStartDate}
-                      onChange={(date) => handleStartDateChange(date)}
-                      peekNextMonth
-                      showMonthDropdown
-                      showYearDropdown
-                      dropdownMode="select"
-                      dateFormat="yyyy-MM-dd"
-                      placeholderText="preferred date to start"
-                      className="form-control"
-                    />
+                    <Flex marginTop="1px">
+                      <Box w="250px">
+                        <FormLabel marginTop="20px">Start Date</FormLabel>
+                        <DatePicker
+                          name="startDate"
+                          selected={formPages[2].startDate}
+                          onChange={(e) => handleStartDateChange(e)}
+                          peekNextMonth
+                          showMonthDropdown
+                          showYearDropdown
+                          dropdownMode="select"
+                          dateFormat="yyyy-MM-dd"
+                          placeholderText="preferred date to start"
+                          className="form-control"
+                        />
+                      </Box>
+                      <Box w="250px" marginLeft="5px">
+                        <FormLabel marginTop="20px">End Date</FormLabel>
+                        <DatePicker
+                          name="endDate"
+                          selected={formPages[2].endDate}
+                          onChange={(e) => handleEndDateChange(e)}
+                          peekNextMonth
+                          showMonthDropdown
+                          showYearDropdown
+                          dropdownMode="select"
+                          dateFormat="yyyy-MM-dd"
+                          placeholderText="preferred date to end"
+                          className="form-control"
+                        />
+                      </Box>{" "}
+                    </Flex>
                   </Box>
-                  <Box w="250px" marginLeft="5px">
-                    <FormLabel marginTop="20px">End Date</FormLabel>
-                    <DatePicker
-                      name="endDate"
-                      selected={selectedEndDate}
-                      onChange={(date) => handleEndDateChange(date)}
-                      peekNextMonth
-                      showMonthDropdown
-                      showYearDropdown
-                      dropdownMode="select"
-                      dateFormat="yyyy-MM-dd"
-                      placeholderText="preferred date to end"
-                      className="form-control"
-                    />
-                  </Box>{" "}
-                </Flex>
+                </FormControl>
               </Box>
-            </FormControl>
-          )}
-          {currentPage === 4 && (
-            <FormControl marginLeft="40px">
-              <Box marginLeft="50px">
-                <Flex marginTop="1px">
-                  <Box>
-                    <FormLabel marginTop="20px">Next of kin </FormLabel>
-                    <Input
-                      name="kinName"
-                      type="text"
-                      placeholder="Next of kin name"
-                      onChange={handleInputChange}
-                      w="250px"
-                    />
+            )}
+            {currentPage === 4 && (
+              <Box>
+                <FormControl marginLeft="40px">
+                  <Box marginLeft="50px">
+                    <Flex marginTop="1px">
+                      <Box>
+                        <FormLabel marginTop="20px">Next of kin </FormLabel>
+                        <Input
+                          name="kinName"
+                          type="text"
+                          placeholder="Next of kin name"
+                          value={formPages[3].kinName}
+                          onChange={(e) => handleInputChange(e)}
+                          w="250px"
+                        />
+                      </Box>
+                      <Box marginLeft="5px">
+                        <FormLabel marginTop="20px">Phone number </FormLabel>
+                        <Input
+                          name="kinNumber"
+                          type="text"
+                          placeholder="Next of kin phone number"
+                          value={formPages[3].kinNumber}
+                          onChange={(e) => handleInputChange(e)}
+                          w="250px"
+                        />
+                      </Box>
+                    </Flex>
                   </Box>
-                  <Box marginLeft="5px">
-                    <FormLabel marginTop="20px">Phone number </FormLabel>
-                    <Input
-                      name="kinNumber"
-                      type="text"
-                      placeholder="Next of kin phone number"
-                      onChange={handleInputChange}
-                      w="250px"
-                    />
-                  </Box>
-                </Flex>
+                </FormControl>
               </Box>
-            </FormControl>
-          )}
+            )}
+          </FormControl>
         </ModalBody>
         <ModalFooter>
-          {currentPage > 1 && currentPage < 4 && (
-            <Button
-              bg="gray"
-              color="white"
-              onClick={handlePreviousPage}
-              marginRight="5px"
-            >
+          {currentPage > 1 && (
+            <Button colorScheme="blue" mr={3} onClick={handlePreviousPage}>
               Previous
             </Button>
           )}
-          {currentPage < 4 && (
-            <Button
-              bg="#A210C6"
-              color="white"
-              onClick={handleNextPage}
-              marginRight="5px"
-            >
+          {currentPage < 4 ? (
+            <Button colorScheme="blue" mr={3} onClick={handleNextPage}>
               Next
             </Button>
-          )}
-          {currentPage === 4 && (
+          ) : (
             <>
-              <Button
-                bg="gray"
-                color="white"
-                onClick={handlePreviousPage}
-                marginRight="5px"
-              >
-                Previous
-              </Button>
               <Button
                 isLoading={loading}
                 loadingText="Processing..."
-                marginLeft="5px"
-                bg="#A210C6"
-                color="white"
+                colorScheme="blue"
+                mr={3}
                 onClick={handleOpenConfirmation}
               >
                 {loading ? "Processing..." : "Submit"}
               </Button>
-            </>
-          )}
-          {currentPage === 4 && (
-            <Modal
-              isOpen={isConfirmationOpen}
-              onClose={handleCloseConfirmation}
-            >
+              <Modal
+                isOpen={isConfirmationOpen}
+                onClose={handleCloseConfirmation}
+              >
               <ModalOverlay />
-              <ModalContent>
-                <ModalHeader>Confirm Submission</ModalHeader>
-                <ModalCloseButton />
-                <ModalBody>
-                  Are you sure you want to submit the form? <br></br>
-                  Please note that you would have to make payment immidiately
-                  after submit before we can match you with a caregiver.
-                </ModalBody>
-                <ModalFooter>
-                  <Button
-                    colorScheme="blue"
-                    mr={3}
-                    onClick={handleConfirmSubmit}
-                  >
-                    Confirm
-                  </Button>
-                  <Button onClick={handleCloseConfirmation}>Cancel</Button>
-                </ModalFooter>
-              </ModalContent>
-            </Modal>
+                <ModalContent>
+                  <ModalHeader>Confirm Submission</ModalHeader>
+                  <ModalCloseButton />
+                  <ModalBody>
+                    Are you sure you want to submit the form? <br></br>
+                    Please note that you would have to make payment immidiately
+                    after submit before we can match you with a caregiver.
+                  </ModalBody>
+                  <ModalFooter>
+                    <Button
+                      colorScheme="blue"
+                      mr={3}
+                      onClick={handleConfirmSubmit}
+                    >
+                      Confirm
+                    </Button>
+                    <Button onClick={handleCloseConfirmation}>Cancel</Button>
+                  </ModalFooter>
+                </ModalContent>
+              </Modal>
+            </>
           )}
         </ModalFooter>
       </ModalContent>
