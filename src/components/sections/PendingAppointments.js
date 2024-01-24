@@ -32,6 +32,37 @@ const PendingAppointmentModal = ({ isOpen, onClose }) => {
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
   const [cancellingAppointmentId, setCancellingAppointmentId] = useState(null);
 
+  const fetchPendingAppointments = async () => {
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      };
+
+      const response = await axios.get(
+        "http://localhost:8080/v1/appointment/pendingAppointments",
+        config
+      );
+
+      if (response.data.success) {
+        setPendingAppointments(response.data.data);
+      } else {
+        toast({
+          title: "Request failed",
+          description: response.message,
+          status: "error",
+          duration: 6000,
+        });
+        console.error("Failed to fetch pending appointments");
+      }
+    } catch (error) {
+      console.error("Error fetching pending appointments:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     const fetchPendingAppointments = async () => {
       try {
@@ -48,7 +79,7 @@ const PendingAppointmentModal = ({ isOpen, onClose }) => {
 
         if (response.data.success) {
           toast({
-            title: "Pending appointments fetched successfully",
+            title: response.data.message,
             status: "success",
             duration: 6000,
           });
@@ -88,12 +119,6 @@ const PendingAppointmentModal = ({ isOpen, onClose }) => {
 
       if (response && response.data && response.data.success) {
         console.log("Appointment details:", response.data.data);
-        // toast({
-        //     title: "Deatils fetched successfully",
-        //     description: response.data.message,
-        //     status: "success",
-        //     duration: 6000,
-        //   });
         setSelectedAppointment(response.data.data.data);
         setDetailsModalOpen(true);
       } else {
@@ -120,7 +145,6 @@ const PendingAppointmentModal = ({ isOpen, onClose }) => {
 
   const handleViewMore = async (id) => {
     await fetchAndDisplayAppointmentDetails(id);
-    // onClose(); // Close the initial modal
     console.log(`View more details for appointment with ID: ${id}`);
   };
 
@@ -161,8 +185,7 @@ const PendingAppointmentModal = ({ isOpen, onClose }) => {
           status: "success",
           duration: 6000,
         });
-        // Optionally, you can refresh the pending appointments list after canceling
-        // fetchPendingAppointments();
+        fetchPendingAppointments();
       } else {
         toast({
           title: "Error canceling appointment",
@@ -236,9 +259,6 @@ const PendingAppointmentModal = ({ isOpen, onClose }) => {
             )}
           </ModalBody>
           <ModalFooter>
-            {/* <Button colorScheme="purple" onClick={onClose}>
-              Close
-            </Button> */}
           </ModalFooter>
         </ModalContent>
       </Modal>

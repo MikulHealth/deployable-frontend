@@ -22,8 +22,6 @@ const CanceledAppointmentsModal = ({ isOpen, onClose }) => {
   const [canceledAppointments, setCanceledAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
   const toast = useToast();
-  const [detailsModalOpen, setDetailsModalOpen] = useState(false);
-  const [selectedCanceledAppointment, setSelectedCanceledAppointment] = useState(null);
 
   useEffect(() => {
     const fetchCanceledAppointments = async () => {
@@ -41,7 +39,7 @@ const CanceledAppointmentsModal = ({ isOpen, onClose }) => {
 
         if (response.data.success) {
           toast({
-            title: "Canceled appointments fetched successfully",
+            title: response.data.message,
             status: "success",
             duration: 6000,
           });
@@ -66,12 +64,6 @@ const CanceledAppointmentsModal = ({ isOpen, onClose }) => {
       fetchCanceledAppointments();
     }
   }, [isOpen]);
-
-  const handleViewDetails = (id) => {
-    const selectedAppointment = canceledAppointments.find((appointment) => appointment.id === id);
-    setSelectedCanceledAppointment(selectedAppointment);
-    setDetailsModalOpen(true);
-  };
 
   return (
     <>
@@ -106,14 +98,7 @@ const CanceledAppointmentsModal = ({ isOpen, onClose }) => {
                       </Text>
                     </Flex>
                     <Flex>
-                      {/* <Button
-                        marginLeft="280px"
-                        color="white"
-                        bg="gray"
-                        onClick={() => handleViewDetails(appointment.id)}
-                      >
-                        Details
-                      </Button> */}
+        
                     </Flex>
                     <Divider my={4} borderColor="gray.500" /> 
                   </Box>
@@ -122,21 +107,10 @@ const CanceledAppointmentsModal = ({ isOpen, onClose }) => {
             )}
           </ModalBody>
           <ModalFooter>
-            {/* <Button colorScheme="purple" onClick={onClose}>
-              Close
-            </Button> */}
+  
           </ModalFooter>
         </ModalContent>
       </Modal>
-
-      {/* CanceledAppointmentDetailsModal */}
-      {/* {detailsModalOpen && (
-        <CanceledAppointmentDetailsModal
-          isOpen={detailsModalOpen}
-          onClose={() => setDetailsModalOpen(false)}
-          appointment={selectedCanceledAppointment}
-        />
-      )} */}
     </>
   );
 };

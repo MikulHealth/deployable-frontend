@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import userImageIcon from "../../assets/userImage.svg";
-import EditAppointmentModal from "../sections/EditAppointmentModal";
 import {
   VStack,
   Text,
@@ -26,9 +25,6 @@ const AppointmentModal = ({ isOpen, onClose }) => {
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [loading, setLoading] = useState(true);
   const toast = useToast();
-  const [editModalOpen, setEditModalOpen] = useState(false);
-  const [editingAppointmentId, setEditingAppointmentId] = useState(null);
-  const [confirmationModalOpen, setConfirmationModalOpen] = useState(false); 
   const [detailsModalOpen, setDetailsModalOpen] = useState(false);
 
   useEffect(() => {
@@ -47,7 +43,7 @@ const AppointmentModal = ({ isOpen, onClose }) => {
 
         if (response.data.success) {
           toast({
-            title: "All appointments fetched successfully",
+            title: response.data.message,
             status: "success",
             duration: 6000,
           });
@@ -96,12 +92,6 @@ const AppointmentModal = ({ isOpen, onClose }) => {
 
       if (response && response.data && response.data.success) {
         console.log("Appointment details:", response.data.data);
-        // toast({
-        //     title: "Deatils fetched successfully",
-        //     description: response.data.message,
-        //     status: "success",
-        //     duration: 6000,
-        //   });
         setSelectedAppointment(response.data.data.data);
         setDetailsModalOpen(true);
       } else {
@@ -116,15 +106,8 @@ const AppointmentModal = ({ isOpen, onClose }) => {
   };
   const handleViewMore = async (id) => {
     await fetchAndDisplayAppointmentDetails(id);
-    onClose(); // Close the initial modal
+    // onClose(); 
     console.log(`View more details for appointment with ID: ${id}`);
-  };
-
-  const handleBackToAllAppointments = () => {
-    setDetailsModalOpen(false);
-    setTimeout(() => {
-      onClose();
-    }, 100);
   };
 
   const formatDateTime = (dateTimeString) => {
@@ -141,62 +124,6 @@ const AppointmentModal = ({ isOpen, onClose }) => {
       options
     );
     return formattedDateTime;
-  };
-
-  const handleEditAppointment = (appointmentId) => {
-    setEditingAppointmentId(appointmentId);
-    setEditModalOpen(true);
-  };
-
-  const handleCancelRequest = async (appointmentId) => {
-    // Open the confirmation modal before canceling
-    setConfirmationModalOpen(true);
-    // Set the appointment ID to be canceled
-    setEditingAppointmentId(appointmentId);
-  };
-
-  const handleCancelConfirmation = async () => {
-    // Close the confirmation modal
-    setConfirmationModalOpen(false);
-
-    try {
-      const token = localStorage.getItem("token");
-      const apiUrl = `http://localhost:8080/v1/appointment/cancelAppointment/${editingAppointmentId}`;
-
-      const headers = {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      };
-
-      const response = await axios.post(apiUrl, {}, { headers });
-
-      if (response && response.data && response.data.success) {
-        toast({
-          title: response.data.message,
-          status: "success",
-          duration: 6000,
-        });
-        // Optionally, you can refresh the appointments list after canceling
-        // fetchData();
-      } else {
-        toast({
-          title: "Error canceling appointment",
-          description: response.data.message,
-          status: "error",
-          duration: 6000,
-        });
-        console.error("Error canceling appointment");
-      }
-    } catch (error) {
-      console.error("An error occurred while canceling appointment:", error);
-    }
-  };
-
-  const handleCancelModalClose = () => {
-    // Close the confirmation modal
-    setConfirmationModalOpen(false);
-    // Clear the editing appointment ID
-    setEditingAppointmentId(null);
   };
 
   return (
