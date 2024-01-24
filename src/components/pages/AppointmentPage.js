@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { SetUser } from "../../redux/userSlice";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import AppointmentModal from "../sections/AppointmentForm";
+import BookAppointmentModal from "../sections/BookAppointment";
 import AllAppointments from "../sections/AllAppointments";
 import PendingAppointmentModal from "../sections/PendingAppointments";
 import CanceledAppointmentsModal from "../sections/CanceledAppointments";
@@ -343,7 +343,7 @@ const AppointmentPage = () => {
         isOpen={showUserDetailsModal}
         onClose={handleCloseUserDetailsModal}
       />
-      <AppointmentModal
+      <BookAppointmentModal
         isOpen={showAppointmentModal}
         onClose={handleCloseAppointmentModal}
       />

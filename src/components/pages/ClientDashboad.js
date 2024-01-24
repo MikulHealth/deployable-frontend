@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { SetUser } from "../../redux/userSlice";
 import AppointmentPage from "./AppointmentPage";
-import AppointmentModal from "../sections/AppointmentForm";
+import BookAppointmentModal from "../sections/BookAppointment";
 import {
   Box,
   Button,
@@ -32,7 +32,6 @@ import NurseAndPatient from "../../assets/NurseAndPatient.svg";
 import NotificationIcon from "../../assets/notification.svg";
 import "../../styles/pages/LandingPage.css";
 import SettingsModal from "../sections/Settings";
-import AppointmentsModal from "../sections/AppointmentForm";
 import HelpModal from "../sections/Help";
 import BeneficiariesModal from "../sections/Beneficiaries";
 import UserDetailsModal from "../sections/UserDetails";
@@ -96,7 +95,6 @@ const ClientDash = () => {
   const handleOpenAppointmentModal = () => {
     setShowAppointmentModal(true);
   };
-
 
   const handleCloseAppointmentModal = () => {
     setShowAppointmentModal(false);
@@ -711,13 +709,7 @@ const ClientDash = () => {
         onClose={handleCloseUserDetailsModal}
         defaultImage={userImageIcon}
       />
-
-      <AppointmentsModal
-        isOpen={showAppointmentModal}
-        onClose={handleCloseAppointmentModal}
-      />
-
-      <AppointmentModal
+      <BookAppointmentModal
         isOpen={showAppointmentModal}
         onClose={handleCloseAppointmentModal}
       />
