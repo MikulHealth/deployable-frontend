@@ -12,6 +12,7 @@ import {
   ModalFooter,
   Box,
   Flex,
+  Progress,
   Spinner,
   useToast,
   Divider,
@@ -67,12 +68,13 @@ const BeneficiariesModal = ({ isOpen, onClose }) => {
   }, [isOpen]);
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="2xl" borderRadius="0px">
+    <Modal isOpen={isOpen} onClose={onClose} size="xl" borderRadius="0px">
       <ModalOverlay />
       <ModalContent maxH="80vh" overflowY="auto">
         <ModalHeader color="#A210C6">Beneficiaries</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
+        <Progress marginBottom="20px" size='xs' isIndeterminate />
           {loading ? (
             <Flex align="center" justify="center" height="200px">
               <Spinner size="xl" />

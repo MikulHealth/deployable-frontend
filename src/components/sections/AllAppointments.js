@@ -14,6 +14,7 @@ import {
   Box,
   Flex,
   Spinner,
+  Progress,
   useToast,
   Image,
   Divider,
@@ -134,6 +135,7 @@ const AppointmentModal = ({ isOpen, onClose }) => {
           <ModalHeader color="#A210C6">All your appointments.</ModalHeader>
           <ModalCloseButton />
           <ModalBody marginLeft="15px">
+          <Progress size='xs' isIndeterminate />
             {loading ? (
               <Flex align="center" justify="center" height="200px">
                 <Spinner size="xl" />
@@ -188,6 +190,7 @@ const AppointmentModal = ({ isOpen, onClose }) => {
             <ModalHeader color="#A210C6">Appointment Details</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
+            <Progress size='xs' isIndeterminate />
               <Flex>
                 <Box>
                   <Flex>

@@ -1,11 +1,26 @@
 import React, { useState } from "react";
-import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Button } from "@chakra-ui/react";
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  Progress,
+  Box,
+  Button,
+} from "@chakra-ui/react";
 import SelfAppointmentModal from "./SelfAppointmentForm";
 import BeneficiaryAppointmentModal from "./BeneficiaryAppForm";
 
 const BookAppointmentModal = ({ isOpen, onClose }) => {
-  const [isSelfAppointmentModalOpen, setSelfAppointmentModalOpen] = useState(false);
-  const [isBeneficiaryAppointmentModalOpen, setBeneficiaryAppointmentModalOpen] = useState(false);
+  const [isSelfAppointmentModalOpen, setSelfAppointmentModalOpen] =
+    useState(false);
+  const [
+    isBeneficiaryAppointmentModalOpen,
+    setBeneficiaryAppointmentModalOpen,
+  ] = useState(false);
   const [pages, setPages] = useState(null);
 
   const handleOpenSelfAppointmentModal = (numPages) => {
@@ -32,22 +47,43 @@ const BookAppointmentModal = ({ isOpen, onClose }) => {
     <Modal isOpen={isOpen} onClose={onClose} size="xl">
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Book Appointment</ModalHeader>
+        <ModalHeader color="#A210C6">Book appointment</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Button onClick={() => handleOpenSelfAppointmentModal(2)}>Book for Self</Button>
-          <Button ml={2} onClick={() => handleOpenBeneficiaryAppointmentModal(3)}>Book for Others</Button>
-        </ModalBody>
-        <ModalFooter>
-          <Button colorScheme="gray" mr={3} onClick={onClose}>
-            Close
+          <Progress size="xs" isIndeterminate />
+          <Box marginTop="20px">
+          <Button
+            bg="gray"
+            color="white"
+            onClick={() => handleOpenSelfAppointmentModal(2)}
+          >
+            Book for self
           </Button>
-        </ModalFooter>
+          <Button
+            bg="gray"
+            color="white"
+            ml={2}
+            onClick={() => handleOpenBeneficiaryAppointmentModal(3)}
+          >
+            Book for others
+          </Button>
+          </Box>
+         
+        </ModalBody>
+        <ModalFooter></ModalFooter>
         {isSelfAppointmentModalOpen && (
-          <SelfAppointmentModal isOpen={isSelfAppointmentModalOpen} onClose={handleCloseSelfAppointmentModal} pages={pages} />
+          <SelfAppointmentModal
+            isOpen={isSelfAppointmentModalOpen}
+            onClose={handleCloseSelfAppointmentModal}
+            pages={pages}
+          />
         )}
         {isBeneficiaryAppointmentModalOpen && (
-          <BeneficiaryAppointmentModal isOpen={isBeneficiaryAppointmentModalOpen} onClose={handleCloseBeneficiaryAppointmentModal} pages={pages} />
+          <BeneficiaryAppointmentModal
+            isOpen={isBeneficiaryAppointmentModalOpen}
+            onClose={handleCloseBeneficiaryAppointmentModal}
+            pages={pages}
+          />
         )}
       </ModalContent>
     </Modal>

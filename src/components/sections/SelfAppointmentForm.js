@@ -17,6 +17,7 @@ import {
   FormLabel,
   Input,
   Button,
+  Progress,
   Switch,
   Flex,
   Box,
@@ -34,7 +35,7 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
   const [bookForSelf, setBookForSelf] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
-
+  const [progressBarValue, setProgressBarValue] = useState(25);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
@@ -90,13 +91,19 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
   };
 
   const handleNextPage = () => {
-    setCurrentPage(currentPage + 1);
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+      setProgressBarValue((currentPage + 1) * (100 / totalPages));
+    }
   };
 
   const handlePreviousPage = () => {
-    setCurrentPage(currentPage - 1);
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+      setProgressBarValue((currentPage - 1) * (100 / totalPages));
+    }
   };
-
+  
   const updateFormData = (name, value) => {
     setFormPages((prevPages) => {
       const updatedPages = [...prevPages];
@@ -200,6 +207,8 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
     handleCloseConfirmation();
   };
 
+  const totalPages = 2; 
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="2xl">
       <ModalOverlay />
@@ -207,6 +216,8 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
         <ModalHeader color="#A210C6">Book Appointment</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
+        <Progress hasStripe value={progressBarValue} colorScheme="gray"/>
+        <Progress size='xs' isIndeterminate />
           <FormControl>
             {currentPage === 1 && (
               <Box>
@@ -301,7 +312,7 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
               </Box>
             )}
             {currentPage === 2 && (
-              <Box>
+              <Box marginLeft="30px">
                 <Flex>
                   <Box>
                     <FormLabel marginTop="20px">

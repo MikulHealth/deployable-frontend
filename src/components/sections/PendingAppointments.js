@@ -16,6 +16,7 @@ import {
   Flex,
   Spinner,
   useToast,
+  Progress,
   Image,
   Divider,
 } from "@chakra-ui/react";
@@ -211,6 +212,7 @@ const PendingAppointmentModal = ({ isOpen, onClose }) => {
           <ModalHeader color="#A210C6">Pending Appointments</ModalHeader>
           <ModalCloseButton />
           <ModalBody marginLeft="25px">
+          <Progress size='xs' isIndeterminate />
             {loading ? (
               <Flex align="center" justify="center" height="200px">
                 <Spinner size="xl" />
@@ -273,6 +275,7 @@ const PendingAppointmentModal = ({ isOpen, onClose }) => {
             <ModalHeader color="#A210C6">Appointment Details</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
+            <Progress size='xs' isIndeterminate />
               <Flex>
                 <Box>
                   <Flex>

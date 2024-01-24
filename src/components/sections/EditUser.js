@@ -10,6 +10,7 @@ import {
   VStack,
   Input,
   Button,
+  Progress,
   useToast,
   Image,
   Box,
@@ -175,6 +176,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
           <ModalHeader>Edit Profile</ModalHeader>
           <ModalCloseButton />
           <ModalBody marginTop="-2px">
+          <Progress size='xs' isIndeterminate />
             <VStack align="center" spacing={4}>
               <Text marginLeft="2px" marginTop="2px">
                 Only update the field(s) you want to change before saving the

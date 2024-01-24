@@ -17,6 +17,7 @@ import {
   FormLabel,
   Input,
   Button,
+  Progress,
   Switch,
   Flex,
   Box,
@@ -31,6 +32,7 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
   const [loading, setLoading] = useState(false);
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [progressBarValue, setProgressBarValue] = useState(25);
 
   const [formPages, setFormPages] = useState([
     {
@@ -74,13 +76,18 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
     updateFormData("recipientDOB", date);
   };
 
-
   const handleNextPage = () => {
-    setCurrentPage(currentPage + 1);
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+      setProgressBarValue((currentPage + 1) * (100 / totalPages));
+    }
   };
 
   const handlePreviousPage = () => {
-    setCurrentPage(currentPage - 1);
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+      setProgressBarValue((currentPage - 1) * (100 / totalPages));
+    }
   };
 
   const updateFormData = (name, value) => {
@@ -188,6 +195,9 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
     setIsConfirmationOpen(false);
   };
 
+  const totalPages = 4; 
+
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="2xl">
       <ModalOverlay />
@@ -195,9 +205,11 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
         <ModalHeader color="#A210C6">Book Appointment</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
+        <Progress hasStripe value={progressBarValue} colorScheme="gray"/>
+        <Progress size='xs' isIndeterminate />
           <FormControl>
             {currentPage === 1 && (
-               <FormControl marginLeft="80px">
+               <FormControl marginLeft="40px">
                <Box>
                  <FormLabel> Enter Beneficiary name</FormLabel>
                  <Flex>
@@ -309,7 +321,7 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
              </FormControl>
             )}
             {currentPage === 2 && (
-              <Box>
+              <Box marginLeft="30px">
                 <Flex>
                   <Box>
                     <FormLabel marginTop="20px">
@@ -366,7 +378,7 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
             )}
             {currentPage === 3 && (
               <Box>
-                <FormControl marginLeft="40px">
+                <FormControl marginLeft="10px">
                   <Box marginLeft="50px">
                     <Box>
                       <FormLabel marginTop="20px">Health History </FormLabel>
@@ -431,7 +443,7 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
             )}
             {currentPage === 4 && (
               <Box>
-                <FormControl marginLeft="40px">
+                <FormControl marginLeft="5px">
                   <Box marginLeft="50px">
                     <Flex marginTop="1px">
                       <Box>
@@ -465,12 +477,12 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
         </ModalBody>
         <ModalFooter>
           {currentPage > 1 && (
-            <Button colorScheme="blue" mr={3} onClick={handlePreviousPage}>
+            <Button color="white" bg="gray" mr={3} onClick={handlePreviousPage}>
               Previous
             </Button>
           )}
           {currentPage < 4 ? (
-            <Button colorScheme="blue" mr={3} onClick={handleNextPage}>
+            <Button color="white" bg="#A210C6" mr={3} onClick={handleNextPage}>
               Next
             </Button>
           ) : (
@@ -478,7 +490,8 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
               <Button
                 isLoading={loading}
                 loadingText="Processing..."
-                colorScheme="blue"
+                bg="#A210C6"
+                color="white"
                 mr={3}
                 onClick={handleOpenConfirmation}
               >
@@ -499,13 +512,14 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
                   </ModalBody>
                   <ModalFooter>
                     <Button
-                      colorScheme="blue"
+                      bg="#A210C6"
+                      color="white"
                       mr={3}
                       onClick={handleConfirmSubmit}
                     >
                       Confirm
                     </Button>
-                    <Button onClick={handleCloseConfirmation}>Cancel</Button>
+                    <Button bg="gray" color="white" onClick={handleCloseConfirmation}>Cancel</Button>
                   </ModalFooter>
                 </ModalContent>
               </Modal>
