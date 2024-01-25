@@ -153,7 +153,12 @@ const EditProfileModal = ({ isOpen, onClose }) => {
     setLoading(true);
     try {
       await handleImageChange(image, editedUser, setEditedUser);
-      const response = await UpdateCustomer(editedUser, toast, setLoading, "You will be re-directed to the dashboard");
+      const response = await UpdateCustomer(
+        editedUser,
+        toast,
+        setLoading,
+        "You will be re-directed to the dashboard"
+      );
 
       if (response.success) {
         setLoading(false);
@@ -176,7 +181,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
           <ModalHeader>Edit Profile</ModalHeader>
           <ModalCloseButton />
           <ModalBody marginTop="-2px">
-          <Progress size='xs' isIndeterminate />
+            <Progress size="xs" isIndeterminate />
             <VStack align="center" spacing={4}>
               <Text marginLeft="2px" marginTop="2px">
                 Only update the field(s) you want to change before saving the
@@ -257,29 +262,37 @@ const EditProfileModal = ({ isOpen, onClose }) => {
               </Flex>
             </VStack>
           </ModalBody>
-          <Box display="flex">
-            <Button
-              marginLeft="50px"
-              bg="gray"
+          <Flex marginLeft="220px" marginBottom="4" marginTop="10px" display="flex">
+            <Text
+              fontSize="20px"
               onClick={handleBack}
-              marginBottom="4"
-              color="white"
+              style={{
+                // marginLeft: "60px",
+                color: "black",
+                fontStyle: "italic",
+                cursor: "pointer",
+              }}
+              _hover={{ color: "#A210C6" }}
             >
               Cancel
-            </Button>
-
-            <Button
-              marginLeft="130px"
-              bg="#A210C6"
-              onClick={handleOpenConfirmationModal} // Open confirmation modal
-              marginBottom="4"
-              color="white"
+            </Text>
+            <Text
+              fontSize="20px"
+              marginLeft="30px"
+              onClick={handleOpenConfirmationModal}
               isLoading={loading}
               loadingText="Updating..."
+              style={{
+                // marginLeft: "60px",
+                color:  "#A210C6",
+                fontStyle: "italic",
+                cursor: "pointer",
+              }}
+              _hover={{ color: "#A210C6" }}
             >
-              {loading ? "Loading..." : "Save Changes"}
-            </Button>
-          </Box>
+            {loading ? "Loading..." : "Save Changes"}
+            </Text>
+          </Flex>
         </ModalContent>
       </Modal>
 
@@ -293,9 +306,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
         <ModalContent>
           <ModalHeader>Confirm Changes</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
-            Are you sure you want to save the changes?
-          </ModalBody>
+          <ModalBody>Are you sure you want to save the changes?</ModalBody>
           <Box display="flex" justifyContent="flex-end" p="2">
             <Button
               mr={3}
@@ -305,13 +316,17 @@ const EditProfileModal = ({ isOpen, onClose }) => {
             >
               Cancel
             </Button>
-            <Button onClick={handleSubmit} color="white" bg="#A210C6" isLoading={loading}>
-              Save Changes
+            <Button
+              onClick={handleSubmit}
+              color="white"
+              bg="#A210C6"
+              isLoading={loading}
+            >
+              Confirm
             </Button>
           </Box>
         </ModalContent>
       </Modal>
-
       <UpdatePhoneNumber
         isOpen={isPhoneModalOpen}
         onClose={handlePhoneModalClose}
