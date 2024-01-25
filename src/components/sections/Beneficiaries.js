@@ -18,11 +18,24 @@ import {
   Divider,
 } from "@chakra-ui/react";
 import axios from "axios";
+import AddBeneficiaryForm from "./AddBeneficiaryFom";
 
 const BeneficiariesModal = ({ isOpen, onClose }) => {
   const [beneficiaries, setBeneficiaries] = useState([]);
   const [loading, setLoading] = useState(true);
   const toast = useToast();
+  const [isAddBeneficiaryFormOpen, setAddBeneficiaryFormOpen] = useState(false);
+  const [isConfirmationModalOpen, setConfirmationModalOpen] = useState(false);
+  const [selectedBeneficiaryId, setSelectedBeneficiaryId] = useState(null);
+
+  const handleRemoveBeneficiary = (beneficiaryId) => {
+    setSelectedBeneficiaryId(beneficiaryId);
+    setConfirmationModalOpen(true);
+  };
+
+  const handleOpenAddBeneficiaryForm = () => {
+    setAddBeneficiaryFormOpen(true);
+  };
 
   useEffect(() => {
     const fetchBeneficiaries = async () => {
@@ -67,7 +80,79 @@ const BeneficiariesModal = ({ isOpen, onClose }) => {
     }
   }, [isOpen]);
 
+  const formatDateTime = (dateTimeString) => {
+    const options = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+    };
+    return new Date(dateTimeString).toLocaleDateString(undefined, options);
+  };
+
+  const formatDate = (dateString) => {
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    const formattedDate = new Date(dateString).toLocaleDateString(
+      undefined,
+      options
+    );
+    return formattedDate;
+  };
+
+
+ const handleConfirmRemoveBeneficiary = async () => {
+    // Perform the remove beneficiary logic here
+    try {
+      const token = localStorage.getItem("token");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const response = await axios.delete(
+        `http://localhost:8080/v1/appointment/removeBeneficiary/${selectedBeneficiaryId}`,
+        config
+      );
+
+      if (response.data.success) {
+        toast({
+          title: response.data.message,
+          status: "success",
+          duration: 6000,
+        });
+        // Update the list of beneficiaries after removal
+        const updatedBeneficiaries = beneficiaries.filter(
+          (beneficiary) => beneficiary.id !== selectedBeneficiaryId
+        );
+        setBeneficiaries(updatedBeneficiaries);
+      } else {
+        toast({
+          title: "Request failed",
+          description: response.message,
+          status: "error",
+          duration: 6000,
+        });
+        console.error("Failed to remove beneficiary");
+      }
+    } catch (error) {
+      toast({
+        title: "Request failed",
+        description: "Error removing beneficiary:",
+        status: "error",
+        duration: 6000,
+      });
+      console.error("Error removing beneficiary:", error);
+    } finally {
+      setConfirmationModalOpen(false);
+      setSelectedBeneficiaryId(null);
+    }
+  };
+
+
   return (
+    <>
     <Modal isOpen={isOpen} onClose={onClose} size="2xl" borderRadius="0px">
       <ModalOverlay />
       <ModalContent maxH="80vh" overflowY="auto">
@@ -90,7 +175,7 @@ const BeneficiariesModal = ({ isOpen, onClose }) => {
                           Beneficiary Name:{" "}
                         </Text>
                         <Text color="black" marginLeft="5px">
-                          {`${beneficiary.recipientFirstName} ${beneficiary.recipientLastName}`}
+                          {`${beneficiary.recipientFirstName || "Not available"} ${beneficiary.recipientLastName || "Not available"}`}
                         </Text>
                       </Flex>
                       <Flex>
@@ -98,7 +183,7 @@ const BeneficiariesModal = ({ isOpen, onClose }) => {
                           Phone Number:{" "}
                         </Text>
                         <Text color="black" marginLeft="5px">
-                          {beneficiary.recipientPhoneNumber}
+                          {beneficiary.recipientPhoneNumber || "Not available"}
                         </Text>
                       </Flex>
                       <Flex>
@@ -106,7 +191,7 @@ const BeneficiariesModal = ({ isOpen, onClose }) => {
                           Gender:{" "}
                         </Text>
                         <Text marginLeft="5px" color="black">
-                          {beneficiary.recipientGender}
+                          {beneficiary.recipientGender || "Not available"}
                         </Text>
                       </Flex>
                       <Flex>
@@ -114,7 +199,8 @@ const BeneficiariesModal = ({ isOpen, onClose }) => {
                           Date of Birth:{" "}
                         </Text>
                         <Text marginLeft="5px" color="black">
-                          {beneficiary.recipientDOB}
+                          {formatDate(beneficiary.recipientDOB) ||
+                            "Not availabe"}
                         </Text>
                       </Flex>
 
@@ -153,8 +239,17 @@ const BeneficiariesModal = ({ isOpen, onClose }) => {
                           {beneficiary.relationship || "Not availabe"}
                         </Text>
                       </Flex>
+                      <Flex marginTop="5px">
+                        <Text fontWeight="bold" color="black">
+                          Added on:
+                        </Text>
+                        <Text marginLeft="5px" color="black">
+                        {formatDateTime(beneficiary.createdAt) ||
+                            "Not availabe"}
+                        </Text>
+                      </Flex>
                     </Box>
-                    <Flex marginTop="160px">
+                    <Flex marginTop="185px">
                       <Box>
                         <Text
                           fontSize="17px"
@@ -173,6 +268,7 @@ const BeneficiariesModal = ({ isOpen, onClose }) => {
                       <Box>
                         <Text
                           fontSize="17px"
+                          onClick={() => handleRemoveBeneficiary(beneficiary.id)}
                           style={{
                             marginLeft: "20px",
                             marginTop: "30px",
@@ -194,11 +290,45 @@ const BeneficiariesModal = ({ isOpen, onClose }) => {
           )}
         </ModalBody>
         <ModalFooter>
-          <Button color="white" bg="#A210C6">Add Beneficiary</Button>
+          <Button
+            onClick={handleOpenAddBeneficiaryForm}
+            color="white"
+            bg="#A210C6"
+          >
+            Add Beneficiary
+          </Button>
+          {isAddBeneficiaryFormOpen && (
+            <AddBeneficiaryForm
+              isOpen={isAddBeneficiaryFormOpen}
+              onClose={() => setAddBeneficiaryFormOpen(false)}
+            />
+          )}
         </ModalFooter>
       </ModalContent>
     </Modal>
+      {isConfirmationModalOpen && (
+        <Modal isOpen={isConfirmationModalOpen} onClose={() => setConfirmationModalOpen(false)} size="sm">
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Confirmation</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Text>
+                Are you sure you want to remove this beneficiary?
+              </Text>
+            </ModalBody>
+            <ModalFooter>
+              <Button colorScheme="red" onClick={handleConfirmRemoveBeneficiary}>
+                Confirm
+              </Button>
+              <Button variant="ghost" onClick={() => setConfirmationModalOpen(false)}>
+                Cancel
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      )}
+    </>
   );
 };
-
 export default BeneficiariesModal;

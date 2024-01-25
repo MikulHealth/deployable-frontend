@@ -80,11 +80,22 @@ const LandingPage = () => {
     setSelectedDate(date);
   };
   const handleInputChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+
+    if (name === "DOB") {
+
+      setFormData({
+        ...formData,
+        recipientDOB: value,
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
+
   const toast = useToast();
   const handleClick = () => setShow(!show);
 
@@ -308,22 +319,26 @@ const LandingPage = () => {
                       onChange={handleInputChange}
                     </Select>
                   </Box>
-                  <Box>
-                    <FormLabel marginTop="20px">Date of Birth</FormLabel>
-                    <DatePicker
-                      name="DOB"
-                      selected={selectedDate}
-                      onChange={handleDateChange}
-                      maxDate={new Date()} // Disable future dates
-                      peekNextMonth
-                      showMonthDropdown
-                      showYearDropdown
-                      dropdownMode="select"
-                      dateFormat="yyyy-MM-dd"
-                      placeholderText="Select your date of birth"
-                      className="form-control"
-                    />
-                  </Box>
+                  <Box marginLeft="10px">
+                  <FormLabel marginTop="20px">Date of Birth</FormLabel>
+                  <DatePicker
+                    name="DOB"
+                    selected={selectedDate}
+                    onChange={(date) =>
+                      handleInputChange({
+                        target: { name: "DOB", value: date },
+                      })
+                    }
+                    maxDate={new Date()}
+                    peekNextMonth
+                    showMonthDropdown
+                    showYearDropdown
+                    dropdownMode="select"
+                    dateFormat="yyyy-MM-dd"
+                    placeholderText="Select your date of birth"
+                    className="form-control"
+                  />
+                </Box>
                 </Flex>
 
                 <InputGroup marginTop="20px">
