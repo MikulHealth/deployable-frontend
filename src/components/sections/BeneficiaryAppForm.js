@@ -508,7 +508,7 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
                   <ModalBody>
                     Are you sure you want to submit the form? <br></br>
                     Please note that you would have to make payment immidiately
-                    after submit before we can match you with a caregiver.
+                    after submition before we can match you with a caregiver.
                   </ModalBody>
                   <ModalFooter>
                     <Button

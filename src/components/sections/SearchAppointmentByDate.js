@@ -29,12 +29,24 @@ const SearchAppointmentsModal = ({ isOpen, onClose }) => {
   const [noAppointmentsFound, setNoAppointmentsFound] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [detailsModalOpen, setDetailsModalOpen] = useState(false);
-  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [searchTrigger, setSearchTrigger] = useState(false);
   const toast = useToast();
+
+  const formatDateToUTC = (selectedDate) => {
+    if (!selectedDate) return "";
+
+    // Add one day to the selected date
+    const adjustedDate = new Date(selectedDate);
+    adjustedDate.setDate(adjustedDate.getDate() + 1);
+
+    return adjustedDate.toISOString().split("T")[0];
+  };
 
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
+        if (!searchTrigger) return; 
+
         const token = localStorage.getItem("token");
         const config = {
           headers: {
@@ -43,9 +55,9 @@ const SearchAppointmentsModal = ({ isOpen, onClose }) => {
         };
 
         const response = await axios.get(
-          `http://localhost:8080/v1/appointment/customerAppointmentsByDate?date=${
-            selectedDate.toISOString().split("T")[0]
-          }`,
+          `http://localhost:8080/v1/appointment/customerAppointmentsByDate?date=${formatDateToUTC(
+            selectedDate
+          )}`,
           config
         );
 
@@ -64,20 +76,22 @@ const SearchAppointmentsModal = ({ isOpen, onClose }) => {
             status: "error",
             duration: 6000,
           });
+          setAppointments([]);
           console.error("Failed to fetch appointments");
         }
       } catch (error) {
         console.error("Error fetching appointments:", error);
       } finally {
         setLoading(false);
+        setSearchTrigger(false); 
       }
     };
 
-    if (selectedDate) {
+    if (searchTrigger) {
       setLoading(true);
       fetchAppointments();
     }
-  }, [selectedDate, isOpen, toast]);
+  }, [selectedDate, searchTrigger, isOpen, toast]);
 
   const fetchAndDisplayAppointmentDetails = async (appointmentId) => {
     try {
@@ -105,9 +119,11 @@ const SearchAppointmentsModal = ({ isOpen, onClose }) => {
       );
     }
   };
-
   const handleDateChange = (date) => {
-    setSelectedDate(date);
+    const nextDay = new Date(date);
+    nextDay.setDate(date.getDate());
+    setSelectedDate(nextDay);
+    setSearchTrigger(true); 
   };
 
   const formatDateTime = (dateTimeString) => {
@@ -146,7 +162,8 @@ const SearchAppointmentsModal = ({ isOpen, onClose }) => {
         isOpen={isOpen}
         onClose={() => {
           onClose();
-          setSelectedAppointment(null);
+          setSelectedDate(null);
+          setAppointments([]);
         }}
         size="xl"
         borderRadius="0px"
@@ -251,7 +268,10 @@ const SearchAppointmentsModal = ({ isOpen, onClose }) => {
       {detailsModalOpen && selectedAppointment && (
         <Modal
           isOpen={detailsModalOpen}
-          onClose={() => setDetailsModalOpen(false)}
+          onClose={() => {
+            setDetailsModalOpen(false);
+            handleDateChange(null);
+          }}
           size="5xl"
         >
           <ModalOverlay />
