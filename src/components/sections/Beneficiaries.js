@@ -68,13 +68,13 @@ const BeneficiariesModal = ({ isOpen, onClose }) => {
   }, [isOpen]);
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="xl" borderRadius="0px">
+    <Modal isOpen={isOpen} onClose={onClose} size="2xl" borderRadius="0px">
       <ModalOverlay />
       <ModalContent maxH="80vh" overflowY="auto">
         <ModalHeader color="#A210C6">Beneficiaries</ModalHeader>
         <ModalCloseButton />
-        <ModalBody>
-        <Progress marginBottom="20px" size='xs' isIndeterminate />
+        <ModalBody marginLeft="40px">
+          <Progress marginBottom="20px" size="xs" isIndeterminate />
           {loading ? (
             <Flex align="center" justify="center" height="200px">
               <Spinner size="xl" />
@@ -84,128 +84,117 @@ const BeneficiariesModal = ({ isOpen, onClose }) => {
               {beneficiaries.map((beneficiary) => (
                 <Box key={beneficiary.id}>
                   <Flex>
-                    <Text fontWeight="bold" color="black">
-                      Beneficiary Name:{" "}
-                    </Text>
-                    <Text color="black" marginLeft="5px">
-                      {`${beneficiary.recipientFirstName} ${beneficiary.recipientLastName}`}
-                    </Text>
-                  </Flex>
-                  <Flex>
-                    <Text fontWeight="bold" color="black">
-                      Phone Number:{" "}
-                    </Text>
-                    <Text color="black" marginLeft="5px">
-                      {beneficiary.recipientPhoneNumber}
-                    </Text>
-                  </Flex>
-                  <Flex>
-                    <Text fontWeight="bold" color="black">
-                      Gender:{" "}
-                    </Text>
-                    <Text marginLeft="5px" color="black">
-                      {beneficiary.recipientGender}
-                    </Text>
-                  </Flex>
-                  <Flex>
-                    <Text fontWeight="bold" color="black">
-                      Date of Birth:{" "}
-                    </Text>
-                    <Text marginLeft="5px" color="black">
-                      {beneficiary.recipientDOB}
-                    </Text>
-                  </Flex>
-                                     
-                  <Flex marginTop="5px">
-                    <Text fontWeight="bold" color="black">
-                      Next of kin name:
-                    </Text>
-                    <Text marginLeft="5px" color="black">
-                      {beneficiary.kinName || "Not available"}
-                    </Text>
-                  </Flex>
+                    <Box>
+                      <Flex>
+                        <Text fontWeight="bold" color="black">
+                          Beneficiary Name:{" "}
+                        </Text>
+                        <Text color="black" marginLeft="5px">
+                          {`${beneficiary.recipientFirstName} ${beneficiary.recipientLastName}`}
+                        </Text>
+                      </Flex>
+                      <Flex>
+                        <Text fontWeight="bold" color="black">
+                          Phone Number:{" "}
+                        </Text>
+                        <Text color="black" marginLeft="5px">
+                          {beneficiary.recipientPhoneNumber}
+                        </Text>
+                      </Flex>
+                      <Flex>
+                        <Text fontWeight="bold" color="black">
+                          Gender:{" "}
+                        </Text>
+                        <Text marginLeft="5px" color="black">
+                          {beneficiary.recipientGender}
+                        </Text>
+                      </Flex>
+                      <Flex>
+                        <Text fontWeight="bold" color="black">
+                          Date of Birth:{" "}
+                        </Text>
+                        <Text marginLeft="5px" color="black">
+                          {beneficiary.recipientDOB}
+                        </Text>
+                      </Flex>
 
-                  <Flex marginTop="5px">
-                    <Text fontWeight="bold" color="black">
-                    Next of kin number:
-                    </Text>
-                    <Text marginLeft="5px" color="black">
-                      {beneficiary.kinNumber || "Not availabe"}
-                    </Text>
-                  </Flex>
+                      <Flex marginTop="5px">
+                        <Text fontWeight="bold" color="black">
+                          Next of kin name:
+                        </Text>
+                        <Text marginLeft="5px" color="black">
+                          {beneficiary.kinName || "Not available"}
+                        </Text>
+                      </Flex>
 
-                  <Flex marginTop="5px">
-                    <Text fontWeight="bold" color="black">
-                      Language:
-                    </Text>
-                    <Text marginLeft="5px" color="black">
-                      {beneficiary.language || "Not available"}
-                    </Text>
-                  </Flex>
+                      <Flex marginTop="5px">
+                        <Text fontWeight="bold" color="black">
+                          Next of kin number:
+                        </Text>
+                        <Text marginLeft="5px" color="black">
+                          {beneficiary.kinNumber || "Not availabe"}
+                        </Text>
+                      </Flex>
 
-                  <Flex marginTop="5px">
-                    <Text fontWeight="bold" color="black">
-                    Relationship:
-                    </Text>
-                    <Text marginLeft="5px" color="black">
-                      {beneficiary.relationship || "Not availabe"}
-                    </Text>
-                  </Flex>
-                  <Flex marginTop="5px">
-                    <Text fontWeight="bold" color="black">
-                      Current Location:{" "}
-                    </Text>
-                    <Text marginLeft="5px" color="black">
-                      {beneficiary.currentLocation}
-                    </Text>
+                      <Flex marginTop="5px">
+                        <Text fontWeight="bold" color="black">
+                          Language:
+                        </Text>
+                        <Text marginLeft="5px" color="black">
+                          {beneficiary.language || "Not available"}
+                        </Text>
+                      </Flex>
+
+                      <Flex marginTop="5px">
+                        <Text fontWeight="bold" color="black">
+                          Relationship:
+                        </Text>
+                        <Text marginLeft="5px" color="black">
+                          {beneficiary.relationship || "Not availabe"}
+                        </Text>
+                      </Flex>
+                    </Box>
+                    <Flex marginTop="160px">
+                      <Box>
+                        <Text
+                          fontSize="17px"
+                          style={{
+                            marginLeft: "30px",
+                            marginTop: "30px",
+                            color: "#A210C6",
+                            fontStyle: "italic",
+                            cursor: "pointer",
+                          }}
+                          _hover={{ color: "#A210C6" }}
+                        >
+                          Book appointment
+                        </Text>
+                      </Box>
+                      <Box>
+                        <Text
+                          fontSize="17px"
+                          style={{
+                            marginLeft: "20px",
+                            marginTop: "30px",
+                            color: "red",
+                            fontStyle: "italic",
+                            cursor: "pointer",
+                          }}
+                          _hover={{ color: "#A210C6" }}
+                        >
+                          Remove beneficiary
+                        </Text>
+                      </Box>
                     </Flex>
-                  <Flex>
-                    <Text fontWeight="bold" color="black">
-                      Shift:{" "}
-                    </Text>
-                    <Text marginLeft="5px" color="black">
-                      {beneficiary.shift}
-                    </Text>
                   </Flex>
-                  <Flex>
-                    <Text fontWeight="bold" color="black">
-                      Doctor:{" "}
-                    </Text>
-                    <Text marginLeft="5px" color="black">
-                      {beneficiary.recipientDoctor}
-                    </Text>
-                  </Flex>
-                  <Flex>
-                    <Text fontWeight="bold" color="black">
-                      Hospital:{" "}
-                    </Text>
-                    <Text marginLeft="5px" color="black">
-                      {beneficiary.recipientHospital}
-                    </Text>
-                  </Flex>
-                  <Flex>
-                    <Text fontWeight="bold" color="black">
-                      Health History:{" "}
-                    </Text>
-                    <Text marginLeft="5px" color="black">
-                      {beneficiary.recipientHealthHistory}
-                    </Text>
-                  </Flex>
-                  <Flex>
-                    <Text fontWeight="bold" color="black">
-                      Service Plan:{" "}
-                    </Text>
-                    <Text marginLeft="5px" color="black">
-                      {beneficiary.servicePlan}
-                    </Text>
-                  </Flex>
-                  <Divider my={4} borderColor="gray.500" /> 
+                  <Divider my={4} borderColor="gray.500" />
                 </Box>
               ))}
             </VStack>
           )}
         </ModalBody>
         <ModalFooter>
+          <Button color="white" bg="#A210C6">Add Beneficiary</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>
