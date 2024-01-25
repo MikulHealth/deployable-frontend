@@ -129,13 +129,13 @@ const AppointmentModal = ({ isOpen, onClose }) => {
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose} size="md" borderRadius="0px">
+      <Modal isOpen={isOpen} onClose={onClose} size="xl" borderRadius="0px">
         <ModalOverlay />
         <ModalContent maxH="80vh" overflowY="auto">
           <ModalHeader color="#A210C6">All your appointments.</ModalHeader>
           <ModalCloseButton />
-          <ModalBody marginLeft="15px">
-          <Progress size='xs' isIndeterminate />
+          <ModalBody marginLeft="45px">
+            <Progress size="xs" isIndeterminate />
             {loading ? (
               <Flex align="center" justify="center" height="200px">
                 <Spinner size="xl" />
@@ -159,17 +159,22 @@ const AppointmentModal = ({ isOpen, onClose }) => {
                       <Text marginLeft="5px" color="black">
                         {formatDateTime(appointment.createdAt)}
                       </Text>
-                    </Flex>
-                    <Flex>
-                      <Button
-                        marginLeft="280px"
-                        color="white"
-                        bg="gray"
+
+                      <Text
+                        fontSize="16px"
                         onClick={() => handleViewMore(appointment.id)}
+                        style={{
+                          marginLeft: "60px",
+                          color: "#A210C6",
+                          fontStyle: "italic",
+                          cursor: "pointer",
+                        }}
+                        _hover={{ color: "#A210C6" }}
                       >
                         Details
-                      </Button>
+                      </Text>
                     </Flex>
+                  
                     <Divider my={4} borderColor="gray.500" />
                   </Box>
                 ))}
@@ -190,7 +195,7 @@ const AppointmentModal = ({ isOpen, onClose }) => {
             <ModalHeader color="#A210C6">Appointment Details</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-            <Progress size='xs' isIndeterminate />
+              <Progress size="xs" isIndeterminate />
               <Flex>
                 <Box>
                   <Flex>

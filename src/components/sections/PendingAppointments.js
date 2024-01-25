@@ -211,8 +211,8 @@ const PendingAppointmentModal = ({ isOpen, onClose }) => {
         <ModalContent maxH="80vh" overflowY="auto">
           <ModalHeader color="#A210C6">Pending Appointments</ModalHeader>
           <ModalCloseButton />
-          <ModalBody marginLeft="25px">
-          <Progress size='xs' isIndeterminate />
+          <ModalBody marginLeft="50px">
+            <Progress size="xs" isIndeterminate />
             {loading ? (
               <Flex align="center" justify="center" height="200px">
                 <Spinner size="xl" />
@@ -236,24 +236,34 @@ const PendingAppointmentModal = ({ isOpen, onClose }) => {
                       <Text marginLeft="5px" color="black">
                         {formatDateTime(appointment.createdAt)}
                       </Text>
-                    </Flex>
-                    <Flex>
-                      <Button
-                        marginLeft="280px"
-                        color="white"
-                        bg="gray"
+                      <Text
+                        fontSize="16px"
                         onClick={() => handleViewMore(appointment.id)}
+                        style={{
+                          marginLeft: "60px",
+                          color: "#A210C6",
+                          fontStyle: "italic",
+                          cursor: "pointer",
+                        }}
+                        _hover={{ color: "#A210C6" }}
                       >
                         Details
-                      </Button>
-                      <Button
-                        marginLeft="8px"
-                        colorScheme="red"
+                      </Text>
+                      <Text
+                        fontSize="16px"
                         onClick={() => handleCancelAppointment(appointment.id)}
+                        style={{
+                          marginLeft: "60px",
+                          color: "red",
+                          fontStyle: "italic",
+                          cursor: "pointer",
+                        }}
+                        _hover={{ color: "#A210C6" }}
                       >
-                        Cancel Appointment
-                      </Button>
+                        Cancel
+                      </Text>
                     </Flex>
+
                     <Divider my={4} borderColor="gray.500" />
                   </Box>
                 ))}
@@ -275,7 +285,7 @@ const PendingAppointmentModal = ({ isOpen, onClose }) => {
             <ModalHeader color="#A210C6">Appointment Details</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-            <Progress size='xs' isIndeterminate />
+              <Progress size="xs" isIndeterminate />
               <Flex>
                 <Box>
                   <Flex>
@@ -413,7 +423,7 @@ const PendingAppointmentModal = ({ isOpen, onClose }) => {
                             "Not availabe"}
                         </Text>
                       </Flex>
-                     
+
                       <Flex marginTop="5px">
                         <Text fontWeight="bold" color="black">
                           Service Plan
@@ -465,7 +475,6 @@ const PendingAppointmentModal = ({ isOpen, onClose }) => {
                           color="black"
                           maxW="300px"
                           maxH="1000px"
-                         
                         >
                           {selectedAppointment.recipientHealthHistory ||
                             "Not available"}

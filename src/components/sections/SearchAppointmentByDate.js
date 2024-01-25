@@ -13,6 +13,7 @@ import {
   Box,
   Flex,
   Spinner,
+  Progress,
   Image,
   useToast,
   Divider,
@@ -45,7 +46,7 @@ const SearchAppointmentsModal = ({ isOpen, onClose }) => {
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        if (!searchTrigger) return; 
+        if (!searchTrigger) return;
 
         const token = localStorage.getItem("token");
         const config = {
@@ -83,7 +84,7 @@ const SearchAppointmentsModal = ({ isOpen, onClose }) => {
         console.error("Error fetching appointments:", error);
       } finally {
         setLoading(false);
-        setSearchTrigger(false); 
+        setSearchTrigger(false);
       }
     };
 
@@ -120,10 +121,10 @@ const SearchAppointmentsModal = ({ isOpen, onClose }) => {
     }
   };
   const handleDateChange = (date) => {
-    const nextDay = new Date(date);
-    nextDay.setDate(date.getDate());
-    setSelectedDate(nextDay);
-    setSearchTrigger(true); 
+    // const nextDay = new Date(date);
+    // nextDay.setDate(date.getDate());
+    setSelectedDate(date);
+    setSearchTrigger(true);
   };
 
   const formatDateTime = (dateTimeString) => {
@@ -170,9 +171,11 @@ const SearchAppointmentsModal = ({ isOpen, onClose }) => {
       >
         <ModalOverlay />
         <ModalContent h="70vh" maxH="80vh" overflowY="auto">
-          <ModalHeader color="#A210C6">Search Appointments</ModalHeader>
+          <ModalHeader color="#A210C6">Search appointments</ModalHeader>
+
           <ModalCloseButton />
           <ModalBody>
+            <Progress marginBottom="20px" size="xs" isIndeterminate />
             <Flex align="center" justify="center">
               <Box>
                 <Flex>
@@ -214,7 +217,7 @@ const SearchAppointmentsModal = ({ isOpen, onClose }) => {
                     w="10vw"
                     isLoading={loading}
                     loadingText="Searching..."
-                    marginLeft="px"
+                    marginLeft="10px"
                   >
                     {loading ? "Searching..." : "Search"}
                   </Button>
@@ -236,22 +239,27 @@ const SearchAppointmentsModal = ({ isOpen, onClose }) => {
                             </Text>
                           </Flex>
                           <Flex>
-                            <Text fontWeight="bold" color="black">
-                              Booked on:
-                            </Text>
-                            <Text marginLeft="5px" color="black">
-                              {formatDateTime(appointment.createdAt)}
-                            </Text>
-                          </Flex>
-                          <Flex>
-                            <Button
-                              marginLeft="280px"
-                              color="white"
-                              bg="gray"
-                              onClick={() => handleViewMore(appointment.id)}
-                            >
-                              Details
-                            </Button>
+                            <Flex>
+                              <Text fontWeight="bold" color="black">
+                                Booked on:
+                              </Text>
+                              <Text marginLeft="5px" color="black">
+                                {formatDateTime(appointment.createdAt)}
+                              </Text>
+                              <Text
+                                fontSize="16px"
+                                onClick={() => handleViewMore(appointment.id)}
+                                style={{
+                                  marginLeft: "60px",
+                                  color: "#A210C6",
+                                  fontStyle: "italic",
+                                  cursor: "pointer",
+                                }}
+                                _hover={{ color: "#A210C6" }}
+                              >
+                                Details
+                              </Text>
+                            </Flex>
                           </Flex>
                           <Divider my={4} borderColor="gray.500" />
                         </Box>
