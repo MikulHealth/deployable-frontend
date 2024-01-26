@@ -97,6 +97,7 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
       return updatedPages;
     });
   };
+  
 
   const formatDateToUTC = (selectedDate) => {
     if (!selectedDate) return "";
@@ -132,20 +133,23 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
       const formatDateWithDayAdjustment = (selectedDate) =>
         formatDateToUTC(new Date(selectedDate));
 
-      const formDataWithDates = {
-        ...formPages[0],
-        startDate: formatDateWithDayAdjustment(formPages[2].startDate),
-        endDate: formatDateWithDayAdjustment(formPages[2].endDate),
-        recipientDOB: formatDateWithDayAdjustment(formPages[2].recipientDOB),
-        customerPhoneNumber: user.phoneNumber, // Use form data directly
-        // Add other form data properties as needed
-      };
+        const formDataWithDates = {
+          ...formPages[0],
+          ...formPages[1],
+          ...formPages[2],
+          ...formPages[3],
+          startDate: formatDateWithDayAdjustment(formPages[2].startDate),
+          endDate: formatDateWithDayAdjustment(formPages[2].endDate),
+          recipientDOB: formatDateWithDayAdjustment(formPages[0].recipientDOB),
+          customerPhoneNumber: user.phoneNumber,
+        };
+        
 
       const requestBody = JSON.stringify(formDataWithDates);
 
       const response = await axios.post(apiUrl, requestBody, { headers });
 
-      if (response && response.data) {
+      if (response.data.success) {
         setLoading(false);
 
         toast({
@@ -389,20 +393,7 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
                         w="500px"
                       />
                     </Box>
-                    <Box marginLeft="5px">
-                      <FormLabel marginTop="20px">
-                        Upload beneficiary's picture{" "}
-                      </FormLabel>
-                      <Input
-                        name="recipientImage"
-                        type="file"
-                        placeholder="Recipient Image"
-                        value={formPages[2].recipientHospital}
-                        onChange={(e) => handleInputChange(e)}
-                        w="500px"
-                      />
-                    </Box>
-
+              
                     <Flex marginTop="1px">
                       <Box w="250px">
                         <FormLabel marginTop="20px">Start Date</FormLabel>

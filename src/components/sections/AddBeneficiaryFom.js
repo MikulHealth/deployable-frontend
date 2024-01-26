@@ -22,11 +22,15 @@ import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useDispatch, useSelector } from "react-redux";
+import BeneficiariesModal from "./Beneficiaries";
 
-const AddBeneficiaryForm = ({ isOpen, onClose }) => {
+
+const AddBeneficiaryForm = ({ isOpen, onClose, openBeneficiariesModal }) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [loading, setLoading] = useState(false);
   const { user } = useSelector((state) => state.userReducer);
+  const [isBeneficiary, setBeneficiary] = useState(false);
+
   const [formData, setFormData] = useState({
     customerPhoneNumber: user.phoneNumber,
     recipientFirstname: "",
@@ -44,9 +48,9 @@ const AddBeneficiaryForm = ({ isOpen, onClose }) => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-
+  
     if (name === "DOB") {
-
+      setSelectedDate(value);
       setFormData({
         ...formData,
         recipientDOB: value,
@@ -58,8 +62,7 @@ const AddBeneficiaryForm = ({ isOpen, onClose }) => {
       });
     }
   };
-
-
+  
   const handleAddBeneficiary = async () => {
     setLoading(true);
     try {
@@ -69,39 +72,49 @@ const AddBeneficiaryForm = ({ isOpen, onClose }) => {
           Authorization: `Bearer ${token}`,
         },
       };
-
+  
+      // Format the date to match the backend expectations
+      const formattedDate = selectedDate
+        ? selectedDate.toISOString().split('T')[0]
+        : '';
+  
+      const dataToSend = {
+        ...formData,
+        recipientDOB: formattedDate,
+      };
+  
       const response = await axios.post(
         "http://localhost:8080/v1/appointment/addNewBeneficiary",
-        formData,
+        dataToSend,
         config
       );
-
+  
       if (response.data.success) {
-        setLoading(false)
+        setLoading(false);
         toast({
           title: response.data.message,
           status: "success",
           duration: 6000,
         });
-        onClose(); 
+        onClose();
       } else {
-        setLoading(false)
+        setLoading(false);
         toast({
-            title: response.data.message,
-            description: response.message,
+          title: response.data.message,
+          description: response.message,
           status: "error",
           duration: 6000,
         });
         console.error("Failed to add beneficiary");
       }
     } catch (error) {
-        setLoading(false)
-        toast({
-            title: "Error adding a new beneficiary",
-            description: "Beneficiary may exists already",
-          status: "error",
-          duration: 6000,
-        });
+      setLoading(false);
+      toast({
+        title: "Error adding a new beneficiary",
+        description: "Beneficiary may exist already",
+        status: "error",
+        duration: 6000,
+      });
       console.error("Error adding beneficiary:", error);
     }
   };
@@ -149,11 +162,7 @@ const AddBeneficiaryForm = ({ isOpen, onClose }) => {
                   <DatePicker
                     name="DOB"
                     selected={selectedDate}
-                    onChange={(date) =>
-                      handleInputChange({
-                        target: { name: "DOB", value: date },
-                      })
-                    }
+                    onChange={(date) => setSelectedDate(date)}
                     maxDate={new Date()}
                     peekNextMonth
                     showMonthDropdown
@@ -269,13 +278,19 @@ const AddBeneficiaryForm = ({ isOpen, onClose }) => {
               loadingText="Saving..."
               onClick={handleAddBeneficiary}
             >
-            {loading ? "Saving..." : "Save"}
+              {loading ? "Saving..." : "Save"}
             </Button>
           </Box>
         </ModalFooter>
       </ModalContent>
+      {isBeneficiary && (
+    <BeneficiariesModal
+      isOpen={isBeneficiary}
+      onClose={() => setBeneficiary(false)}
+    />
+  )}
     </Modal>
-  );
+  )
 };
 
 export default AddBeneficiaryForm;

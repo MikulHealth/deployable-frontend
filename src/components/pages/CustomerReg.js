@@ -68,7 +68,7 @@ const LandingPage = () => {
     kinName: "",
     kinNumber: "",
   });
- 
+
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [image, setPic] = useState();
@@ -76,17 +76,14 @@ const LandingPage = () => {
   const [imageLoading, setImageLoading] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
 
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-  };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
     if (name === "DOB") {
-
+      setSelectedDate(value);
       setFormData({
         ...formData,
-        recipientDOB: value,
+        DOB: value,
       });
     } else {
       setFormData({
@@ -95,7 +92,6 @@ const LandingPage = () => {
       });
     }
   };
-
   const toast = useToast();
   const handleClick = () => setShow(!show);
 
@@ -257,28 +253,36 @@ const LandingPage = () => {
             </Text>
             <form onSubmit={handleSubmit}>
               <FormControl isRequired marginTop="20px" w="110%">
-                <FormLabel>First name</FormLabel>
-                <Input
-                  name="firstName"
-                  placeholder="First name"
-                  onChange={handleInputChange}
-                />
-                <FormLabel marginTop="20px">Last name</FormLabel>
-                <Input
-                  name="lastName"
-                  placeholder="Last name"
-                  onChange={handleInputChange}
-                />
+                <FormLabel>What is your name</FormLabel>
+                <Flex>
+                  <Input
+                    name="firstName"
+                    placeholder="First name"
+                    onChange={handleInputChange}
+                    w="240px"
+                  />
+
+                  <Input
+                    name="lastName"
+                    placeholder="Last name"
+                    onChange={handleInputChange}
+                    w="240px"
+                    marginLeft="10px"
+                  />
+                </Flex>
 
                 <Flex>
                   <Box>
-                    <FormLabel fontSize="15px" marginLeft="10px" marginTop="30px">
-                      Upload headshort 
+                    <FormLabel
+                      fontSize="15px"
+                      marginLeft="10px"
+                      marginTop="30px"
+                    >
+                      Upload headshort
                     </FormLabel>
                     <Input
                       name="image"
-                    
-                      w="250px"
+                      w="240px"
                       type="file"
                       accept="image/*"
                       placeholder="Image"
@@ -289,120 +293,129 @@ const LandingPage = () => {
                     {imageLoading && <LoadingSpinner size={20} />}
                   </Box>
                   <Box>
-                    <FormLabel  marginLeft="45px" marginTop="28px">Email address</FormLabel>
+                    <FormLabel marginLeft="45px" marginTop="28px">
+                      Email address
+                    </FormLabel>
                     <Input
                       name="email"
                       placeholder="Email"
                       type="email"
                       onChange={handleInputChange}
-                      marginLeft="46px"
+                      marginLeft="10px"
+                      w="240px"
                     />
                   </Box>
                 </Flex>
-                <FormLabel marginTop="20px">Home address</FormLabel>
-                <Input
-                  name="address"
-                  placeholder="Home address"
-                  type="address"
-                  onChange={handleInputChange}
-                />
-                <Flex direction="row" justify="space-between">
-                  <Box>
-                    <FormLabel marginTop="20px">Gender </FormLabel>
-                    <Select
-                      name="gender"
-                      placeholder="Select your gender"
-                      w="300px"
-                    >
-                      <option value="Male">Male</option>
-                      <option value="Female">Female</option>
-                      onChange={handleInputChange}
-                    </Select>
-                  </Box>
-                  <Box marginLeft="10px">
-                  <FormLabel marginTop="20px">Date of Birth</FormLabel>
-                  <DatePicker
-                    name="DOB"
-                    selected={selectedDate}
-                    onChange={(date) =>
-                      handleInputChange({
-                        target: { name: "DOB", value: date },
-                      })
-                    }
-                    maxDate={new Date()}
-                    peekNextMonth
-                    showMonthDropdown
-                    showYearDropdown
-                    dropdownMode="select"
-                    dateFormat="yyyy-MM-dd"
-                    placeholderText="Select your date of birth"
-                    className="form-control"
+                <FormLabel marginTop="20px">Contact details</FormLabel>
+                <Flex>
+                  <Input
+                    name="address"
+                    placeholder="Home address"
+                    type="address"
+                    onChange={handleInputChange}
+                    w="490px"
                   />
-                </Box>
                 </Flex>
-
+                <Box  w="490px">
                 <InputGroup marginTop="20px">
                   <InputLeftAddon children="+234" />
                   <Input
                     name="phoneNumber"
                     type="tel"
                     placeholder="Phone number"
-                    onChange={handleInputChange}
+                    onChange={handleInputChange}  
                   />
                 </InputGroup>
-                <InputGroup size="md" marginTop="20px">
-                  <Input
-                    name="password"
-                    pr="4.5rem"
-                    type={show ? "text" : "password"}
-                    placeholder="Enter password"
-                    onChange={handleInputChange}
-                  />
-                  <InputRightElement width="4.5rem">
-                    <Button h="1.75rem" size="sm" onClick={handleClick}>
-                      {show ? "Hide" : "Show"}
-                    </Button>
-                  </InputRightElement>
-                </InputGroup>
+                </Box>
+                
+
+                <Flex>
+                  <Box>
+                    <FormLabel marginTop="20px">Gender </FormLabel>
+                    <Select
+                      name="gender"
+                      placeholder="Select your gender"
+                      w="240px"
+                    >
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                      onChange={handleInputChange}
+                    </Select>
+                  </Box>
+                  <Box marginLeft="18px" w="240px">
+                    <FormLabel marginTop="20px">Date of Birth</FormLabel>
+                    <DatePicker
+                      name="DOB"
+                      selected={selectedDate}
+                      onChange={(date) => setSelectedDate(date)}
+                      maxDate={new Date()}
+                      peekNextMonth
+                      showMonthDropdown
+                      showYearDropdown
+                      dropdownMode="select"
+                      dateFormat="yyyy-MM-dd"
+                      placeholderText="Select your date of birth"
+                      className="form-control"
+                    />
+                  </Box>
+                </Flex>
                 <Flex marginTop="1px">
-                <Box>
-                  <FormLabel marginTop="20px">Next of kin </FormLabel>
-                  <Input
-                    name="kinName"
-                    type="text"
-                    placeholder="Next of kin name"
-                    onChange={handleInputChange}
-                    w="250px"
-                  />
+                  <Box>
+                    <FormLabel marginTop="20px">Next of kin </FormLabel>
+                    <Input
+                      name="kinName"
+                      type="text"
+                      placeholder="Next of kin name"
+                      onChange={handleInputChange}
+                      w="240px"
+                    />
+                    <Input
+                      name="kinNumber"
+                      type="text"
+                      placeholder="Next of kin phone number"
+                      onChange={handleInputChange}
+                      w="240px"
+                      marginLeft="18px"
+                    />
+                  </Box>
+                </Flex>
+                <Box w="500px" marginTop="20px">
+                  <InputGroup size="md">
+                    <Input
+                      name="password"
+                      pr="4.5rem"
+                      type={show ? "text" : "password"}
+                      placeholder="Enter password"
+                      onChange={handleInputChange}
+                    />
+                    <InputRightElement width="4.5rem">
+                      <Button h="1.75rem" size="sm" onClick={handleClick}>
+                        {show ? "Hide" : "Show"}
+                      </Button>
+                    </InputRightElement>
+                  </InputGroup>
                 </Box>
-                <Box marginLeft="5px">
-                  <FormLabel marginTop="20px">Phone number </FormLabel>
-                  <Input
-                    name="kinNumber"
-                    type="text"
-                    placeholder="Next of kin phone number"
-                    onChange={handleInputChange}
-                    w="250px"
-                  />
+                <Box marginTop="20px" w="500px">
+                  <InputGroup size="md">
+                    <Input
+                      name="confirmPassword"
+                      pr="4.5rem"
+                      type={show ? "text" : "password"}
+                      placeholder="Confirm password"
+                      onChange={handleInputChange}
+                      w="500px"
+                    />
+                    <InputRightElement width="4.5rem">
+                      <Button h="1.75rem" size="sm" onClick={handleClick}>
+                        {show ? "Hide" : "Show"}
+                      </Button>
+                    </InputRightElement>
+                  </InputGroup>
                 </Box>
-              </Flex>
 
-                <InputGroup size="md" marginTop="20px">
-                  <Input
-                    name="confirmPassword"
-                    pr="4.5rem"
-                    type={show ? "text" : "password"}
-                    placeholder="Confirm password"
-                    onChange={handleInputChange}
-                  />
-                  <InputRightElement width="4.5rem">
-                    <Button h="1.75rem" size="sm" onClick={handleClick}>
-                      {show ? "Hide" : "Show"}
-                    </Button>
-                  </InputRightElement>
-                </InputGroup>
-
-                <ChakraLink href="/join-complete">
+               
+                  <Box marginLeft="-30px">
+                  <ChakraLink href="/join-complete">
                   <Button
                     type="submit"
                     w="350px"
@@ -422,6 +435,8 @@ const LandingPage = () => {
                     Login
                   </ChakraLink>
                 </Text>
+                  </Box>
+                 
               </FormControl>
             </form>
           </Box>

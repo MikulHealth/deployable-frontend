@@ -73,6 +73,9 @@ const ClientDash = () => {
   const { user } = useSelector((state) => state.userReducer);
   const [showUserDetailsModal, setShowUserDetailsModal] = useState(false);
   const balance = 0.0;
+  const pendingAppointments = user?.numberOfPendingAppointments;
+  const activeAppointments = user?.numberOfActiveAppointments;
+  const completedAppointments = user?.numberOfCompletedAppointments;
   const [showServicesModal, setShowServicesModal] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [showViewAllModal, setShowViewAllModal] = useState(false);
@@ -642,14 +645,17 @@ const ClientDash = () => {
                     marginTop="20px"
                     marginLeft="20px"
                   >
-                    Activity Log
+                    Activity log in numbers
                   </Text>
-                  <ul style={{ paddingLeft: "20px", marginTop: "10px" }}>
+                  <ul style={{ paddingLeft: "20px", marginTop: "7px" }}>
                     <li style={{ listStyleType: "none" }}>
-                      <Text>No. of booking: 0</Text>
+                      <Text>Pending appointments: {pendingAppointments}</Text>
                     </li>
                     <li style={{ listStyleType: "none" }}>
-                      <Text>No. of care received: 0</Text>
+                      <Text>Active appointments: {activeAppointments}</Text>
+                    </li>
+                    <li style={{ listStyleType: "none" }}>
+                      <Text>Completed appointments: {completedAppointments}</Text>
                     </li>
                   </ul>
                 </Box>

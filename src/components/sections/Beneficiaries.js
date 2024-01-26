@@ -28,6 +28,8 @@ const BeneficiariesModal = ({ isOpen, onClose }) => {
   const [isConfirmationModalOpen, setConfirmationModalOpen] = useState(false);
   const [selectedBeneficiaryId, setSelectedBeneficiaryId] = useState(null);
 
+
+
   const handleRemoveBeneficiary = (beneficiaryId) => {
     setSelectedBeneficiaryId(beneficiaryId);
     setConfirmationModalOpen(true);
@@ -35,6 +37,7 @@ const BeneficiariesModal = ({ isOpen, onClose }) => {
 
   const handleOpenAddBeneficiaryForm = () => {
     setAddBeneficiaryFormOpen(true);
+    // onClose();
   };
 
   useEffect(() => {
@@ -298,10 +301,11 @@ const BeneficiariesModal = ({ isOpen, onClose }) => {
             Add Beneficiary
           </Button>
           {isAddBeneficiaryFormOpen && (
-            <AddBeneficiaryForm
-              isOpen={isAddBeneficiaryFormOpen}
-              onClose={() => setAddBeneficiaryFormOpen(false)}
-            />
+          <AddBeneficiaryForm
+          isOpen={isAddBeneficiaryFormOpen}
+          onClose={() => setAddBeneficiaryFormOpen(false)}
+        />
+        
           )}
         </ModalFooter>
       </ModalContent>

@@ -157,7 +157,7 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
   
       const response = await axios.post(apiUrl, requestBody, { headers });
   
-      if (response && response.data) {
+      if (response.data.success) {
         setLoading(false);
   
         toast({
