@@ -62,6 +62,16 @@ const UserDetailsModal = ({ isOpen, onClose }) => {
     setEditModalOpen(false);
   };
 
+  const formatDate = (dateString) => {
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    const formattedDate = new Date(dateString).toLocaleDateString(
+      undefined,
+      options
+    );
+    return formattedDate;
+  };
+
+
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose} size="2xl">
@@ -76,7 +86,7 @@ const UserDetailsModal = ({ isOpen, onClose }) => {
                 <Text>{`Home address: ${user?.address}`}</Text>
                 <Text>{`Email: ${user?.email}`}</Text>
                 <Text>{`Phone Number: ${user?.phoneNumber}`}</Text>
-                <Text>{`Date of birth: ${user?.dob}`}</Text>
+                <Text>{`Date of birth:  ${formatDate(user?.dob)}`}</Text>
                 <Text>{`Gender: ${user?.gender}`}</Text>
               </VStack>
               <Image

@@ -69,7 +69,10 @@ const EditProfileModal = ({ isOpen, onClose }) => {
     fetchData();
   }, []);
 
+ 
+
   useEffect(() => {
+   
     setEditedUser({
       firstName: user?.firstName || "",
       lastName: user?.lastName || "",
@@ -79,18 +82,9 @@ const EditProfileModal = ({ isOpen, onClose }) => {
       image: user?.image || "",
       gender: user?.gender || "",
       dob: user?.dob || "",
-      // {formatDate(beneficiary.recipientDOB)
     });
   }, [user]);
 
-  const formatDate = (dateString) => {
-    const options = { year: "numeric", month: "long", day: "numeric" };
-    const formattedDate = new Date(dateString).toLocaleDateString(
-      undefined,
-      options
-    );
-    return formattedDate;
-  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
