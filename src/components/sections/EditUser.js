@@ -170,7 +170,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
   };
 
   const handleSubmit = async () => {
-    handleCloseConfirmationModal(); // Close the confirmation modal
+    handleCloseConfirmationModal(); 
     setLoading(true);
     try {
       await handleImageChange(image, editedUser, setEditedUser);
@@ -241,7 +241,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
                   />
                 </label>
               </Flex>
-              {imageLoading && <LoadingSpinner size={20} />}
+              {imageLoading && <LoadingSpinner size={20}/>}
               <FormLabel marginLeft="8px" marginTop="2px">
                 Click image to update (only PNG and JPG files are accepted)
               </FormLabel>
@@ -263,9 +263,9 @@ const EditProfileModal = ({ isOpen, onClose }) => {
                   />
                 </FormControl>
               </Flex>
-              <Flex marginLeft="-90px">
+              <Flex marginTop="5px" marginLeft="-90px">
                 <Box>
-                  <FormLabel marginTop="20px">Gender </FormLabel>
+                  <FormLabel >Gender </FormLabel>
                   <Select
                     name="gender"
                     placeholder="Select your gender"
@@ -277,7 +277,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
                   </Select>
                 </Box>
                 <Box marginLeft="10px">
-                  <FormLabel marginTop="20px">Date of Birth</FormLabel>
+                  <FormLabel >Date of Birth</FormLabel>
                   <DatePicker
                     name="dob"
                     selected={selectedDate}

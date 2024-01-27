@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { GetCurrentUser } from "../../apiCalls/UserApis";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import axios from "axios"; // Import axios for making API calls
+import axios from "axios"; 
 import {
   Modal,
   ModalOverlay,
@@ -12,6 +12,7 @@ import {
   ModalCloseButton,
   ModalBody,
   VStack,
+  Flex,
   Image,
   Text,
   Button,
@@ -63,27 +64,31 @@ const UserDetailsModal = ({ isOpen, onClose }) => {
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose} size="xl">
+      <Modal isOpen={isOpen} onClose={onClose} size="2xl">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Profile Details</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <VStack align="center" spacing={4}>
+            <Flex>
+              <VStack  marginLeft="20px" marginTop="30px" align="center" spacing={4}>
+                <Text>{`Name: ${user?.firstName} ${user?.lastName}`}</Text>
+                <Text>{`Home address: ${user?.address}`}</Text>
+                <Text>{`Email: ${user?.email}`}</Text>
+                <Text>{`Phone Number: ${user?.phoneNumber}`}</Text>
+                <Text>{`Date of birth: ${user?.dob}`}</Text>
+                <Text>{`Gender: ${user?.gender}`}</Text>
+              </VStack>
               <Image
-                src={user?.image || defaultImage}
-                alt="User Image"
-                borderRadius="8px"
-                h="35vh"
-                w="15vw"
-              />
-              <Text>{`Name: ${user?.firstName} ${user?.lastName}`}</Text>
-              <Text>{`Home address: ${user?.address}`}</Text>
-              <Text>{`Email: ${user?.email}`}</Text>
-              <Text>{`Phone Number: ${user?.phoneNumber}`}</Text>
-              <Text>{`Date of birth: ${user?.dob}`}</Text>
-              <Text>{`Gender: ${user?.gender}`}</Text>
-            </VStack>
+              src={user?.image || defaultImage}
+              alt="User Image"
+              borderRadius="8px"
+              h="45vh"
+              w="20vw"
+              marginLeft="50px"
+            />
+            </Flex>
+           
           </ModalBody>
           <ModalFooter>
             <Text
