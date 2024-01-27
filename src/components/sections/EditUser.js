@@ -79,30 +79,38 @@ const EditProfileModal = ({ isOpen, onClose }) => {
       image: user?.image || "",
       gender: user?.gender || "",
       dob: user?.dob || "",
+      // {formatDate(beneficiary.recipientDOB)
     });
   }, [user]);
 
-  // const handleInputChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setEditedUser((prevUser) => ({
-  //     ...prevUser,
-  //     [name]: value,
-  //   }));
-  // };
+  const formatDate = (dateString) => {
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    const formattedDate = new Date(dateString).toLocaleDateString(
+      undefined,
+      options
+    );
+    return formattedDate;
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
-    if (name === "dob") {
-      setSelectedDate(value);
+    if (name !== "dob") {
       setEditedUser({
-        dob: value,
-      });
-    } else {
-      setEditedUser({
+        ...editedUser,
         [name]: value,
       });
+    } else {
+      handleDOBChange(value);
     }
+  };
+
+  const handleDOBChange = (dobValue) => {
+    setSelectedDate(dobValue);
+    setEditedUser({
+      ...editedUser,
+      dob: dobValue,
+    });
   };
 
   const navigate = useNavigate();
@@ -170,12 +178,22 @@ const EditProfileModal = ({ isOpen, onClose }) => {
   };
 
   const handleSubmit = async () => {
-    handleCloseConfirmationModal(); 
+    handleCloseConfirmationModal();
     setLoading(true);
     try {
       await handleImageChange(image, editedUser, setEditedUser);
+      // Format the date to match the backend expectations
+      const formattedDate = selectedDate
+        ? selectedDate.toISOString().split("T")[0]
+        : "";
+
+      const dataToSend = {
+        ...editedUser,
+        dob: formattedDate,
+      };
+
       const response = await UpdateCustomer(
-        editedUser,
+        dataToSend,
         toast,
         setLoading,
         "You will be re-directed to the dashboard"
@@ -241,7 +259,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
                   />
                 </label>
               </Flex>
-              {imageLoading && <LoadingSpinner size={20}/>}
+              {imageLoading && <LoadingSpinner size={20} />}
               <FormLabel marginLeft="8px" marginTop="2px">
                 Click image to update (only PNG and JPG files are accepted)
               </FormLabel>
@@ -265,11 +283,12 @@ const EditProfileModal = ({ isOpen, onClose }) => {
               </Flex>
               <Flex marginTop="5px" marginLeft="-90px">
                 <Box>
-                  <FormLabel >Gender </FormLabel>
+                  <FormLabel>Gender </FormLabel>
                   <Select
                     name="gender"
                     placeholder="Select your gender"
                     w="250px"
+                    value={editedUser.gender}
                     onChange={handleInputChange}
                   >
                     <option value="Male">Male</option>
@@ -277,14 +296,16 @@ const EditProfileModal = ({ isOpen, onClose }) => {
                   </Select>
                 </Box>
                 <Box marginLeft="10px">
-                  <FormLabel >Date of Birth</FormLabel>
+                  <FormLabel>Date of Birth</FormLabel>
                   <DatePicker
                     name="dob"
                     selected={selectedDate}
+                    onBlur={() => handleDOBChange(selectedDate)}
                     onChange={(date) => setSelectedDate(date)}
                     maxDate={new Date()}
                     peekNextMonth
                     showMonthDropdown
+                    value={editedUser.dob}
                     showYearDropdown
                     dropdownMode="select"
                     dateFormat="yyyy-MM-dd"
