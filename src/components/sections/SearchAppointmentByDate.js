@@ -280,14 +280,14 @@ const SearchAppointmentsModal = ({ isOpen, onClose }) => {
             setDetailsModalOpen(false);
             handleDateChange(null);
           }}
-          size="5xl"
+          size="3xl"
         >
           <ModalOverlay />
           <ModalContent overflowY="auto">
             <ModalHeader color="#A210C6">Appointment Details</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <Flex>
+              <Flex marginLeft="30px">
                 <Box>
                   <Flex>
                     <Box>
@@ -424,15 +424,7 @@ const SearchAppointmentsModal = ({ isOpen, onClose }) => {
                             "Not availabe"}
                         </Text>
                       </Flex>
-                      <Flex marginTop="5px">
-                        <Text fontWeight="bold" color="black">
-                          Health History:
-                        </Text>
-                        <Text marginLeft="5px" color="black">
-                          {selectedAppointment.recipientHealthHistory ||
-                            "Not availabe"}
-                        </Text>
-                      </Flex>
+
                       <Flex marginTop="5px">
                         <Text fontWeight="bold" color="black">
                           Service Plan
@@ -477,15 +469,13 @@ const SearchAppointmentsModal = ({ isOpen, onClose }) => {
                       </Flex>
                     </Box>
                   </Flex>
-                </Box>
-                <Box marginLeft="55px">
-                  <Image
-                    src={selectedAppointment?.recipientImage || userImageIcon}
-                    alt="User Image"
-                    borderRadius="8px"
-                    h="40vh"
-                    w="15vw"
-                  />
+                  <Text fontWeight="bold" color="black">
+                    Health History:
+                  </Text>
+                  <Text marginLeft="5px" color="black">
+                    {selectedAppointment.recipientHealthHistory ||
+                      "Not availabe"}
+                  </Text>
                 </Box>
               </Flex>
             </ModalBody>

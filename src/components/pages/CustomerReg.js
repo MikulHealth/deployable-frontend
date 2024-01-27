@@ -62,7 +62,7 @@ const LandingPage = () => {
     password: "",
     confirmPassword: "",
     gender: "",
-    DOB: "",
+    dob: "",
     address: "",
     image: "",
     kinName: "",
@@ -79,11 +79,11 @@ const LandingPage = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
-    if (name === "DOB") {
+    if (name === "dob") {
       setSelectedDate(value);
       setFormData({
         ...formData,
-        DOB: value,
+        dob: value,
       });
     } else {
       setFormData({
@@ -92,6 +92,7 @@ const LandingPage = () => {
       });
     }
   };
+  
   const toast = useToast();
   const handleClick = () => setShow(!show);
 
@@ -297,7 +298,7 @@ const LandingPage = () => {
                       Email address
                     </FormLabel>
                     <Input
-                      name="email"
+                      name="email" 
                       placeholder="Email"
                       type="email"
                       onChange={handleInputChange}
@@ -316,18 +317,17 @@ const LandingPage = () => {
                     w="490px"
                   />
                 </Flex>
-                <Box  w="490px">
-                <InputGroup marginTop="20px">
-                  <InputLeftAddon children="+234" />
-                  <Input
-                    name="phoneNumber"
-                    type="tel"
-                    placeholder="Phone number"
-                    onChange={handleInputChange}  
-                  />
-                </InputGroup>
+                <Box w="490px">
+                  <InputGroup marginTop="20px">
+                    <InputLeftAddon children="+234" />
+                    <Input
+                      name="phoneNumber"
+                      type="tel"
+                      placeholder="Phone number"
+                      onChange={handleInputChange}
+                    />
+                  </InputGroup>
                 </Box>
-                
 
                 <Flex>
                   <Box>
@@ -336,16 +336,16 @@ const LandingPage = () => {
                       name="gender"
                       placeholder="Select your gender"
                       w="240px"
+                      onChange={handleInputChange}
                     >
                       <option value="Male">Male</option>
                       <option value="Female">Female</option>
-                      onChange={handleInputChange}
                     </Select>
                   </Box>
                   <Box marginLeft="18px" w="240px">
                     <FormLabel marginTop="20px">Date of Birth</FormLabel>
                     <DatePicker
-                      name="DOB"
+                      name="dob"
                       selected={selectedDate}
                       onChange={(date) => setSelectedDate(date)}
                       maxDate={new Date()}
@@ -413,30 +413,36 @@ const LandingPage = () => {
                   </InputGroup>
                 </Box>
 
-               
-                  <Box marginLeft="-30px">
+                <Box marginLeft="-30px">
                   <ChakraLink href="/join-complete">
-                  <Button
-                    type="submit"
-                    w="350px"
-                    bg="#A210C6"
-                    marginTop="20px"
-                    color="white"
-                    isLoading={loading}
-                    loadingText="Registering..."
-                  >
-                    {loading ? "Loading..." : "Submit"}
-                  </Button>
-                </ChakraLink>
-
-                <Text fontSize="16px" fontFamily="Montserrat" marginTop="10px">
-                  Already have an account?{" "}
-                  <ChakraLink fontStyle="italic" href="/login" color="#A210C6">
-                    Login
+                    <Button
+                      type="submit"
+                      w="350px"
+                      bg="#A210C6"
+                      marginTop="20px"
+                      color="white"
+                      isLoading={loading}
+                      loadingText="Registering..."
+                    >
+                      {loading ? "Loading..." : "Submit"}
+                    </Button>
                   </ChakraLink>
-                </Text>
-                  </Box>
-                 
+
+                  <Text
+                    fontSize="16px"
+                    fontFamily="Montserrat"
+                    marginTop="10px"
+                  >
+                    Already have an account?{" "}
+                    <ChakraLink
+                      fontStyle="italic"
+                      href="/login"
+                      color="#A210C6"
+                    >
+                      Login
+                    </ChakraLink>
+                  </Text>
+                </Box>
               </FormControl>
             </form>
           </Box>

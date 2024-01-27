@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { GetCurrentUser, UpdateCustomer } from "../../apiCalls/UserApis";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import {
   Modal,
   ModalOverlay,
@@ -16,6 +18,7 @@ import {
   Box,
   Text,
   Flex,
+  Select,
   FormControl,
   FormLabel,
 } from "@chakra-ui/react";
@@ -39,6 +42,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
     image: "",
   });
   const [isConfirmationModalOpen, setConfirmationModalOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null);
   const toast = useToast();
 
   useEffect(() => {
@@ -73,15 +77,32 @@ const EditProfileModal = ({ isOpen, onClose }) => {
       email: user?.email || "",
       phoneNumber: user?.phoneNumber || "",
       image: user?.image || "",
+      gender: user?.gender || "",
+      dob: user?.dob || "",
     });
   }, [user]);
 
+  // const handleInputChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setEditedUser((prevUser) => ({
+  //     ...prevUser,
+  //     [name]: value,
+  //   }));
+  // };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setEditedUser((prevUser) => ({
-      ...prevUser,
-      [name]: value,
-    }));
+
+    if (name === "dob") {
+      setSelectedDate(value);
+      setEditedUser({
+        dob: value,
+      });
+    } else {
+      setEditedUser({
+        [name]: value,
+      });
+    }
   };
 
   const navigate = useNavigate();
@@ -173,9 +194,16 @@ const EditProfileModal = ({ isOpen, onClose }) => {
     }
   };
 
+  const handleImageClick = () => {
+    const fileInput = document.getElementById("fileInput");
+    if (fileInput) {
+      fileInput.click();
+    }
+  };
+
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose} size="md">
+      <Modal isOpen={isOpen} onClose={onClose} size="xl">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Edit Profile</ModalHeader>
@@ -188,37 +216,35 @@ const EditProfileModal = ({ isOpen, onClose }) => {
                 change(s)
               </Text>
               <Flex direction="row" justify="space-between">
-                <Image
-                  src={editedUser.image}
-                  alt="Profile Preview"
-                  boxSize="100px"
-                  objectFit="cover"
-                  borderRadius="8px"
-                  marginBottom="-2"
-                />
-
-                <FormLabel marginLeft="8px" marginTop="2px">
-                  Update picture <br />
-                  (only PNG and JPG files are accepted)
-                </FormLabel>
+                <label htmlFor="fileInput">
+                  <Image
+                    src={editedUser.image}
+                    alt="Profile Preview"
+                    boxSize="100px"
+                    objectFit="cover"
+                    borderRadius="8px"
+                    cursor="pointer"
+                  />
+                  <Input
+                    id="fileInput"
+                    name="image"
+                    type="file"
+                    accept="image/*"
+                    style={{ display: "none" }}
+                    onChange={(e) => {
+                      handleImageChange(
+                        e.target.files[0],
+                        editedUser,
+                        setEditedUser
+                      );
+                    }}
+                  />
+                </label>
               </Flex>
-              <Input
-                name="image"
-                marginLeft="-6px"
-                w="398px"
-                type="file"
-                accept="image/*"
-                placeholder="Image"
-                onChange={(e) => {
-                  handleImageChange(
-                    e.target.files[0],
-                    editedUser,
-                    setEditedUser
-                  );
-                }}
-              />
               {imageLoading && <LoadingSpinner size={20} />}
-
+              <FormLabel marginLeft="8px" marginTop="2px">
+                Click image to update (only PNG and JPG files are accepted)
+              </FormLabel>
               <Flex direction="row" justify="space-between" w="100%">
                 <FormControl>
                   <Input
@@ -237,7 +263,36 @@ const EditProfileModal = ({ isOpen, onClose }) => {
                   />
                 </FormControl>
               </Flex>
-
+              <Flex marginLeft="-90px">
+                <Box>
+                  <FormLabel marginTop="20px">Gender </FormLabel>
+                  <Select
+                    name="gender"
+                    placeholder="Select your gender"
+                    w="250px"
+                    onChange={handleInputChange}
+                  >
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                  </Select>
+                </Box>
+                <Box marginLeft="10px">
+                  <FormLabel marginTop="20px">Date of Birth</FormLabel>
+                  <DatePicker
+                    name="dob"
+                    selected={selectedDate}
+                    onChange={(date) => setSelectedDate(date)}
+                    maxDate={new Date()}
+                    peekNextMonth
+                    showMonthDropdown
+                    showYearDropdown
+                    dropdownMode="select"
+                    dateFormat="yyyy-MM-dd"
+                    placeholderText="Select your date of birth"
+                    className="form-control"
+                  />
+                </Box>
+              </Flex>
               <Input
                 name="address"
                 value={editedUser.address}
@@ -262,7 +317,12 @@ const EditProfileModal = ({ isOpen, onClose }) => {
               </Flex>
             </VStack>
           </ModalBody>
-          <Flex marginLeft="220px" marginBottom="4" marginTop="10px" display="flex">
+          <Flex
+            marginLeft="220px"
+            marginBottom="4"
+            marginTop="10px"
+            display="flex"
+          >
             <Text
               fontSize="20px"
               onClick={handleBack}
@@ -284,13 +344,13 @@ const EditProfileModal = ({ isOpen, onClose }) => {
               loadingText="Updating..."
               style={{
                 // marginLeft: "60px",
-                color:  "#A210C6",
+                color: "#A210C6",
                 fontStyle: "italic",
                 cursor: "pointer",
               }}
               _hover={{ color: "#A210C6" }}
             >
-            {loading ? "Loading..." : "Save Changes"}
+              {loading ? "Loading..." : "Save Changes"}
             </Text>
           </Flex>
         </ModalContent>

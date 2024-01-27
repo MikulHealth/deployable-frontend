@@ -81,6 +81,8 @@ const UserDetailsModal = ({ isOpen, onClose }) => {
               <Text>{`Home address: ${user?.address}`}</Text>
               <Text>{`Email: ${user?.email}`}</Text>
               <Text>{`Phone Number: ${user?.phoneNumber}`}</Text>
+              <Text>{`Date of birth: ${user?.dob}`}</Text>
+              <Text>{`Gender: ${user?.gender}`}</Text>
             </VStack>
           </ModalBody>
           <ModalFooter>

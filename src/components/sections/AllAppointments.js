@@ -188,7 +188,7 @@ const AppointmentModal = ({ isOpen, onClose }) => {
         <Modal
           isOpen={detailsModalOpen}
           onClose={() => setDetailsModalOpen(false)}
-          size="6xl"
+          size="3xl"
         >
           <ModalOverlay />
           <ModalContent overflowY="auto">
@@ -196,7 +196,7 @@ const AppointmentModal = ({ isOpen, onClose }) => {
             <ModalCloseButton />
             <ModalBody>
               <Progress size="xs" isIndeterminate />
-              <Flex>
+              <Flex marginLeft="30px">
                 <Box>
                   <Flex>
                     <Box marginRight="20px">
@@ -355,7 +355,7 @@ const AppointmentModal = ({ isOpen, onClose }) => {
                           Start Date:
                         </Text>
                         <Text marginLeft="5px" color="black">
-                          {formatDateTime(selectedAppointment.startDate) ||
+                          {formatDate(selectedAppointment.startDate) ||
                             "Not availabe"}
                         </Text>
                       </Flex>
@@ -364,7 +364,7 @@ const AppointmentModal = ({ isOpen, onClose }) => {
                           End Date:
                         </Text>
                         <Text marginLeft="5px" color="black">
-                          {formatDateTime(selectedAppointment.endDate) ||
+                          {formatDate(selectedAppointment.endDate) ||
                             "Not availabe"}
                         </Text>
                       </Flex>
@@ -392,15 +392,6 @@ const AppointmentModal = ({ isOpen, onClose }) => {
                       </Flex>
                     </Box>
                   </Flex>
-                </Box>
-                <Box marginLeft="40px">
-                  <Image
-                    src={selectedAppointment?.recipientImage || userImageIcon}
-                    alt="User Image"
-                    borderRadius="8px"
-                    h="40vh"
-                    w="15vw"
-                  />
                 </Box>
               </Flex>
             </ModalBody>
