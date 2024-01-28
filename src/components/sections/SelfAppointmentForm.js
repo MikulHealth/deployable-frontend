@@ -128,6 +128,40 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
     updateFormData(name, value);
   };
 
+  
+  const verifyPayment = async (appointmentId) => {
+    try {
+      const token = localStorage.getItem("token");
+      const requestBody = appointmentId;
+
+      const apiUrl = `http://localhost:8080/api/v1/appointment/verify-payment`;
+
+      const headers = {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      };
+
+      const response = await axios.post(apiUrl, requestBody, { headers });
+
+      if (response.data.success) {
+        toast({
+          title: "Payment verified",
+          description: response.data.message,
+          status: "success",
+          duration: 6000,
+        });
+        console.log("Payment verified successfully", response.data.data);
+        onClose()
+      } else {
+        // Handle verification failure
+        console.error("Payment verification failed");
+      }
+    } catch (error) {
+      // Handle error
+      console.error("An error occurred during payment verification:", error);
+    }
+  };
+
   const handleFormSubmit = async () => {
     setLoading(true);
     try {
@@ -173,12 +207,11 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
 
         toast({
           title: "Appointment Booked",
-          description:
-            "Kindly kindly wait, you would be notified when you are matched with a cargiver withing the next 48hrs",
           status: "success",
           duration: 6000,
         });
-        onClose();
+        const appointmentId = response.data.data.id;
+        verifyPayment(appointmentId);
       } else {
         setLoading(false);
 
