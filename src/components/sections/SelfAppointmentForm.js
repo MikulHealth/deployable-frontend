@@ -43,18 +43,25 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
   const [selectedDob, setSelectedDob] = useState(null);
+  const [appointmentId, setAppointmentId] = useState(null);
 
   const [paymentData, setPamentData] = useState({
     email: user?.email,
     amount: 500000,
-    reference: `book_appointment_${user.phoneNumber}_${Date.now()}`,
+    reference: appointmentId,
     name: user?.firstName + user?.lastName,
     phone: user?.phoneNumber,
     publicKey: "pk_test_be79821835be2e8689484980b54a9785c8fa0778",
   });
+  // const handlePaymentSuccess = (response) => {
+  //   console.log("here is the appointment id", appointmentId);
+  //   verifyPayment(appointmentId);
+  //   setIsConfirmationOpen();
+  // };
+
   const handlePaymentSuccess = (response) => {
     handleFormSubmit();
-    setIsConfirmationOpen();
+    setIsConfirmationOpen(false);
   };
 
   const handlePaymentFailure = (error) => {
@@ -128,20 +135,19 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
     updateFormData(name, value);
   };
 
-  
   const verifyPayment = async (appointmentId) => {
     try {
       const token = localStorage.getItem("token");
       const requestBody = appointmentId;
 
-      const apiUrl = `http://localhost:8080/api/v1/appointment/verify-payment`;
+      const apiUrl = `http://localhost:8080/v1/payment/verify/${appointmentId}`;
 
       const headers = {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       };
 
-      const response = await axios.post(apiUrl, requestBody, { headers });
+      const response = await axios.get(apiUrl, { headers });
 
       if (response.data.success) {
         toast({
@@ -151,7 +157,7 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
           duration: 6000,
         });
         console.log("Payment verified successfully", response.data.data);
-        onClose()
+        onClose();
       } else {
         // Handle verification failure
         console.error("Payment verification failed");
@@ -161,6 +167,13 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
       console.error("An error occurred during payment verification:", error);
     }
   };
+
+  // useEffect(() => {
+  //   if (appointmentId) {
+  //     setIsConfirmationOpen(true);
+  //     console.log("the id is ", appointmentId);
+  //   }
+  // }, [appointmentId]);
 
   const handleFormSubmit = async () => {
     setLoading(true);
@@ -206,11 +219,12 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
         setLoading(false);
 
         toast({
-          title: "Appointment Booked",
+          title: "Appointment Saved",
           status: "success",
           duration: 6000,
         });
         const appointmentId = response.data.data.id;
+        console.log("here is the appointment id", appointmentId);
         verifyPayment(appointmentId);
       } else {
         setLoading(false);
@@ -240,6 +254,7 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
   };
 
   const handleOpenConfirmation = () => {
+    // handleFormSubmit();
     setIsConfirmationOpen(true);
   };
 
