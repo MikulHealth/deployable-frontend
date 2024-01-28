@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { PaystackButton } from "react-paystack";
 import {
   // Other Chakra UI components
   Modal,
@@ -17,6 +18,7 @@ import {
   FormControl,
   FormLabel,
   Box,
+  Text,
   Flex,
 } from "@chakra-ui/react";
 import DatePicker from "react-datepicker";
@@ -53,6 +55,34 @@ const BookBeneficiaryAppointmentModal = ({
     relationship: "",
     language: "",
   });
+
+  const handlePayment = (e) => {
+    e.preventDefault();
+  };
+
+  const [paymentData, setPamentData] = useState({
+    email: user?.email,
+    amount: 500000,
+    reference: `book_appointment_${user.phoneNumber}_${Date.now()}`,
+    name: user?.firstName + user?.lastName,
+    phone: user?.phoneNumber,
+    publicKey: "pk_test_be79821835be2e8689484980b54a9785c8fa0778",
+  });
+  const handlePaymentSuccess = (response) => {
+    handleFormSubmit();
+  };
+
+  const handlePaymentFailure = (error) => {
+    // Handle payment failure
+    console.error(error);
+    // Optionally, you can inform the user about the payment failure
+    toast({
+      title: "Payment Failed",
+      description: "There was an issue processing your payment.",
+      status: "error",
+      duration: 6000,
+    });
+  };
 
   const formatDateToUTC = (selectedDate) => {
     if (!selectedDate) return "";
@@ -155,6 +185,23 @@ const BookBeneficiaryAppointmentModal = ({
         duration: 6000,
       });
     }
+  };
+
+  const componentProps = {
+    email: user?.email,
+    amount: 500000,
+    reference: `book_appointment_${user.phoneNumber}_${Date.now()}`,
+    metadata: {
+      name: user?.firstName + user?.lastName,
+      phone: user?.phoneNumber,
+    },
+    publicKey: "pk_test_be79821835be2e8689484980b54a9785c8fa0778",
+    text: "Make Payment",
+    onSuccess: () => {
+      handlePaymentSuccess();
+    },
+
+    onClose: () => toast.error("Wait! Don't leave :("),
   };
 
   useEffect(() => {
@@ -351,26 +398,29 @@ const BookBeneficiaryAppointmentModal = ({
         <Modal isOpen={isConfirmationOpen} onClose={handleCloseConfirmation}>
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>Confirm Submission</ModalHeader>
+            <ModalHeader>Confirm Payment</ModalHeader>
             <ModalCloseButton />
-            <ModalBody>
-              Are you sure you want to submit the form? <br></br>
-              Please note that you would have to make payment immidiately after
-              submition before we can match you with a caregiver.
-            </ModalBody>
-            <ModalFooter>
-              <Button
-                bg="#A210C6"
-                color="white"
-                mr={3}
-                onClick={handleConfirmSubmit}
-              >
-                Confirm
-              </Button>
-              <Button bg="gray" color="white" onClick={handleCloseConfirmation}>
-                Cancel
-              </Button>
-            </ModalFooter>
+            <form onSubmit={handlePayment}>
+              <ModalBody>
+                Kindly pay the sum of 250,000 to proceed with your booking. You
+                would be matched with a caregiver within 48hrs upon a successful
+                payment.
+              </ModalBody>
+              <ModalFooter>
+                <Box color="#A210C6" mr={3}>
+                  <PaystackButton
+                    {...paymentData}
+                    text="Make Payment"
+                    className="submits"
+                    onSuccess={handlePaymentSuccess}
+                    onClose={handlePaymentFailure}
+                  />
+                </Box>
+                <Text color="gray" onClick={onClose}>
+                  Cancel
+                </Text>
+              </ModalFooter>
+            </form>
           </ModalContent>
         </Modal>
       </ModalContent>

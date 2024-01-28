@@ -5,6 +5,8 @@ import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import LoadingSpinner from "../../utils/Spiner";
+import { PaystackButton } from "react-paystack";
+
 import {
   Modal,
   ModalOverlay,
@@ -20,6 +22,7 @@ import {
   Progress,
   Switch,
   Flex,
+  Text,
   Box,
   Select,
   useToast,
@@ -41,6 +44,28 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
   const [selectedEndDate, setSelectedEndDate] = useState(null);
   const [selectedDob, setSelectedDob] = useState(null);
 
+  const [paymentData, setPamentData] = useState({
+    email: user?.email,
+    amount: 500000,
+    reference: `book_appointment_${user.phoneNumber}_${Date.now()}`,
+    name: user?.firstName + user?.lastName,
+    phone: user?.phoneNumber,
+    publicKey: "pk_test_be79821835be2e8689484980b54a9785c8fa0778",
+  });
+  const handlePaymentSuccess = (response) => {
+    handleFormSubmit();
+    setIsConfirmationOpen();
+  };
+
+  const handlePaymentFailure = (error) => {
+    toast({
+      title: "Payment Failed",
+      description: "There was an issue processing your payment.",
+      status: "error",
+      duration: 6000,
+    });
+  };
+
   const formatDateToUTC = (selectedDate) => {
     if (!selectedDate) return "";
 
@@ -50,20 +75,6 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
 
     return adjustedDate.toISOString().split("T")[0];
   };
-
-  const [formData, setFormData] = useState({
-    currentLocation: "",
-    shift: "",
-    recipientDoctor: "",
-    recipientDoctorNumber: "",
-    recipientHospital: "",
-    recipientIllness: "",
-    recipientHealthHistory: "",
-    servicePlan: "",
-    startDate: "",
-    endDate: "",
-    medicalReport: "",
-  });
 
   const [formPages, setFormPages] = useState([
     {
@@ -103,7 +114,7 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
       setProgressBarValue((currentPage - 1) * (100 / totalPages));
     }
   };
-  
+
   const updateFormData = (name, value) => {
     setFormPages((prevPages) => {
       const updatedPages = [...prevPages];
@@ -121,17 +132,17 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
-  
+
       const apiUrl = "http://localhost:8080/v1/appointment/save";
-  
+
       const headers = {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       };
-  
+
       const formatDateWithDayAdjustment = (selectedDate) =>
         formatDateToUTC(new Date(selectedDate));
-  
+
       const userFieldsForBookForSelf = {
         recipientFirstname: user?.firstName,
         recipientLastname: user?.lastName,
@@ -142,35 +153,35 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
         kinName: user?.kinName,
         kinNumber: user?.kinNumber,
       };
-  
+
       const formDataWithDates = {
         ...formPages[0],
         startDate: formatDateWithDayAdjustment(selectedStartDate),
         endDate: formatDateWithDayAdjustment(selectedEndDate),
-        recipientDOB: formatDateWithDayAdjustment(selectedDob), 
+        recipientDOB: formatDateWithDayAdjustment(selectedDob),
         customerPhoneNumber: user?.phoneNumber,
         ...userFieldsForBookForSelf,
         ...formPages[1],
       };
-  
+
       const requestBody = JSON.stringify(formDataWithDates);
-  
+
       const response = await axios.post(apiUrl, requestBody, { headers });
-  
+
       if (response.data.success) {
         setLoading(false);
-  
+
         toast({
-          title: "Booked successfully",
-          description: response.data.message,
+          title: "Appointment Booked",
+          description:
+            "Kindly kindly wait, you would be notified when you are matched with a cargiver withing the next 48hrs",
           status: "success",
           duration: 6000,
         });
-  
         onClose();
       } else {
         setLoading(false);
-  
+
         console.error("Error booking appointment");
         const errorMessage = response.data
           ? response.data.message
@@ -182,6 +193,7 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
           duration: 6000,
         });
       }
+      onClose();
     } catch (error) {
       setLoading(false);
       console.error("An error occurred:", error);
@@ -193,7 +205,7 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
       });
     }
   };
-  
+
   const handleOpenConfirmation = () => {
     setIsConfirmationOpen(true);
   };
@@ -202,12 +214,11 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
     setIsConfirmationOpen(false);
   };
 
-  const handleConfirmSubmit = () => {
-    handleFormSubmit();
-    handleCloseConfirmation();
+  const handlePayment = (e) => {
+    e.preventDefault();
   };
 
-  const totalPages = 2; 
+  const totalPages = 2;
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="2xl">
@@ -216,8 +227,8 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
         <ModalHeader color="#A210C6">Book Appointment</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-        <Progress hasStripe value={progressBarValue} colorScheme="gray"/>
-        <Progress size='xs' isIndeterminate />
+          <Progress hasStripe value={progressBarValue} colorScheme="gray" />
+          <Progress size="xs" isIndeterminate />
           <FormControl>
             {currentPage === 1 && (
               <Box>
@@ -407,23 +418,29 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
               >
                 <ModalOverlay />
                 <ModalContent>
-                  <ModalHeader>Confirm Submission</ModalHeader>
+                  <ModalHeader>Confirm Payment</ModalHeader>
                   <ModalCloseButton />
-                  <ModalBody>
-                    Are you sure you want to submit the form? <br></br>
-                    Please note that you would have to make payment immidiately
-                    after submition before we can match you with a caregiver.
-                  </ModalBody>
-                  <ModalFooter>
-                    <Button
-                      colorScheme="blue"
-                      mr={3}
-                      onClick={handleConfirmSubmit}
-                    >
-                      Confirm
-                    </Button>
-                    <Button onClick={handleCloseConfirmation}>Cancel</Button>
-                  </ModalFooter>
+                  <form onSubmit={handlePayment}>
+                    <ModalBody>
+                      Kindly pay the sum of 250,000 to proceed with your
+                      booking. You would be matched with a caregiver within
+                      48hrs upon a successful payment.
+                    </ModalBody>
+                    <ModalFooter>
+                      <Box color="#A210C6" mr={3}>
+                        <PaystackButton
+                          {...paymentData}
+                          text="Make Payment"
+                          className="submits"
+                          onSuccess={handlePaymentSuccess}
+                          onClose={handlePaymentFailure}
+                        />
+                      </Box>
+                      <Text color="gray" onClick={onClose}>
+                        Cancel
+                      </Text>
+                    </ModalFooter>
+                  </form>
                 </ModalContent>
               </Modal>
             </>

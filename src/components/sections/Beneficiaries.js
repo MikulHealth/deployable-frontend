@@ -161,7 +161,7 @@ const BeneficiariesModal = ({ isOpen, onClose }) => {
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose} size="2xl" borderRadius="0px">
+      <Modal isOpen={isOpen} onClose={onClose} size="3xl" borderRadius="0px">
         <ModalOverlay />
         <ModalContent maxH="80vh" overflowY="auto">
           <ModalHeader color="#A210C6">Beneficiaries</ModalHeader>
