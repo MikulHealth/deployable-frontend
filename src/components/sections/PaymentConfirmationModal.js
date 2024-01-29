@@ -150,6 +150,7 @@ const PaymentConfirmationModal = ({ isOpen, onClose }) => {
           duration: 6000,
         });
         console.error("Payment verification failed");
+        localStorage.removeItem("appointmentId");
         navigate("/dashboard");
       }
     } catch (error) {
