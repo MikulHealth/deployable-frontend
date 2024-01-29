@@ -198,7 +198,7 @@ const SearchAppointmentsModal = ({ isOpen, onClose }) => {
                       showMonthDropdown
                       showYearDropdown
                       dropdownMode="select"
-                      dateFormat="yyyy-MM-dd"
+                      dateFormat="dd-MM-yyyy"
                       placeholderText="here"
                       className="form-control"
                       style={{
@@ -305,16 +305,6 @@ const SearchAppointmentsModal = ({ isOpen, onClose }) => {
 
                       <Flex marginTop="5px">
                         <Text fontWeight="bold" color="black">
-                          Phone Number:
-                        </Text>
-                        <Text marginLeft="5px" color="black">
-                          {selectedAppointment.recipientPhoneNumber ||
-                            "Not available"}
-                        </Text>
-                      </Flex>
-
-                      <Flex marginTop="5px">
-                        <Text fontWeight="bold" color="black">
                           Gender:
                         </Text>
                         <Text marginLeft="5px" color="black">
@@ -399,16 +389,7 @@ const SearchAppointmentsModal = ({ isOpen, onClose }) => {
                       </Flex>
                       <Flex marginTop="5px">
                         <Text fontWeight="bold" color="black">
-                          Doctor's name:
-                        </Text>
-                        <Text marginLeft="5px" color="black">
-                          {selectedAppointment.recipientDoctor ||
-                            "Not availabe"}
-                        </Text>
-                      </Flex>
-                      <Flex marginTop="5px">
-                        <Text fontWeight="bold" color="black">
-                          Doctor's phone number:
+                          Contact number:
                         </Text>
                         <Text marginLeft="5px" color="black">
                           {selectedAppointment.recipientPhoneNumber ||

@@ -82,11 +82,11 @@ const PaymentConfirmationModal = ({ isOpen, onClose }) => {
 
             setAppointmentId(storedPaymentData);
             setPaymentData({
-              email: user?.email,
+              email: user?.email || "",
               amount: 500000,
               reference: storedPaymentData,
-              name: user?.firstName + " " + user?.lastName,
-              phone: user?.phoneNumber,
+              name: user?.firstName + " " + user?.lastName || " ",
+              phone: user?.phoneNumber || " ",
               publicKey: "pk_test_be79821835be2e8689484980b54a9785c8fa0778",
             });
             console.log("This is user", user?.firstName);
@@ -141,6 +141,15 @@ const PaymentConfirmationModal = ({ isOpen, onClose }) => {
           duration: 6000,
         });
         console.log("Payment verified successfully", response.data.data);
+        localStorage.removeItem("appointmentId");
+        setPaymentData({
+          email: "",
+          amount: " ",
+          reference: " ",
+          name: " ",
+          phone: " ",
+          publicKey: " ",
+        });
         navigate("/dashboard");
       } else {
         toast({
@@ -150,7 +159,7 @@ const PaymentConfirmationModal = ({ isOpen, onClose }) => {
           duration: 6000,
         });
         console.error("Payment verification failed");
-        localStorage.removeItem("appointmentId");
+       
         navigate("/dashboard");
       }
     } catch (error) {

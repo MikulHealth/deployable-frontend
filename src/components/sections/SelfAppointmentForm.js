@@ -57,20 +57,19 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
 
   const [formPages, setFormPages] = useState([
     {
-      currentLocation: "",
-      shift: "",
-      startDate: "",
       endDate: "",
+      startDate: "",
+      shift: "",
       servicePlan: "",
-      recipientHealthHistory: "",
+      currentLocation: "",
     },
     {
-      recipientDoctor: "",
-      recipientDoctorNumber: "",
       recipientHospital: "",
       medicalReport: "",
+      recipientHealthHistory: "",
     },
   ]);
+
 
   const handleStartDateChange = (date) => {
     updateFormData("startDate", date);
@@ -109,6 +108,43 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
 
   const handleFormSubmit = async () => {
     setLoading(true);
+    
+    const fieldNameMappings = {
+      startDate: "Start Date",
+      endDate: "End Date",
+      shift: "Shift",
+      servicePlan: "Service Plan",
+      currentLocation: "Current Location",
+      recipientHospital: "Personal hospital",
+      recipientHealthHistory: "Health History",
+    };    
+
+    const requiredFields = [
+      "startDate",
+      "endDate",
+      "shift",
+      "servicePlan",
+      "currentLocation",
+      "recipientHospital",
+      "recipientHealthHistory",
+    ];
+    
+    // for (const fieldName of requiredFields) {
+    //   if (!formPages[currentPage - 1][fieldName]) {
+    //     setLoading(false);
+    //     toast({
+    //       title: `${fieldNameMappings[fieldName]} is required`,
+    //       description: `Please fill in the ${fieldNameMappings[fieldName]} field.`,
+    //       status: "error",
+    //       duration: 5000,
+    //       isClosable: true,
+    //     });
+    //     return;
+    //   }
+    // }
+    
+    
+
     try {
       const token = localStorage.getItem("token");
 
@@ -191,6 +227,21 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
 
   const totalPages = 2;
 
+  const validateStartDates = () => {
+    if (!formPages[0].startDate || !formPages[0].endDate) {
+      toast({
+        title: "Appointment Dates Required",
+        description: "Please select both start and end dates.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+      return false;
+    }
+    return true;
+  };
+  
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="2xl">
       <ModalOverlay />
@@ -200,39 +251,41 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
         <ModalBody>
           <Progress hasStripe value={progressBarValue} colorScheme="gray" />
           <Progress size="xs" isIndeterminate />
-          <FormControl>
+          <FormControl isRequired>
             {currentPage === 1 && (
               <Box>
                 <Flex marginLeft="50px">
                   <Box w="250px">
                     <FormLabel marginTop="20px">Start Date</FormLabel>
                     <DatePicker
-                      name="startDate"
-                      selected={formPages[0].startDate}
-                      onChange={(e) => handleStartDateChange(e)}
-                      peekNextMonth
-                      showMonthDropdown
-                      showYearDropdown
-                      dropdownMode="select"
-                      dateFormat="yyyy-MM-dd"
-                      placeholderText="Preferred date to start"
-                      className="form-control"
-                    />
+                    name="startDate"
+                    selected={formPages[0].startDate}
+                    onChange={(e) => handleStartDateChange(e)}
+                    peekNextMonth
+                    showMonthDropdown
+                    showYearDropdown
+                    dropdownMode="select"
+                    dateFormat="dd-MM-yyyy"
+                    placeholderText="preferred date to start"
+                    className="form-control"
+                    minDate={new Date()}
+                  />
                   </Box>
                   <Box w="250px" marginLeft="5px">
                     <FormLabel marginTop="20px">End Date</FormLabel>
                     <DatePicker
-                      name="endDate"
-                      selected={formPages[0].endDate}
-                      onChange={(e) => handleEndDateChange(e)}
-                      peekNextMonth
-                      showMonthDropdown
-                      showYearDropdown
-                      dropdownMode="select"
-                      dateFormat="yyyy-MM-dd"
-                      placeholderText="Preferred date to end"
-                      className="form-control"
-                    />
+                    name="endDate"
+                    selected={formPages[0].endDate}
+                    onChange={(e) => handleEndDateChange(e)}
+                    peekNextMonth
+                    showMonthDropdown
+                    showYearDropdown
+                    dropdownMode="select"
+                    dateFormat="dd-MM-yyyy"
+                    placeholderText="preferred date to end"
+                    className="form-control"
+                    minDate={new Date()}
+                  />
                   </Box>
                 </Flex>
                 <Flex>
@@ -277,52 +330,10 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
                     w="500px"
                   />
                 </Box>
-
-                <Flex marginLeft="50px">
-                  <Box>
-                    <FormLabel marginTop="20px">Health History </FormLabel>
-                    <Textarea
-                      name="recipientHealthHistory"
-                      type="text"
-                      placeholder="Please share health history and any special need we should be aware of"
-                      value={formPages[0].recipientHealthHistory}
-                      onChange={(e) => handleInputChange(e)}
-                      w="500px"
-                    />
-                  </Box>
-                </Flex>
               </Box>
             )}
             {currentPage === 2 && (
               <Box marginLeft="30px">
-                <Flex>
-                  <Box>
-                    <FormLabel marginTop="20px">
-                      Personal Doctor's name{" "}
-                    </FormLabel>
-                    <Input
-                      name="recipientDoctor"
-                      type="text"
-                      placeholder="Personal Doctor's name"
-                      value={formPages[1].recipientDoctor}
-                      onChange={(e) => handleInputChange(e)}
-                      w="250px"
-                    />
-                  </Box>
-                  <Box marginLeft="50px">
-                    <FormLabel marginTop="20px">
-                      Doctor's phone number{" "}
-                    </FormLabel>
-                    <Input
-                      name="recipientDoctorNumber"
-                      type="tel"
-                      placeholder="Personal Doctor's phone number"
-                      value={formPages[1].recipientDoctorNumber}
-                      onChange={(e) => handleInputChange(e)}
-                      w="250px"
-                    />
-                  </Box>
-                </Flex>
                 <Flex>
                   <Box>
                     <FormLabel marginTop="20px">Personal hospital </FormLabel>
@@ -335,9 +346,9 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
                       w="250px"
                     />
                   </Box>
-                  <Box marginLeft="50px">
+                  <Box marginLeft="5px">
                     <FormLabel marginTop="20px">
-                      Upload medical report{" "}
+                      Upload medical report (optional){" "}
                     </FormLabel>
                     <Input
                       name="medicalReport"
@@ -347,6 +358,18 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
                     />
                   </Box>
                 </Flex>
+
+                <Box>
+                  <FormLabel marginTop="20px">Health History </FormLabel>
+                  <Textarea
+                    name="recipientHealthHistory"
+                    type="text"
+                    placeholder="Please share health history and any special need we should be aware of"
+                    value={formPages[1].recipientHealthHistory}
+                    onChange={(e) => handleInputChange(e)}
+                    w="505px"
+                  />
+                </Box>
               </Box>
             )}
           </FormControl>

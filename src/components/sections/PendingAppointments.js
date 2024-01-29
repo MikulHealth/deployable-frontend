@@ -398,24 +398,6 @@ const PendingAppointmentModal = ({ isOpen, onClose }) => {
                       </Flex>
                       <Flex marginTop="5px">
                         <Text fontWeight="bold" color="black">
-                          Doctor's name:
-                        </Text>
-                        <Text marginLeft="5px" color="black">
-                          {selectedAppointment.recipientDoctor ||
-                            "Not availabe"}
-                        </Text>
-                      </Flex>
-                      <Flex marginTop="5px">
-                        <Text fontWeight="bold" color="black">
-                          Doctor's phone number:
-                        </Text>
-                        <Text marginLeft="5px" color="black">
-                          {selectedAppointment.recipientPhoneNumber ||
-                            "Not availabe"}
-                        </Text>
-                      </Flex>
-                      <Flex marginTop="5px">
-                        <Text fontWeight="bold" color="black">
                           Hospital:
                         </Text>
                         <Text marginLeft="5px" color="black">

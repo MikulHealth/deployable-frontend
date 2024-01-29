@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  // Other Chakra UI components
+  InputLeftAddon,
+  InputGroup,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -43,8 +44,6 @@ const BookBeneficiaryAppointmentModal = ({
     currentLocation: "",
     shift: "",
     servicePlan: "",
-    recipientDoctor: "",
-    recipientDoctorNumber: "",
     recipientHospital: "",
     medicalReport: null,
     recipientHealthHistory: "",
@@ -87,6 +86,57 @@ const BookBeneficiaryAppointmentModal = ({
 
   const handleFormSubmit = async () => {
     setLoading(true);
+    const fieldNameMappings = {
+      shift: "Shift",
+      servicePlan: "Service Plan",
+      recipientHospital: "Personal hospital",
+      startDate: "Start Date",
+      endDate: "End Date",
+      currentLocation: "Current Location",
+      recipientHealthHistory: "Health History",
+    };
+
+    const requiredFields = [
+      "shift",
+      "servicePlan",
+      "recipientHospital",
+      "startDate",
+      "endDate",
+      "currentLocation",
+      "recipientHealthHistory",
+    ];
+
+    for (const fieldName of requiredFields) {
+      if (!formPages[fieldName]) {
+        setLoading(false);
+        toast({
+          title: `${fieldNameMappings[fieldName]} is required`,
+          description: `Please fill in the ${fieldNameMappings[fieldName]} field.`,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+        return;
+      }
+    }
+
+    if (!validateStartDates()) {
+      setLoading(false);
+      return;
+    }
+
+    // if (!validateNigerianPhoneNumber(formPages.recipientDoctorNumber)) {
+    //   setLoading(false);
+    //   toast({
+    //     title: "Invalid Phone Number",
+    //     description: "Please enter a valid Nigerian phone number.",
+    //     status: "error",
+    //     duration: 5000,
+    //     isClosable: true,
+    //   });
+    //   return;
+    // }
+
     try {
       const token = localStorage.getItem("token");
       const apiUrl = "http://localhost:8080/v1/appointment/save";
@@ -148,6 +198,25 @@ const BookBeneficiaryAppointmentModal = ({
     }
   };
 
+  const validateStartDates = () => {
+    if (!formPages.startDate || !formPages.endDate) {
+      toast({
+        title: "Appointment Dates Required",
+        description: "Please select both start and end dates.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+      return false;
+    }
+    return true;
+  };
+  const validateNigerianPhoneNumber = (phoneNumber) => {
+    // Regular expression to match Nigerian phone numbers
+    const nigerianPhoneNumberRegex = /^(?:\+234|234)([789]\d{9})$/;
+    return nigerianPhoneNumberRegex.test(phoneNumber);
+  };
+
   useEffect(() => {
     // Set initial form values based on the selected beneficiary
     if (selectedBeneficiary) {
@@ -162,8 +231,6 @@ const BookBeneficiaryAppointmentModal = ({
         currentLocation: "",
         shift: "",
         servicePlan: "",
-        recipientDoctor: "",
-        recipientDoctorNumber: "",
         recipientHospital: "",
         medicalReport: null,
         recipientHealthHistory: "",
@@ -189,7 +256,7 @@ const BookBeneficiaryAppointmentModal = ({
 
         <ModalCloseButton />
         <ModalBody>
-          <FormControl>
+          <FormControl isRequired>
             <Box marginLeft="40px">
               <Flex marginTop="1px">
                 <Box>
@@ -200,6 +267,7 @@ const BookBeneficiaryAppointmentModal = ({
                     w="250px"
                     value={formPages.shift}
                     onChange={(e) => handleInputChange(e)}
+                    isRequired
                   >
                     <option value="Day Shift">Day Shift (8hrs)</option>
                     <option value="Night Shift">Night Shift (12hrs)</option>
@@ -214,6 +282,7 @@ const BookBeneficiaryAppointmentModal = ({
                     w="250px"
                     value={formPages.servicePlan}
                     onChange={(e) => handleInputChange(e)}
+                    isRequired
                   >
                     <option value="Elderly care">Elderly care</option>
                     <option value="Postpartum care">Postpartum care</option>
@@ -222,7 +291,7 @@ const BookBeneficiaryAppointmentModal = ({
                   </Select>
                 </Box>
               </Flex>
-              <Flex>
+              {/* <Flex>
                 <Box>
                   <FormLabel marginTop="20px">
                     Personal Doctor's name{" "}
@@ -234,20 +303,24 @@ const BookBeneficiaryAppointmentModal = ({
                     value={formPages.recipientDoctor}
                     onChange={(e) => handleInputChange(e)}
                     w="250px"
+                    isRequired
                   />
                 </Box>
                 <Box marginLeft="5px">
                   <FormLabel marginTop="20px">Doctor's phone number </FormLabel>
-                  <Input
-                    name="recipientDoctorNumber"
-                    type="tel"
-                    placeholder="Personal Doctor's phone number"
-                    value={formPages.recipientDoctorNumber}
-                    onChange={(e) => handleInputChange(e)}
-                    w="250px"
-                  />
+
+                  <InputGroup >
+                    <InputLeftAddon children="+234" />
+                    <Input
+                      name="recipientDoctorNumber"
+                      type="tel"
+                      value={formPages.recipientDoctorNumber}
+                      onChange={(e) => handleInputChange(e)}
+                      w="250px"
+                    />
+                  </InputGroup>
                 </Box>
-              </Flex>
+              </Flex> */}
               <Flex>
                 <Box>
                   <FormLabel marginTop="20px">Personal hospital </FormLabel>
@@ -261,7 +334,7 @@ const BookBeneficiaryAppointmentModal = ({
                   />
                 </Box>
                 <Box marginLeft="5px">
-                  <FormLabel marginTop="20px">Upload medical report </FormLabel>
+                  <FormLabel marginTop="20px">Upload medical report (optional) </FormLabel>
                   <Input
                     name="medicalReport"
                     type="file"
@@ -281,9 +354,10 @@ const BookBeneficiaryAppointmentModal = ({
                     showMonthDropdown
                     showYearDropdown
                     dropdownMode="select"
-                    dateFormat="yyyy-MM-dd"
+                    dateFormat="dd-MM-yyyy"
                     placeholderText="preferred date to start"
                     className="form-control"
+                    minDate={new Date()}
                   />
                 </Box>
                 <Box w="250px" marginLeft="5px">
@@ -296,9 +370,10 @@ const BookBeneficiaryAppointmentModal = ({
                     showMonthDropdown
                     showYearDropdown
                     dropdownMode="select"
-                    dateFormat="yyyy-MM-dd"
+                    dateFormat="dd-MM-yyyy"
                     placeholderText="preferred date to end"
                     className="form-control"
+                    minDate={new Date()}
                   />
                 </Box>{" "}
               </Flex>
@@ -311,6 +386,7 @@ const BookBeneficiaryAppointmentModal = ({
                   value={formPages.currentLocation}
                   onChange={(e) => handleInputChange(e)}
                   w="500px"
+                  isRequired
                 />
               </Box>
               <Box>
@@ -322,6 +398,7 @@ const BookBeneficiaryAppointmentModal = ({
                   value={formPages.recipientHealthHistory}
                   onChange={(e) => handleInputChange(e)}
                   w="500px"
+                  isRequired
                 />
               </Box>
             </Box>
