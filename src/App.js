@@ -17,6 +17,7 @@ import ClientDash from './components/pages/ClientDashboad';
 import AppointmentPage from './components/pages/AppointmentPage';
 import UserDetailsModal from './components/sections/UserDetails';
 import VerifyOtpDash from './components/sections/VerifyOTP'
+import PaymentConfirmationModal from './components/sections/PaymentConfirmationModal';
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
         <Route path="/details" element={<UserDetailsModal/>}></Route>
         <Route path="/verifyPhone" element={<VerifyOtpDash/>}></Route>
           <Route path="/appointments" element={<AppointmentPage />} />
+          <Route path="/make-payment" element={<PaymentConfirmationModal />} />
         </Routes>
         </BrowserRouter>
         

@@ -5,7 +5,6 @@ import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import LoadingSpinner from "../../utils/Spiner";
-import { PaystackButton } from "react-paystack";
 
 import {
   Modal,
@@ -43,35 +42,8 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
   const [selectedDob, setSelectedDob] = useState(null);
-  const [appointmentId, setAppointmentId] = useState(null);
 
-  const [paymentData, setPamentData] = useState({
-    email: user?.email,
-    amount: 500000,
-    reference: appointmentId,
-    name: user?.firstName + user?.lastName,
-    phone: user?.phoneNumber,
-    publicKey: "pk_test_be79821835be2e8689484980b54a9785c8fa0778",
-  });
-  // const handlePaymentSuccess = (response) => {
-  //   console.log("here is the appointment id", appointmentId);
-  //   verifyPayment(appointmentId);
-  //   setIsConfirmationOpen();
-  // };
-
-  const handlePaymentSuccess = (response) => {
-    handleFormSubmit();
-    setIsConfirmationOpen(false);
-  };
-
-  const handlePaymentFailure = (error) => {
-    toast({
-      title: "Payment Failed",
-      description: "There was an issue processing your payment.",
-      status: "error",
-      duration: 6000,
-    });
-  };
+  const navigate = useNavigate();
 
   const formatDateToUTC = (selectedDate) => {
     if (!selectedDate) return "";
@@ -135,46 +107,6 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
     updateFormData(name, value);
   };
 
-  const verifyPayment = async (appointmentId) => {
-    try {
-      const token = localStorage.getItem("token");
-      const requestBody = appointmentId;
-
-      const apiUrl = `http://localhost:8080/v1/payment/verify/${appointmentId}`;
-
-      const headers = {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      };
-
-      const response = await axios.get(apiUrl, { headers });
-
-      if (response.data.success) {
-        toast({
-          title: "Payment verified",
-          description: response.data.message,
-          status: "success",
-          duration: 6000,
-        });
-        console.log("Payment verified successfully", response.data.data);
-        onClose();
-      } else {
-        // Handle verification failure
-        console.error("Payment verification failed");
-      }
-    } catch (error) {
-      // Handle error
-      console.error("An error occurred during payment verification:", error);
-    }
-  };
-
-  // useEffect(() => {
-  //   if (appointmentId) {
-  //     setIsConfirmationOpen(true);
-  //     console.log("the id is ", appointmentId);
-  //   }
-  // }, [appointmentId]);
-
   const handleFormSubmit = async () => {
     setLoading(true);
     try {
@@ -207,6 +139,8 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
         endDate: formatDateWithDayAdjustment(selectedEndDate),
         recipientDOB: formatDateWithDayAdjustment(selectedDob),
         customerPhoneNumber: user?.phoneNumber,
+        customerId: user?.id,
+
         ...userFieldsForBookForSelf,
         ...formPages[1],
       };
@@ -223,9 +157,11 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
           status: "success",
           duration: 6000,
         });
-        const appointmentId = response.data.data.id;
-        console.log("here is the appointment id", appointmentId);
-        verifyPayment(appointmentId);
+        const id = response.data.data.id;
+        localStorage.setItem("appointmentId", id);
+        setTimeout(() => {
+          navigate("/make-payment");
+        }, 1000);
       } else {
         setLoading(false);
 
@@ -251,19 +187,6 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
         duration: 6000,
       });
     }
-  };
-
-  const handleOpenConfirmation = () => {
-    // handleFormSubmit();
-    setIsConfirmationOpen(true);
-  };
-
-  const handleCloseConfirmation = () => {
-    setIsConfirmationOpen(false);
-  };
-
-  const handlePayment = (e) => {
-    e.preventDefault();
   };
 
   const totalPages = 2;
@@ -456,41 +379,10 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
                 loadingText="Processing..."
                 bg="#A210C6"
                 color="white"
-                onClick={handleOpenConfirmation}
+                onClick={handleFormSubmit}
               >
                 {loading ? "Processing..." : "Submit"}
               </Button>
-              <Modal
-                isOpen={isConfirmationOpen}
-                onClose={handleCloseConfirmation}
-              >
-                <ModalOverlay />
-                <ModalContent>
-                  <ModalHeader>Confirm Payment</ModalHeader>
-                  <ModalCloseButton />
-                  <form onSubmit={handlePayment}>
-                    <ModalBody>
-                      Kindly pay the sum of 250,000 to proceed with your
-                      booking. You would be matched with a caregiver within
-                      48hrs upon a successful payment.
-                    </ModalBody>
-                    <ModalFooter>
-                      <Box color="#A210C6" mr={3}>
-                        <PaystackButton
-                          {...paymentData}
-                          text="Make Payment"
-                          className="submits"
-                          onSuccess={handlePaymentSuccess}
-                          onClose={handlePaymentFailure}
-                        />
-                      </Box>
-                      <Text color="gray" onClick={onClose}>
-                        Cancel
-                      </Text>
-                    </ModalFooter>
-                  </form>
-                </ModalContent>
-              </Modal>
             </>
           )}
         </ModalFooter>

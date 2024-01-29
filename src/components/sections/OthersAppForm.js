@@ -5,7 +5,6 @@ import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import LoadingSpinner from "../../utils/Spiner";
-import { PaystackButton } from "react-paystack";
 import {
   Modal,
   ModalOverlay,
@@ -32,37 +31,9 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
   const toast = useToast();
   const { user } = useSelector((state) => state.userReducer);
   const [loading, setLoading] = useState(false);
-  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [progressBarValue, setProgressBarValue] = useState(25);
-
-  const handlePayment = (e) => {
-    e.preventDefault();
-  };
-
-  const [paymentData, setPamentData] = useState({
-    email: user?.email,
-    amount: 500000,
-    reference: `book_appointment_${user.phoneNumber}_${Date.now()}`,
-    name: user?.firstName + user?.lastName,
-    phone: user?.phoneNumber,
-    publicKey: "pk_test_be79821835be2e8689484980b54a9785c8fa0778",
-  });
-  const handlePaymentSuccess = (response) => {
-    handleFormSubmit();
-  };
-
-  const handlePaymentFailure = (error) => {
-    // Handle payment failure
-    console.error(error);
-    // Optionally, you can inform the user about the payment failure
-    toast({
-      title: "Payment Failed",
-      description: "There was an issue processing your payment.",
-      status: "error",
-      duration: 6000,
-    });
-  };
+  const navigate = useNavigate();
 
   const [formPages, setFormPages] = useState([
     {
@@ -181,13 +152,15 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
         setLoading(false);
 
         toast({
-          title: "Appointment Booked",
-          description: response.data.message,
+          title: "Appointment Saved",
           status: "success",
           duration: 6000,
         });
-
-        onClose();
+        const id = response.data.data.id;
+        localStorage.setItem("appointmentId", id);
+        setTimeout(() => {
+          navigate("/make-payment");
+        }, 1000);
       } else {
         setLoading(false);
 
@@ -212,18 +185,6 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
         duration: 6000,
       });
     }
-  };
-
-  const handleOpenConfirmation = () => {
-    setIsConfirmationOpen(true);
-  };
-  const handleConfirmSubmit = () => {
-    handleFormSubmit();
-    handleCloseConfirmation();
-  };
-
-  const handleCloseConfirmation = () => {
-    setIsConfirmationOpen(false);
   };
 
   const totalPages = 4;
@@ -567,41 +528,10 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
                 bg="#A210C6"
                 color="white"
                 mr={3}
-                onClick={handleOpenConfirmation}
+                onClick={handleFormSubmit}
               >
                 {loading ? "Processing..." : "Submit"}
               </Button>
-              <Modal
-                isOpen={isConfirmationOpen}
-                onClose={handleCloseConfirmation}
-              >
-                <ModalOverlay />
-                <ModalContent>
-                  <ModalHeader>Confirm Payment</ModalHeader>
-                  <ModalCloseButton />
-                  <form onSubmit={handlePayment}>
-                    <ModalBody>
-                      Kindly pay the sum of 250,000 to proceed with your
-                      booking. You would be matched with a caregiver within
-                      48hrs upon a successful payment.
-                    </ModalBody>
-                    <ModalFooter>
-                      <Box color="#A210C6" mr={3}>
-                        <PaystackButton
-                          {...paymentData}
-                          text="Make Payment"
-                          className="submits"
-                          onSuccess={handlePaymentSuccess}
-                          onClose={handlePaymentFailure}
-                        />
-                      </Box>
-                      <Text color="gray" onClick={onClose}>
-                        Cancel
-                      </Text>
-                    </ModalFooter>
-                  </form>
-                </ModalContent>
-              </Modal>
             </>
           )}
         </ModalFooter>
