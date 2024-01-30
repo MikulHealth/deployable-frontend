@@ -67,6 +67,8 @@ const LandingPage = () => {
     image: "",
     kinName: "",
     kinNumber: "",
+    language: "English",
+    relationship: "Self",
   });
 
   const [loading, setLoading] = useState(false);
@@ -76,28 +78,52 @@ const LandingPage = () => {
   const [imageLoading, setImageLoading] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
 
+  // const handleInputChange = (e) => {
+  //   const { name, value } = e.target;
+
+  //   if (name === "dob") {
+  //     setSelectedDate(value);
+  //     setFormData({
+  //       ...formData,
+  //       dob: value,
+  //     });
+  //   } else {
+  //     setFormData({
+  //       ...formData,
+  //       [name]: value,
+  //     });
+  //   }
+  // };
+
+  const handleDobChange = (date) => {
+    setFormData({
+      ...formData,
+      dob: date,
+    });
+  };
+  
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
-    if (name === "dob") {
-      setSelectedDate(value);
-      setFormData({
-        ...formData,
-        dob: value,
-      });
-    } else {
-      setFormData({
-        ...formData,
-        [name]: value,
-      });
-    }
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
   };
-  
+
   const toast = useToast();
   const handleClick = () => setShow(!show);
+  console.log("form details", formData);
 
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validateFields()) {
+      return;
+    }
+
     await postImage(image, formData, setFormData);
     setLoading(true);
     try {
@@ -152,6 +178,52 @@ const LandingPage = () => {
       // Set loading back to false regardless of success or failure
       setLoading(false);
     }
+  };
+
+  const validateFields = () => {
+    const fieldMappings = {
+      firstName: "First Name",
+      lastName: "Last Name",
+      email: "Email",
+      phoneNumber: "Phone Number",
+      password: "Password",
+      confirmPassword: "Confirm Password",
+      gender: "Gender",
+      dob: "Date of Birth",
+      address: "Address",
+      kinName: "Next of Kin Name",
+      kinNumber: "Next of Kin Phone Number",
+    };
+
+    const requiredFields = [
+      "firstName",
+      "lastName",
+      "email",
+      "phoneNumber",
+      "password",
+      "confirmPassword",
+      "gender",
+      "dob",
+      "address",
+      "kinName",
+      "kinNumber",
+    ];
+
+    for (const field of requiredFields) {
+      if (!formData[field]) {
+        const readableFieldName = fieldMappings[field];
+        toast({
+          title: `${readableFieldName} is Required`,
+          description: `Please provide ${readableFieldName}.`,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+        return false;
+      }
+    }
+
+    return true;
   };
 
   useEffect(() => {
@@ -298,7 +370,7 @@ const LandingPage = () => {
                       Email address
                     </FormLabel>
                     <Input
-                      name="email" 
+                      name="email"
                       placeholder="Email"
                       type="email"
                       onChange={handleInputChange}
@@ -345,18 +417,18 @@ const LandingPage = () => {
                   <Box marginLeft="18px" w="240px">
                     <FormLabel marginTop="20px">Date of Birth</FormLabel>
                     <DatePicker
-                      name="dob"
-                      selected={selectedDate}
-                      onChange={(date) => setSelectedDate(date)}
-                      maxDate={new Date()}
-                      peekNextMonth
-                      showMonthDropdown
-                      showYearDropdown
-                      dropdownMode="select"
-                      dateFormat="yyyy-MM-dd"
-                      placeholderText="Select your date of birth"
-                      className="form-control"
-                    />
+                        name="dob"
+                        selected={formData.dob}
+                        onChange={(date) => handleDobChange(date)}
+                        maxDate={new Date()}
+                        peekNextMonth
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
+                        dateFormat="yyyy-MM-dd"
+                        placeholderText="Select your date of birth"
+                        className="form-control"
+                      />
                   </Box>
                 </Flex>
                 <Flex marginTop="1px">
@@ -379,6 +451,7 @@ const LandingPage = () => {
                     />
                   </Box>
                 </Flex>
+
                 <Box w="500px" marginTop="20px">
                   <InputGroup size="md">
                     <Input

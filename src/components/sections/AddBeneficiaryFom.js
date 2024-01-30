@@ -253,12 +253,12 @@ const AddBeneficiaryForm = ({ isOpen, onClose, openBeneficiariesModal }) => {
                     w="250px"
                     onChange={handleInputChange}
                   >
-                    <option value="eng">English</option>
-                    <option value="igbo">Igbo</option>
-                    <option value="yoruba">Yoruba</option>
-                    <option value="housa">Hausa</option>
-                    <option value="Pigeon">Pidgeon</option>
-                    <option value="other">Others</option>
+                    <option value="English">English</option>
+                          <option value="Igbo">Igbo</option>
+                          <option value="Yoruba">Yoruba</option>
+                          <option value="Housa">Hausa</option>
+                          <option value="Pigeon">Pidgeon</option>
+                          <option value="Others">Others</option>
                   </Select>
                 </Box>
               </Flex>

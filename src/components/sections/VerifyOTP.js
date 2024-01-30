@@ -111,7 +111,7 @@ const LandingPage = () => {
       });
       setTimeout(() => {
         navigate("/login");
-      }, 8000);
+      }, 5000);
 
     } catch (error) {
       toast({

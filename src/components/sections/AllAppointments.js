@@ -360,6 +360,15 @@ const AppointmentModal = ({ isOpen, onClose }) => {
                       </Flex>
                       <Flex marginTop="5px">
                         <Text fontWeight="bold" color="black">
+                          Paid:
+                        </Text>
+                        <Text marginLeft="5px" color="black">
+                          {console.log("Is paid is", selectedAppointment.paid)}
+                          {selectedAppointment.paid ? "Yes" : "No"}
+                        </Text>
+                      </Flex>
+                      <Flex marginTop="5px">
+                        <Text fontWeight="bold" color="black">
                           Health History:
                         </Text>
                         <Text

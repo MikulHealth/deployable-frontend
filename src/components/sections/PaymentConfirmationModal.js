@@ -85,10 +85,10 @@ const PaymentConfirmationModal = ({ isOpen, onClose }) => {
               email: user?.email || "",
               amount: 500000,
               reference: storedPaymentData,
-              name: user?.firstName + " " + user?.lastName || " ",
-              phone: user?.phoneNumber || " ",
+              name: `${user?.firstName || ""} ${user?.lastName || ""}`,
+              phone: user?.phoneNumber || "",
               publicKey: "pk_test_be79821835be2e8689484980b54a9785c8fa0778",
-            });
+            });            
             console.log("This is user", user?.firstName);
           } else {
             console.error("API request failed:", response.error);
@@ -150,7 +150,10 @@ const PaymentConfirmationModal = ({ isOpen, onClose }) => {
           phone: " ",
           publicKey: " ",
         });
-        navigate("/dashboard");
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 3000);
+       
       } else {
         toast({
           title: "Verification failed",
@@ -224,7 +227,7 @@ const PaymentConfirmationModal = ({ isOpen, onClose }) => {
             </Text>
             <FormControl isRequired>
               <Box marginLeft="20px" alignContent="center">
-                <FormLabel marginLeft="290px">Your name</FormLabel>
+                <FormLabel marginLeft="270px">Your email address</FormLabel>
                 <Input
                   type="email"
                   name="email"
@@ -234,7 +237,7 @@ const PaymentConfirmationModal = ({ isOpen, onClose }) => {
                   required
                   w="500"
                 />
-                <FormLabel marginLeft="290px">Your name</FormLabel>
+                <FormLabel marginLeft="290px">Your full name</FormLabel>
                 <Input
                   type="text"
                   name="name"

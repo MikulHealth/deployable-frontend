@@ -226,7 +226,7 @@ const PendingAppointmentModal = ({ isOpen, onClose }) => {
                         Care beneficiary:
                       </Text>
                       <Text marginLeft="5px" color="black">
-                        {`${appointment.recipientFirstname} ${appointment.recipientLastname}`}
+                        {`${appointment.appointment.recipientFirstname} ${appointment.appointment.recipientLastname}`}
                       </Text>
                     </Flex>
                     <Flex>
@@ -448,6 +448,15 @@ const PendingAppointmentModal = ({ isOpen, onClose }) => {
                           {selectedAppointment.medicalReport || "Not availabe"}
                         </Text>
                       </Flex>
+                      <Flex marginTop="5px">
+                        <Text fontWeight="bold" color="black">
+                          Paid:
+                        </Text>
+                        <Text marginLeft="5px" color="black">
+                          {selectedAppointment.paid ? "Yes" : "No"}
+                        </Text>
+                      </Flex>
+
                       <Flex marginTop="5px">
                         <Text fontWeight="bold" color="black">
                           Health History:

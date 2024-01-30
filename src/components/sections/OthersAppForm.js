@@ -277,14 +277,20 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
                     </Box>
                   </Flex>
 
-                  <Flex marginTop="1px">
+                </Box>
+              </FormControl>
+            )}
+            {currentPage === 2 && (
+              <Box marginLeft="30px">
+               
+               <Flex marginTop="1px">
                     <Box>
                       <FormLabel marginTop="20px">Shift </FormLabel>
                       <Select
                         name="shift"
                         placeholder="Select preferred shift"
                         w="250px"
-                        value={formPages[0].shift}
+                        value={formPages[1].shift}
                         onChange={(e) => handleInputChange(e)}
                       >
                         <option value="Day Shift">Day Shift (8hrs)</option>
@@ -298,7 +304,7 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
                         name="servicePlan"
                         placeholder="preferred service plan"
                         w="250px"
-                        value={formPages[0].servicePlan}
+                        value={formPages[1].servicePlan}
                         onChange={(e) => handleInputChange(e)}
                       >
                         <option value="Elderly care">Elderly care</option>
@@ -308,39 +314,6 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
                       </Select>
                     </Box>
                   </Flex>
-                </Box>
-              </FormControl>
-            )}
-            {currentPage === 2 && (
-              <Box marginLeft="30px">
-                <Flex>
-                  <Box>
-                    <FormLabel marginTop="20px">
-                      Personal Doctor's name{" "}
-                    </FormLabel>
-                    <Input
-                      name="recipientDoctor"
-                      type="text"
-                      placeholder="Personal Doctor's name"
-                      value={formPages[1].recipientDoctor}
-                      onChange={(e) => handleInputChange(e)}
-                      w="250px"
-                    />
-                  </Box>
-                  <Box marginLeft="50px">
-                    <FormLabel marginTop="20px">
-                      Doctor's phone number{" "}
-                    </FormLabel>
-                    <Input
-                      name="recipientDoctorNumber"
-                      type="tel"
-                      placeholder="Personal Doctor's phone number"
-                      value={formPages[1].recipientDoctorNumber}
-                      onChange={(e) => handleInputChange(e)}
-                      w="250px"
-                    />
-                  </Box>
-                </Flex>
                 <Flex>
                   <Box>
                     <FormLabel marginTop="20px">Personal hospital </FormLabel>
@@ -353,7 +326,7 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
                       w="250px"
                     />
                   </Box>
-                  <Box marginLeft="50px">
+                  <Box marginLeft="5px">
                     <FormLabel marginTop="20px">
                       Upload medical report{" "}
                     </FormLabel>
@@ -397,6 +370,7 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
                           dateFormat="yyyy-MM-dd"
                           placeholderText="preferred date to start"
                           className="form-control"
+                          minDate={new Date()}
                         />
                       </Box>
                       <Box w="250px" marginLeft="5px">
@@ -412,6 +386,7 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
                           dateFormat="yyyy-MM-dd"
                           placeholderText="preferred date to end"
                           className="form-control"
+                          minDate={new Date()}
                         />
                       </Box>{" "}
                     </Flex>
@@ -495,12 +470,12 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
                           onChange={(e) => handleInputChange(e)}
                           value={formPages[3].language}
                         >
-                          <option value="eng">English</option>
-                          <option value="igbo">Igbo</option>
-                          <option value="yoruba">Yoruba</option>
-                          <option value="housa">Hausa</option>
+                          <option value="English">English</option>
+                          <option value="Igbo">Igbo</option>
+                          <option value="Yoruba">Yoruba</option>
+                          <option value="Housa">Hausa</option>
                           <option value="Pigeon">Pidgeon</option>
-                          <option value="other">Others</option>
+                          <option value="Others">Others</option>
                         </Select>
                       </Box>
                     </Flex>

@@ -212,7 +212,7 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
           duration: 6000,
         });
       }
-      onClose();
+    
     } catch (error) {
       setLoading(false);
       console.error("An error occurred:", error);

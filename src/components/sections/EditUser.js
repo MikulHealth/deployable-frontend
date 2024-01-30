@@ -45,6 +45,16 @@ const EditProfileModal = ({ isOpen, onClose }) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const toast = useToast();
 
+  const formatDate = (dateString) => {
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    const formattedDate = new Date(dateString).toLocaleDateString(
+      undefined,
+      options
+    );
+    return formattedDate;
+  };
+
+
   useEffect(() => {
     const fetchData = async () => {
       if (localStorage.getItem("token")) {
@@ -299,7 +309,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
                     maxDate={new Date()}
                     peekNextMonth
                     showMonthDropdown
-                    value={editedUser.dob}
+                    value={formatDate(editedUser.dob)}
                     showYearDropdown
                     dropdownMode="select"
                     dateFormat="yyyy-MM-dd"
