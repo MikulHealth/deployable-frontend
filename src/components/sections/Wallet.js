@@ -24,18 +24,157 @@ import {
   Link,
   FormControl,
   FormLabel,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalCloseButton,
 } from "@chakra-ui/react";
 import userImageIcon from "../../assets/userImage.svg";
 import NotificationIcon from "../../assets/notification.svg";
 import familyIcon from "../../assets/family.svg";
 import UserDetailsModal from "../sections/UserDetails";
+import Transfer from "../../assets/TransferPayment.svg";
+import Online from "../../assets/OnlinePayment.svg";
+import RightArrow from "../../assets/RightArrow.svg";
 import LoadingSpinner from "../../utils/Spiner";
 import SearchAppointmentsModal from "../sections/SearchAppointmentByDate";
 
-const AppointmentPage = () => {
+const FundWalletModal = ({
+  isOpen,
+  onClose,
+  onBankTransfer,
+  onOnlinePayment,
+}) => {
+  return (
+    <Modal isOpen={isOpen} onClose={onClose} size="xl" borderRadius="15px">
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader marginLeft="200px">Fund Wallet</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+          <Box
+            marginLeft="8px"
+            border="1px solid black"
+            h="12vh"
+            w="37vw"
+            borderRadius="15px"
+            paddingBottom="5px"
+          >
+            <Flex>
+              <Image
+                marginLeft="15px"
+                marginTop="15px"
+                w="50px"
+                h="50px"
+                src={Transfer}
+                alt="Settings"
+              />
+              <Box marginLeft="10px" padding="10px" paddingBottom="10px">
+                <Text>Via Bank Transfer</Text>
+                <Text>Direct bank transfer to your Mikul wallet account</Text>
+              </Box>
+              <Image
+                marginLeft="15px"
+                marginTop="25px"
+                w="30px"
+                h="30px"
+                src={RightArrow}
+                onClick={onBankTransfer}
+                alt="Settings"
+                style={{
+                  cursor: "pointer",
+                }}
+                _hover={{ color: "#A210C6" }}
+              />
+            </Flex>
+          </Box>
+          <Box
+            marginTop="15px"
+            marginLeft="8px"
+            border="1px solid black"
+            h="12vh"
+            w="37vw"
+            marginBottom="15px"
+            borderRadius="15px"
+          >
+            <Flex>
+              <Image
+                marginLeft="15px"
+                marginTop="15px"
+                w="50px"
+                h="50px"
+                src={Online}
+                alt="Settings"
+              />
+              <Box marginLeft="10px" padding="10px" paddingBottom="10px">
+                <Text>Online Payment</Text>
+                <Text>Fund your Mikul wallet with a debit card</Text>
+              </Box>
+              <Image
+                marginLeft="70px"
+                marginTop="25px"
+                w="30px"
+                h="30px"
+                src={RightArrow}
+                alt="Settings"
+                style={{
+                  cursor: "pointer",
+                }}
+                _hover={{ color: "#A210C6" }}
+                onClick={onOnlinePayment}
+              />
+            </Flex>
+          </Box>
+        </ModalBody>
+      </ModalContent>
+    </Modal>
+  );
+};
+
+const BankTransferModal = ({ isOpen, onClose, bankDetails }) => {
+  return (
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>Bank Transfer Details</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+          <Text>Bank Name: {bankDetails.bankName}</Text>
+          <Text>Account Number: {bankDetails.accountNumber}</Text>
+          {/* Add other bank details as needed */}
+        </ModalBody>
+      </ModalContent>
+    </Modal>
+  );
+};
+
+const OnlinePaymentModal = ({ isOpen, onClose }) => {
+  return (
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>Online Payment</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+          {/* Add online payment button or form */}
+          <Button>Proceed to Online Payment</Button>
+        </ModalBody>
+      </ModalContent>
+    </Modal>
+  );
+};
+
+const WalletPage = () => {
+  const [showFundWalletModal, setShowFundWalletModal] = useState(false);
+  const [showBankTransferModal, setShowBankTransferModal] = useState(false);
+  const [showOnlinePaymentModal, setShowOnlinePaymentModal] = useState(false);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const toast = useToast();
+  const balance = 0.0;
   const { user } = useSelector((state) => state.userReducer);
   const [showUserDetailsModal, setShowUserDetailsModal] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -44,6 +183,31 @@ const AppointmentPage = () => {
   const [showPendingModal, setShowPendingModal] = useState(false);
   const [showCanceledModal, setShowCanceledModal] = useState(false);
   // Add these lines to your existing state declarations
+
+  const handleOpenFundWalletModal = () => {
+    setShowFundWalletModal(true);
+  };
+
+  const handleCloseFundWalletModal = () => {
+    setShowFundWalletModal(false);
+  };
+
+  const handleOpenBankTransferModal = () => {
+    setShowBankTransferModal(true);
+  };
+
+  const handleCloseBankTransferModal = () => {
+    setShowBankTransferModal(false);
+  };
+
+  const handleOpenOnlinePaymentModal = () => {
+    setShowOnlinePaymentModal(true);
+  };
+
+  const handleCloseOnlinePaymentModal = () => {
+    setShowOnlinePaymentModal(false);
+  };
+
   const [showSearchAppointmentsModal, setShowSearchAppointmentsModal] =
     useState(false);
 
@@ -77,7 +241,7 @@ const AppointmentPage = () => {
 
   return (
     <ChakraProvider>
-      <Box >
+      <Box>
         <Flex>
           <Text
             fontSize="28px"
@@ -86,9 +250,9 @@ const AppointmentPage = () => {
             marginLeft="60px"
             marginTop="30px"
           >
-            Appointments
+            Wallet
           </Text>
-          <Flex marginLeft="600px">
+          <Flex marginLeft="670px">
             <Box marginTop="30px">
               <Image
                 src={NotificationIcon}
@@ -127,89 +291,56 @@ const AppointmentPage = () => {
             </Box>
           </Flex>
         </Flex>
-        <Box
-          marginLeft="70px"
-          marginTop="40px"
-          border="1px solid gray"
-          borderRadius="md"
-          padding="3px"
-          w="60vw"
-        >
-          <Flex marginLeft="10px">
-            <SearchIcon boxSize={4} marginRight="10px" marginTop="5px" />
-            <Text
-              fontSize="16px"
-              style={{
-                marginLeft: "5px",
-                marginTop: "2px",
-                fontStyle: "italic",
-                cursor: "pointer",
-              }}
-              _hover={{ color: "#A210C6" }}
-              onClick={handleOpenSearchAppointmentsModal}
-            >
-              Search Appointment by date
-            </Text>
-          </Flex>
-        </Box>
 
-        <Flex
+        <Box
+          marginTop="80px"
           marginLeft="70px"
-          marginTop="20px"
-          bg="#F6E4FC"
+          bg="#A210C6"
           w="60vw"
           h="30vh"
-          padding="5px"
-          borderRadius="4px"
+          borderRadius="20px"
+          display="flex"
         >
           <Box>
-            <Text
-              fontSize="20px"
-              fontFamily="body"
-              color="black"
-              marginTop="15px"
-              marginLeft="-250px"
-            >
-              Hello {user?.firstName},
-            </Text>
-            <Text fontSize="15px" marginLeft="15px" marginTop="5px">
-              You have no appointments yet. Would you like to book one
-            </Text>
-            <Text fontSize="15px" marginTop="2px" marginLeft="-195px">
-              for yourself or a loved one?
-            </Text>
-            <Flex marginLeft="10px">
-              <Button
-                onClick={handleOpenAppointmentModal}
-                bg="#A210C6"
-                color="white"
-                marginTop="30px"
-              >
-                Book appointment
-              </Button>
-              <Button
-                onClick={() => setShowViewAllModal(true)}
-                bg="gray"
-                color="white"
-                marginLeft="5px"
-                marginTop="30px"
-              >
-                All appointment
-              </Button>
+            {" "}
+            <Flex marginLeft="30">
+              <Box color="white">
+                <Text
+                  fontSize="20px"
+                  fontFamily="body"
+                  marginTop="25px"
+                  style={{ marginLeft: "5px" }}
+                >
+                  My Wallet
+                </Text>
+                <Text fontSize="16px" style={{ marginLeft: "20px" }}>
+                  Balance: ₦{balance.toFixed(2)}
+                </Text>
+              </Box>
+              <Box>
+                <Button
+                  borderRadius="15px"
+                  color="#A210C6"
+                  marginLeft="470px"
+                  marginTop="30px"
+                  onClick={handleOpenFundWalletModal}
+                  bg="white"
+                >
+                  Fund wallet
+                </Button>
+              </Box>
             </Flex>
+            <Box color="white" marginTop="55px" marginLeft="-390px">
+              <Text fontSize="16px" marginLeft="-175px">
+                Wallet ID:
+              </Text>
+              <Text fontSize="16px" marginLeft="-88px">
+                XYZ Bank 0124536789
+              </Text>
+            </Box>
           </Box>
-          <Box>
-            <Image
-              src={familyIcon}
-              alt="family icon"
-              h="150px"
-              w="150px"
-              marginTop="20px"
-              marginBottom="10px"
-              marginLeft="160px"
-            />
-          </Box>
-        </Flex>
+        </Box>
+
         <Box marginLeft="69px">
           <Box display="flex" marginTop="30px">
             <Box
@@ -363,8 +494,23 @@ const AppointmentPage = () => {
         isOpen={showSearchAppointmentsModal}
         onClose={handleCloseSearchAppointmentsModal}
       />
+      <FundWalletModal
+        isOpen={showFundWalletModal}
+        onClose={handleCloseFundWalletModal}
+        onBankTransfer={handleOpenBankTransferModal}
+        onOnlinePayment={handleOpenOnlinePaymentModal}
+      />
+      <BankTransferModal
+        isOpen={showBankTransferModal}
+        onClose={handleCloseBankTransferModal}
+        bankDetails={{ bankName: "XYZ Bank", accountNumber: "0123456789" }} // Replace with actual bank details
+      />
+      <OnlinePaymentModal
+        isOpen={showOnlinePaymentModal}
+        onClose={handleCloseOnlinePaymentModal}
+      />
     </ChakraProvider>
   );
 };
 
-export default AppointmentPage;
+export default WalletPage;

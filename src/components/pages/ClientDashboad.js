@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { SetUser } from "../../redux/userSlice";
 import AppointmentPage from "./AppointmentPage";
+import familyIcon from "../../assets/family.svg";
 import BookAppointmentModal from "../sections/BookAppointment";
 import {
   Box,
@@ -22,7 +23,8 @@ import "aos/dist/aos.css";
 import Customer from "../../assets/UserSignUp.svg";
 import Shade from "../../assets/Shade.svg";
 import logo from "../../assets/LogoColoured.svg";
-import HomeIcon from "../../assets/Home.svg";
+import Wallet from "../../assets/Wallet.svg";
+import Help from "../../assets/Help.svg";
 import SettingsIcon from "../../assets/SettingsIcon.svg";
 import LogoutIcon from "../../assets/Logout.svg";
 import AppointmentsIcon from "../../assets/AppointmentIcon.svg";
@@ -32,6 +34,7 @@ import NurseAndPatient from "../../assets/NurseAndPatient.svg";
 import NotificationIcon from "../../assets/notification.svg";
 import "../../styles/pages/LandingPage.css";
 import SettingsModal from "../sections/Settings";
+import WalletModal from "../sections/Wallet";
 import HelpModal from "../sections/Help";
 import BeneficiariesModal from "../sections/Beneficiaries";
 import UserDetailsModal from "../sections/UserDetails";
@@ -60,6 +63,7 @@ const customTheme = extendTheme({
 const ClientDash = () => {
   const [loading, setLoading] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
+  const [showWalletModal, setShowWalletModal] = useState(false);
   const [activePage, setActivePage] = useState("home");
   const [isBeneficiariesModalOpen, setBeneficiariesModalOpen] = useState(false);
   const [showAppointmentModal, setShowAppointmentModal] = useState(false);
@@ -154,6 +158,13 @@ const ClientDash = () => {
     setShowSettingsModal(true);
   };
 
+  const handleOpenWalletModal = () => {
+    setShowWalletModal(true);
+  };
+  const handleCloseWalletModal = () => {
+    setShowWalletModal(false);
+  };
+
   const handleCloseSettingsModal = () => {
     setShowSettingsModal(false);
   };
@@ -201,7 +212,7 @@ const ClientDash = () => {
         {loading ? (
           <Skeleton height="100vh" width="25%" />
         ) : (
-          <Box bg="#F6E4FC" width="25%" p={3} color="white" h="100vh">
+          <Box width="25%" p={3} color="white" h="100vh">
             <Image
               src={logo}
               alt="Logo"
@@ -214,13 +225,13 @@ const ClientDash = () => {
             <VStack spacing={3} align="center" mt={5}>
               <Flex
                 marginTop="50px"
-                bg="white"
                 p={3}
                 borderRadius="md"
                 w="17vw"
+                bg="#A210C6"
               >
                 <Image
-                  marginLeft="65px"
+                  marginLeft="45px"
                   w="20px"
                   h="20px"
                   src={HelpIcon}
@@ -235,9 +246,9 @@ const ClientDash = () => {
                   style={{
                     cursor: "pointer",
                   }}
-                  _hover={{ color: "#A210C6" }}
+                  _hover={{ color: "white" }}
                   marginLeft="15px"
-                  color="black"
+                  color="white"
                 >
                   Dashbaord
                 </Text>
@@ -250,7 +261,7 @@ const ClientDash = () => {
                 marginTop="30px"
                 // bg={activePage ? "white" : "#F6E4FC"}
               > */}
-              <Flex alignItems="center" marginTop="30px" marginLeft="-46px">
+              <Flex alignItems="center" marginTop="30px">
                 <Image
                   marginLeft="10px"
                   w="20px"
@@ -259,7 +270,7 @@ const ClientDash = () => {
                   alt="Appointments"
                 />
                 <Text
-                  marginLeft="25px"
+                  marginLeft="15px"
                   color="black"
                   onClick={() => {
                     handleOpenAppointmentsModal();
@@ -271,6 +282,27 @@ const ClientDash = () => {
                   _hover={{ color: "#A210C6" }}
                 >
                   Appointments
+                </Text>
+              </Flex>
+
+              <Flex alignItems="center" marginTop="30px" marginLeft="-54px">
+                <Image
+                  marginLeft="10px"
+                  w="20px"
+                  h="20px"
+                  src={Wallet}
+                  alt="Settings"
+                />
+                <Text
+                  marginLeft="15px"
+                  color="black"
+                  onClick={handleOpenWalletModal}
+                  style={{
+                    cursor: "pointer",
+                  }}
+                  _hover={{ color: "#A210C6" }}
+                >
+                  Wallet
                 </Text>
               </Flex>
 
@@ -298,33 +330,12 @@ const ClientDash = () => {
                 </Text>
               </Flex>
 
-              <Flex alignItems="center" marginTop="30px" marginLeft="-54px">
-                <Image
-                  marginLeft="10px"
-                  w="20px"
-                  h="20px"
-                  src={SettingsIcon}
-                  alt="Settings"
-                />
-                <Text
-                  marginLeft="15px"
-                  color="black"
-                  onClick={handleOpenSettingsModal}
-                  style={{
-                    cursor: "pointer",
-                  }}
-                  _hover={{ color: "#A210C6" }}
-                >
-                  Wallet
-                </Text>
-              </Flex>
-
               <Flex alignItems="center" marginTop="30px" marginLeft="-60px">
                 <Image
                   marginLeft="10px"
                   w="20px"
                   h="20px"
-                  src={HelpIcon}
+                  src={Help}
                   alt="Help"
                 />
                 <Text
@@ -361,6 +372,12 @@ const ClientDash = () => {
                 </Text>
               </Flex>
             </VStack>
+            <Box
+              borderRight="2px solid #A210C6"
+              height="104%"
+              marginX={3}
+              marginTop="-599px"
+            />
           </Box>
         )}
 
@@ -376,6 +393,7 @@ const ClientDash = () => {
           </Flex>
         ) : (
           //  Second Section (Middle)
+
           <VStack align="center" width="50%" h="100vh">
             <Box>
               <Box>
@@ -391,10 +409,12 @@ const ClientDash = () => {
                 <Text marginLeft="-380px">How are you doing today?</Text>
               </Box>
               <Box>
+
+
                 <Box
                   marginTop="50px"
-                  bg="#F6E4FC"
-                  w="40vw"
+                  bg="#D087E2"
+                  w="50vw"
                   h="20vh"
                   borderRadius="10px"
                   display="flex"
@@ -404,7 +424,7 @@ const ClientDash = () => {
                     <Text
                       fontSize="20px"
                       fontFamily="body"
-                      color="#A210C6"
+                      color="black"
                       marginTop="10px"
                       style={{ marginLeft: "5px" }}
                     >
@@ -421,6 +441,7 @@ const ClientDash = () => {
                         fontStyle: "italic",
                         cursor: "pointer",
                       }}
+                      color="#A210C6"
                       _hover={{ color: "#A210C6" }}
                     >
                       Details
@@ -432,25 +453,25 @@ const ClientDash = () => {
                     alt="Nurse and Patient"
                     w="100px"
                     h="100px"
-                    marginLeft="280px"
+                    marginLeft="440px"
                     marginTop="18px"
                   />
                 </Box>
 
                 <Box>
                   <Box display="flex" marginTop="30px">
-                    <Box bg="#F6E4FC" w="19.5vw" h="20vh" borderRadius="10px">
+                    <Box bg="#F6C5FF" w="24.5vw" h="20vh" borderRadius="10px">
                       {" "}
                       <Text
                         fontSize="20px"
                         fontFamily="body"
-                        color="#A210C6"
+                        color="black"
                         marginTop="10px"
-                        style={{ marginLeft: "-35px" }}
+                        style={{ marginLeft: "-80px" }}
                       >
                         Book Appointment
                       </Text>
-                      <Text fontSize="16px" style={{ marginLeft: "-12px" }}>
+                      <Text fontSize="16px" style={{ marginLeft: "-55px" }}>
                         Schedule your appointment
                       </Text>
                       <Text
@@ -461,6 +482,7 @@ const ClientDash = () => {
                           fontStyle: "italic",
                           cursor: "pointer",
                         }}
+                        color="#A210C6"
                         onClick={handleOpenAppointmentModal}
                         _hover={{ color: "#A210C6" }}
                       >
@@ -469,7 +491,7 @@ const ClientDash = () => {
                     </Box>
                     <Box
                       bg="#F6E4FC"
-                      w="19.5vw"
+                      w="24.5vw"
                       h="20vh"
                       marginLeft="10px"
                       borderRadius="10px"
@@ -479,7 +501,7 @@ const ClientDash = () => {
                       <Text
                         fontSize="20px"
                         fontFamily="body"
-                        color="#A210C6"
+                        color="black"
                         marginTop="10px"
                         style={{ marginLeft: "-130px" }}
                       >
@@ -496,6 +518,7 @@ const ClientDash = () => {
                           fontStyle: "italic",
                           cursor: "pointer",
                         }}
+                        color="#A210C6"
                         _hover={{ color: "#A210C6" }}
                       >
                         view all
@@ -503,18 +526,18 @@ const ClientDash = () => {
                     </Box>
                   </Box>
                   <Box display="flex" marginTop="30px">
-                    <Box bg="#F6E4FC" w="19.5vw" h="20vh" borderRadius="10px">
+                    <Box bg="#F6E4FC" w="24.5vw" h="20vh" borderRadius="10px">
                       {" "}
                       <Text
                         fontSize="20px"
                         fontFamily="body"
-                        color="#A210C6"
+                        color="black"
                         marginTop="10px"
-                        style={{ marginLeft: "-105px" }}
+                        style={{ marginLeft: "-135px" }}
                       >
                         Our services
                       </Text>
-                      <Text fontSize="16px" style={{ marginLeft: "2px" }}>
+                      <Text fontSize="16px" style={{ marginLeft: "-30px" }}>
                         Explore a variety of our services
                       </Text>
                       <Text
@@ -525,6 +548,7 @@ const ClientDash = () => {
                           fontStyle: "italic",
                           cursor: "pointer",
                         }}
+                        color="#A210C6"
                         _hover={{ color: "#A210C6" }}
                         onClick={() => setShowServicesModal(true)}
                       >
@@ -536,8 +560,8 @@ const ClientDash = () => {
                       />
                     </Box>
                     <Box
-                      bg="#F6E4FC"
-                      w="19.5vw"
+                      bg="#F6C5FF"
+                      w="24.5vw"
                       h="20vh"
                       marginLeft="10px"
                       borderRadius="10px"
@@ -546,7 +570,7 @@ const ClientDash = () => {
                       <Text
                         fontSize="20px"
                         fontFamily="body"
-                        color="#A210C6"
+                        color="black"
                         marginTop="10px"
                         style={{ marginLeft: "-125px" }}
                       >
@@ -563,6 +587,7 @@ const ClientDash = () => {
                           fontStyle: "italic",
                           cursor: "pointer",
                         }}
+                        color="#A210C6"
                         _hover={{ color: "#A210C6" }}
                       >
                         View reports
@@ -578,70 +603,59 @@ const ClientDash = () => {
           <Skeleton height="100vh" width="25%" />
         ) : (
           //  Third Section (Right)
-          <VStack bg="#F6E4FC" width="25%" spacing={3} h="100vh">
-            <Box marginTop="30px" marginLeft="200px">
-              <Image
-                src={NotificationIcon}
-                alt="Notificatio icon"
-                h="25px"
-                w="25px"
-                marginTop="10px"
-                marginBottom="10px"
-              />
-            </Box>
+          <VStack width="25%" spacing={3} h="100vh">
             <Box marginLeft="90px" marginTop="10px">
-              <Box>
-                {user?.image ? (
-                  <Link onClick={handleOpenUserDetailsModal}>
-                    <Image
-                      borderRadius="8px"
-                      h="100px"
-                      w="100px"
-                      src={user?.image}
-                      alt="User Image"
-                    />
-                  </Link>
-                ) : (
-                  <Link onClick={handleOpenUserDetailsModal}>
-                    <Image
-                      src={userImageIcon}
-                      alt="User Image Icon"
-                      boxSize="50px"
-                      marginBottom="2%"
-                      h="100px"
-                      w="100px"
-                      borderRadius="50%"
-                    />
-                  </Link>
-                )}
-                <Box marginLeft="-85px" marginTop="10px">
-                  <Link onClick={handleOpenUserDetailsModal}>
-                    <Text
-                      fontSize="18px"
-                      style={{
-                        cursor: "pointer",
-                      }}
-                      _hover={{ color: "#A210C6" }}
-                      color="#A210C6"
-                    >
-                      <Text>Profile</Text>
-                    </Text>
-                  </Link>
+              <Flex marginLeft="50px">
+                <Box marginTop="30px">
+                  <Image
+                    src={NotificationIcon}
+                    alt="Notificatio icon"
+                    h="25px"
+                    w="25px"
+                    marginTop="10px"
+                    marginBottom="10px"
+                  />
                 </Box>
-              </Box>
+
+                <Box marginLeft="10px" marginTop="30px">
+                  {user?.image ? (
+                    <Link onClick={handleOpenUserDetailsModal}>
+                      <Image
+                        borderRadius="100px"
+                        h="40px"
+                        w="40px"
+                        src={user?.image}
+                        alt="User Image"
+                      />
+                    </Link>
+                  ) : (
+                    <Link onClick={handleOpenUserDetailsModal}>
+                      <Image
+                        src={userImageIcon}
+                        alt="User Image Icon"
+                        boxSize="50px"
+                        marginBottom="2%"
+                        h="40px"
+                        w="40px"
+                        borderRadius="100%"
+                      />
+                    </Link>
+                  )}
+                </Box>
+              </Flex>
 
               <Box
                 marginLeft="-85px"
-                marginTop="20px"
+                marginTop="65px"
                 borderRadius="10px"
-                h="45vh"
+                h="40vh"
                 w="20vw"
               >
-                <Box paddingTop="5px" bg="white" borderRadius="10" h="25vh">
+                <Box paddingTop="5px" bg="#F6C5FF" borderRadius="10" h="25vh">
                   <Text
                     fontSize="20px"
                     fontFamily="body"
-                    color="#A210C6"
+                    color="black"
                     marginTop="20px"
                     marginLeft="20px"
                   >
@@ -649,33 +663,91 @@ const ClientDash = () => {
                   </Text>
                   <ul style={{ paddingLeft: "20px", marginTop: "7px" }}>
                     <li style={{ listStyleType: "none" }}>
-                      <Text>Pending appointments: {pendingAppointments}</Text>
+                      <Text
+                        marginLeft="-9px"
+                        style={{
+                          fontStyle: "italic",
+                          cursor: "pointer",
+                          fontSize: "16px",
+                        }}
+                        color="black"
+                        _hover={{ color: "#A210C6" }}
+                      >
+                        Pending appointments: {pendingAppointments}
+                      </Text>
                     </li>
                     <li style={{ listStyleType: "none" }}>
-                      <Text>Active appointments: {activeAppointments}</Text>
+                      <Text
+                        marginTop="5px"
+                        marginLeft="-26px"
+                        style={{
+                          fontStyle: "italic",
+                          cursor: "pointer",
+                          fontSize: "16px",
+                        }}
+                        color="black"
+                        _hover={{ color: "#A210C6" }}
+                      >
+                        Active appointments: {activeAppointments}
+                      </Text>
                     </li>
                     <li style={{ listStyleType: "none" }}>
-                      <Text>Completed appointments: {completedAppointments}</Text>
+                      <Text
+                        marginTop="5px"
+                        marginLeft="-32px"
+                        style={{
+                          marginLeft: "5px",
+                          fontStyle: "italic",
+                          cursor: "pointer",
+                          fontSize: "16px",
+                        }}
+                        color="black"
+                        _hover={{ color: "#A210C6" }}
+                      >
+                        Completed appointments: {completedAppointments}
+                      </Text>
                     </li>
                   </ul>
                 </Box>
 
-                <Box marginTop="10px" bg="white" borderRadius="10" h="25vh">
+                <Box marginTop="-28px" bg="#F6E4FC" borderRadius="10" h="43vh">
                   <Text
                     fontSize="20px"
                     fontFamily="body"
-                    color="#A210C6"
-                    marginTop="30px"
-                    marginLeft="20px"
+                    color="black"
+                    marginTop="40px"
+                    marginLeft="-75px"
                   >
-                    Appointments
+                    Article title
                   </Text>
                   <Text
                     style={{
                       fontStyle: "italic",
                     }}
                   >
-                    You have no appointment at the moment:{" "}
+                    Lorem Ipsum Dolor Sit Amet{" "}
+                  </Text>
+
+                  <Image
+                    src={familyIcon}
+                    alt="Nurse and Patient"
+                    w="150px"
+                    h="150px"
+                    marginLeft="70px"
+                    marginTop="20px"
+                  />
+                  <Text
+                    fontSize="18px"
+                    style={{
+                      marginLeft: "125px",
+                      marginTop: "15px",
+                      fontStyle: "italic",
+                      cursor: "pointer",
+                      color: "#A210C6",
+                    }}
+                    _hover={{ color: "#A210C6" }}
+                  >
+                    Read more
                   </Text>
                 </Box>
               </Box>
@@ -698,13 +770,28 @@ const ClientDash = () => {
           <Box
             position="fixed"
             top="0"
-            left="25%"
-            width="75%"
+            left="23%"
+            width="80%"
             height="100%"
             backgroundColor="white"
             zIndex="1000"
           >
             <AppointmentPage />
+          </Box>
+        )}
+
+
+        {showWalletModal && (
+          <Box
+            position="fixed"
+            top="0"
+            left="23%"
+            width="80%"
+            height="100%"
+            backgroundColor="white"
+            zIndex="1000"
+          >
+            <WalletModal />
           </Box>
         )}
 
