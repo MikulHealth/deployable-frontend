@@ -9,6 +9,7 @@ import BookAppointmentModal from "../sections/BookAppointment";
 import AllAppointments from "../sections/AllAppointments";
 import PendingAppointmentModal from "../sections/PendingAppointments";
 import CanceledAppointmentsModal from "../sections/CanceledAppointments";
+import Help from "../../assets/Help.svg";
 
 import { PhoneIcon, AddIcon, WarningIcon, SearchIcon } from "@chakra-ui/icons";
 import {
@@ -30,6 +31,12 @@ import NotificationIcon from "../../assets/notification.svg";
 import familyIcon from "../../assets/family.svg";
 import UserDetailsModal from "../sections/UserDetails";
 import LoadingSpinner from "../../utils/Spiner";
+import Wallet from "../../assets/Wallet.svg";
+import logo from "../../assets/LogoColoured.svg";
+import SettingsIcon from "../../assets/SettingsIcon.svg";
+import LogoutIcon from "../../assets/Logout.svg";
+import AppointmentsIcon from "../../assets/AppointmentWhite.svg";
+import HelpIcon from "../../assets/HelpIcon.svg";
 import SearchAppointmentsModal from "../sections/SearchAppointmentByDate";
 
 const AppointmentPage = () => {
@@ -43,7 +50,8 @@ const AppointmentPage = () => {
   const [showViewAllModal, setShowViewAllModal] = useState(false);
   const [showPendingModal, setShowPendingModal] = useState(false);
   const [showCanceledModal, setShowCanceledModal] = useState(false);
-  // Add these lines to your existing state declarations
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [showWalletModal, setShowWalletModal] = useState(false);
   const [showSearchAppointmentsModal, setShowSearchAppointmentsModal] =
     useState(false);
 
@@ -71,13 +79,193 @@ const AppointmentPage = () => {
     setShowSearchAppointmentsModal(false);
   };
 
+  const handleOpenHelpModal = () => {};
+
   const handleCloseAppointmentModal = () => {
     setShowAppointmentModal(false);
   };
 
+  const handleOpenWalletModal = () => {
+    navigate("/wallet");
+  };
+
+  const handleOpenLogoutModal = () => {
+    setShowLogoutModal(true);
+  };
+
+  const handleConfirmLogout = () => {
+    // Close the logout confirmation modal
+    setShowLogoutModal(false);
+
+    // Perform the actual logout
+    localStorage.removeItem("token");
+    localStorage.removeItem("phoneNumber");
+    localStorage.removeItem("orderId");
+    navigate("/");
+  };
+
+  const handleOpenDashboard = () => {
+    navigate("/dashboard");
+    window.location.reload();
+  };
+
   return (
     <ChakraProvider>
-      <Box >
+      <Box width="25%" p={3} h="100vh">
+        <Image
+          src={logo}
+          alt="Logo"
+          w="160px"
+          h="60px"
+          marginLeft="90px"
+          marginTop="10px"
+        />
+
+        <VStack spacing={3} align="center" mt={5}>
+          <Flex marginTop="50px">
+            <Image
+              marginLeft="45px"
+              w="20px"
+              h="20px"
+              src={HelpIcon}
+              alt="HomeIcon"
+            />
+
+            <Text
+              marginLeft="15px"
+              color="white"
+              onClick={() => {
+                handleOpenDashboard();
+              }}
+              style={{
+                cursor: "pointer",
+              }}
+              _hover={{ color: "#A210C6" }}
+            >
+              Home
+            </Text>
+          </Flex>
+
+          <Flex
+            alignItems="center"
+            marginTop="30px"
+            bg="#A210C6"
+            w="15vw"
+            p={3}
+            borderRadius="md"
+          >
+            <Image
+              marginLeft="20px"
+              w="20px"
+              h="20px"
+              src={AppointmentsIcon}
+              alt="Appointments"
+            />
+            <Text
+              marginLeft="15px"
+              color="white"
+              style={{
+                cursor: "pointer",
+              }}
+              _hover={{ color: "" }}
+            >
+              Appointments
+            </Text>
+          </Flex>
+
+          <Flex alignItems="center" marginTop="30px" marginLeft="-46px">
+            <Image
+              marginLeft="5px"
+              w="20px"
+              h="20px"
+              src={Wallet}
+              alt="wallet"
+            />
+            <Text
+              marginLeft="15px"
+              color="black"
+              onClick={handleOpenWalletModal}
+              style={{
+                cursor: "pointer",
+              }}
+              _hover={{ color: "#A210C6" }}
+            >
+              Wallet
+            </Text>
+          </Flex>
+
+          <Flex alignItems="center" marginTop="30px" marginLeft="-46px">
+            <Image
+              marginLeft="10px"
+              w="20px"
+              h="20px"
+              src={SettingsIcon}
+              alt="Settings"
+            />
+            <Text
+              marginLeft="15px"
+              color="black"
+              style={{
+                cursor: "pointer",
+              }}
+              _hover={{ color: "#A210C6" }}
+            >
+              Settings
+            </Text>
+          </Flex>
+
+          <Flex alignItems="center" marginTop="30px" marginLeft="-60px">
+            <Image marginLeft="10px" w="20px" h="20px" src={Help} alt="Help" />
+            <Text
+              marginLeft="15px"
+              color="black"
+              onClick={handleOpenHelpModal}
+              style={{
+                cursor: "pointer",
+              }}
+              _hover={{ color: "#A210C6" }}
+            >
+              Help
+            </Text>
+          </Flex>
+
+          <Flex alignItems="center" marginTop="100px" marginLeft="-55px">
+            <Image
+              marginLeft="10px"
+              w="20px"
+              h="20px"
+              src={LogoutIcon}
+              alt="Logout"
+            />
+            <Text
+              onClick={handleOpenLogoutModal}
+              marginLeft="15px"
+              color="black"
+              style={{
+                cursor: "pointer",
+              }}
+              _hover={{ color: "#A210C6" }}
+            >
+              Logout
+            </Text>
+          </Flex>
+        </VStack>
+        <Box
+          borderRight="2px solid #A210C6"
+          height="104%"
+          marginX={3}
+          marginTop="-599px"
+        />
+      </Box>
+      <Box
+        position="fixed"
+        top="0"
+        left="23%"
+        width="80%"
+        height="100%"
+        backgroundColor="white"
+        zIndex="1000"
+      >
         <Flex>
           <Text
             fontSize="28px"

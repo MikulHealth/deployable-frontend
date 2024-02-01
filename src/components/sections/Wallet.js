@@ -9,6 +9,7 @@ import BookAppointmentModal from "../sections/BookAppointment";
 import AllAppointments from "../sections/AllAppointments";
 import PendingAppointmentModal from "../sections/PendingAppointments";
 import CanceledAppointmentsModal from "../sections/CanceledAppointments";
+import Help from "../../assets/Help.svg";
 
 import { PhoneIcon, AddIcon, WarningIcon, SearchIcon } from "@chakra-ui/icons";
 import {
@@ -35,9 +36,18 @@ import userImageIcon from "../../assets/userImage.svg";
 import NotificationIcon from "../../assets/notification.svg";
 import familyIcon from "../../assets/family.svg";
 import UserDetailsModal from "../sections/UserDetails";
+import logo from "../../assets/LogoColoured.svg";
+import SettingsIcon from "../../assets/SettingsIcon.svg";
+import LogoutIcon from "../../assets/Logout.svg";
+import AppointmentsIcon from "../../assets/AppointmentIcon.svg";
+import HelpIcon from "../../assets/HelpIcon.svg";
+import SettingsModal from "../sections/Settings";
+import HelpModal from "../sections/Help";
 import Transfer from "../../assets/TransferPayment.svg";
 import Online from "../../assets/OnlinePayment.svg";
+import AppointmentPage from "../pages/AppointmentPage";
 import RightArrow from "../../assets/RightArrow.svg";
+import Wallet from "../../assets/WalletWhite.svg";
 import LoadingSpinner from "../../utils/Spiner";
 import SearchAppointmentsModal from "../sections/SearchAppointmentByDate";
 
@@ -170,7 +180,7 @@ const WalletPage = () => {
   const [showFundWalletModal, setShowFundWalletModal] = useState(false);
   const [showBankTransferModal, setShowBankTransferModal] = useState(false);
   const [showOnlinePaymentModal, setShowOnlinePaymentModal] = useState(false);
-
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const toast = useToast();
@@ -178,7 +188,8 @@ const WalletPage = () => {
   const { user } = useSelector((state) => state.userReducer);
   const [showUserDetailsModal, setShowUserDetailsModal] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
-  const [showAppointmentModal, setShowAppointmentModal] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [showWalletModal, setShowWalletModal] = useState(false);
   const [showViewAllModal, setShowViewAllModal] = useState(false);
   const [showPendingModal, setShowPendingModal] = useState(false);
   const [showCanceledModal, setShowCanceledModal] = useState(false);
@@ -204,12 +215,34 @@ const WalletPage = () => {
     setShowOnlinePaymentModal(true);
   };
 
+  const handleOpenLogoutModal = () => {
+    setShowLogoutModal(true);
+  };
+
+  const handleConfirmLogout = () => {
+    // Close the logout confirmation modal
+    setShowLogoutModal(false);
+
+    // Perform the actual logout
+    localStorage.removeItem("token");
+    localStorage.removeItem("phoneNumber");
+    localStorage.removeItem("orderId");
+    navigate("/");
+  };
+
+  const handleOpenDashboard = () => {
+    navigate("/dashboard");
+    window.location.reload();
+  };
+
+  const handleOpenAppointmentsModal = () => {
+    navigate("/appointment");
+  };
+
+
   const handleCloseOnlinePaymentModal = () => {
     setShowOnlinePaymentModal(false);
   };
-
-  const [showSearchAppointmentsModal, setShowSearchAppointmentsModal] =
-    useState(false);
 
   const handleOpenUserDetailsModal = () => {
     setShowUserDetailsModal(true);
@@ -223,25 +256,185 @@ const WalletPage = () => {
     setSelectedDate(date);
   };
 
-  const handleOpenAppointmentModal = () => {
-    setShowAppointmentModal(true);
+  const handleOpenWalletModal = () => {
+    setShowWalletModal(true);
   };
 
-  const handleOpenSearchAppointmentsModal = () => {
-    setShowSearchAppointmentsModal(true);
+  const handleOpenHelpModal = () => {
+  
   };
 
-  const handleCloseSearchAppointmentsModal = () => {
-    setShowSearchAppointmentsModal(false);
+  const handleOpenSettingsModal = () => {
+    setShowSettingsModal(true);
   };
 
-  const handleCloseAppointmentModal = () => {
-    setShowAppointmentModal(false);
+  const handleCloseSettingsModal = () => {
+    setShowSettingsModal(false);
   };
 
   return (
     <ChakraProvider>
-      <Box>
+      <Box width="25%" p={3} h="100vh">
+        <Image
+          src={logo}
+          alt="Logo"
+          w="160px"
+          h="60px"
+          marginLeft="90px"
+          marginTop="10px"
+        />
+
+        <VStack spacing={3} align="center" mt={5}>
+          <Flex marginTop="50px">
+            <Image
+              marginLeft="45px"
+              w="20px"
+              h="20px"
+              src={HelpIcon}
+              alt="HomeIcon"
+            />
+
+            <Text
+              marginLeft="15px"
+              color="white"
+              onClick={() => {
+                handleOpenDashboard();
+              }}
+              style={{
+                cursor: "pointer",
+              }}
+              _hover={{ color: "#A210C6" }}
+            >
+              Home
+            </Text>
+          </Flex>
+
+          <Flex alignItems="center" marginTop="30px">
+            <Image
+              marginLeft="10px"
+              w="20px"
+              h="20px"
+              src={AppointmentsIcon}
+              alt="Appointments"
+            />
+            <Text
+              marginLeft="15px"
+              color="black"
+              onClick={handleOpenAppointmentsModal}
+              style={{
+                cursor: "pointer",
+              }}
+              _hover={{ color: "#A210C6" }}
+            >
+              Appointments
+            </Text>
+          </Flex>
+
+          <Flex
+            alignItems="center"
+            marginTop="30px"
+            marginLeft="-10px"
+            bg="#A210C6"
+            w="10vw"
+            p={3}
+            borderRadius="md"
+          >
+            <Image
+              marginLeft="5px"
+              w="20px"
+              h="20px"
+              src={Wallet}
+              alt="wallet"
+             
+            />
+            <Text
+              marginLeft="15px"
+              color="white"
+              onClick={handleOpenWalletModal}
+              style={{
+                cursor: "pointer",
+              }}
+              _hover={{ color: "white" }}
+            >
+              Wallet
+            </Text>
+          </Flex>
+
+          <Flex alignItems="center" marginTop="30px" marginLeft="-46px">
+            <Image
+              marginLeft="10px"
+              w="20px"
+              h="20px"
+              src={SettingsIcon}
+              alt="Settings"
+            />
+            <Text
+              marginLeft="15px"
+              color="black"
+              onClick={() => {
+                handleOpenSettingsModal();
+              }}
+              style={{
+                cursor: "pointer",
+              }}
+              _hover={{ color: "#A210C6" }}
+            >
+              Settings
+            </Text>
+          </Flex>
+
+          <Flex alignItems="center" marginTop="30px" marginLeft="-60px">
+            <Image marginLeft="10px" w="20px" h="20px" src={Help} alt="Help" />
+            <Text
+              marginLeft="15px"
+              color="black"
+              onClick={handleOpenHelpModal}
+              style={{
+                cursor: "pointer",
+              }}
+              _hover={{ color: "#A210C6" }}
+            >
+              Help
+            </Text>
+          </Flex>
+
+          <Flex alignItems="center" marginTop="100px" marginLeft="-55px">
+            <Image
+              marginLeft="10px"
+              w="20px"
+              h="20px"
+              src={LogoutIcon}
+              alt="Logout"
+            />
+            <Text
+              onClick={handleOpenLogoutModal}
+              marginLeft="15px"
+              color="black"
+              style={{
+                cursor: "pointer",
+              }}
+              _hover={{ color: "#A210C6" }}
+            >
+              Logout
+            </Text>
+          </Flex>
+        </VStack>
+        <Box
+          borderRight="2px solid #A210C6"
+          height="104%"
+          marginX={3}
+          marginTop="-599px"
+        />
+      </Box>
+      <Box
+        position="fixed"
+        top="0"
+        left="23%"
+        width="80%"
+        height="100%"
+        backgroundColor="white"
+        zIndex="1000"
+      >
         <Flex>
           <Text
             fontSize="28px"
@@ -290,6 +483,7 @@ const WalletPage = () => {
               )}
             </Box>
           </Flex>
+          
         </Flex>
 
         <Box
@@ -426,14 +620,9 @@ const WalletPage = () => {
                   cursor: "pointer",
                 }}
                 _hover={{ color: "#A210C6" }}
-                // onClick={() => setShowServicesModal(true)}
               >
                 View
               </Text>
-              {/* <ServicesModal
-                isOpen={showServicesModal}
-                onClose={() => setShowServicesModal(false)}
-              /> */}
             </Box>
             <Box
               bg="#F6E4FC"
@@ -469,14 +658,11 @@ const WalletPage = () => {
             </Box>
           </Box>
         </Box>
+
       </Box>
       <UserDetailsModal
         isOpen={showUserDetailsModal}
         onClose={handleCloseUserDetailsModal}
-      />
-      <BookAppointmentModal
-        isOpen={showAppointmentModal}
-        onClose={handleCloseAppointmentModal}
       />
       <PendingAppointmentModal
         isOpen={showPendingModal}
@@ -490,10 +676,6 @@ const WalletPage = () => {
         isOpen={showViewAllModal}
         onClose={() => setShowViewAllModal(false)}
       />
-      <SearchAppointmentsModal
-        isOpen={showSearchAppointmentsModal}
-        onClose={handleCloseSearchAppointmentsModal}
-      />
       <FundWalletModal
         isOpen={showFundWalletModal}
         onClose={handleCloseFundWalletModal}
@@ -503,7 +685,7 @@ const WalletPage = () => {
       <BankTransferModal
         isOpen={showBankTransferModal}
         onClose={handleCloseBankTransferModal}
-        bankDetails={{ bankName: "XYZ Bank", accountNumber: "0123456789" }} // Replace with actual bank details
+        bankDetails={{ bankName: "XYZ Bank", accountNumber: "0123456789" }}
       />
       <OnlinePaymentModal
         isOpen={showOnlinePaymentModal}

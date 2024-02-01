@@ -3,7 +3,6 @@ import { GetCurrentUser } from "../../apiCalls/UserApis";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { SetUser } from "../../redux/userSlice";
-import AppointmentPage from "./AppointmentPage";
 import familyIcon from "../../assets/family.svg";
 import BookAppointmentModal from "../sections/BookAppointment";
 import {
@@ -34,7 +33,6 @@ import NurseAndPatient from "../../assets/NurseAndPatient.svg";
 import NotificationIcon from "../../assets/notification.svg";
 import "../../styles/pages/LandingPage.css";
 import SettingsModal from "../sections/Settings";
-import WalletModal from "../sections/Wallet";
 import HelpModal from "../sections/Help";
 import BeneficiariesModal from "../sections/Beneficiaries";
 import UserDetailsModal from "../sections/UserDetails";
@@ -43,6 +41,7 @@ import ServicesModal from "../sections/ServicePageModal";
 import { Link } from "react-router-dom";
 import LogoutModal from "../sections/LogoutModal";
 import LoadingSpinner from "../../utils/Spiner";
+import FundWalletModal from "../sections/Wallet";
 
 const customTheme = extendTheme({
   components: {
@@ -63,11 +62,9 @@ const customTheme = extendTheme({
 const ClientDash = () => {
   const [loading, setLoading] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
-  const [showWalletModal, setShowWalletModal] = useState(false);
   const [activePage, setActivePage] = useState("home");
   const [isBeneficiariesModalOpen, setBeneficiariesModalOpen] = useState(false);
   const [showAppointmentModal, setShowAppointmentModal] = useState(false);
-  const [showAppointmentPage, setShowAppointmentPage] = useState(false);
   const [showDashboard, setShowDashbaord] = useState(false);
   const [showHelpModal, setShowHelpModal] = useState(false);
   const [showUserModal, setUserModal] = useState(false);
@@ -84,6 +81,7 @@ const ClientDash = () => {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [showViewAllModal, setShowViewAllModal] = useState(false);
 
+
   const userDetails = async () => {
     try {
       const response = await GetCurrentUser();
@@ -97,6 +95,10 @@ const ClientDash = () => {
   };
   const handleOpenLogoutModal = () => {
     setShowLogoutModal(true);
+  };
+
+  const handleOpenAppointmentsModal = () => {
+    navigate("/appointment");
   };
 
   const handleOpenAppointmentModal = () => {
@@ -158,28 +160,18 @@ const ClientDash = () => {
     setShowSettingsModal(true);
   };
 
-  const handleOpenWalletModal = () => {
-    setShowWalletModal(true);
-  };
-  const handleCloseWalletModal = () => {
-    setShowWalletModal(false);
-  };
-
   const handleCloseSettingsModal = () => {
     setShowSettingsModal(false);
   };
 
-  const handleOpenAppointmentsModal = () => {
-    setShowAppointmentPage(true);
+  const handleOpenWalletModal = () => {
+    navigate("/wallet");
   };
 
   const handleOpenDashboard = () => {
     navigate("/dashboard");
     window.location.reload();
   };
-  // const handleCloseAppointmentsModal = () => {
-  //   setShowAppointmentsModal(false);
-  // };
 
   const handleOpenHelpModal = () => {
     setShowHelpModal(true);
@@ -189,13 +181,6 @@ const ClientDash = () => {
     setShowHelpModal(false);
   };
 
-  const handleOpenUserModal = () => {
-    setUserModal(true);
-  };
-
-  const handleCloseUserModal = () => {
-    setUserModal(false);
-  };
 
   const handleOpenUserDetailsModal = () => {
     setShowUserDetailsModal(true);
@@ -250,7 +235,7 @@ const ClientDash = () => {
                   marginLeft="15px"
                   color="white"
                 >
-                  Dashbaord
+                  Home
                 </Text>
               </Flex>
               {/* <Flex
@@ -409,57 +394,67 @@ const ClientDash = () => {
                 <Text marginLeft="-380px">How are you doing today?</Text>
               </Box>
               <Box>
-
-
                 <Box
                   marginTop="50px"
-                  bg="#D087E2"
+                  bg="#A210C6"
                   w="50vw"
-                  h="20vh"
-                  borderRadius="10px"
-                  display="flex"
+                  h="25vh"
+                  borderRadius="20px"
+                  // display="flex"
                 >
-                  <Box>
-                    {" "}
+                  {" "}
+                  <Box marginLeft="-460px" paddingTop="5px">
                     <Text
-                      fontSize="20px"
+                      fontSize="14px"
                       fontFamily="body"
-                      color="black"
+                      color="white"
                       marginTop="10px"
                       style={{ marginLeft: "5px" }}
                     >
-                      My Wallet
+                      Mikul Health Savings Account
                     </Text>
-                    <Text fontSize="16px" style={{ marginLeft: "20px" }}>
-                      Balance: ₦{balance.toFixed(2)}
-                    </Text>
-                    <Text
-                      fontSize="16px"
-                      style={{
-                        marginLeft: "-18px",
-                        marginTop: "28px",
-                        fontStyle: "italic",
-                        cursor: "pointer",
-                      }}
-                      color="#A210C6"
-                      _hover={{ color: "#A210C6" }}
-                    >
-                      Details
+                    <Text color="white" fontSize="12px" marginLeft="-144px">
+                      ₦{balance.toFixed(2)}
                     </Text>
                   </Box>
-
-                  <Image
-                    src={NurseAndPatient}
-                    alt="Nurse and Patient"
-                    w="100px"
-                    h="100px"
-                    marginLeft="440px"
-                    marginTop="18px"
-                  />
+                  <Flex marginLeft="10px" marginTop="45px">
+                    <Box w="15vw" color="white" marginTop="5px">
+                      <Text marginLeft="-120px" fontSize="12px">
+                        Wallet ID:
+                      </Text>
+                      <Text fontSize="16px">Wema Bank 0124536789</Text>
+                    </Box>
+                    <Flex marginLeft="250px">
+                      <Box w="8vw" color="white">
+                        <Text fontSize="14px">Total funded</Text>
+                        <Text color="white" fontSize="12px" marginLeft="-44px">
+                          ₦{balance.toFixed(2)}
+                        </Text>
+                      </Box>
+                      <Box w="8vw" color="white" marginLeft="10px">
+                        <Text fontSize="14px">Total spent</Text>
+                        <Text color="white" fontSize="12px" marginLeft="-34px">
+                          ₦{balance.toFixed(2)}
+                        </Text>
+                      </Box>
+                    </Flex>
+                  </Flex>
+                </Box>
+                <Box>
+                  <Button
+                    borderRadius="15px"
+                    color="#A210C6"
+                    marginLeft="520px"
+                    marginTop="-270px"
+                    // onClick={handleOpenFundWalletModal}
+                    bg="white"
+                  >
+                    Fund wallet
+                  </Button>
                 </Box>
 
-                <Box>
-                  <Box display="flex" marginTop="30px">
+                <Box marginTop="-8px">
+                  <Box display="flex">
                     <Box bg="#F6C5FF" w="24.5vw" h="20vh" borderRadius="10px">
                       {" "}
                       <Text
@@ -525,7 +520,7 @@ const ClientDash = () => {
                       </Text>
                     </Box>
                   </Box>
-                  <Box display="flex" marginTop="30px">
+                  <Box display="flex" marginTop="15px">
                     <Box bg="#F6E4FC" w="24.5vw" h="20vh" borderRadius="10px">
                       {" "}
                       <Text
@@ -666,9 +661,9 @@ const ClientDash = () => {
                       <Text
                         marginLeft="-9px"
                         style={{
-                          fontStyle: "italic",
+                          // fontStyle: "italic",
                           cursor: "pointer",
-                          fontSize: "16px",
+                          fontSize: "14px",
                         }}
                         color="black"
                         _hover={{ color: "#A210C6" }}
@@ -681,9 +676,9 @@ const ClientDash = () => {
                         marginTop="5px"
                         marginLeft="-26px"
                         style={{
-                          fontStyle: "italic",
+                          // fontStyle: "italic",
                           cursor: "pointer",
-                          fontSize: "16px",
+                          fontSize: "14px",
                         }}
                         color="black"
                         _hover={{ color: "#A210C6" }}
@@ -697,9 +692,9 @@ const ClientDash = () => {
                         marginLeft="-32px"
                         style={{
                           marginLeft: "5px",
-                          fontStyle: "italic",
+                          // fontStyle: "italic",
                           cursor: "pointer",
-                          fontSize: "16px",
+                          fontSize: "14px",
                         }}
                         color="black"
                         _hover={{ color: "#A210C6" }}
@@ -766,37 +761,8 @@ const ClientDash = () => {
             {/* <UserModal isOpen={showUserModal} onClose={handleCloseUserModal} /> */}
           </VStack>
         )}
-        {showAppointmentPage && (
-          <Box
-            position="fixed"
-            top="0"
-            left="23%"
-            width="80%"
-            height="100%"
-            backgroundColor="white"
-            zIndex="1000"
-          >
-            <AppointmentPage />
-          </Box>
-        )}
-
-
-        {showWalletModal && (
-          <Box
-            position="fixed"
-            top="0"
-            left="23%"
-            width="80%"
-            height="100%"
-            backgroundColor="white"
-            zIndex="1000"
-          >
-            <WalletModal />
-          </Box>
-        )}
-
-        {/* {showDashboard && <AppointmentPage />} */}
       </Flex>
+
       <UserDetailsModal
         isOpen={showUserDetailsModal}
         onClose={handleCloseUserDetailsModal}
