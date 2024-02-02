@@ -558,7 +558,7 @@ const ClientDash = () => {
           </VStack>
         )}
         {showSkeleton ? (
-          <Skeleton marginLeft="10px" height="100vh" width="25%" />
+          <Skeleton marginLeft="5px" height="100vh" width="25%" />
         ) : (
           //  Third Section (Right)
           <VStack width="25%" spacing={3} h="100vh">
