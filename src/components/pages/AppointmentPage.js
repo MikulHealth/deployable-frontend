@@ -36,7 +36,7 @@ import logo from "../../assets/LogoColoured.svg";
 import SettingsIcon from "../../assets/SettingsIcon.svg";
 import LogoutIcon from "../../assets/Logout.svg";
 import AppointmentsIcon from "../../assets/AppointmentWhite.svg";
-import HelpIcon from "../../assets/HelpIcon.svg";
+import HomeIcon from "../../assets/HomeBlack.svg";
 import SearchAppointmentsModal from "../sections/SearchAppointmentByDate";
 
 const AppointmentPage = () => {
@@ -122,17 +122,17 @@ const AppointmentPage = () => {
         />
 
         <VStack spacing={3} align="center" mt={5}>
-          <Flex marginTop="50px">
+        <Flex marginTop="50px" alignItems="center">
             <Image
-              marginLeft="5px"
+               marginLeft="-40px"
               w="20px"
               h="20px"
-              src={HelpIcon}
+              src={HomeIcon}
               alt="HomeIcon"
             />
 
             <Text
-              marginLeft="-30px"
+               marginLeft="15px"
               color="black"
               onClick={() => {
                 handleOpenDashboard();
@@ -155,7 +155,7 @@ const AppointmentPage = () => {
             borderRadius="md"
           >
             <Image
-              marginLeft="20px"
+              marginLeft="30px"
               w="20px"
               h="20px"
               src={AppointmentsIcon}
@@ -254,13 +254,13 @@ const AppointmentPage = () => {
       <Box
         position="fixed"
         top="0"
-        left="23%"
-        width="80%"
+        left="25%"
+        width="85%"
         height="100%"
         backgroundColor="white"
         zIndex="1000"
       >
-        <Flex>
+        <Flex >
           <Text
             fontSize="28px"
             fontFamily="body"
@@ -309,13 +309,71 @@ const AppointmentPage = () => {
             </Box>
           </Flex>
         </Flex>
+      
+
+        <Flex
+          marginTop="30px"
+          marginLeft="15px"
+          bg="#A210C6"
+          w="70vw"
+          h="30vh"
+          borderRadius="20px"
+          display="flex"
+        >
+          <Box color="white">
+            <Text
+              fontSize="20px"
+              fontFamily="body"
+              marginTop="15px"
+              marginLeft="-150px"
+            >
+              Hello {user?.firstName},
+            </Text>
+            <Text fontSize="15px" marginLeft="-15px" marginTop="5px">
+              Would you like to book an appointment
+            </Text>
+            <Text fontSize="15px" marginTop="2px" marginLeft="-100px">
+              for yourself or a loved one?
+            </Text>
+            <Flex marginLeft="35px">
+              <Button
+                onClick={handleOpenAppointmentModal}
+                bg="white"
+                color="#A210C6"
+                marginTop="30px"
+              >
+                Book appointment
+              </Button>
+              <Button
+                onClick={() => setShowViewAllModal(true)}
+                bg="white"
+                color="#A210C6"
+                marginLeft="5px"
+                marginTop="30px"
+              >
+                All appointments
+              </Button>
+            </Flex>
+          </Box>
+          <Box>
+            <Image
+              src={familyIcon}
+              alt="family icon"
+              h="150px"
+              w="150px"
+              marginTop="20px"
+              marginBottom="10px"
+              marginLeft="400px"
+            />
+          </Box>
+        </Flex>
         <Box
-          marginLeft="70px"
-          marginTop="40px"
+          marginLeft="15px"
+          marginTop="20px"
           border="1px solid gray"
           borderRadius="md"
           padding="3px"
-          w="60vw"
+          w="70vw"
         >
           <Flex marginLeft="10px">
             <SearchIcon boxSize={4} marginRight="10px" marginTop="5px" />
@@ -334,68 +392,11 @@ const AppointmentPage = () => {
             </Text>
           </Flex>
         </Box>
-
-        <Flex
-          marginTop="30px"
-          marginLeft="70px"
-          bg="#A210C6"
-          w="60vw"
-          h="30vh"
-          borderRadius="20px"
-          display="flex"
-        >
-          <Box color="white">
-            <Text
-              fontSize="20px"
-              fontFamily="body"
-              marginTop="15px"
-              marginLeft="-250px"
-            >
-              Hello {user?.firstName},
-            </Text>
-            <Text fontSize="15px" marginLeft="15px" marginTop="5px">
-              You have no appointments yet. Would you like to book one
-            </Text>
-            <Text fontSize="15px" marginTop="2px" marginLeft="-195px">
-              for yourself or a loved one?
-            </Text>
-            <Flex marginLeft="10px">
-              <Button
-                onClick={handleOpenAppointmentModal}
-                bg="#A210C6"
-                color="white"
-                marginTop="30px"
-              >
-                Book appointment
-              </Button>
-              <Button
-                onClick={() => setShowViewAllModal(true)}
-                bg="#A210C6"
-                color="white"
-                marginLeft="5px"
-                marginTop="30px"
-              >
-                All appointment
-              </Button>
-            </Flex>
-          </Box>
-          <Box>
-            <Image
-              src={familyIcon}
-              alt="family icon"
-              h="150px"
-              w="150px"
-              marginTop="20px"
-              marginBottom="10px"
-              marginLeft="160px"
-            />
-          </Box>
-        </Flex>
-        <Box marginLeft="69px">
+        <Box marginLeft="15px">
           <Box display="flex" marginTop="30px">
             <Box
               bg="#F6E4FC"
-              w="29vw"
+              w="34vw"
               h="15vh"
               borderRadius="10px"
               cursor="pointer"
@@ -426,7 +427,7 @@ const AppointmentPage = () => {
             </Box>
             <Box
               bg="#F6E4FC"
-              w="29vw"
+              w="34vw"
               h="15vh"
               marginLeft="26px"
               borderRadius="10px"
@@ -456,7 +457,7 @@ const AppointmentPage = () => {
             </Box>
           </Box>
           <Box display="flex" marginTop="30px">
-            <Box bg="#F6E4FC" w="29vw" h="15vh" borderRadius="10px">
+            <Box bg="#F6E4FC"  w="34vw" h="15vh" borderRadius="10px">
               {" "}
               <Text
                 fontSize="20px"
@@ -476,18 +477,13 @@ const AppointmentPage = () => {
                   cursor: "pointer",
                 }}
                 _hover={{ color: "#A210C6" }}
-                // onClick={() => setShowServicesModal(true)}
               >
                 View
               </Text>
-              {/* <ServicesModal
-                isOpen={showServicesModal}
-                onClose={() => setShowServicesModal(false)}
-              /> */}
             </Box>
             <Box
               bg="#F6E4FC"
-              w="29vw"
+              w="34vw"
               h="15vh"
               marginLeft="26px"
               borderRadius="10px"

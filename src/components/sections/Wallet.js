@@ -40,7 +40,7 @@ import logo from "../../assets/LogoColoured.svg";
 import SettingsIcon from "../../assets/SettingsIcon.svg";
 import LogoutIcon from "../../assets/Logout.svg";
 import AppointmentsIcon from "../../assets/AppointmentIcon.svg";
-import HelpIcon from "../../assets/HelpIcon.svg";
+import HomeIcon from "../../assets/HomeBlack.svg";
 import SettingsModal from "../sections/Settings";
 import HelpModal from "../sections/Help";
 import Transfer from "../../assets/TransferPayment.svg";
@@ -71,6 +71,11 @@ const FundWalletModal = ({
             w="37vw"
             borderRadius="15px"
             paddingBottom="5px"
+            onClick={onBankTransfer}
+            style={{
+              cursor: "pointer",
+            }}
+            _hover={{ color: "#A210C6" }}
           >
             <Flex>
               <Image
@@ -91,12 +96,7 @@ const FundWalletModal = ({
                 w="30px"
                 h="30px"
                 src={RightArrow}
-                onClick={onBankTransfer}
                 alt="Settings"
-                style={{
-                  cursor: "pointer",
-                }}
-                _hover={{ color: "#A210C6" }}
               />
             </Flex>
           </Box>
@@ -108,6 +108,11 @@ const FundWalletModal = ({
             w="37vw"
             marginBottom="15px"
             borderRadius="15px"
+            onClick={onOnlinePayment}
+            style={{
+              cursor: "pointer",
+            }}
+            _hover={{ color: "#A210C6" }}
           >
             <Flex>
               <Image
@@ -133,7 +138,6 @@ const FundWalletModal = ({
                   cursor: "pointer",
                 }}
                 _hover={{ color: "#A210C6" }}
-                onClick={onOnlinePayment}
               />
             </Flex>
           </Box>
@@ -239,7 +243,6 @@ const WalletPage = () => {
     navigate("/appointment");
   };
 
-
   const handleCloseOnlinePaymentModal = () => {
     setShowOnlinePaymentModal(false);
   };
@@ -260,9 +263,7 @@ const WalletPage = () => {
     setShowWalletModal(true);
   };
 
-  const handleOpenHelpModal = () => {
-  
-  };
+  const handleOpenHelpModal = () => {};
 
   const handleOpenSettingsModal = () => {
     setShowSettingsModal(true);
@@ -285,17 +286,17 @@ const WalletPage = () => {
         />
 
         <VStack spacing={3} align="center" mt={5}>
-        <Flex marginTop="50px">
+          <Flex marginTop="50px" alignItems="center">
             <Image
-              marginLeft="5px"
+              marginLeft="-40px"
               w="20px"
               h="20px"
-              src={HelpIcon}
+              src={HomeIcon}
               alt="HomeIcon"
             />
 
             <Text
-              marginLeft="-30px"
+              marginLeft="15px"
               color="black"
               onClick={() => {
                 handleOpenDashboard();
@@ -335,20 +336,19 @@ const WalletPage = () => {
             marginTop="30px"
             marginLeft="-10px"
             bg="#A210C6"
-            w="10vw"
+            w="15vw"
             p={3}
             borderRadius="md"
           >
             <Image
-              marginLeft="5px"
+              marginLeft="32px"
               w="20px"
               h="20px"
               src={Wallet}
               alt="wallet"
-             
             />
             <Text
-              marginLeft="15px"
+              marginLeft="17px"
               color="white"
               onClick={handleOpenWalletModal}
               style={{
@@ -429,7 +429,7 @@ const WalletPage = () => {
       <Box
         position="fixed"
         top="0"
-        left="23%"
+        left="25%"
         width="80%"
         height="100%"
         backgroundColor="white"
@@ -483,14 +483,13 @@ const WalletPage = () => {
               )}
             </Box>
           </Flex>
-          
         </Flex>
 
         <Box
-          marginTop="80px"
-          marginLeft="70px"
+          marginTop="95px"
+          marginLeft="15px"
           bg="#A210C6"
-          w="60vw"
+          w="70vw"
           h="30vh"
           borderRadius="20px"
           display="flex"
@@ -515,7 +514,7 @@ const WalletPage = () => {
                 <Button
                   borderRadius="15px"
                   color="#A210C6"
-                  marginLeft="470px"
+                  marginLeft="650px"
                   marginTop="30px"
                   onClick={handleOpenFundWalletModal}
                   bg="white"
@@ -524,97 +523,74 @@ const WalletPage = () => {
                 </Button>
               </Box>
             </Flex>
-            <Box color="white" marginTop="55px" marginLeft="-390px">
-              <Text fontSize="16px" marginLeft="-175px">
-                Wallet ID:
-              </Text>
-              <Text fontSize="16px" marginLeft="-88px">
-                XYZ Bank 0124536789
-              </Text>
-            </Box>
+            <Flex marginLeft="35px" marginTop="45px">
+              <Box w="15vw" color="white" marginTop="5px">
+                <Text marginLeft="-120px" fontSize="12px">
+                  Wallet ID:
+                </Text>
+                <Text fontSize="16px">Wema Bank 0124536789</Text>
+              </Box>
+              <Flex marginLeft="480px">
+                <Box w="8vw" color="white">
+                  <Text fontSize="14px">Total funded</Text>
+                  <Text color="white" fontSize="12px" marginLeft="-44px">
+                    ₦{balance.toFixed(2)}
+                  </Text>
+                </Box>
+                <Box w="8vw" color="white" marginLeft="10px">
+                  <Text fontSize="14px">Total spent</Text>
+                  <Text color="white" fontSize="12px" marginLeft="-34px">
+                    ₦{balance.toFixed(2)}
+                  </Text>
+                </Box>
+              </Flex>
+            </Flex>
           </Box>
         </Box>
 
-        <Box marginLeft="69px">
-          <Box display="flex" marginTop="30px">
-            <Box
-              bg="#F6E4FC"
-              w="29vw"
-              h="15vh"
-              borderRadius="10px"
-              cursor="pointer"
-              onClick={() => setShowPendingModal(true)}
-            >
-              {" "}
-              <Text
-                fontSize="20px"
-                fontFamily="body"
-                color="#A210C6"
-                marginTop="10px"
-                style={{ marginLeft: "-150px" }}
-              >
-                Pending Appointments
-              </Text>
+        <Box marginLeft="15px">
+          <Box
+            marginTop="20px"
+            border="1px solid gray"
+            borderRadius="md"
+            padding="3px"
+            w="70vw"
+            h="10vh"
+          >
+            <Flex marginLeft="10px" marginTop="15px">
+              <SearchIcon boxSize={4} marginRight="10px" marginTop="5px" />
               <Text
                 fontSize="16px"
                 style={{
-                  marginLeft: "250px",
-                  marginTop: "25px",
+                  marginLeft: "5px",
+                  marginTop: "2px",
                   fontStyle: "italic",
                   cursor: "pointer",
                 }}
                 _hover={{ color: "#A210C6" }}
+                // onClick={handleOpenSearchAppointmentsModal}
               >
-                View all
+                Search transaction by date
               </Text>
-            </Box>
-            <Box
-              bg="#F6E4FC"
-              w="29vw"
-              h="15vh"
-              marginLeft="26px"
-              borderRadius="10px"
-            >
-              {" "}
-              <Text
-                fontSize="20px"
-                fontFamily="body"
-                color="#A210C6"
-                marginTop="10px"
-                style={{ marginLeft: "-155px" }}
-              >
-                Active Appointments
-              </Text>
-              <Text
-                fontSize="16px"
-                style={{
-                  marginLeft: "250px",
-                  marginTop: "25px",
-                  fontStyle: "italic",
-                  cursor: "pointer",
-                }}
-                _hover={{ color: "#A210C6" }}
-              >
-                View
-              </Text>
-            </Box>
+            </Flex>
           </Box>
+
           <Box display="flex" marginTop="30px">
-            <Box bg="#F6E4FC" w="29vw" h="15vh" borderRadius="10px">
+            <Box bg="#F6E4FC" w="34vw" h="15vh" borderRadius="10px">
               {" "}
               <Text
                 fontSize="20px"
                 fontFamily="body"
-                color="#A210C6"
+                color="black"
                 marginTop="10px"
-                style={{ marginLeft: "-125px" }}
+                marginLeft="-350"
               >
-                Completed Appointments
+                Credit
               </Text>
               <Text
                 fontSize="16px"
                 style={{
-                  marginLeft: "250px",
+                  marginLeft: "350px",
                   marginTop: "25px",
                   fontStyle: "italic",
                   cursor: "pointer",
@@ -626,7 +602,7 @@ const WalletPage = () => {
             </Box>
             <Box
               bg="#F6E4FC"
-              w="29vw"
+              w="34vw"
               h="15vh"
               marginLeft="26px"
               borderRadius="10px"
@@ -637,16 +613,16 @@ const WalletPage = () => {
               <Text
                 fontSize="20px"
                 fontFamily="body"
-                color="#A210C6"
+                color="black"
                 marginTop="10px"
-                style={{ marginLeft: "-125px" }}
+                marginLeft="-350"
               >
-                Cancelled Appointments
+                Debit
               </Text>
               <Text
                 fontSize="16px"
                 style={{
-                  marginLeft: "250px",
+                  marginLeft: "350px",
                   marginTop: "25px",
                   fontStyle: "italic",
                   cursor: "pointer",
@@ -658,7 +634,6 @@ const WalletPage = () => {
             </Box>
           </Box>
         </Box>
-
       </Box>
       <UserDetailsModal
         isOpen={showUserDetailsModal}

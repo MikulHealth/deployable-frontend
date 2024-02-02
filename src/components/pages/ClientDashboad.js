@@ -62,12 +62,9 @@ const customTheme = extendTheme({
 const ClientDash = () => {
   const [loading, setLoading] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
-  const [activePage, setActivePage] = useState("home");
   const [isBeneficiariesModalOpen, setBeneficiariesModalOpen] = useState(false);
   const [showAppointmentModal, setShowAppointmentModal] = useState(false);
-  const [showDashboard, setShowDashbaord] = useState(false);
   const [showHelpModal, setShowHelpModal] = useState(false);
-  const [showUserModal, setUserModal] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const toast = useToast();
@@ -79,8 +76,7 @@ const ClientDash = () => {
   const completedAppointments = user?.numberOfCompletedAppointments;
   const [showServicesModal, setShowServicesModal] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
-  const [showViewAllModal, setShowViewAllModal] = useState(false);
-
+  const [showSkeleton, setShowSkeleton] = useState(true);
 
   const userDetails = async () => {
     try {
@@ -110,10 +106,7 @@ const ClientDash = () => {
   };
 
   const handleConfirmLogout = () => {
-    // Close the logout confirmation modal
     setShowLogoutModal(false);
-
-    // Perform the actual logout
     localStorage.removeItem("token");
     localStorage.removeItem("phoneNumber");
     localStorage.removeItem("orderId");
@@ -143,6 +136,7 @@ const ClientDash = () => {
           console.error("Error in GetCurrentUser API:", error);
         } finally {
           setLoading(false);
+          setShowSkeleton(false);
         }
       } else {
         navigate("/login");
@@ -151,10 +145,6 @@ const ClientDash = () => {
 
     fetchData();
   }, []);
-
-  const handleOpenUserDetails = () => {
-    navigate("/user-details");
-  };
 
   const handleOpenSettingsModal = () => {
     setShowSettingsModal(true);
@@ -170,7 +160,7 @@ const ClientDash = () => {
 
   const handleOpenDashboard = () => {
     navigate("/dashboard");
-    window.location.reload();
+    // window.location.reload();
   };
 
   const handleOpenHelpModal = () => {
@@ -180,7 +170,6 @@ const ClientDash = () => {
   const handleCloseHelpModal = () => {
     setShowHelpModal(false);
   };
-
 
   const handleOpenUserDetailsModal = () => {
     setShowUserDetailsModal(true);
@@ -193,189 +182,164 @@ const ClientDash = () => {
   return (
     <ChakraProvider theme={customTheme}>
       <Flex overflowY="scroll" height="100vh">
-        {/* First Section (Left) */}
-        {loading ? (
-          <Skeleton height="100vh" width="25%" />
-        ) : (
-          <Box width="25%" p={3} color="white" h="100vh">
-            <Image
-              src={logo}
-              alt="Logo"
-              w="160px"
-              h="60px"
-              marginLeft="90px"
-              marginTop="10px"
-            />
+        <Box width="25%" p={3} color="white" h="100vh">
+          <Image
+            src={logo}
+            alt="Logo"
+            w="160px"
+            h="60px"
+            marginLeft="90px"
+            marginTop="10px"
+          />
 
-            <VStack spacing={3} align="center" mt={5}>
-              <Flex
-                marginTop="50px"
-                p={3}
-                borderRadius="md"
-                w="17vw"
-                bg="#A210C6"
+          <VStack spacing={3} align="center" mt={5}>
+            <Flex
+              marginTop="50px"
+              p={3}
+              borderRadius="md"
+              bg="#A210C6"
+              w="15vw"
+            >
+              <Image
+                marginLeft="37px"
+                w="20px"
+                h="20px"
+                src={HelpIcon}
+                alt="HelpIcon"
+              />
+
+              <Text
+                onClick={() => {
+                  handleOpenDashboard();
+                }}
+                style={{
+                  cursor: "pointer",
+                }}
+                _hover={{ color: "white" }}
+                marginLeft="15px"
+                color="white"
               >
-                <Image
-                  marginLeft="45px"
-                  w="20px"
-                  h="20px"
-                  src={HelpIcon}
-                  alt="HelpIcon"
-                />
+                Home
+              </Text>
+            </Flex>
+            <Flex alignItems="center" marginTop="30px">
+              <Image
+                marginLeft="10px"
+                w="20px"
+                h="20px"
+                src={AppointmentsIcon}
+                alt="Appointments"
+              />
+              <Text
+                marginLeft="15px"
+                color="black"
+                onClick={() => {
+                  handleOpenAppointmentsModal();
+                }}
+                style={{
+                  cursor: "pointer",
+                }}
+                _hover={{ color: "#A210C6" }}
+              >
+                Appointments
+              </Text>
+            </Flex>
 
-                <Text
-                  onClick={() => {
-                    handleOpenDashboard();
-                    setActivePage("home");
-                  }}
-                  style={{
-                    cursor: "pointer",
-                  }}
-                  _hover={{ color: "white" }}
-                  marginLeft="15px"
-                  color="white"
-                >
-                  Home
-                </Text>
-              </Flex>
-              {/* <Flex
-                borderRadius="md"
-                p={3}
-                w="17vw"
-                alignItems="center"
-                marginTop="30px"
-                // bg={activePage ? "white" : "#F6E4FC"}
-              > */}
-              <Flex alignItems="center" marginTop="30px">
-                <Image
-                  marginLeft="10px"
-                  w="20px"
-                  h="20px"
-                  src={AppointmentsIcon}
-                  alt="Appointments"
-                />
-                <Text
-                  marginLeft="15px"
-                  color="black"
-                  onClick={() => {
-                    handleOpenAppointmentsModal();
-                    // setActivePage("appointments");
-                  }}
-                  style={{
-                    cursor: "pointer",
-                  }}
-                  _hover={{ color: "#A210C6" }}
-                >
-                  Appointments
-                </Text>
-              </Flex>
+            <Flex alignItems="center" marginTop="30px" marginLeft="-54px">
+              <Image
+                marginLeft="10px"
+                w="20px"
+                h="20px"
+                src={Wallet}
+                alt="Settings"
+              />
+              <Text
+                marginLeft="15px"
+                color="black"
+                onClick={handleOpenWalletModal}
+                style={{
+                  cursor: "pointer",
+                }}
+                _hover={{ color: "#A210C6" }}
+              >
+                Wallet
+              </Text>
+            </Flex>
 
-              <Flex alignItems="center" marginTop="30px" marginLeft="-54px">
-                <Image
-                  marginLeft="10px"
-                  w="20px"
-                  h="20px"
-                  src={Wallet}
-                  alt="Settings"
-                />
-                <Text
-                  marginLeft="15px"
-                  color="black"
-                  onClick={handleOpenWalletModal}
-                  style={{
-                    cursor: "pointer",
-                  }}
-                  _hover={{ color: "#A210C6" }}
-                >
-                  Wallet
-                </Text>
-              </Flex>
+            <Flex alignItems="center" marginTop="30px" marginLeft="-46px">
+              <Image
+                marginLeft="10px"
+                w="20px"
+                h="20px"
+                src={SettingsIcon}
+                alt="Settings"
+              />
+              <Text
+                marginLeft="15px"
+                color="black"
+                onClick={() => {
+                  handleOpenSettingsModal();
+                }}
+                style={{
+                  cursor: "pointer",
+                }}
+                _hover={{ color: "#A210C6" }}
+              >
+                Settings
+              </Text>
+            </Flex>
 
-              <Flex alignItems="center" marginTop="30px" marginLeft="-46px">
-                <Image
-                  marginLeft="10px"
-                  w="20px"
-                  h="20px"
-                  src={SettingsIcon}
-                  alt="Settings"
-                />
-                <Text
-                  marginLeft="15px"
-                  color="black"
-                  onClick={() => {
-                    handleOpenSettingsModal();
-                    setActivePage("appointments");
-                  }}
-                  style={{
-                    cursor: "pointer",
-                  }}
-                  _hover={{ color: "#A210C6" }}
-                >
-                  Settings
-                </Text>
-              </Flex>
+            <Flex alignItems="center" marginTop="30px" marginLeft="-60px">
+              <Image
+                marginLeft="10px"
+                w="20px"
+                h="20px"
+                src={Help}
+                alt="Help"
+              />
+              <Text
+                marginLeft="15px"
+                color="black"
+                onClick={handleOpenHelpModal}
+                style={{
+                  cursor: "pointer",
+                }}
+                _hover={{ color: "#A210C6" }}
+              >
+                Help
+              </Text>
+            </Flex>
 
-              <Flex alignItems="center" marginTop="30px" marginLeft="-60px">
-                <Image
-                  marginLeft="10px"
-                  w="20px"
-                  h="20px"
-                  src={Help}
-                  alt="Help"
-                />
-                <Text
-                  marginLeft="15px"
-                  color="black"
-                  onClick={handleOpenHelpModal}
-                  style={{
-                    cursor: "pointer",
-                  }}
-                  _hover={{ color: "#A210C6" }}
-                >
-                  Help
-                </Text>
-              </Flex>
-
-              <Flex alignItems="center" marginTop="100px" marginLeft="-55px">
-                <Image
-                  marginLeft="10px"
-                  w="20px"
-                  h="20px"
-                  src={LogoutIcon}
-                  alt="Logout"
-                />
-                <Text
-                  onClick={handleOpenLogoutModal}
-                  marginLeft="15px"
-                  color="black"
-                  style={{
-                    cursor: "pointer",
-                  }}
-                  _hover={{ color: "#A210C6" }}
-                >
-                  Logout
-                </Text>
-              </Flex>
-            </VStack>
-            <Box
-              borderRight="2px solid #A210C6"
-              height="104%"
-              marginX={3}
-              marginTop="-599px"
-            />
-          </Box>
-        )}
-
-        {loading ? (
-          <Flex
-            align="center"
-            justify="center"
-            width="50%"
-            height="100vh"
-            // bg="white"
-          >
-            <LoadingSpinner size={100} />
-          </Flex>
+            <Flex alignItems="center" marginTop="100px" marginLeft="-55px">
+              <Image
+                marginLeft="10px"
+                w="20px"
+                h="20px"
+                src={LogoutIcon}
+                alt="Logout"
+              />
+              <Text
+                onClick={handleOpenLogoutModal}
+                marginLeft="15px"
+                color="black"
+                style={{
+                  cursor: "pointer",
+                }}
+                _hover={{ color: "#A210C6" }}
+              >
+                Logout
+              </Text>
+            </Flex>
+          </VStack>
+          <Box
+            borderRight="2px solid #A210C6"
+            height="104%"
+            marginX={3}
+            marginTop="-599px"
+          />
+        </Box>
+        {showSkeleton ? (
+          <Skeleton marginLeft="-25px" height="100vh" width="50%" />
         ) : (
           //  Second Section (Middle)
 
@@ -400,7 +364,6 @@ const ClientDash = () => {
                   w="50vw"
                   h="25vh"
                   borderRadius="20px"
-                  // display="flex"
                 >
                   {" "}
                   <Box marginLeft="-460px" paddingTop="5px">
@@ -413,7 +376,7 @@ const ClientDash = () => {
                     >
                       Mikul Health Savings Account
                     </Text>
-                    <Text color="white" fontSize="12px" marginLeft="-144px">
+                    <Text color="white" fontSize="12px" marginLeft="-130px">
                       ₦{balance.toFixed(2)}
                     </Text>
                   </Box>
@@ -446,16 +409,16 @@ const ClientDash = () => {
                     color="#A210C6"
                     marginLeft="520px"
                     marginTop="-270px"
-                    // onClick={handleOpenFundWalletModal}
+                    onClick={handleOpenWalletModal}
                     bg="white"
                   >
-                    Fund wallet
+                    Open wallet
                   </Button>
                 </Box>
 
                 <Box marginTop="-8px">
                   <Box display="flex">
-                    <Box bg="#F6C5FF" w="24.5vw" h="20vh" borderRadius="10px">
+                    <Box bg="#F6E4FC" w="24.5vw" h="20vh" borderRadius="10px">
                       {" "}
                       <Text
                         fontSize="20px"
@@ -555,7 +518,7 @@ const ClientDash = () => {
                       />
                     </Box>
                     <Box
-                      bg="#F6C5FF"
+                      bg="#F6E4FC"
                       w="24.5vw"
                       h="20vh"
                       marginLeft="10px"
@@ -594,8 +557,8 @@ const ClientDash = () => {
             </Box>
           </VStack>
         )}
-        {loading ? (
-          <Skeleton height="100vh" width="25%" />
+        {showSkeleton ? (
+          <Skeleton marginLeft="10px" height="100vh" width="25%" />
         ) : (
           //  Third Section (Right)
           <VStack width="25%" spacing={3} h="100vh">
@@ -646,7 +609,7 @@ const ClientDash = () => {
                 h="40vh"
                 w="20vw"
               >
-                <Box paddingTop="5px" bg="#F6C5FF" borderRadius="10" h="25vh">
+                <Box paddingTop="5px" bg="#F6E4FC" borderRadius="10" h="25vh">
                   <Text
                     fontSize="20px"
                     fontFamily="body"
@@ -661,7 +624,6 @@ const ClientDash = () => {
                       <Text
                         marginLeft="-9px"
                         style={{
-                          // fontStyle: "italic",
                           cursor: "pointer",
                           fontSize: "14px",
                         }}
@@ -676,7 +638,6 @@ const ClientDash = () => {
                         marginTop="5px"
                         marginLeft="-26px"
                         style={{
-                          // fontStyle: "italic",
                           cursor: "pointer",
                           fontSize: "14px",
                         }}
@@ -692,7 +653,7 @@ const ClientDash = () => {
                         marginLeft="-32px"
                         style={{
                           marginLeft: "5px",
-                          // fontStyle: "italic",
+
                           cursor: "pointer",
                           fontSize: "14px",
                         }}
@@ -758,7 +719,6 @@ const ClientDash = () => {
             />
 
             <HelpModal isOpen={showHelpModal} onClose={handleCloseHelpModal} />
-            {/* <UserModal isOpen={showUserModal} onClose={handleCloseUserModal} /> */}
           </VStack>
         )}
       </Flex>
