@@ -19,6 +19,8 @@ import UserDetailsModal from "./components/sections/UserDetails";
 import VerifyOtpDash from "./components/sections/VerifyOTP";
 import PaymentConfirmationModal from "./components/sections/PaymentConfirmationModal";
 import WalletPage from "./components/sections/Wallet";
+import SettingsPage from "./components/pages/SettingsPage";
+import EdithProfilePage from "./components/pages/EdithProfilePage";
 
 function App() {
   return (
@@ -50,6 +52,8 @@ function App() {
           <Route path="/make-payment" element={<PaymentConfirmationModal />} />
           <Route path="/wallet" element={<WalletPage />} />
           <Route path="/appointment" element={<AppointmentPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/edit-prifile" element={<EdithProfilePage />} />
         </Routes>
       </BrowserRouter>
     </div>

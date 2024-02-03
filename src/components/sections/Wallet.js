@@ -152,12 +152,45 @@ const BankTransferModal = ({ isOpen, onClose, bankDetails }) => {
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Bank Transfer Details</ModalHeader>
+        <ModalHeader marginLeft="130px">Bank Transfer</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Text>Bank Name: {bankDetails.bankName}</Text>
-          <Text>Account Number: {bankDetails.accountNumber}</Text>
-          {/* Add other bank details as needed */}
+          <Text marginTop="-10px">
+            This is your Mikul Health account number. Please refresh this page
+            after making a transfer to this account number either via your bank
+            app or bank USSD code
+          </Text>
+          <Flex
+            borderRadius="15px"
+            border="1px solid black"
+            marginLeft="10px"
+            padding="10px"
+            marginTop="10px"
+          >
+            <Text>Bank Name:</Text>
+            <Text marginLeft="200"> {bankDetails.bankName}</Text>
+          </Flex>
+          <Flex
+            borderRadius="15px"
+            border="1px solid black"
+            marginLeft="10px"
+            padding="10px"
+            marginTop="20px"
+          >
+            <Text>Account Name:</Text>
+            <Text marginLeft="140"> {bankDetails.accountName}</Text>
+          </Flex>
+          <Flex
+            borderRadius="15px"
+            border="1px solid black"
+            marginLeft="10px"
+            padding="10px"
+            marginTop="20px"
+            marginBottom="20px"
+          >
+            <Text>Account Number:</Text>
+            <Text marginLeft="145"> {bankDetails.accountNumber}</Text>
+          </Flex>
         </ModalBody>
       </ModalContent>
     </Modal>
@@ -165,15 +198,42 @@ const BankTransferModal = ({ isOpen, onClose, bankDetails }) => {
 };
 
 const OnlinePaymentModal = ({ isOpen, onClose }) => {
+  const [amount, setAmount] = useState("");
+
+  const handleAmountSubmission = () => {
+    // Handle the submission of the entered amount here
+    console.log("Amount submitted:", amount);
+    // You can perform further actions like making a deposit or calling an API here
+  };
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Online Payment</ModalHeader>
+        <ModalHeader marginLeft="130px">Online Payment</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          {/* Add online payment button or form */}
-          <Button>Proceed to Online Payment</Button>
+          <FormControl>
+            <FormLabel>Input amount:</FormLabel>
+            <Input
+              type="number"
+              value={amount}
+              border="1px solid black"
+              placeholder="₦5000"
+              onChange={(e) => setAmount(e.target.value)}
+            />
+          </FormControl>
+          <Button
+            marginTop="10px"
+            marginBottom="20px"
+            marginLeft="130px"
+            bg="#A210C6"
+            color="white"
+            onClick={handleAmountSubmission}
+            _hover={{ backgroundColor: "blue.500" }}
+          >
+            Make deposit
+          </Button>
         </ModalBody>
       </ModalContent>
     </Modal>
@@ -236,7 +296,9 @@ const WalletPage = () => {
 
   const handleOpenDashboard = () => {
     navigate("/dashboard");
-    window.location.reload();
+  };
+  const handleOpenSettingsModal = () => {
+    navigate("/settings");
   };
 
   const handleOpenAppointmentsModal = () => {
@@ -264,11 +326,6 @@ const WalletPage = () => {
   };
 
   const handleOpenHelpModal = () => {};
-
-  const handleOpenSettingsModal = () => {
-    setShowSettingsModal(true);
-  };
-
   const handleCloseSettingsModal = () => {
     setShowSettingsModal(false);
   };
@@ -445,14 +502,19 @@ const WalletPage = () => {
           >
             Wallet
           </Text>
-          <Flex marginLeft="670px">
+          <Flex
+            marginLeft="650px"
+            style={{
+              cursor: "pointer",
+            }}
+            _hover={{ color: "#A210C6" }}
+          >
             <Box marginTop="30px">
               <Image
                 src={NotificationIcon}
                 alt="Notificatio icon"
-                h="25px"
-                w="25px"
-                marginTop="10px"
+                h="26px"
+                w="30px"
                 marginBottom="10px"
               />
             </Box>
@@ -462,8 +524,8 @@ const WalletPage = () => {
                 <Link onClick={handleOpenUserDetailsModal}>
                   <Image
                     borderRadius="100px"
-                    h="40px"
-                    w="40px"
+                    h="29px"
+                    w="30px"
                     src={user?.image}
                     alt="User Image"
                   />
@@ -475,8 +537,8 @@ const WalletPage = () => {
                     alt="User Image Icon"
                     boxSize="50px"
                     marginBottom="2%"
-                    h="40px"
-                    w="40px"
+                    h="19px"
+                    w="20px"
                     borderRadius="100%"
                   />
                 </Link>
@@ -518,6 +580,7 @@ const WalletPage = () => {
                   marginTop="30px"
                   onClick={handleOpenFundWalletModal}
                   bg="white"
+                  _hover={{ backgroundColor: "blue.500", color: "white" }}
                 >
                   Fund wallet
                 </Button>
@@ -660,7 +723,11 @@ const WalletPage = () => {
       <BankTransferModal
         isOpen={showBankTransferModal}
         onClose={handleCloseBankTransferModal}
-        bankDetails={{ bankName: "XYZ Bank", accountNumber: "0123456789" }}
+        bankDetails={{
+          bankName: "XYZ Bank",
+          accountName: "Michael Joshua",
+          accountNumber: "0123456789",
+        }}
       />
       <OnlinePaymentModal
         isOpen={showOnlinePaymentModal}

@@ -89,6 +89,10 @@ const AppointmentPage = () => {
     navigate("/wallet");
   };
 
+  const handleOpenSettingsModal = () => {
+    navigate("/settings");
+  };
+
   const handleOpenLogoutModal = () => {
     setShowLogoutModal(true);
   };
@@ -106,7 +110,6 @@ const AppointmentPage = () => {
 
   const handleOpenDashboard = () => {
     navigate("/dashboard");
-    window.location.reload();
   };
 
   return (
@@ -122,9 +125,9 @@ const AppointmentPage = () => {
         />
 
         <VStack spacing={3} align="center" mt={5}>
-        <Flex marginTop="50px" alignItems="center">
+          <Flex marginTop="50px" alignItems="center">
             <Image
-               marginLeft="-40px"
+              marginLeft="-40px"
               w="20px"
               h="20px"
               src={HomeIcon}
@@ -132,7 +135,7 @@ const AppointmentPage = () => {
             />
 
             <Text
-               marginLeft="15px"
+              marginLeft="15px"
               color="black"
               onClick={() => {
                 handleOpenDashboard();
@@ -199,6 +202,7 @@ const AppointmentPage = () => {
             <Text
               marginLeft="15px"
               color="black"
+              onClick={handleOpenSettingsModal}
               style={{
                 cursor: "pointer",
               }}
@@ -260,7 +264,7 @@ const AppointmentPage = () => {
         backgroundColor="white"
         zIndex="1000"
       >
-        <Flex >
+        <Flex>
           <Text
             fontSize="28px"
             fontFamily="body"
@@ -270,14 +274,19 @@ const AppointmentPage = () => {
           >
             Appointments
           </Text>
-          <Flex marginLeft="600px">
+          <Flex
+            marginLeft="600px"
+            style={{
+              cursor: "pointer",
+            }}
+            _hover={{ color: "#A210C6" }}
+          >
             <Box marginTop="30px">
               <Image
                 src={NotificationIcon}
                 alt="Notificatio icon"
-                h="25px"
-                w="25px"
-                marginTop="10px"
+                h="26px"
+                w="30px"
                 marginBottom="10px"
               />
             </Box>
@@ -287,8 +296,8 @@ const AppointmentPage = () => {
                 <Link onClick={handleOpenUserDetailsModal}>
                   <Image
                     borderRadius="100px"
-                    h="40px"
-                    w="40px"
+                    h="29px"
+                    w="30px"
                     src={user?.image}
                     alt="User Image"
                   />
@@ -300,8 +309,8 @@ const AppointmentPage = () => {
                     alt="User Image Icon"
                     boxSize="50px"
                     marginBottom="2%"
-                    h="40px"
-                    w="40px"
+                    h="19px"
+                    w="20px"
                     borderRadius="100%"
                   />
                 </Link>
@@ -309,7 +318,6 @@ const AppointmentPage = () => {
             </Box>
           </Flex>
         </Flex>
-      
 
         <Flex
           marginTop="30px"
@@ -341,6 +349,7 @@ const AppointmentPage = () => {
                 bg="white"
                 color="#A210C6"
                 marginTop="30px"
+                _hover={{ backgroundColor: "blue.500", color: "white" }}
               >
                 Book appointment
               </Button>
@@ -350,6 +359,7 @@ const AppointmentPage = () => {
                 color="#A210C6"
                 marginLeft="5px"
                 marginTop="30px"
+                _hover={{ backgroundColor: "blue.500", color: "white" }}
               >
                 All appointments
               </Button>
@@ -457,7 +467,7 @@ const AppointmentPage = () => {
             </Box>
           </Box>
           <Box display="flex" marginTop="30px">
-            <Box bg="#F6E4FC"  w="34vw" h="15vh" borderRadius="10px">
+            <Box bg="#F6E4FC" w="34vw" h="15vh" borderRadius="10px">
               {" "}
               <Text
                 fontSize="20px"

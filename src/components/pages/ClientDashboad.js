@@ -61,7 +61,6 @@ const customTheme = extendTheme({
 
 const ClientDash = () => {
   const [loading, setLoading] = useState(false);
-  const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [isBeneficiariesModalOpen, setBeneficiariesModalOpen] = useState(false);
   const [showAppointmentModal, setShowAppointmentModal] = useState(false);
   const [showHelpModal, setShowHelpModal] = useState(false);
@@ -147,11 +146,7 @@ const ClientDash = () => {
   }, []);
 
   const handleOpenSettingsModal = () => {
-    setShowSettingsModal(true);
-  };
-
-  const handleCloseSettingsModal = () => {
-    setShowSettingsModal(false);
+    navigate("/settings");
   };
 
   const handleOpenWalletModal = () => {
@@ -566,12 +561,11 @@ const ClientDash = () => {
               <Flex marginLeft="50px">
                 <Box marginTop="30px">
                   <Image
-                    src={NotificationIcon}
-                    alt="Notificatio icon"
-                    h="25px"
-                    w="25px"
-                    marginTop="10px"
-                    marginBottom="10px"
+                   src={NotificationIcon}
+                   alt="Notificatio icon"
+                   h="26px"
+                   w="30px"
+                   marginBottom="10px"
                   />
                 </Box>
 
@@ -580,8 +574,8 @@ const ClientDash = () => {
                     <Link onClick={handleOpenUserDetailsModal}>
                       <Image
                         borderRadius="100px"
-                        h="40px"
-                        w="40px"
+                        h="29px"
+                        w="30px"
                         src={user?.image}
                         alt="User Image"
                       />
@@ -604,7 +598,7 @@ const ClientDash = () => {
 
               <Box
                 marginLeft="-85px"
-                marginTop="65px"
+                marginTop="75px"
                 borderRadius="10px"
                 h="40vh"
                 w="20vw"
@@ -709,10 +703,6 @@ const ClientDash = () => {
               </Box>
             </Box>
 
-            <SettingsModal
-              isOpen={showSettingsModal}
-              onClose={handleCloseSettingsModal}
-            />
             <BeneficiariesModal
               isOpen={isBeneficiariesModalOpen}
               onClose={() => setBeneficiariesModalOpen(false)}
