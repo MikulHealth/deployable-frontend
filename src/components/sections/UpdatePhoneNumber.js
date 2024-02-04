@@ -200,12 +200,13 @@ const SettingsModal = ({ isOpen, onClose }) => {
               the new phone number upon submission. You will also have to log in
               again after verifying the new phone number.
             </Text>
-            <FormControl>
+            <FormControl marginTop="15px">
               <Input
                 name="phoneNumber"
                 value={editedUser.phoneNumber}
                 onChange={handleInputChange}
                 placeholder="Phone Number"
+                borderColor="black"
               />
             </FormControl>
           </ModalBody>

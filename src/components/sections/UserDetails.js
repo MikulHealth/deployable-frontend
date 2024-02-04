@@ -54,7 +54,7 @@ const UserDetailsModal = ({ isOpen, onClose }) => {
   const [isEditModalOpen, setEditModalOpen] = useState(false);
 
   const handleEditClick = () => {
-    setEditModalOpen(true);
+    navigate("/edit-profile")
     onClose();
   };
 

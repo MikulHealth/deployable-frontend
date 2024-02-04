@@ -21,6 +21,8 @@ import PaymentConfirmationModal from "./components/sections/PaymentConfirmationM
 import WalletPage from "./components/sections/Wallet";
 import SettingsPage from "./components/pages/SettingsPage";
 import EdithProfilePage from "./components/pages/EdithProfilePage";
+import ChangePasswordPage from "./components/pages/ChangePasswordPage"
+import NotificationSettingsPage from "./components/pages/NotificationSettingsPage";
 
 function App() {
   return (
@@ -53,7 +55,9 @@ function App() {
           <Route path="/wallet" element={<WalletPage />} />
           <Route path="/appointment" element={<AppointmentPage />} />
           <Route path="/settings" element={<SettingsPage />} />
-          <Route path="/edit-prifile" element={<EdithProfilePage />} />
+          <Route path="/edit-profile" element={<EdithProfilePage />} />
+          <Route path="/change-password" element={<ChangePasswordPage />} />
+          <Route path="/notification-settings" element={<NotificationSettingsPage />} />
         </Routes>
       </BrowserRouter>
     </div>

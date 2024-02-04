@@ -174,6 +174,10 @@ const ClientDash = () => {
     setShowUserDetailsModal(false);
   };
 
+  const reloadPage = () => {
+    window.location.reload();
+  };
+  
   return (
     <ChakraProvider theme={customTheme}>
       <Flex overflowY="scroll" height="100vh">
@@ -185,6 +189,11 @@ const ClientDash = () => {
             h="60px"
             marginLeft="90px"
             marginTop="10px"
+            onClick={reloadPage}
+            style={{
+              cursor: "pointer",
+            }}
+            _hover={{ color: "" }}
           />
 
           <VStack spacing={3} align="center" mt={5}>
