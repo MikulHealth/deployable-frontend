@@ -57,6 +57,7 @@ import HelppIcon from "../../assets/HelppIcon.svg";
 import ColorArrowIcon from "../../assets/RightArrowColor.svg";
 import NotificationIconn from "../../assets/Notification.Icon.svg";
 import UpdatePhoneNumber from "../sections/UpdatePhoneNumber";
+import serviceIcon from "../../assets/ServiceIcon.svg";
 
 const EdithProfilePage = () => {
   const navigate = useNavigate();
@@ -384,7 +385,7 @@ const EdithProfilePage = () => {
           </Flex>
 
           <Flex alignItems="center" marginTop="30px" marginLeft="-60px">
-            <Image marginLeft="2px" w="20px" h="20px" src={Help} alt="Help" />
+            <Image marginLeft="13px" w="20px" h="20px" src={serviceIcon} alt="Help" />
             <Text
               marginLeft="15px"
               color="black"
@@ -395,11 +396,11 @@ const EdithProfilePage = () => {
               }}
               _hover={{ color: "#A210C6" }}
             >
-              Help
+              Service
             </Text>
           </Flex>
 
-          <Flex alignItems="center" marginTop="70px" marginLeft="-55px">
+          <Flex alignItems="center" marginTop="100px" marginLeft="-55px">
             <Image
               marginLeft="15px"
               w="20px"
@@ -425,7 +426,7 @@ const EdithProfilePage = () => {
           borderRight="2px solid #A210C6"
           height="113%"
           marginX={3}
-          marginTop="-615px"
+          marginTop="-590px"
         />
       </Box>
       <Box

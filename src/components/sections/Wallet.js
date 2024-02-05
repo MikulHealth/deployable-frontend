@@ -11,6 +11,7 @@ import PendingAppointmentModal from "../sections/PendingAppointments";
 import CanceledAppointmentsModal from "../sections/CanceledAppointments";
 import Help from "../../assets/Help.svg";
 import HelppIcon from "../../assets/HelppIcon.svg";
+import serviceIcon from "../../assets/ServiceIcon.svg";
 import { PhoneIcon, AddIcon, WarningIcon, SearchIcon } from "@chakra-ui/icons";
 import {
   ChakraProvider,
@@ -450,7 +451,7 @@ const WalletPage = () => {
           </Flex>
 
           <Flex alignItems="center" marginTop="30px" marginLeft="-60px">
-            <Image marginLeft="10px" w="20px" h="20px" src={Help} alt="Help" />
+            <Image marginLeft="13px" w="20px" h="20px" src={serviceIcon} alt="Help" />
             <Text
               marginLeft="15px"
               color="black"
@@ -461,7 +462,7 @@ const WalletPage = () => {
               _hover={{ color: "#A210C6" }}
               fontSize="18px"
             >
-              Help
+              Service
             </Text>
           </Flex>
 
@@ -491,7 +492,7 @@ const WalletPage = () => {
           borderRight="2px solid #A210C6"
           height="104%"
           marginX={3}
-          marginTop="-599px"
+          marginTop="-620px"
         />
       </Box>
       <Box

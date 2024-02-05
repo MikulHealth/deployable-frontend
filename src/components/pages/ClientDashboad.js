@@ -23,6 +23,7 @@ import Customer from "../../assets/UserSignUp.svg";
 import Shade from "../../assets/Shade.svg";
 import logo from "../../assets/LogoColoured.svg";
 import HelppIcon from "../../assets/HelppIcon.svg";
+import serviceIcon from "../../assets/ServiceIcon.svg";
 import Wallet from "../../assets/Wallet.svg";
 import Help from "../../assets/Help.svg";
 import SettingsIcon from "../../assets/SettingsIcon.svg";
@@ -284,7 +285,7 @@ const ClientDash = () => {
 
             <Flex alignItems="center" marginTop="30px" marginLeft="-46px">
               <Image
-                marginLeft="10px"
+                marginLeft="8px"
                 w="20px"
                 h="20px"
                 src={SettingsIcon}
@@ -308,10 +309,10 @@ const ClientDash = () => {
 
             <Flex alignItems="center" marginTop="30px" marginLeft="-60px">
               <Image
-                marginLeft="10px"
+                marginLeft="15px"
                 w="20px"
                 h="20px"
-                src={Help}
+                src={serviceIcon}
                 alt="Help"
               />
               <Text
@@ -324,7 +325,7 @@ const ClientDash = () => {
                 _hover={{ color: "#A210C6" }}
                 fontSize="18px"
               >
-                Help
+                Service
               </Text>
             </Flex>
 

@@ -11,6 +11,7 @@ import PendingAppointmentModal from "../sections/PendingAppointments";
 import CanceledAppointmentsModal from "../sections/CanceledAppointments";
 import RightArrow from "../../assets/RightArrow.svg";
 import Help from "../../assets/Help.svg";
+import serviceIcon from "../../assets/ServiceIcon.svg";
 
 import { PhoneIcon, AddIcon, WarningIcon, SearchIcon } from "@chakra-ui/icons";
 import {
@@ -369,7 +370,7 @@ const ChangePasswordPage = () => {
           </Flex>
 
           <Flex alignItems="center" marginTop="30px" marginLeft="-60px">
-            <Image marginLeft="5px" w="20px" h="20px" src={Help} alt="Help" />
+            <Image marginLeft="13px" w="20px" h="20px" src={serviceIcon} alt="Help" />
             <Text
               marginLeft="15px"
               color="black"
@@ -380,11 +381,11 @@ const ChangePasswordPage = () => {
               }}
               _hover={{ color: "#A210C6" }}
             >
-              Help
+              Service
             </Text>
           </Flex>
 
-          <Flex alignItems="center" marginTop="70px" marginLeft="-55px">
+          <Flex alignItems="center" marginTop="100px" marginLeft="-55px">
             <Image
               marginLeft="15px"
               w="20px"
@@ -410,7 +411,7 @@ const ChangePasswordPage = () => {
           borderRight="2px solid #A210C6"
           height="113%"
           marginX={3}
-          marginTop="-615px"
+          marginTop="-590px"
         />
       </Box>
       <Box
@@ -689,6 +690,10 @@ const ChangePasswordPage = () => {
           </Box>
         </Flex>
       </Box>
+      <UserDetailsModal
+        isOpen={showUserDetailsModal}
+        onClose={handleCloseUserDetailsModal}
+      />
     </ChakraProvider>
   );
 };

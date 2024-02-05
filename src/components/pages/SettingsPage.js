@@ -44,7 +44,7 @@ import ProfileIconWhite from "../../assets/ProfileIconWh.svg";
 import PasswordIcon from "../../assets/PasswordIcon.svg";
 import HelppIcon from "../../assets/HelppIcon.svg";
 import NotificationIconn from "../../assets/Notification.Icon.svg";
-
+import serviceIcon from "../../assets/ServiceIcon.svg";
 import SearchAppointmentsModal from "../sections/SearchAppointmentByDate";
 
 const SettingsPage = () => {
@@ -154,7 +154,7 @@ const SettingsPage = () => {
 
           <Flex
             alignItems="center"
-            marginTop="10px"
+            marginTop="20px"
             // bg="#A210C6"
             w="15vw"
             p={3}
@@ -181,7 +181,7 @@ const SettingsPage = () => {
             </Text>
           </Flex>
 
-          <Flex alignItems="center" marginTop="10px" marginLeft="-48px">
+          <Flex alignItems="center" marginTop="20px" marginLeft="-48px">
             <Image w="20px" h="20px" src={Wallet} alt="wallet" />
             <Text
               marginLeft="15px"
@@ -203,7 +203,7 @@ const SettingsPage = () => {
             w="15vw"
             p={3}
             borderRadius="md"
-            marginTop="30px"
+            marginTop="20px"
             marginLeft="28px"
           >
             <Image
@@ -227,23 +227,23 @@ const SettingsPage = () => {
             </Text>
           </Flex>
 
-          <Flex alignItems="center" marginTop="30px" marginLeft="-60px">
-            <Image marginLeft="2px" w="20px" h="20px" src={Help} alt="Help" />
+          <Flex alignItems="center" marginTop="20px" marginLeft="-60px">
+            <Image marginLeft="13px" w="20px" h="20px" src={serviceIcon} alt="Help" />
             <Text
               marginLeft="15px"
               color="black"
-              fontSize="16px"
+              fontSize="18px"
               onClick={handleOpenHelpModal}
               style={{
                 cursor: "pointer",
               }}
               _hover={{ color: "#A210C6" }}
             >
-              Help
+              Service
             </Text>
           </Flex>
 
-          <Flex alignItems="center" marginTop="70px" marginLeft="-55px">
+          <Flex alignItems="center" marginTop="100px" marginLeft="-55px">
             <Image
               marginLeft="15px"
               w="20px"
@@ -269,7 +269,7 @@ const SettingsPage = () => {
           borderRight="2px solid #A210C6"
           height="113%"
           marginX={3}
-          marginTop="-555px"
+          marginTop="-590px"
         />
       </Box>
       <Box
@@ -466,6 +466,10 @@ const SettingsPage = () => {
           </Box>
         </Box>
       </Box>
+      <UserDetailsModal
+        isOpen={showUserDetailsModal}
+        onClose={handleCloseUserDetailsModal}
+      />
     </ChakraProvider>
   );
 };

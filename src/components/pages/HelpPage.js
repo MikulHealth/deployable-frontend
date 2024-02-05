@@ -40,7 +40,7 @@ import UserDetailsModal from "../sections/UserDetails";
 import LoadingSpinner from "../../utils/Spiner";
 import Wallet from "../../assets/Wallet.svg";
 import logo from "../../assets/LogoColoured.svg";
-import SettingsIcon from "../../assets/SettingsIconWhite.svg";
+import SettingsIcon from "../../assets/SettingsIcon.svg";
 import LogoutIcon from "../../assets/Logout.svg";
 import AppointmentsIcon from "../../assets/AppointmentIcon.svg";
 import HomeIcon from "../../assets/HomeBlack.svg";
@@ -49,7 +49,7 @@ import ProfileIconWhite from "../../assets/ProfileIconWh.svg";
 import PasswordIcon from "../../assets/PasswordIcon.svg";
 import HelppIcon from "../../assets/HelppIcon.svg";
 import NotificationIconn from "../../assets/Notification.Icon.svg";
-
+import serviceIcon from "../../assets/ServiceIcon.svg";
 import SearchAppointmentsModal from "../sections/SearchAppointmentByDate";
 
 const HelpPage = () => {
@@ -81,6 +81,10 @@ const HelpPage = () => {
     navigate("/wallet");
   };
 
+  const handleOpenSettingsModal = () => {
+    navigate("/settings");
+  };
+
   const handleOpenLogoutModal = () => {
     setShowLogoutModal(true);
   };
@@ -100,19 +104,8 @@ const HelpPage = () => {
     navigate("/dashboard");
   };
 
-  const handleOpenEditProfileDashboard = () => {
-    navigate("/edit-profile");
-  };
-
   const handleOpenAppointmentsModal = () => {
     navigate("/appointment");
-  };
-  const handleChangePassowrdModal = () => {
-    navigate("/change-password");
-  };
-
-  const handleOpenNotificationssModal = () => {
-    navigate("/notification-settings");
   };
 
   return (
@@ -155,7 +148,7 @@ const HelpPage = () => {
 
           <Flex
             alignItems="center"
-            marginTop="10px"
+            marginTop="20px"
             // bg="#A210C6"
             w="15vw"
             p={3}
@@ -182,7 +175,7 @@ const HelpPage = () => {
             </Text>
           </Flex>
 
-          <Flex alignItems="center" marginTop="10px" marginLeft="-48px">
+          <Flex alignItems="center" marginTop="20px" marginLeft="-48px">
             <Image w="20px" h="20px" src={Wallet} alt="wallet" />
             <Text
               marginLeft="15px"
@@ -200,11 +193,11 @@ const HelpPage = () => {
 
           <Flex
             alignItems="center"
-            bg="#A210C6"
+          
             w="15vw"
             p={3}
             borderRadius="md"
-            marginTop="30px"
+            marginTop="20px"
             marginLeft="28px"
           >
             <Image
@@ -217,34 +210,38 @@ const HelpPage = () => {
             />
             <Text
               marginLeft="15px"
-              color="white"
+              color="black"
               fontSize="18px"
+              onClick={() => {
+                handleOpenSettingsModal();
+              }}
               style={{
                 cursor: "pointer",
               }}
-              _hover={{ color: "" }}
+              _hover={{ color: "#A210C6" }}
+             
             >
               Settings
             </Text>
           </Flex>
 
-          <Flex alignItems="center" marginTop="30px" marginLeft="-60px">
-            <Image marginLeft="2px" w="20px" h="20px" src={Help} alt="Help" />
+          <Flex alignItems="center" marginTop="20px" marginLeft="-60px">
+            <Image marginLeft="16px" w="20px" h="20px" src={serviceIcon} alt="Help" />
             <Text
               marginLeft="15px"
               color="black"
-              fontSize="16px"
+              fontSize="18px"
               onClick={handleOpenHelpModal}
               style={{
                 cursor: "pointer",
               }}
               _hover={{ color: "#A210C6" }}
             >
-              Help
+              Service
             </Text>
           </Flex>
 
-          <Flex alignItems="center" marginTop="70px" marginLeft="-55px">
+          <Flex alignItems="center" marginTop="100px" marginLeft="-55px">
             <Image
               marginLeft="15px"
               w="20px"
@@ -454,17 +451,46 @@ const HelpPage = () => {
                 Contact us
               </Text>
               <Text>
-                If you have any issues, our Mikul Customer Care agents are
-                always happy to help. You can reach us via:
+                If you have any issues, our Mikul Customer <br></br> Care agents
+                are always happy to help. <br></br>
               </Text>
+              <Text marginTop="50px">You can reach us via:</Text>
               <Text>Email: support@mikulhealth.com</Text>
               <Text>Phone: +2349160596636</Text>
             </Box>
 
-            <Box marginLeft="10px">
+            {/* <Box marginLeft="350px" marginTop="50px">
               <a href="https://example.com">
                 <Image src={WhatsAppIcon} alt="Logo" w="100px" h="100px" />
               </a>
+            </Box> */}
+
+            <Box marginLeft="350px" marginTop="50px">
+              <a href="https://wa.me/2347032579006">
+                <Image
+                  // onClick={help}
+                  src={WhatsAppIcon}
+                  alt="Logo"
+                  w="70px"
+                  h="70px"
+                  style={{
+                    cursor: "pointer",
+                    animation: "zoomInOut 2s infinite alternate",
+                  }}
+                />
+              </a>
+              <style>
+                {`
+          @keyframes zoomInOut {
+            0% {
+              transform: scale(1);
+            }
+            100% {
+              transform: scale(1.2);
+            }
+          }
+        `}
+              </style>
             </Box>
           </Box>
         </Flex>

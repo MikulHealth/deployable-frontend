@@ -979,7 +979,7 @@ const LandingPage = () => {
                 Join Mikul Health
               </Text>
             </a>
-            <a href="https://example.com">
+            <a href="https://wa.me/2347032579006">
               <Text
                 fontFamily="Montserrat"
                 color="white"
