@@ -267,7 +267,7 @@ const HelpPage = () => {
           borderRight="2px solid #A210C6"
           height="113%"
           marginX={3}
-          marginTop="-555px"
+          marginTop="-590px"
         />
       </Box>
       <Box
