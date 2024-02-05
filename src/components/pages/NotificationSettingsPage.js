@@ -181,7 +181,7 @@ const NotificationSettingsPage = () => {
             <Text
               marginLeft="15px"
               color="black"
-              fontSize="24px"
+              fontSize="18px"
               onClick={() => {
                 handleOpenDashboard();
               }}
@@ -203,7 +203,7 @@ const NotificationSettingsPage = () => {
             borderRadius="md"
           >
             <Image
-              marginLeft="15px"
+              marginLeft="25px"
               w="20px"
               h="20px"
               src={AppointmentsIcon}
@@ -211,7 +211,7 @@ const NotificationSettingsPage = () => {
             />
             <Text
               marginLeft="15px"
-              fontSize="24px"
+              fontSize="18px"
               color="black"
               onClick={handleOpenAppointmentsModal}
               style={{
@@ -228,7 +228,7 @@ const NotificationSettingsPage = () => {
             <Text
               marginLeft="15px"
               color="black"
-              fontSize="24px"
+              fontSize="18px"
               onClick={handleOpenWalletModal}
               style={{
                 cursor: "pointer",
@@ -249,7 +249,7 @@ const NotificationSettingsPage = () => {
             marginLeft="28px"
           >
             <Image
-              marginLeft="1px"
+              marginLeft="10px"
               w="20px"
               fontSize="24px"
               h="20px"
@@ -259,7 +259,7 @@ const NotificationSettingsPage = () => {
             <Text
               marginLeft="15px"
               color="white"
-              fontSize="24px"
+              fontSize="18px"
               style={{
                 cursor: "pointer",
               }}
@@ -271,11 +271,11 @@ const NotificationSettingsPage = () => {
           </Flex>
 
           <Flex alignItems="center" marginTop="30px" marginLeft="-60px">
-            <Image marginLeft="10px" w="20px" h="20px" src={Help} alt="Help" />
+            <Image marginLeft="2px" w="20px" h="20px" src={Help} alt="Help" />
             <Text
               marginLeft="15px"
               color="black"
-              fontSize="24px"
+              fontSize="18px"
               onClick={handleOpenHelpModal}
               style={{
                 cursor: "pointer",
@@ -288,7 +288,7 @@ const NotificationSettingsPage = () => {
 
           <Flex alignItems="center" marginTop="70px" marginLeft="-55px">
             <Image
-              marginLeft="10px"
+              marginLeft="15px"
               w="20px"
               h="20px"
               src={LogoutIcon}
@@ -296,7 +296,7 @@ const NotificationSettingsPage = () => {
             />
             <Text
               onClick={handleOpenLogoutModal}
-              fontSize="24px"
+              fontSize="18px"
               marginLeft="15px"
               color="black"
               style={{

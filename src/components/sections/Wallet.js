@@ -10,7 +10,7 @@ import AllAppointments from "../sections/AllAppointments";
 import PendingAppointmentModal from "../sections/PendingAppointments";
 import CanceledAppointmentsModal from "../sections/CanceledAppointments";
 import Help from "../../assets/Help.svg";
-
+import HelppIcon from "../../assets/HelppIcon.svg";
 import { PhoneIcon, AddIcon, WarningIcon, SearchIcon } from "@chakra-ui/icons";
 import {
   ChakraProvider,
@@ -305,6 +305,11 @@ const WalletPage = () => {
     navigate("/appointment");
   };
 
+  const help = () => {
+    navigate("/help");
+  };
+
+
   const handleCloseOnlinePaymentModal = () => {
     setShowOnlinePaymentModal(false);
   };
@@ -362,6 +367,7 @@ const WalletPage = () => {
                 cursor: "pointer",
               }}
               _hover={{ color: "#A210C6" }}
+              fontSize="18px"
             >
               Home
             </Text>
@@ -383,6 +389,7 @@ const WalletPage = () => {
                 cursor: "pointer",
               }}
               _hover={{ color: "#A210C6" }}
+              fontSize="18px"
             >
               Appointments
             </Text>
@@ -412,6 +419,7 @@ const WalletPage = () => {
                 cursor: "pointer",
               }}
               _hover={{ color: "white" }}
+              fontSize="18px"
             >
               Wallet
             </Text>
@@ -435,6 +443,7 @@ const WalletPage = () => {
                 cursor: "pointer",
               }}
               _hover={{ color: "#A210C6" }}
+              fontSize="18px"
             >
               Settings
             </Text>
@@ -450,6 +459,7 @@ const WalletPage = () => {
                 cursor: "pointer",
               }}
               _hover={{ color: "#A210C6" }}
+              fontSize="18px"
             >
               Help
             </Text>
@@ -471,6 +481,7 @@ const WalletPage = () => {
                 cursor: "pointer",
               }}
               _hover={{ color: "#A210C6" }}
+              fontSize="18px"
             >
               Logout
             </Text>
@@ -546,9 +557,34 @@ const WalletPage = () => {
             </Box>
           </Flex>
         </Flex>
+        <Box marginLeft="900px" marginTop="10px" >
+                <Image
+                onClick={help}
+                  src={HelppIcon}
+                  alt="Logo"
+                  w="70px"
+                  h="70px"
+                  style={{
+                    cursor: "pointer",
+                    animation: "zoomInOut 2s infinite alternate", 
+                  }}
+                />
 
+                <style>
+                  {`
+          @keyframes zoomInOut {
+            0% {
+              transform: scale(1);
+            }
+            100% {
+              transform: scale(1.2);
+            }
+          }
+        `}
+                </style>
+              </Box>
         <Box
-          marginTop="95px"
+          marginTop="50px"
           marginLeft="15px"
           bg="#A210C6"
           w="70vw"

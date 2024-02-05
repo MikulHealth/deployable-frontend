@@ -38,6 +38,7 @@ import LogoutIcon from "../../assets/Logout.svg";
 import AppointmentsIcon from "../../assets/AppointmentWhite.svg";
 import HomeIcon from "../../assets/HomeBlack.svg";
 import SearchAppointmentsModal from "../sections/SearchAppointmentByDate";
+import HelppIcon from "../../assets/HelppIcon.svg";
 
 const AppointmentPage = () => {
   const navigate = useNavigate();
@@ -87,6 +88,10 @@ const AppointmentPage = () => {
 
   const handleOpenWalletModal = () => {
     navigate("/wallet");
+  };
+
+  const help = () => {
+    navigate("/help");
   };
 
   const handleOpenSettingsModal = () => {
@@ -144,6 +149,7 @@ const AppointmentPage = () => {
                 cursor: "pointer",
               }}
               _hover={{ color: "#A210C6" }}
+              fontSize="18px"
             >
               Home
             </Text>
@@ -171,6 +177,7 @@ const AppointmentPage = () => {
                 cursor: "pointer",
               }}
               _hover={{ color: "" }}
+              fontSize="18px"
             >
               Appointments
             </Text>
@@ -186,6 +193,7 @@ const AppointmentPage = () => {
                 cursor: "pointer",
               }}
               _hover={{ color: "#A210C6" }}
+              fontSize="18px"
             >
               Wallet
             </Text>
@@ -207,6 +215,7 @@ const AppointmentPage = () => {
                 cursor: "pointer",
               }}
               _hover={{ color: "#A210C6" }}
+              fontSize="18px"
             >
               Settings
             </Text>
@@ -222,6 +231,7 @@ const AppointmentPage = () => {
                 cursor: "pointer",
               }}
               _hover={{ color: "#A210C6" }}
+              fontSize="18px"
             >
               Help
             </Text>
@@ -243,6 +253,7 @@ const AppointmentPage = () => {
                 cursor: "pointer",
               }}
               _hover={{ color: "#A210C6" }}
+              fontSize="18px"
             >
               Logout
             </Text>
@@ -318,9 +329,35 @@ const AppointmentPage = () => {
             </Box>
           </Flex>
         </Flex>
+        <Box marginLeft="900px" marginTop="10px" >
+                <Image
+                onClick={help}
+                  src={HelppIcon}
+                  alt="Logo"
+                  w="70px"
+                  h="70px"
+                  style={{
+                    cursor: "pointer",
+                    animation: "zoomInOut 2s infinite alternate", 
+                  }}
+                />
+
+                <style>
+                  {`
+          @keyframes zoomInOut {
+            0% {
+              transform: scale(1);
+            }
+            100% {
+              transform: scale(1.2);
+            }
+          }
+        `}
+                </style>
+              </Box>
 
         <Flex
-          marginTop="30px"
+          marginTop="10px"
           marginLeft="15px"
           bg="#A210C6"
           w="70vw"
@@ -403,7 +440,7 @@ const AppointmentPage = () => {
           </Flex>
         </Box>
         <Box marginLeft="15px">
-          <Box display="flex" marginTop="30px">
+          <Box display="flex" marginTop="10px">
             <Box
               bg="#F6E4FC"
               w="34vw"
@@ -466,7 +503,7 @@ const AppointmentPage = () => {
               </Text>
             </Box>
           </Box>
-          <Box display="flex" marginTop="30px">
+          <Box display="flex" marginTop="10px">
             <Box bg="#F6E4FC" w="34vw" h="15vh" borderRadius="10px">
               {" "}
               <Text

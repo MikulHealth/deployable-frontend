@@ -22,6 +22,7 @@ import "aos/dist/aos.css";
 import Customer from "../../assets/UserSignUp.svg";
 import Shade from "../../assets/Shade.svg";
 import logo from "../../assets/LogoColoured.svg";
+import HelppIcon from "../../assets/HelppIcon.svg";
 import Wallet from "../../assets/Wallet.svg";
 import Help from "../../assets/Help.svg";
 import SettingsIcon from "../../assets/SettingsIcon.svg";
@@ -76,6 +77,10 @@ const ClientDash = () => {
   const [showServicesModal, setShowServicesModal] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [showSkeleton, setShowSkeleton] = useState(true);
+
+  useEffect(() => {
+    AOS.init();
+  }, []);
 
   const userDetails = async () => {
     try {
@@ -153,6 +158,10 @@ const ClientDash = () => {
     navigate("/wallet");
   };
 
+  const help = () => {
+    navigate("/help");
+  };
+
   const handleOpenDashboard = () => {
     navigate("/dashboard");
     // window.location.reload();
@@ -177,7 +186,7 @@ const ClientDash = () => {
   const reloadPage = () => {
     window.location.reload();
   };
-  
+
   return (
     <ChakraProvider theme={customTheme}>
       <Flex overflowY="scroll" height="100vh">
@@ -222,6 +231,7 @@ const ClientDash = () => {
                 _hover={{ color: "white" }}
                 marginLeft="15px"
                 color="white"
+                fontSize="18px"
               >
                 Home
               </Text>
@@ -244,6 +254,7 @@ const ClientDash = () => {
                   cursor: "pointer",
                 }}
                 _hover={{ color: "#A210C6" }}
+                fontSize="18px"
               >
                 Appointments
               </Text>
@@ -265,6 +276,7 @@ const ClientDash = () => {
                   cursor: "pointer",
                 }}
                 _hover={{ color: "#A210C6" }}
+                fontSize="18px"
               >
                 Wallet
               </Text>
@@ -288,6 +300,7 @@ const ClientDash = () => {
                   cursor: "pointer",
                 }}
                 _hover={{ color: "#A210C6" }}
+                fontSize="18px"
               >
                 Settings
               </Text>
@@ -309,6 +322,7 @@ const ClientDash = () => {
                   cursor: "pointer",
                 }}
                 _hover={{ color: "#A210C6" }}
+                fontSize="18px"
               >
                 Help
               </Text>
@@ -330,6 +344,7 @@ const ClientDash = () => {
                   cursor: "pointer",
                 }}
                 _hover={{ color: "#A210C6" }}
+                fontSize="18px"
               >
                 Logout
               </Text>
@@ -339,7 +354,7 @@ const ClientDash = () => {
             borderRight="2px solid #A210C6"
             height="104%"
             marginX={3}
-            marginTop="-599px"
+            marginTop="-620px"
           />
         </Box>
         {showSkeleton ? (
@@ -570,11 +585,11 @@ const ClientDash = () => {
               <Flex marginLeft="50px">
                 <Box marginTop="30px">
                   <Image
-                   src={NotificationIcon}
-                   alt="Notificatio icon"
-                   h="26px"
-                   w="30px"
-                   marginBottom="10px"
+                    src={NotificationIcon}
+                    alt="Notificatio icon"
+                    h="26px"
+                    w="30px"
+                    marginBottom="10px"
                   />
                 </Box>
 
@@ -709,6 +724,32 @@ const ClientDash = () => {
                     Read more
                   </Text>
                 </Box>
+              </Box>
+              <Box marginLeft="140px" marginTop="-330px">
+                <Image
+                onClick={help}
+                  src={HelppIcon}
+                  alt="Logo"
+                  w="70px"
+                  h="70px"
+                  style={{
+                    cursor: "pointer",
+                    animation: "zoomInOut 2s infinite alternate", // 2 seconds duration, infinite loop
+                  }}
+                />
+
+                <style>
+                  {`
+          @keyframes zoomInOut {
+            0% {
+              transform: scale(1);
+            }
+            100% {
+              transform: scale(1.2);
+            }
+          }
+        `}
+                </style>
               </Box>
             </Box>
 

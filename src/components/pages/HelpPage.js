@@ -11,7 +11,7 @@ import PendingAppointmentModal from "../sections/PendingAppointments";
 import CanceledAppointmentsModal from "../sections/CanceledAppointments";
 import RightArrow from "../../assets/RightArrow.svg";
 import Help from "../../assets/Help.svg";
-
+import WhatsAppIcon from "../../assets/WhatsApp.svg";
 import { PhoneIcon, AddIcon, WarningIcon, SearchIcon } from "@chakra-ui/icons";
 import {
   ChakraProvider,
@@ -24,6 +24,11 @@ import {
   Text,
   Flex,
   Link,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
   Divider,
   FormControl,
   FormLabel,
@@ -47,7 +52,7 @@ import NotificationIconn from "../../assets/Notification.Icon.svg";
 
 import SearchAppointmentsModal from "../sections/SearchAppointmentByDate";
 
-const SettingsPage = () => {
+const HelpPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const toast = useToast();
@@ -74,10 +79,6 @@ const SettingsPage = () => {
 
   const handleOpenWalletModal = () => {
     navigate("/wallet");
-  };
-
-  const help = () => {
-    navigate("/help");
   };
 
   const handleOpenLogoutModal = () => {
@@ -289,7 +290,7 @@ const SettingsPage = () => {
             marginLeft="60px"
             marginTop="30px"
           >
-            Settings
+            Help
           </Text>
           <Flex
             marginLeft="650px"
@@ -335,138 +336,140 @@ const SettingsPage = () => {
             </Box>
           </Flex>
         </Flex>
-        <Box marginLeft="900px" marginTop="10px">
-          <Image
-            onClick={help}
-            src={HelppIcon}
-            alt="Logo"
-            w="70px"
-            h="70px"
-            style={{
-              cursor: "pointer",
-              animation: "zoomInOut 2s infinite alternate",
-            }}
-          />
+        <Flex>
+          <Box>
+            <Box marginLeft="540px">
+              <Text marginLeft="-745px" color="#A210C6" fontSize="24px">
+                Frequently Asked Questions
+              </Text>
+              <Text fontSize="16px" marginLeft="-763px">
+                Click on a question to see more details
+              </Text>
+            </Box>
+            <Box>
+              <Accordion
+                allowToggle
+                w="520px"
+                data-aos="fade-down"
+                data-aos-duration="10000"
+              >
+                <AccordionItem
+                  p={-8}
+                  my={5}
+                  fontSize="24px"
+                  className="custom-accordion-item"
+                >
+                  <h2>
+                    <AccordionButton>
+                      <Box as="span" flex="1" textAlign="left" fontSize="21px">
+                        How do I add my loved ones as beneficiaries?
+                      </Box>
+                      <AccordionIcon />
+                    </AccordionButton>
+                  </h2>
+                  <AccordionPanel className="custom-accordion-panel">
+                    Upon a successful registeration, you can request and get
+                    matched to a medic to recieve care by booking any of the
+                    services we offer from your dashboard.
+                  </AccordionPanel>
+                </AccordionItem>
 
-          <style>
-            {`
-          @keyframes zoomInOut {
-            0% {
-              transform: scale(1);
-            }
-            100% {
-              transform: scale(1.2);
-            }
-          }
-        `}
-          </style>
-        </Box>
-        <Box marginTop="-80px" width="25%" p={3} h="80vh">
-          <Text marginLeft="-160px" fontSize="24px">
-            Account
-          </Text>
+                <AccordionItem
+                  p={-8}
+                  my={5}
+                  fontSize="24px"
+                  className="custom-accordion-item"
+                >
+                  <h2>
+                    <AccordionButton>
+                      <Box as="span" flex="1" textAlign="left" fontSize="21px">
+                        I entered the wrong details while booking my
+                        appointment. How do I change it?
+                      </Box>
+                      <AccordionIcon />
+                    </AccordionButton>
+                  </h2>
+                  <AccordionPanel
+                    className="custom-accordion-panel"
+                    style={{ whiteSpace: "pre-line" }}
+                  >
+                    To ensure you are safe while you receive care from any
+                    Mikul&nbsp;Health care provider, we make sure our caregivers
+                    are vetted and their background checked. We also have an
+                    insurance policy for any theft and damages during the course
+                    of our service.
+                  </AccordionPanel>
+                </AccordionItem>
 
-          <Box>
-            <Flex
-              marginTop="25px"
-              style={{
-                cursor: "pointer",
-              }}
-              _hover={{ color: "#A210C6" }}
-              onClick={handleOpenEditProfileDashboard}
-            >
-              <Image
-                src={ProfileIcon}
-                alt="Profile Icon"
-                boxSize="50px"
-                marginBottom="2%"
-                h="50px"
-                w="50px"
-                borderRadius="100%"
-              />
-              <Text fontSize="20px" marginLeft="5px" marginTop="10px">
-                Profile
-              </Text>
-              <Image
-                marginLeft="135px"
-                marginTop="20px"
-                w="10px"
-                h="15px"
-                src={RightArrow}
-                alt="right arrow"
-              />
-            </Flex>
-            <Divider my={1} borderColor="black.500" />
+                <AccordionItem
+                  p={-8}
+                  my={5}
+                  fontSize="24px"
+                  className="custom-accordion-item"
+                >
+                  <h2>
+                    <AccordionButton>
+                      <Box as="span" flex="1" textAlign="left" fontSize="21px">
+                        I would like to book multiple services at the same time.
+                        How do I do that?
+                      </Box>
+                      <AccordionIcon />
+                    </AccordionButton>
+                  </h2>
+                  <AccordionPanel className="custom-accordion-panel">
+                    Yes you can have a replacement when asigned a caregiver that
+                    you do not like. We can provide a replace within 72 hours
+                    upon your request for a replacement.
+                  </AccordionPanel>
+                </AccordionItem>
+
+                <AccordionItem
+                  p={-8}
+                  my={5}
+                  fontSize="24px"
+                  className="custom-accordion-item"
+                >
+                  <h2>
+                    <AccordionButton>
+                      <Box as="span" flex="1" textAlign="left" fontSize="21px">
+                        I am no longer interested in using this service. How can
+                        I cancel?
+                      </Box>
+                      <AccordionIcon />
+                    </AccordionButton>
+                  </h2>
+                  <AccordionPanel className="custom-accordion-panel">
+                    Yes, aside our standadized service plans. We also have
+                    provision for customizing a service plan that would best
+                    suit you or your loved according to the peculiarity of the
+                    care needs.
+                  </AccordionPanel>
+                </AccordionItem>
+              </Accordion>
+            </Box>
           </Box>
           <Box>
-            {" "}
-            <Flex
-              marginTop="25px"
-              style={{
-                cursor: "pointer",
-              }}
-              _hover={{ color: "#A210C6" }}
-              onClick={handleChangePassowrdModal}
-            >
-              <Image
-                src={PasswordIcon}
-                alt="Password Icon"
-                boxSize="50px"
-                marginBottom="2%"
-                h="50px"
-                w="50px"
-                borderRadius="100%"
-              />
-              <Text fontSize="20px" marginLeft="5px" marginTop="10px">
-                Change password
+            <Box>
+              <Text color="#A210C6" fontSize="24px">
+                Contact us
               </Text>
-              <Image
-                marginLeft="32px"
-                marginTop="20px"
-                w="10px"
-                h="15px"
-                src={RightArrow}
-                alt="right arrow"
-              />
-            </Flex>
-            <Divider my={1} borderColor="black.500" />{" "}
-          </Box>
-          <Box>
-            {" "}
-            <Flex
-              marginTop="25px"
-              style={{
-                cursor: "pointer",
-              }}
-              _hover={{ color: "#A210C6" }}
-              onClick={handleOpenNotificationssModal}
-            >
-              <Image
-                src={NotificationIconn}
-                alt="Notification Icon"
-                boxSize="50px"
-                marginBottom="2%"
-                h="50px"
-                w="50px"
-                borderRadius="100%"
-              />
-              <Text fontSize="20px" marginLeft="5px" marginTop="10px">
-                Notification Settings
+              <Text>
+                If you have any issues, our Mikul Customer Care agents are
+                always happy to help. You can reach us via:
               </Text>
-              <Image
-                marginLeft="10px"
-                marginTop="20px"
-                w="10px"
-                h="15px"
-                src={RightArrow}
-                alt="right arrow"
-              />
-            </Flex>
-            <Divider my={1} borderColor="black.500" />{" "}
+              <Text>Email: support@mikulhealth.com</Text>
+              <Text>Phone: +2349160596636</Text>
+            </Box>
+
+            <Box marginLeft="10px">
+              <a href="https://example.com">
+                <Image src={WhatsAppIcon} alt="Logo" w="100px" h="100px" />
+              </a>
+            </Box>
           </Box>
-        </Box>
+        </Flex>
       </Box>
     </ChakraProvider>
   );
 };
-export default SettingsPage;
+export default HelpPage;

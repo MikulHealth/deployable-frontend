@@ -149,21 +149,110 @@ const ChangePasswordPage = () => {
     navigate("/notification-settings");
   };
 
-  const handleSaveChanges = () => {
-    // Validate passwords and make API call if valid
-    if (newPassword !== confirmPassword) {
-      // Show an error toast or handle validation error
+
+  const validate = (values) => {
+    let errors = {};
+  
+    if (!values.oldPassword) errors.oldPassword = "*Required";
+  
+    if (!values.newPassword) errors.newPassword = "*Required";
+    else if (
+      !/(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,}/.test(
+        values.newPassword
+      )
+    )
+      errors.newPassword =
+        "Password must contain at least one uppercase letter, one number, one special character, and be at least 8 characters long";
+  
+    if (!values.confirmPassword) errors.confirmPassword = "*Required";
+    else if (
+      !/(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,}/.test(
+        values.confirmPassword
+      )
+    )
+      errors.confirmPassword =
+        "Password must contain at least one uppercase letter, one number, one special character, and be at least 8 characters long";
+  
+    if (values.newPassword !== values.confirmPassword)
+      errors.confirmPassword = "Password do not match";
+  
+    return errors;
+  };
+
+
+  const handleSaveChanges = async () => {
+    // Validate passwords
+    const validationErrors = validate({ oldPassword, newPassword, confirmPassword });
+
+    if (Object.keys(validationErrors).length > 0) {
+      // Display validation errors using toast messages
+      Object.values(validationErrors).forEach((error) => {
+        toast({
+          title: "Validation Error",
+          description: error,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      });
       return;
     }
 
-    // Make an API call to update the password
-    // Your API call logic goes here
+    // API call to update the password
+    const token = localStorage.getItem("token");
+
+    try {
+      const response = await fetch("http://localhost:8080/v1/angel/change-password", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          oldPassword,
+          newPassword,
+          confirmPassword,
+        }),
+      });
+
+      const responseData = await response.json(); // Parse the response JSON
+
+      if (response.ok && responseData.success) {
+        toast({
+          title: "Password Updated",
+          description: response.message,
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
+      } else {
+        console.error("API error:", responseData.message);
+        toast({
+          title: "Password reset failed",
+          description: responseData.message,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      }
+    } catch (error) {
+      console.error("Network error:", error.message);
+      toast({
+        title: "Network Error",
+        description: error.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
 
     // Reset the form fields after saving changes
-    setOldPassword("");
-    setNewPassword("");
-    setConfirmPassword("");
-  };
+    // setOldPassword("");
+    // setNewPassword("");
+    // setConfirmPassword("");
+};
+
+
 
   return (
     <ChakraProvider>
@@ -190,7 +279,7 @@ const ChangePasswordPage = () => {
             <Text
               marginLeft="15px"
               color="black"
-              fontSize="24px"
+              fontSize="18px"
               onClick={() => {
                 handleOpenDashboard();
               }}
@@ -212,7 +301,7 @@ const ChangePasswordPage = () => {
             borderRadius="md"
           >
             <Image
-              marginLeft="15px"
+              marginLeft="25px"
               w="20px"
               h="20px"
               src={AppointmentsIcon}
@@ -220,7 +309,7 @@ const ChangePasswordPage = () => {
             />
             <Text
               marginLeft="15px"
-              fontSize="24px"
+              fontSize="18px"
               color="black"
               onClick={handleOpenAppointmentsModal}
               style={{
@@ -237,7 +326,7 @@ const ChangePasswordPage = () => {
             <Text
               marginLeft="15px"
               color="black"
-              fontSize="24px"
+              fontSize="18px"
               onClick={handleOpenWalletModal}
               style={{
                 cursor: "pointer",
@@ -258,7 +347,7 @@ const ChangePasswordPage = () => {
             marginLeft="28px"
           >
             <Image
-              marginLeft="1px"
+              marginLeft="10px"
               w="20px"
               fontSize="24px"
               h="20px"
@@ -268,7 +357,7 @@ const ChangePasswordPage = () => {
             <Text
               marginLeft="15px"
               color="white"
-              fontSize="24px"
+              fontSize="18px"
               style={{
                 cursor: "pointer",
               }}
@@ -280,11 +369,11 @@ const ChangePasswordPage = () => {
           </Flex>
 
           <Flex alignItems="center" marginTop="30px" marginLeft="-60px">
-            <Image marginLeft="10px" w="20px" h="20px" src={Help} alt="Help" />
+            <Image marginLeft="5px" w="20px" h="20px" src={Help} alt="Help" />
             <Text
               marginLeft="15px"
               color="black"
-              fontSize="24px"
+              fontSize="18px"
               onClick={handleOpenHelpModal}
               style={{
                 cursor: "pointer",
@@ -297,7 +386,7 @@ const ChangePasswordPage = () => {
 
           <Flex alignItems="center" marginTop="70px" marginLeft="-55px">
             <Image
-              marginLeft="10px"
+              marginLeft="15px"
               w="20px"
               h="20px"
               src={LogoutIcon}
@@ -305,7 +394,7 @@ const ChangePasswordPage = () => {
             />
             <Text
               onClick={handleOpenLogoutModal}
-              fontSize="24px"
+              fontSize="18px"
               marginLeft="15px"
               color="black"
               style={{
