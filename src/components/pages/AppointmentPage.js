@@ -99,6 +99,10 @@ const AppointmentPage = () => {
     navigate("/settings");
   };
 
+  const Services = () => {
+    navigate("/services");
+  };
+
   const handleOpenLogoutModal = () => {
     setShowLogoutModal(true);
   };
@@ -200,6 +204,23 @@ const AppointmentPage = () => {
             </Text>
           </Flex>
 
+          
+          <Flex alignItems="center" marginTop="30px" marginLeft="-60px">
+            <Image marginLeft="13px" w="20px" h="20px" src={serviceIcon} alt="Help" />
+            <Text
+              marginLeft="15px"
+              color="black"
+              onClick={Services}
+              style={{
+                cursor: "pointer",
+              }}
+              _hover={{ color: "#A210C6" }}
+              fontSize="18px"
+            >
+              Service
+            </Text>
+          </Flex>
+
           <Flex alignItems="center" marginTop="30px" marginLeft="-46px">
             <Image
               marginLeft="10px"
@@ -222,21 +243,6 @@ const AppointmentPage = () => {
             </Text>
           </Flex>
 
-          <Flex alignItems="center" marginTop="30px" marginLeft="-60px">
-            <Image marginLeft="13px" w="20px" h="20px" src={serviceIcon} alt="Help" />
-            <Text
-              marginLeft="15px"
-              color="black"
-              onClick={handleOpenHelpModal}
-              style={{
-                cursor: "pointer",
-              }}
-              _hover={{ color: "#A210C6" }}
-              fontSize="18px"
-            >
-              Service
-            </Text>
-          </Flex>
 
           <Flex alignItems="center" marginTop="100px" marginLeft="-55px">
             <Image

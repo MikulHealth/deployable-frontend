@@ -24,6 +24,8 @@ import EdithProfilePage from "./components/pages/EdithProfilePage";
 import ChangePasswordPage from "./components/pages/ChangePasswordPage"
 import NotificationSettingsPage from "./components/pages/NotificationSettingsPage";
 import HelpPage from "./components/pages/HelpPage";
+import ServicePage from "./components/pages/ServicePage";
+
 
 function App() {
   return (
@@ -60,6 +62,7 @@ function App() {
           <Route path="/change-password" element={<ChangePasswordPage />} />
           <Route path="/notification-settings" element={<NotificationSettingsPage />} />
           <Route path="/help" element={<HelpPage />} />
+          <Route path="/services" element={<ServicePage />} />
         </Routes>
       </BrowserRouter>
     </div>

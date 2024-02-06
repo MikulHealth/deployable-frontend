@@ -157,6 +157,15 @@ const NotificationSettingsPage = () => {
     navigate("/change-password");
   };
 
+  const help = () => {
+    navigate("/help");
+  };
+
+  const Services = () => {
+    navigate("/services");
+  };
+
+
   return (
     <ChakraProvider>
       <Box width="25%" p={3} h="90vh">
@@ -240,6 +249,22 @@ const NotificationSettingsPage = () => {
             </Text>
           </Flex>
 
+          <Flex alignItems="center" marginTop="30px" marginLeft="-60px">
+            <Image marginLeft="13px" w="20px" h="20px" src={serviceIcon} alt="Help" />
+            <Text
+              marginLeft="15px"
+              color="black"
+              fontSize="18px"
+              onClick={Services}
+              style={{
+                cursor: "pointer",
+              }}
+              _hover={{ color: "#A210C6" }}
+            >
+              Service
+            </Text>
+          </Flex>
+
           <Flex
             alignItems="center"
             bg="#A210C6"
@@ -271,21 +296,7 @@ const NotificationSettingsPage = () => {
             </Text>
           </Flex>
 
-          <Flex alignItems="center" marginTop="30px" marginLeft="-60px">
-            <Image marginLeft="13px" w="20px" h="20px" src={serviceIcon} alt="Help" />
-            <Text
-              marginLeft="15px"
-              color="black"
-              fontSize="18px"
-              onClick={handleOpenHelpModal}
-              style={{
-                cursor: "pointer",
-              }}
-              _hover={{ color: "#A210C6" }}
-            >
-              Service
-            </Text>
-          </Flex>
+  
 
           <Flex alignItems="center" marginTop="100px" marginLeft="-55px">
             <Image
@@ -498,6 +509,39 @@ const NotificationSettingsPage = () => {
               </Flex>
               <Divider my={1} borderColor="black.500" />{" "}
             </Box>
+            <Box>
+            {" "}
+            <Flex
+              marginTop="25px"
+              style={{
+                cursor: "pointer",
+              }}
+              _hover={{ color: "#A210C6" }}
+              onClick={help}
+            >
+              <Image
+                src={Help}
+                alt="Notification Icon"
+                boxSize="50px"
+                marginBottom="2%"
+                h="50px"
+                w="50px"
+                borderRadius="100%"
+              />
+              <Text fontSize="20px" marginLeft="5px" marginTop="10px">
+                Help
+              </Text>
+              <Image
+                marginLeft="145px"
+                marginTop="20px"
+                w="10px"
+                h="15px"
+                src={RightArrow}
+                alt="right arrow"
+              />
+            </Flex>
+            <Divider my={1} borderColor="black.500" />{" "}
+          </Box>
           </Box>
           <Box
             marginTop="10px"

@@ -11,7 +11,13 @@ import PendingAppointmentModal from "../sections/PendingAppointments";
 import CanceledAppointmentsModal from "../sections/CanceledAppointments";
 import RightArrow from "../../assets/RightArrow.svg";
 import Help from "../../assets/Help.svg";
-import WhatsAppIcon from "../../assets/WhatsApp.svg";
+
+import ElderlyCareModal from "../sections/ElderlyCareModal";
+import PostpartumCareModal from "../sections/PostpartumCareModal";
+import RecoveryCareModal from "../sections/RecoveryCareModal";
+import NannyCareModal from "../sections/NannyCareModal";
+import ShortNurseVisitModal from "../sections/ShortNurseVisitModal";
+
 import { PhoneIcon, AddIcon, WarningIcon, SearchIcon } from "@chakra-ui/icons";
 import {
   ChakraProvider,
@@ -24,11 +30,6 @@ import {
   Text,
   Flex,
   Link,
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
   Divider,
   FormControl,
   FormLabel,
@@ -49,10 +50,10 @@ import ProfileIconWhite from "../../assets/ProfileIconWh.svg";
 import PasswordIcon from "../../assets/PasswordIcon.svg";
 import HelppIcon from "../../assets/HelppIcon.svg";
 import NotificationIconn from "../../assets/Notification.Icon.svg";
-import serviceIcon from "../../assets/ServiceIcon.svg";
+import serviceIcon from "../../assets/WhiteServiceIcon.svg";
 import SearchAppointmentsModal from "../sections/SearchAppointmentByDate";
 
-const HelpPage = () => {
+const ServicePage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const toast = useToast();
@@ -63,6 +64,37 @@ const HelpPage = () => {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [showWalletModal, setShowWalletModal] = useState(false);
 
+  const [showElderlyCareModal, setShowElderlyCareModal] = useState(false);
+  const [showPostpartumCareModal, setShowPostpartumCareModal] = useState(false);
+  const [showRecoveryCareModal, setShowRecoveryCareModal] = useState(false);
+  const [showNannyCareModal, setShowNannyCareModal] = useState(false);
+  const [showShortCareModal, setShowShortCareModal] = useState(false);
+
+  const handleOpenElderlyCareModal = () => {
+    setShowElderlyCareModal(true);
+  };
+
+  const handleOpenRecoveryCareModal = () => {
+    setShowRecoveryCareModal(true);
+  };
+
+
+  const handleOpenPostpatumCareModal = () => {
+    setShowPostpartumCareModal(true);
+  };
+
+
+  const handleOpenNannyCareModal = () => {
+    setShowNannyCareModal(true);
+  };
+
+
+  const handleOpenShortCareModal = () => {
+    setShowShortCareModal(true);
+  };
+
+
+
   const handleOpenUserDetailsModal = () => {
     setShowUserDetailsModal(true);
   };
@@ -71,14 +103,14 @@ const HelpPage = () => {
     setShowUserDetailsModal(false);
   };
 
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-  };
-
   const handleOpenHelpModal = () => {};
 
   const handleOpenWalletModal = () => {
     navigate("/wallet");
+  };
+
+  const help = () => {
+    navigate("/help");
   };
 
   const handleOpenSettingsModal = () => {
@@ -107,11 +139,6 @@ const HelpPage = () => {
   const handleOpenAppointmentsModal = () => {
     navigate("/appointment");
   };
-
-  const Services = () => {
-    navigate("/services");
-  };
-
 
   return (
     <ChakraProvider>
@@ -154,7 +181,6 @@ const HelpPage = () => {
           <Flex
             alignItems="center"
             marginTop="20px"
-            // bg="#A210C6"
             w="15vw"
             p={3}
             borderRadius="md"
@@ -196,17 +222,31 @@ const HelpPage = () => {
             </Text>
           </Flex>
 
-          <Flex alignItems="center" marginTop="20px" marginLeft="-60px">
-            <Image marginLeft="16px" w="20px" h="20px" src={serviceIcon} alt="Help" />
+          <Flex
+            bg="#A210C6"
+            w="15vw"
+            p={3}
+            borderRadius="md"
+            alignItems="center"
+            marginTop="20px"
+            marginLeft="28px"
+          >
+            <Image
+              marginLeft="13px"
+              w="20px"
+              h="20px"
+              src={serviceIcon}
+              alt="Help"
+            />
             <Text
               marginLeft="15px"
-              color="black"
+              color="white"
               fontSize="18px"
-              onClick={Services}
+              onClick={handleOpenHelpModal}
               style={{
                 cursor: "pointer",
               }}
-              _hover={{ color: "#A210C6" }}
+              _hover={{ color: "" }}
             >
               Service
             </Text>
@@ -214,15 +254,13 @@ const HelpPage = () => {
 
           <Flex
             alignItems="center"
-          
+            marginTop="20px"
             w="15vw"
             p={3}
             borderRadius="md"
-            marginTop="20px"
-            marginLeft="28px"
           >
             <Image
-              marginLeft="12px"
+              marginLeft="26px"
               w="20px"
               fontSize="24px"
               h="20px"
@@ -233,20 +271,15 @@ const HelpPage = () => {
               marginLeft="15px"
               color="black"
               fontSize="18px"
-              onClick={() => {
-                handleOpenSettingsModal();
-              }}
               style={{
                 cursor: "pointer",
               }}
-              _hover={{ color: "#A210C6" }}
-             
+              _hover={{ color: "" }}
+              onClick={handleOpenSettingsModal}
             >
               Settings
             </Text>
           </Flex>
-
- 
 
           <Flex alignItems="center" marginTop="100px" marginLeft="-55px">
             <Image
@@ -274,7 +307,7 @@ const HelpPage = () => {
           borderRight="2px solid #A210C6"
           height="113%"
           marginX={3}
-          marginTop="-590px"
+          marginTop="-615px"
         />
       </Box>
       <Box
@@ -294,7 +327,7 @@ const HelpPage = () => {
             marginLeft="60px"
             marginTop="30px"
           >
-            Help
+            Services
           </Text>
           <Flex
             marginLeft="650px"
@@ -340,154 +373,21 @@ const HelpPage = () => {
             </Box>
           </Flex>
         </Flex>
-        <Flex>
-          <Box>
-            <Box marginLeft="540px">
-              <Text marginLeft="-745px" color="#A210C6" fontSize="24px">
-                Frequently Asked Questions
-              </Text>
-              <Text fontSize="16px" marginLeft="-763px">
-                Click on a question to see more details
-              </Text>
-            </Box>
-            <Box>
-              <Accordion
-                allowToggle
-                w="520px"
-                data-aos="fade-down"
-                data-aos-duration="10000"
-              >
-                <AccordionItem
-                  p={-8}
-                  my={5}
-                  fontSize="24px"
-                  className="custom-accordion-item"
-                >
-                  <h2>
-                    <AccordionButton>
-                      <Box as="span" flex="1" textAlign="left" fontSize="21px">
-                        How do I add my loved ones as beneficiaries?
-                      </Box>
-                      <AccordionIcon />
-                    </AccordionButton>
-                  </h2>
-                  <AccordionPanel className="custom-accordion-panel">
-                    Upon a successful registeration, you can request and get
-                    matched to a medic to recieve care by booking any of the
-                    services we offer from your dashboard.
-                  </AccordionPanel>
-                </AccordionItem>
+        <Box marginLeft="900px" marginTop="10px">
+          <Image
+            onClick={help}
+            src={HelppIcon}
+            alt="Logo"
+            w="70px"
+            h="70px"
+            style={{
+              cursor: "pointer",
+              animation: "zoomInOut 2s infinite alternate",
+            }}
+          />
 
-                <AccordionItem
-                  p={-8}
-                  my={5}
-                  fontSize="24px"
-                  className="custom-accordion-item"
-                >
-                  <h2>
-                    <AccordionButton>
-                      <Box as="span" flex="1" textAlign="left" fontSize="21px">
-                        I entered the wrong details while booking my
-                        appointment. How do I change it?
-                      </Box>
-                      <AccordionIcon />
-                    </AccordionButton>
-                  </h2>
-                  <AccordionPanel
-                    className="custom-accordion-panel"
-                    style={{ whiteSpace: "pre-line" }}
-                  >
-                    To ensure you are safe while you receive care from any
-                    Mikul&nbsp;Health care provider, we make sure our caregivers
-                    are vetted and their background checked. We also have an
-                    insurance policy for any theft and damages during the course
-                    of our service.
-                  </AccordionPanel>
-                </AccordionItem>
-
-                <AccordionItem
-                  p={-8}
-                  my={5}
-                  fontSize="24px"
-                  className="custom-accordion-item"
-                >
-                  <h2>
-                    <AccordionButton>
-                      <Box as="span" flex="1" textAlign="left" fontSize="21px">
-                        I would like to book multiple services at the same time.
-                        How do I do that?
-                      </Box>
-                      <AccordionIcon />
-                    </AccordionButton>
-                  </h2>
-                  <AccordionPanel className="custom-accordion-panel">
-                    Yes you can have a replacement when asigned a caregiver that
-                    you do not like. We can provide a replace within 72 hours
-                    upon your request for a replacement.
-                  </AccordionPanel>
-                </AccordionItem>
-
-                <AccordionItem
-                  p={-8}
-                  my={5}
-                  fontSize="24px"
-                  className="custom-accordion-item"
-                >
-                  <h2>
-                    <AccordionButton>
-                      <Box as="span" flex="1" textAlign="left" fontSize="21px">
-                        I am no longer interested in using this service. How can
-                        I cancel?
-                      </Box>
-                      <AccordionIcon />
-                    </AccordionButton>
-                  </h2>
-                  <AccordionPanel className="custom-accordion-panel">
-                    Yes, aside our standadized service plans. We also have
-                    provision for customizing a service plan that would best
-                    suit you or your loved according to the peculiarity of the
-                    care needs.
-                  </AccordionPanel>
-                </AccordionItem>
-              </Accordion>
-            </Box>
-          </Box>
-          <Box>
-            <Box>
-              <Text color="#A210C6" fontSize="24px">
-                Contact us
-              </Text>
-              <Text>
-                If you have any issues, our Mikul Customer <br></br> Care agents
-                are always happy to help. <br></br>
-              </Text>
-              <Text marginTop="50px">You can reach us via:</Text>
-              <Text>Email: support@mikulhealth.com</Text>
-              <Text>Phone: +2349160596636</Text>
-            </Box>
-
-            {/* <Box marginLeft="350px" marginTop="50px">
-              <a href="https://example.com">
-                <Image src={WhatsAppIcon} alt="Logo" w="100px" h="100px" />
-              </a>
-            </Box> */}
-
-            <Box marginLeft="350px" marginTop="50px">
-              <a href="https://wa.me/2347032579006">
-                <Image
-                  // onClick={help}
-                  src={WhatsAppIcon}
-                  alt="Logo"
-                  w="70px"
-                  h="70px"
-                  style={{
-                    cursor: "pointer",
-                    animation: "zoomInOut 2s infinite alternate",
-                  }}
-                />
-              </a>
-              <style>
-                {`
+          <style>
+            {`
           @keyframes zoomInOut {
             0% {
               transform: scale(1);
@@ -497,12 +397,182 @@ const HelpPage = () => {
             }
           }
         `}
-              </style>
-            </Box>
+          </style>
+        </Box>
+
+        <Box marginLeft="20px" marginTop="-50px">
+          <Box
+            marginTop="20px"
+            marginLeft="8px"
+            h="12vh"
+            w="65vw"
+            borderRadius="15px"
+            paddingBottom="5px"
+            style={{
+              cursor: "pointer",
+              boxShadow: "0px 4px 8px rgba(162, 16, 198, 0.4)",
+            }}
+            _hover={{ color: "#A210C6" }}
+            onClick={handleOpenElderlyCareModal}
+          >
+            <Flex>
+              <Box marginLeft="30px" marginTop="20px">
+                <Text fontSize="24px">Elderly care</Text>
+              </Box>
+              <Image
+                marginLeft="670px"
+                marginTop="25px"
+                w="30px"
+                h="30px"
+                src={RightArrow}
+                alt="Settings"
+              />
+            </Flex>
           </Box>
-        </Flex>
+
+          <Box
+            marginTop="20px"
+            marginLeft="8px"
+            h="12vh"
+            w="65vw"
+            borderRadius="15px"
+            paddingBottom="5px"
+            style={{
+              cursor: "pointer",
+              boxShadow: "0px 4px 8px rgba(162, 16, 198, 0.4)",
+            }}
+            _hover={{ color: "#A210C6" }}
+            onClick={handleOpenPostpatumCareModal}
+          >
+            <Flex>
+              <Box marginLeft="30px" marginTop="20px">
+                <Text fontSize="24px">Postpartum care</Text>
+              </Box>
+              <Image
+                marginLeft="612px"
+                marginTop="25px"
+                w="30px"
+                h="30px"
+                src={RightArrow}
+                alt="Settings"
+              />
+            </Flex>
+          </Box>
+
+          <Box
+            marginTop="20px"
+            marginLeft="8px"
+            h="12vh"
+            w="65vw"
+            borderRadius="15px"
+            paddingBottom="5px"
+            style={{
+              cursor: "pointer",
+              boxShadow: "0px 4px 8px rgba(162, 16, 198, 0.4)",
+            }}
+            _hover={{ color: "#A210C6" }}
+            onClick={handleOpenRecoveryCareModal}
+          >
+            <Flex>
+              <Box marginLeft="30px" marginTop="20px">
+                <Text fontSize="24px">Recovery care</Text>
+              </Box>
+              <Image
+                marginLeft="640px"
+                marginTop="25px"
+                w="30px"
+                h="30px"
+                src={RightArrow}
+                alt="Settings"
+              />
+            </Flex>
+          </Box>
+
+          <Box
+            marginTop="20px"
+            marginLeft="8px"
+            h="12vh"
+            w="65vw"
+            borderRadius="15px"
+            paddingBottom="5px"
+            style={{
+              cursor: "pointer",
+              boxShadow: "0px 4px 8px rgba(162, 16, 198, 0.4)",
+            }}
+            _hover={{ color: "#A210C6" }}
+            onClick={handleOpenNannyCareModal}
+          >
+            <Flex>
+              <Box marginLeft="30px" marginTop="20px">
+                <Text fontSize="24px">Nanny care</Text>
+              </Box>
+              <Image
+                marginLeft="665px"
+                marginTop="25px"
+                w="30px"
+                h="30px"
+                src={RightArrow}
+                alt="Settings"
+              />
+            </Flex>
+          </Box>
+
+          <Box
+            marginTop="20px"
+            marginLeft="8px"
+            h="12vh"
+            w="65vw"
+            borderRadius="15px"
+            paddingBottom="5px"
+            style={{
+              cursor: "pointer",
+              boxShadow: "0px 4px 8px rgba(162, 16, 198, 0.4)",
+            }}
+            _hover={{ color: "#A210C6" }}
+            onClick={handleOpenShortCareModal}
+          >
+            <Flex>
+              <Box marginLeft="30px" marginTop="20px">
+                <Text fontSize="24px">Short nurse visit</Text>
+              </Box>
+              <Image
+                marginLeft="620px"
+                marginTop="25px"
+                w="30px"
+                h="30px"
+                src={RightArrow}
+                alt="Settings"
+              />
+            </Flex>
+          </Box>
+        </Box>
       </Box>
+      <UserDetailsModal
+        isOpen={showUserDetailsModal}
+        onClose={handleCloseUserDetailsModal}
+      />
+
+      <ElderlyCareModal
+        isOpen={showElderlyCareModal}
+        onClose={() => setShowElderlyCareModal(false)}
+      />
+         <PostpartumCareModal
+        isOpen={showPostpartumCareModal}
+        onClose={() => setShowPostpartumCareModal(false)}
+      />
+         <NannyCareModal
+        isOpen={showNannyCareModal}
+        onClose={() => setShowNannyCareModal(false)}
+      />
+         <RecoveryCareModal
+        isOpen={showRecoveryCareModal}
+        onClose={() => setShowRecoveryCareModal(false)}
+      />
+         <ShortNurseVisitModal
+        isOpen={showShortCareModal}
+        onClose={() => setShowShortCareModal(false)}
+      />
     </ChakraProvider>
   );
 };
-export default HelpPage;
+export default ServicePage;

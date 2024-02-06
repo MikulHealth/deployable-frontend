@@ -65,7 +65,6 @@ const ClientDash = () => {
   const [loading, setLoading] = useState(false);
   const [isBeneficiariesModalOpen, setBeneficiariesModalOpen] = useState(false);
   const [showAppointmentModal, setShowAppointmentModal] = useState(false);
-  const [showHelpModal, setShowHelpModal] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const toast = useToast();
@@ -165,15 +164,10 @@ const ClientDash = () => {
 
   const handleOpenDashboard = () => {
     navigate("/dashboard");
-    // window.location.reload();
   };
 
-  const handleOpenHelpModal = () => {
-    setShowHelpModal(true);
-  };
-
-  const handleCloseHelpModal = () => {
-    setShowHelpModal(false);
+  const Services = () => {
+    navigate("/services");
   };
 
   const handleOpenUserDetailsModal = () => {
@@ -283,6 +277,28 @@ const ClientDash = () => {
               </Text>
             </Flex>
 
+            <Flex alignItems="center" marginTop="30px" marginLeft="-60px">
+              <Image
+                marginLeft="15px"
+                w="20px"
+                h="20px"
+                src={serviceIcon}
+                alt="Help"
+              />
+              <Text
+                marginLeft="15px"
+                color="black"
+                onClick={Services}
+                style={{
+                  cursor: "pointer",
+                }}
+                _hover={{ color: "#A210C6" }}
+                fontSize="18px"
+              >
+                Service
+              </Text>
+            </Flex>
+
             <Flex alignItems="center" marginTop="30px" marginLeft="-46px">
               <Image
                 marginLeft="8px"
@@ -304,28 +320,6 @@ const ClientDash = () => {
                 fontSize="18px"
               >
                 Settings
-              </Text>
-            </Flex>
-
-            <Flex alignItems="center" marginTop="30px" marginLeft="-60px">
-              <Image
-                marginLeft="15px"
-                w="20px"
-                h="20px"
-                src={serviceIcon}
-                alt="Help"
-              />
-              <Text
-                marginLeft="15px"
-                color="black"
-                onClick={handleOpenHelpModal}
-                style={{
-                  cursor: "pointer",
-                }}
-                _hover={{ color: "#A210C6" }}
-                fontSize="18px"
-              >
-                Service
               </Text>
             </Flex>
 
@@ -735,7 +729,7 @@ const ClientDash = () => {
                   h="70px"
                   style={{
                     cursor: "pointer",
-                    animation: "zoomInOut 2s infinite alternate", // 2 seconds duration, infinite loop
+                    animation: "zoomInOut 2s infinite alternate",
                   }}
                 />
 
@@ -753,17 +747,13 @@ const ClientDash = () => {
                 </style>
               </Box>
             </Box>
-
             <BeneficiariesModal
               isOpen={isBeneficiariesModalOpen}
               onClose={() => setBeneficiariesModalOpen(false)}
             />
-
-            <HelpModal isOpen={showHelpModal} onClose={handleCloseHelpModal} />
           </VStack>
         )}
       </Flex>
-
       <UserDetailsModal
         isOpen={showUserDetailsModal}
         onClose={handleCloseUserDetailsModal}
