@@ -19,8 +19,6 @@ import {
 } from "@chakra-ui/react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import Customer from "../../assets/UserSignUp.svg";
-import Shade from "../../assets/Shade.svg";
 import logo from "../../assets/LogoColoured.svg";
 import HelppIcon from "../../assets/HelppIcon.svg";
 import serviceIcon from "../../assets/ServiceIcon.svg";
@@ -31,19 +29,14 @@ import LogoutIcon from "../../assets/Logout.svg";
 import AppointmentsIcon from "../../assets/AppointmentIcon.svg";
 import HelpIcon from "../../assets/HelpIcon.svg";
 import userImageIcon from "../../assets/userImage.svg";
-import NurseAndPatient from "../../assets/NurseAndPatient.svg";
 import NotificationIcon from "../../assets/notification.svg";
 import "../../styles/pages/LandingPage.css";
-import SettingsModal from "../sections/Settings";
-import HelpModal from "../sections/Help";
 import BeneficiariesModal from "../sections/Beneficiaries";
 import UserDetailsModal from "../sections/UserDetails";
-import ServicesPage from "./Services";
 import ServicesModal from "../sections/ServicePageModal";
 import { Link } from "react-router-dom";
 import LogoutModal from "../sections/LogoutModal";
 import LoadingSpinner from "../../utils/Spiner";
-import FundWalletModal from "../sections/Wallet";
 
 const customTheme = extendTheme({
   components: {

@@ -45,6 +45,7 @@ import PasswordIcon from "../../assets/PasswordIcon.svg";
 import HelppIcon from "../../assets/HelppIcon.svg";
 import NotificationIconn from "../../assets/Notification.Icon.svg";
 import serviceIcon from "../../assets/ServiceIcon.svg";
+import BigSettingsIcon from "../../assets/BigSettingsIcon.svg";
 import SearchAppointmentsModal from "../sections/SearchAppointmentByDate";
 
 const SettingsPage = () => {
@@ -371,144 +372,156 @@ const SettingsPage = () => {
         `}
           </style>
         </Box>
-        <Box marginTop="-80px" width="25%" p={3} h="80vh">
-          <Text marginLeft="-160px" fontSize="24px">
-            Account
-          </Text>
+        <Flex>
+          <Box marginTop="-80px" width="25%" p={3} h="80vh">
+            <Text marginLeft="-160px" fontSize="24px">
+              Account
+            </Text>
 
-          <Box>
-            <Flex
-              marginTop="25px"
-              style={{
-                cursor: "pointer",
-              }}
-              _hover={{ color: "#A210C6" }}
-              onClick={handleOpenEditProfileDashboard}
-            >
-              <Image
-                src={ProfileIcon}
-                alt="Profile Icon"
-                boxSize="50px"
-                marginBottom="2%"
-                h="50px"
-                w="50px"
-                borderRadius="100%"
-              />
-              <Text fontSize="20px" marginLeft="5px" marginTop="10px">
-                Profile
-              </Text>
-              <Image
-                marginLeft="135px"
-                marginTop="20px"
-                w="10px"
-                h="15px"
-                src={RightArrow}
-                alt="right arrow"
-              />
-            </Flex>
-            <Divider my={1} borderColor="black.500" />
-          </Box>
-          <Box>
-            {" "}
-            <Flex
-              marginTop="25px"
-              style={{
-                cursor: "pointer",
-              }}
-              _hover={{ color: "#A210C6" }}
-              onClick={handleChangePassowrdModal}
-            >
-              <Image
-                src={PasswordIcon}
-                alt="Password Icon"
-                boxSize="50px"
-                marginBottom="2%"
-                h="50px"
-                w="50px"
-                borderRadius="100%"
-              />
-              <Text fontSize="20px" marginLeft="5px" marginTop="10px">
-                Change password
-              </Text>
-              <Image
-                marginLeft="32px"
-                marginTop="20px"
-                w="10px"
-                h="15px"
-                src={RightArrow}
-                alt="right arrow"
-              />
-            </Flex>
-            <Divider my={1} borderColor="black.500" />{" "}
-          </Box>
-          <Box>
-            {" "}
-            <Flex
-              marginTop="25px"
-              style={{
-                cursor: "pointer",
-              }}
-              _hover={{ color: "#A210C6" }}
-              onClick={handleOpenNotificationssModal}
-            >
-              <Image
-                src={NotificationIconn}
-                alt="Notification Icon"
-                boxSize="50px"
-                marginBottom="2%"
-                h="50px"
-                w="50px"
-                borderRadius="100%"
-              />
-              <Text fontSize="20px" marginLeft="5px" marginTop="10px">
-                Notification Settings
-              </Text>
-              <Image
-                marginLeft="10px"
-                marginTop="20px"
-                w="10px"
-                h="15px"
-                src={RightArrow}
-                alt="right arrow"
-              />
-            </Flex>
-            <Divider my={1} borderColor="black.500" />{" "}
-          </Box>
+            <Box>
+              <Flex
+                marginTop="25px"
+                style={{
+                  cursor: "pointer",
+                }}
+                _hover={{ color: "#A210C6" }}
+                onClick={handleOpenEditProfileDashboard}
+              >
+                <Image
+                  src={ProfileIcon}
+                  alt="Profile Icon"
+                  boxSize="50px"
+                  marginBottom="2%"
+                  h="50px"
+                  w="50px"
+                  borderRadius="100%"
+                />
+                <Text fontSize="20px" marginLeft="5px" marginTop="10px">
+                  Profile
+                </Text>
+                <Image
+                  marginLeft="135px"
+                  marginTop="20px"
+                  w="10px"
+                  h="15px"
+                  src={RightArrow}
+                  alt="right arrow"
+                />
+              </Flex>
+              <Divider my={1} borderColor="black.500" />
+            </Box>
+            <Box>
+              {" "}
+              <Flex
+                marginTop="25px"
+                style={{
+                  cursor: "pointer",
+                }}
+                _hover={{ color: "#A210C6" }}
+                onClick={handleChangePassowrdModal}
+              >
+                <Image
+                  src={PasswordIcon}
+                  alt="Password Icon"
+                  boxSize="50px"
+                  marginBottom="2%"
+                  h="50px"
+                  w="50px"
+                  borderRadius="100%"
+                />
+                <Text fontSize="20px" marginLeft="5px" marginTop="10px">
+                  Change password
+                </Text>
+                <Image
+                  marginLeft="32px"
+                  marginTop="20px"
+                  w="10px"
+                  h="15px"
+                  src={RightArrow}
+                  alt="right arrow"
+                />
+              </Flex>
+              <Divider my={1} borderColor="black.500" />{" "}
+            </Box>
+            <Box>
+              {" "}
+              <Flex
+                marginTop="25px"
+                style={{
+                  cursor: "pointer",
+                }}
+                _hover={{ color: "#A210C6" }}
+                onClick={handleOpenNotificationssModal}
+              >
+                <Image
+                  src={NotificationIconn}
+                  alt="Notification Icon"
+                  boxSize="50px"
+                  marginBottom="2%"
+                  h="50px"
+                  w="50px"
+                  borderRadius="100%"
+                />
+                <Text fontSize="20px" marginLeft="5px" marginTop="10px">
+                  Notification Settings
+                </Text>
+                <Image
+                  marginLeft="10px"
+                  marginTop="20px"
+                  w="10px"
+                  h="15px"
+                  src={RightArrow}
+                  alt="right arrow"
+                />
+              </Flex>
+              <Divider my={1} borderColor="black.500" />{" "}
+            </Box>
 
-          <Box>
-            {" "}
-            <Flex
-              marginTop="25px"
-              style={{
-                cursor: "pointer",
-              }}
-              _hover={{ color: "#A210C6" }}
-              onClick={help}
-            >
-              <Image
-                src={Help}
-                alt="Notification Icon"
-                boxSize="50px"
-                marginBottom="2%"
-                h="50px"
-                w="50px"
-                borderRadius="100%"
-              />
-              <Text fontSize="20px" marginLeft="5px" marginTop="10px">
-                Help
-              </Text>
-              <Image
-                marginLeft="145px"
-                marginTop="20px"
-                w="10px"
-                h="15px"
-                src={RightArrow}
-                alt="right arrow"
-              />
-            </Flex>
-            <Divider my={1} borderColor="black.500" />{" "}
+            <Box>
+              {" "}
+              <Flex
+                marginTop="25px"
+                style={{
+                  cursor: "pointer",
+                }}
+                _hover={{ color: "#A210C6" }}
+                onClick={help}
+              >
+                <Image
+                  src={Help}
+                  alt="Notification Icon"
+                  boxSize="50px"
+                  marginBottom="2%"
+                  h="50px"
+                  w="50px"
+                  borderRadius="100%"
+                />
+                <Text fontSize="20px" marginLeft="5px" marginTop="10px">
+                  Help
+                </Text>
+                <Image
+                  marginLeft="145px"
+                  marginTop="20px"
+                  w="10px"
+                  h="15px"
+                  src={RightArrow}
+                  alt="right arrow"
+                />
+              </Flex>
+              <Divider my={1} borderColor="black.500" />{" "}
+            </Box>
           </Box>
-        </Box>
+          <Box marginLeft="50px" marginTop="-80px">
+            <Image
+              src={BigSettingsIcon}
+              alt="Settings Icon"
+              boxSize="50px"
+              // marginBottom="2%"
+              h="456px"
+              w="488px"
+            />
+          </Box>
+        </Flex>
       </Box>
       <UserDetailsModal
         isOpen={showUserDetailsModal}

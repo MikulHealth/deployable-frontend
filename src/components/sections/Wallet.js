@@ -35,22 +35,17 @@ import {
 } from "@chakra-ui/react";
 import userImageIcon from "../../assets/userImage.svg";
 import NotificationIcon from "../../assets/notification.svg";
-import familyIcon from "../../assets/family.svg";
 import UserDetailsModal from "../sections/UserDetails";
 import logo from "../../assets/LogoColoured.svg";
 import SettingsIcon from "../../assets/SettingsIcon.svg";
 import LogoutIcon from "../../assets/Logout.svg";
 import AppointmentsIcon from "../../assets/AppointmentIcon.svg";
 import HomeIcon from "../../assets/HomeBlack.svg";
-import SettingsModal from "../sections/Settings";
-import HelpModal from "../sections/Help";
 import Transfer from "../../assets/TransferPayment.svg";
 import Online from "../../assets/OnlinePayment.svg";
-import AppointmentPage from "../pages/AppointmentPage";
 import RightArrow from "../../assets/RightArrow.svg";
 import Wallet from "../../assets/WalletWhite.svg";
 import LoadingSpinner from "../../utils/Spiner";
-import SearchAppointmentsModal from "../sections/SearchAppointmentByDate";
 
 const FundWalletModal = ({
   isOpen,
