@@ -18,13 +18,17 @@ import AppointmentPage from "./components/pages/AppointmentPage";
 import UserDetailsModal from "./components/sections/UserDetails";
 import VerifyOtpDash from "./components/sections/VerifyOTP";
 import PaymentConfirmationModal from "./components/sections/PaymentConfirmationModal";
-import WalletPage from "./components/sections/Wallet";
+import WalletPage from "./components/pages/WalletPage";
 import SettingsPage from "./components/pages/SettingsPage";
 import EdithProfilePage from "./components/pages/EdithProfilePage";
 import ChangePasswordPage from "./components/pages/ChangePasswordPage"
 import NotificationSettingsPage from "./components/pages/NotificationSettingsPage";
 import HelpPage from "./components/pages/HelpPage";
 import ServicePage from "./components/pages/ServicePage";
+import CreditPage from "./components/pages/CreditWalletPage";
+import DebitPage from "./components/pages/DebitWalletPage";
+import { DeleteIcon } from "@chakra-ui/icons";
+import PendingAppointmentPage from "./components/pages/PendingAppointmentPage";
 
 
 function App() {
@@ -63,6 +67,9 @@ function App() {
           <Route path="/notification-settings" element={<NotificationSettingsPage />} />
           <Route path="/help" element={<HelpPage />} />
           <Route path="/services" element={<ServicePage />} />
+          <Route path="/credit" element={<CreditPage />} />
+          <Route path="/debit" element={<DebitPage />} />
+          <Route path="/pending-appointments" element={<PendingAppointmentPage />} />
         </Routes>
       </BrowserRouter>
     </div>

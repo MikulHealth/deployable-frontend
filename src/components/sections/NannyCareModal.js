@@ -20,8 +20,8 @@ const NannyCareModal = ({ isOpen, onClose }) => {
         <ModalHeader>NANNY CARE</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Text marginLeft="230px" color="#A210C6">
-            Mikul health Nanny Care Service [Live-in care]
+        <Text fontWeight="bold" marginLeft="210px" color="#A210C6">
+            MIKUL HEALTH NANNY CARE SERVICE [Live-in care]
           </Text>
           <Flex
             marginBottom="30px"

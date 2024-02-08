@@ -49,7 +49,7 @@ const customTheme = extendTheme({
     },
   },
   fonts: {
-    body: "Gill Sans MT, sans-serif",
+    body: "Montserrat, sans-serif",
     heading: "Gill Sans MT, sans-serif",
   },
 });
@@ -202,7 +202,7 @@ const ClientDash = () => {
               w="15vw"
             >
               <Image
-                marginLeft="37px"
+                marginLeft="24px"
                 w="20px"
                 h="20px"
                 src={HelpIcon}
@@ -248,7 +248,7 @@ const ClientDash = () => {
               </Text>
             </Flex>
 
-            <Flex alignItems="center" marginTop="30px" marginLeft="-54px">
+            <Flex alignItems="center" marginTop="30px" marginLeft="-60px">
               <Image
                 marginLeft="10px"
                 w="20px"
@@ -270,7 +270,7 @@ const ClientDash = () => {
               </Text>
             </Flex>
 
-            <Flex alignItems="center" marginTop="30px" marginLeft="-60px">
+            <Flex alignItems="center" marginTop="30px" marginLeft="-58px">
               <Image
                 marginLeft="15px"
                 w="20px"
@@ -355,10 +355,10 @@ const ClientDash = () => {
               <Box>
                 <Text
                   fontSize="32px"
-                  fontFamily="body"
+                  fontFamily="heading"
                   color="#A210C6"
                   marginTop="30px"
-                  marginLeft="-370px"
+                  marginLeft="-375px"
                 >
                   Hello {user?.firstName},
                 </Text>
@@ -425,14 +425,14 @@ const ClientDash = () => {
 
                 <Box marginTop="-8px">
                   <Box display="flex">
-                    <Box bg="#F6E4FC" w="24.5vw" h="20vh" borderRadius="10px">
+                    <Box bg="#ECCFF4" w="24.5vw" h="20vh" borderRadius="10px">
                       {" "}
                       <Text
                         fontSize="20px"
-                        fontFamily="body"
+                        fontFamily="heading"
                         color="black"
                         marginTop="10px"
-                        style={{ marginLeft: "-80px" }}
+                        style={{ marginLeft: "-92px" }}
                       >
                         Book Appointment
                       </Text>
@@ -455,7 +455,7 @@ const ClientDash = () => {
                       </Text>
                     </Box>
                     <Box
-                      bg="#F6E4FC"
+                      bg="#ECCFF4"
                       w="24.5vw"
                       h="20vh"
                       marginLeft="10px"
@@ -465,7 +465,7 @@ const ClientDash = () => {
                       {" "}
                       <Text
                         fontSize="20px"
-                        fontFamily="body"
+                        fontFamily="heading"
                         color="black"
                         marginTop="10px"
                         style={{ marginLeft: "-130px" }}
@@ -491,11 +491,11 @@ const ClientDash = () => {
                     </Box>
                   </Box>
                   <Box display="flex" marginTop="15px">
-                    <Box bg="#F6E4FC" w="24.5vw" h="20vh" borderRadius="10px">
+                    <Box bg="#ECCFF4" w="24.5vw" h="20vh" borderRadius="10px">
                       {" "}
                       <Text
                         fontSize="20px"
-                        fontFamily="body"
+                        fontFamily="heading"
                         color="black"
                         marginTop="10px"
                         style={{ marginLeft: "-135px" }}
@@ -525,7 +525,7 @@ const ClientDash = () => {
                       />
                     </Box>
                     <Box
-                      bg="#F6E4FC"
+                      bg="#ECCFF4"
                       w="24.5vw"
                       h="20vh"
                       marginLeft="10px"
@@ -534,7 +534,7 @@ const ClientDash = () => {
                       {" "}
                       <Text
                         fontSize="20px"
-                        fontFamily="body"
+                        fontFamily="heading"
                         color="black"
                         marginTop="10px"
                         style={{ marginLeft: "-125px" }}
@@ -615,15 +615,20 @@ const ClientDash = () => {
                 h="40vh"
                 w="20vw"
               >
-                <Box paddingTop="5px" bg="#F6E4FC" borderRadius="10" h="25vh">
+                <Box
+                  color="white"
+                  paddingTop="50px"
+                  bg="#A210C6"
+                  borderRadius="10"
+                  h="50vh"
+                >
                   <Text
                     fontSize="20px"
                     fontFamily="body"
-                    color="black"
                     marginTop="20px"
-                    marginLeft="20px"
+                    marginLeft="-20px"
                   >
-                    Activity log in numbers
+                    My Activity log
                   </Text>
                   <ul style={{ paddingLeft: "20px", marginTop: "7px" }}>
                     <li style={{ listStyleType: "none" }}>
@@ -633,7 +638,6 @@ const ClientDash = () => {
                           cursor: "pointer",
                           fontSize: "14px",
                         }}
-                        color="black"
                         _hover={{ color: "#A210C6" }}
                       >
                         Pending appointments: {pendingAppointments}
@@ -647,7 +651,6 @@ const ClientDash = () => {
                           cursor: "pointer",
                           fontSize: "14px",
                         }}
-                        color="black"
                         _hover={{ color: "#A210C6" }}
                       >
                         Active appointments: {activeAppointments}
@@ -663,7 +666,6 @@ const ClientDash = () => {
                           cursor: "pointer",
                           fontSize: "14px",
                         }}
-                        color="black"
                         _hover={{ color: "#A210C6" }}
                       >
                         Completed appointments: {completedAppointments}
@@ -672,7 +674,7 @@ const ClientDash = () => {
                   </ul>
                 </Box>
 
-                <Box marginTop="-28px" bg="#F6E4FC" borderRadius="10" h="43vh">
+                {/* <Box marginTop="-28px" bg="#F6E4FC" borderRadius="10" h="30vh">
                   <Text
                     fontSize="20px"
                     fontFamily="body"
@@ -711,11 +713,11 @@ const ClientDash = () => {
                   >
                     Read more
                   </Text>
-                </Box>
+                </Box> */}
               </Box>
-              <Box marginLeft="140px" marginTop="-330px">
+              <Box marginLeft="140px" marginTop="126px">
                 <Image
-                onClick={help}
+                  onClick={help}
                   src={HelppIcon}
                   alt="Logo"
                   w="70px"

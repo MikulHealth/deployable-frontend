@@ -22,8 +22,8 @@ const ElderlyCareModal = ({ isOpen, onClose }) => {
         <ModalHeader>ELDERLY CARE</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Text marginLeft="220px" color="#A210C6">
-            Standard all-inclusive care for aged people over 60 years old.
+          <Text fontWeight="bold" marginLeft="155px" color="#A210C6">
+            STANDARD ALL-INCLUSIVE CARE FOR AGED PEOPLE OVER 60 YEARS OLD.
           </Text>
           <Flex
             marginBottom="30px"

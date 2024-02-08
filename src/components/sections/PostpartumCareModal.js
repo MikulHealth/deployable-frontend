@@ -20,7 +20,7 @@ const PostpartumCareModal = ({ isOpen, onClose }) => {
         <ModalHeader>POSTPATUM CARE</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Text marginLeft="250px" color="#A210C6">
+        <Text fontWeight="bold" marginLeft="240px" color="#A210C6">
             PREMIUM CARE (4 WEEKS INTENSIVE CARE)
           </Text>
           <Flex

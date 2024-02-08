@@ -5,10 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { SetUser } from "../../redux/userSlice";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import BookAppointmentModal from "../sections/BookAppointment";
-import AllAppointments from "../sections/AllAppointments";
-import PendingAppointmentModal from "../sections/PendingAppointments";
-import CanceledAppointmentsModal from "../sections/CanceledAppointments";
 import RightArrow from "../../assets/RightArrow.svg";
 import Help from "../../assets/Help.svg";
 import WebIcon from "../../assets/WebIcon.svg";
@@ -30,6 +26,7 @@ import {
   Divider,
   Switch,
   FormControl,
+  extendTheme,
   FormLabel,
 } from "@chakra-ui/react";
 import userImageIcon from "../../assets/userImage.svg";
@@ -51,6 +48,23 @@ import NotificationIconn from "../../assets/ColoredNotificationIcon.svg";
 import Bar from "../../assets/ColoredBar.svg";
 import SearchAppointmentsModal from "../sections/SearchAppointmentByDate";
 import serviceIcon from "../../assets/ServiceIcon.svg";
+
+const customTheme = extendTheme({
+  components: {
+    Link: {
+      baseStyle: {
+        _focus: {
+          boxShadow: "none",
+        },
+      },
+    },
+  },
+  fonts: {
+    body: "Montserrat, sans-serif",
+    heading: "Gill Sans MT, sans-serif",
+  },
+});
+
 
 const NotificationSettingsPage = () => {
   const navigate = useNavigate();
@@ -167,7 +181,7 @@ const NotificationSettingsPage = () => {
 
 
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={customTheme}>
       <Box width="25%" p={3} h="90vh">
         <Image
           src={logo}
@@ -250,7 +264,7 @@ const NotificationSettingsPage = () => {
           </Flex>
 
           <Flex alignItems="center" marginTop="30px" marginLeft="-60px">
-            <Image marginLeft="13px" w="20px" h="20px" src={serviceIcon} alt="Help" />
+            <Image  marginLeft="26px" w="20px" h="20px" src={serviceIcon} alt="Help" />
             <Text
               marginLeft="15px"
               color="black"
@@ -339,9 +353,9 @@ const NotificationSettingsPage = () => {
         <Flex>
           <Text
             fontSize="36px"
-            fontFamily="body"
+            fontFamily="heading"
             color="#A210C6"
-            marginLeft="60px"
+            marginLeft="25px"
             marginTop="30px"
           >
             Settings
@@ -392,7 +406,7 @@ const NotificationSettingsPage = () => {
         </Flex>
         <Flex>
           <Box width="25%" p={3} h="80vh">
-            <Text marginLeft="-160px" fontSize="24px">
+            <Text  fontFamily="heading" marginLeft="-160px" fontSize="24px">
               Account
             </Text>
 
@@ -495,6 +509,7 @@ const NotificationSettingsPage = () => {
                   fontSize="20px"
                   marginLeft="5px"
                   marginTop="10px"
+                  fontFamily="heading"
                 >
                   Notification Settings
                 </Text>

@@ -20,7 +20,7 @@ const ShortNurseVisitModal = ({ isOpen, onClose }) => {
         <ModalHeader>SHORT HOME VISIT</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Text marginLeft="100px" color="#A210C6">
+        <Text fontWeight="bold" marginLeft="80px" color="#A210C6">
             Mikul health Short Nursing-Care Service [3 hours Maximun]
           </Text>
           <Flex

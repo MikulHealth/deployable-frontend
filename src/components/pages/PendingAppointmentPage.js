@@ -6,7 +6,6 @@ import { SetUser } from "../../redux/userSlice";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import BookAppointmentModal from "../sections/BookAppointment";
-import AllAppointments from "../sections/AllAppointments";
 import CanceledAppointmentsModal from "../sections/CanceledAppointments";
 import Help from "../../assets/Help.svg";
 import axios from "axios";
@@ -66,7 +65,7 @@ const customTheme = extendTheme({
   },
 });
 
-const AppointmentPage = () => {
+const PendingAppointmentPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const toast = useToast();
@@ -78,12 +77,14 @@ const AppointmentPage = () => {
   const [showCanceledModal, setShowCanceledModal] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [showWalletModal, setShowWalletModal] = useState(false);
-  const [appointments, setAppointments] = useState([]);
+  const [pendingAppointments, setPendingAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [detailsModalOpen, setDetailsModalOpen] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [showSearchAppointmentsModal, setShowSearchAppointmentsModal] =
     useState(false);
+  const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
+  const [cancellingAppointmentId, setCancellingAppointmentId] = useState(null);
 
   const handleOpenUserDetailsModal = () => {
     setShowUserDetailsModal(true);
@@ -127,11 +128,22 @@ const AppointmentPage = () => {
     navigate("/services");
   };
 
-  const PendingAppointmentPage = () => {
-    navigate("/pending-appointments");
+  const handleOpenAppointmentsModal = () => {
+    navigate("/appointment");
   };
+
   const handleOpenLogoutModal = () => {
     setShowLogoutModal(true);
+  };
+
+  const handleCancelAppointment = (appointmentId) => {
+    setCancellingAppointmentId(appointmentId);
+    setConfirmationModalOpen(true);
+  };
+
+  const handleCancelModalClose = () => {
+    // Close the confirmation modal
+    setConfirmationModalOpen(false);
   };
 
   const handleConfirmLogout = () => {
@@ -145,32 +157,32 @@ const AppointmentPage = () => {
     navigate("/");
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const config = {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        };
+  const fetchData = async () => {
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      };
 
-        const response = await axios.get(
-          "http://localhost:8080/v1/appointment/allAppointments",
-          config
-        );
+      const response = await axios.get(
+        "http://localhost:8080/v1/appointment/pendingAppointments",
+        config
+      );
 
-        if (response.data.success) {
-          setAppointments(response.data.data);
-        } else {
-          console.error("Failed to fetch appointments");
-        }
-      } catch (error) {
-        console.error("Error fetching appointments:", error);
-      } finally {
-        setLoading(false);
+      if (response.data.success) {
+        setPendingAppointments(response.data.data);
+      } else {
+        console.error("Failed to fetch appointments");
       }
-    };
+    } catch (error) {
+      console.error("Error fetching appointments:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchData();
   }, [toast]);
 
@@ -186,7 +198,7 @@ const AppointmentPage = () => {
   const fetchAndDisplayAppointmentDetails = async (appointmentId) => {
     try {
       const token = localStorage.getItem("token");
-      const apiUrl = `http://localhost:8080/v1/appointment/findAppointmentDetails/${appointmentId}`;
+      const apiUrl = `http://localhost:8080/v1/appointment/findPendingAppointmentDetails/${appointmentId}`;
 
       const headers = {
         "Content-Type": "application/json",
@@ -209,9 +221,44 @@ const AppointmentPage = () => {
       );
     }
   };
+
+  const handleConfirmation = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const apiUrl = `http://localhost:8080/v1/appointment/cancelAppointment/${cancellingAppointmentId}`;
+
+      const headers = {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      };
+
+      const response = await axios.post(apiUrl, {}, { headers });
+
+      if (response.data.success) {
+        toast({
+          title: response.data.message,
+          status: "success",
+          duration: 6000,
+        });
+        fetchData();
+      } else {
+        toast({
+          title: "Error canceling appointment",
+          description: response.data.message,
+          status: "error",
+          duration: 6000,
+        });
+        console.error("Error canceling appointment");
+      }
+    } catch (error) {
+      console.error("An error occurred while canceling appointment:", error);
+    } finally {
+      setConfirmationModalOpen(false);
+    }
+  };
+
   const handleViewMore = async (id) => {
     await fetchAndDisplayAppointmentDetails(id);
-    // onClose();
     console.log(`View more details for appointment with ID: ${id}`);
   };
 
@@ -546,21 +593,21 @@ const AppointmentPage = () => {
             <Text
               style={{
                 cursor: "pointer",
-                textDecoration: "underline",
-                textDecorationThickness: "5px",
               }}
               _hover={{ color: "#A210C6" }}
               marginLeft="30px"
+              onClick={handleOpenAppointmentsModal}
             >
               All
             </Text>{" "}
             <Text
               style={{
                 cursor: "pointer",
+                textDecoration: "underline",
+                textDecorationThickness: "5px",
               }}
               _hover={{ color: "#A210C6" }}
               marginLeft="50px"
-              onClick={PendingAppointmentPage}
             >
               Pending
             </Text>{" "}
@@ -592,31 +639,32 @@ const AppointmentPage = () => {
           />
           <Box
             className="all-appointment"
-            overflow="scroll"
             marginLeft="2%"
             w="40vw"
-            h="28vh"
+            h="30vh"
+            overflow="scroll"
           >
             {loading ? (
               <LoadingSpinner />
-            ) : appointments.length === 0 ? (
+            ) : pendingAppointments.length === 0 ? (
               <Text>
-                You have no appointments yet.{" "}
-                <Button onClick={handleOpenAppointmentModal}>Book now</Button>
+                You have no appointments yet. Click{" "}
+                <Button onClick={handleOpenAppointmentModal}>Book now</Button>{" "}
+                to begin.
               </Text>
             ) : (
               <VStack align="start" spacing={4}>
-                {appointments.map((appointment) => (
+                {pendingAppointments.map((appointment) => (
                   <Box key={appointment.id}>
                     <Flex>
                       <Text fontWeight="bold" color="black">
                         Care beneficiary:
                       </Text>
                       <Text marginLeft="5px" color="black">
-                        {`${appointment.recipientFirstname} ${appointment.recipientLastname}`}
+                        {`${appointment.appointment.recipientFirstname} ${appointment.appointment.recipientLastname}`}
                       </Text>
                     </Flex>
-                    <Flex>
+                    <Flex >
                       <Text fontWeight="bold" color="black">
                         Booked on:
                       </Text>
@@ -624,10 +672,10 @@ const AppointmentPage = () => {
                         {formatDateTime(appointment.createdAt)}
                       </Text>
                       <Text
+                        marginLeft="40px"
                         fontSize="16px"
                         onClick={() => handleViewMore(appointment.id)}
                         style={{
-                          marginLeft: "60px",
                           color: "#A210C6",
                           fontStyle: "italic",
                           cursor: "pointer",
@@ -636,7 +684,21 @@ const AppointmentPage = () => {
                       >
                         Details
                       </Text>
+                      <Text
+                        marginLeft="40px"
+                        fontSize="16px"
+                        onClick={() => handleCancelAppointment(appointment.id)}
+                        style={{
+                          color: "red",
+                          fontStyle: "italic",
+                          cursor: "pointer",
+                        }}
+                        _hover={{ color: "#A210C6" }}
+                      >
+                        Cancel
+                      </Text>
                     </Flex>
+
                     <Divider my={4} borderColor="gray.500" />
                   </Box>
                 ))}
@@ -644,7 +706,7 @@ const AppointmentPage = () => {
             )}
           </Box>
         </Box>
-        <Box marginLeft="900px" marginTop="-55px">
+        <Box marginLeft="900px" marginTop="-60px">
           <Image
             onClick={help}
             src={HelppIcon}
@@ -683,11 +745,11 @@ const AppointmentPage = () => {
         isOpen={showCanceledModal}
         onClose={() => setShowCanceledModal(false)}
       />
-
       <SearchAppointmentsModal
         isOpen={showSearchAppointmentsModal}
         onClose={handleCloseSearchAppointmentsModal}
       />
+
       {detailsModalOpen && selectedAppointment && (
         <Modal
           isOpen={detailsModalOpen}
@@ -867,10 +929,10 @@ const AppointmentPage = () => {
                           Paid:
                         </Text>
                         <Text marginLeft="5px" color="black">
-                          {console.log("Is paid is", selectedAppointment.paid)}
                           {selectedAppointment.paid ? "Yes" : "No"}
                         </Text>
                       </Flex>
+
                       <Flex marginTop="5px">
                         <Text fontWeight="bold" color="black">
                           Health History:
@@ -893,8 +955,33 @@ const AppointmentPage = () => {
           </ModalContent>
         </Modal>
       )}
+
+      {confirmationModalOpen && (
+        <Modal
+          isOpen={confirmationModalOpen}
+          onClose={handleCancelModalClose}
+          size="md"
+        >
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Confirmation</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              Are you sure you want to cancel this appointment?
+            </ModalBody>
+            <ModalFooter>
+              <Button colorScheme="red" onClick={handleCancelModalClose}>
+                No
+              </Button>
+              <Button marginLeft="5px" onClick={handleConfirmation}>
+                Yes
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      )}
     </ChakraProvider>
   );
 };
 
-export default AppointmentPage;
+export default PendingAppointmentPage;

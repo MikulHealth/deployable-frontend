@@ -5,10 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { SetUser } from "../../redux/userSlice";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import BookAppointmentModal from "../sections/BookAppointment";
-import AllAppointments from "../sections/AllAppointments";
-import PendingAppointmentModal from "../sections/PendingAppointments";
-import CanceledAppointmentsModal from "../sections/CanceledAppointments";
 import RightArrow from "../../assets/RightArrow.svg";
 import Help from "../../assets/Help.svg";
 
@@ -31,6 +27,7 @@ import {
   Flex,
   Link,
   Divider,
+  extendTheme,
   FormControl,
   FormLabel,
 } from "@chakra-ui/react";
@@ -52,6 +49,23 @@ import HelppIcon from "../../assets/HelppIcon.svg";
 import NotificationIconn from "../../assets/Notification.Icon.svg";
 import serviceIcon from "../../assets/WhiteServiceIcon.svg";
 import SearchAppointmentsModal from "../sections/SearchAppointmentByDate";
+
+const customTheme = extendTheme({
+  components: {
+    Link: {
+      baseStyle: {
+        _focus: {
+          boxShadow: "none",
+        },
+      },
+    },
+  },
+  fonts: {
+    body: "Montserrat, sans-serif",
+    heading: "Gill Sans MT, sans-serif",
+  },
+});
+
 
 const ServicePage = () => {
   const navigate = useNavigate();
@@ -141,7 +155,7 @@ const ServicePage = () => {
   };
 
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={customTheme}>
       <Box width="25%" p={3} h="90vh">
         <Image
           src={logo}
@@ -322,7 +336,7 @@ const ServicePage = () => {
         <Flex>
           <Text
             fontSize="36px"
-            fontFamily="body"
+            fontFamily="heading"
             color="#A210C6"
             marginLeft="60px"
             marginTop="30px"
@@ -373,34 +387,9 @@ const ServicePage = () => {
             </Box>
           </Flex>
         </Flex>
-        <Box marginLeft="900px" marginTop="10px">
-          <Image
-            onClick={help}
-            src={HelppIcon}
-            alt="Logo"
-            w="70px"
-            h="70px"
-            style={{
-              cursor: "pointer",
-              animation: "zoomInOut 2s infinite alternate",
-            }}
-          />
+     
 
-          <style>
-            {`
-          @keyframes zoomInOut {
-            0% {
-              transform: scale(1);
-            }
-            100% {
-              transform: scale(1.2);
-            }
-          }
-        `}
-          </style>
-        </Box>
-
-        <Box marginLeft="20px" marginTop="-50px">
+        <Box marginLeft="20px" marginTop="60px">
           <Box
             marginTop="20px"
             marginLeft="8px"
@@ -503,11 +492,11 @@ const ServicePage = () => {
             onClick={handleOpenNannyCareModal}
           >
             <Flex>
-              <Box marginLeft="30px" marginTop="20px">
-                <Text fontSize="24px">Nanny care</Text>
+              <Box marginLeft="28px" marginTop="20px">
+                <Text fontSize="24px">Nanny services</Text>
               </Box>
               <Image
-                marginLeft="665px"
+                marginLeft="630px"
                 marginTop="25px"
                 w="30px"
                 h="30px"
@@ -533,7 +522,7 @@ const ServicePage = () => {
           >
             <Flex>
               <Box marginLeft="30px" marginTop="20px">
-                <Text fontSize="24px">Short nurse visit</Text>
+                <Text fontSize="24px">Short home visit</Text>
               </Box>
               <Image
                 marginLeft="620px"
@@ -545,6 +534,32 @@ const ServicePage = () => {
               />
             </Flex>
           </Box>
+          <Box marginLeft="905px" marginTop="-50px">
+          <Image
+            onClick={help}
+            src={HelppIcon}
+            alt="Logo"
+            w="70px"
+            h="70px"
+            style={{
+              cursor: "pointer",
+              animation: "zoomInOut 2s infinite alternate",
+            }}
+          />
+
+          <style>
+            {`
+          @keyframes zoomInOut {
+            0% {
+              transform: scale(1);
+            }
+            100% {
+              transform: scale(1.2);
+            }
+          }
+        `}
+          </style>
+        </Box>
         </Box>
       </Box>
       <UserDetailsModal

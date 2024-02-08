@@ -5,10 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { SetUser } from "../../redux/userSlice";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import BookAppointmentModal from "../sections/BookAppointment";
-import AllAppointments from "../sections/AllAppointments";
-import PendingAppointmentModal from "../sections/PendingAppointments";
-import CanceledAppointmentsModal from "../sections/CanceledAppointments";
 import RightArrow from "../../assets/RightArrow.svg";
 import Help from "../../assets/Help.svg";
 import WhatsAppIcon from "../../assets/WhatsApp.svg";
@@ -32,6 +28,7 @@ import {
   Divider,
   FormControl,
   FormLabel,
+  extendTheme,
 } from "@chakra-ui/react";
 import userImageIcon from "../../assets/userImage.svg";
 import NotificationIcon from "../../assets/notification.svg";
@@ -51,6 +48,22 @@ import HelppIcon from "../../assets/HelppIcon.svg";
 import NotificationIconn from "../../assets/Notification.Icon.svg";
 import serviceIcon from "../../assets/ServiceIcon.svg";
 import SearchAppointmentsModal from "../sections/SearchAppointmentByDate";
+
+const customTheme = extendTheme({
+  components: {
+    Link: {
+      baseStyle: {
+        _focus: {
+          boxShadow: "none",
+        },
+      },
+    },
+  },
+  fonts: {
+    body: "Montserrat, sans-serif",
+    heading: "Gill Sans MT, sans-serif",
+  },
+});
 
 const HelpPage = () => {
   const navigate = useNavigate();
@@ -112,9 +125,8 @@ const HelpPage = () => {
     navigate("/services");
   };
 
-
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={customTheme}>
       <Box width="25%" p={3} h="90vh">
         <Image
           src={logo}
@@ -197,7 +209,13 @@ const HelpPage = () => {
           </Flex>
 
           <Flex alignItems="center" marginTop="20px" marginLeft="-60px">
-            <Image marginLeft="16px" w="20px" h="20px" src={serviceIcon} alt="Help" />
+            <Image
+              marginLeft="26px"
+              w="20px"
+              h="20px"
+              src={serviceIcon}
+              alt="Help"
+            />
             <Text
               marginLeft="15px"
               color="black"
@@ -214,7 +232,6 @@ const HelpPage = () => {
 
           <Flex
             alignItems="center"
-          
             w="15vw"
             p={3}
             borderRadius="md"
@@ -240,13 +257,10 @@ const HelpPage = () => {
                 cursor: "pointer",
               }}
               _hover={{ color: "#A210C6" }}
-             
             >
               Settings
             </Text>
           </Flex>
-
- 
 
           <Flex alignItems="center" marginTop="100px" marginLeft="-55px">
             <Image
@@ -289,9 +303,9 @@ const HelpPage = () => {
         <Flex>
           <Text
             fontSize="36px"
-            fontFamily="body"
+            fontFamily="heading"
             color="#A210C6"
-            marginLeft="60px"
+            marginLeft="20px"
             marginTop="30px"
           >
             Help
@@ -343,10 +357,15 @@ const HelpPage = () => {
         <Flex>
           <Box>
             <Box marginLeft="540px">
-              <Text marginLeft="-745px" color="#A210C6" fontSize="24px">
+              <Text
+                fontFamily="body"
+                marginLeft="-745px"
+                color="#A210C6"
+                fontSize="24px"
+              >
                 Frequently Asked Questions
               </Text>
-              <Text fontSize="16px" marginLeft="-763px">
+              <Text fontStyle="italic" fontSize="16px" marginLeft="-763px">
                 Click on a question to see more details
               </Text>
             </Box>
@@ -452,25 +471,21 @@ const HelpPage = () => {
               </Accordion>
             </Box>
           </Box>
-          <Box>
+          <Box marginTop="100px">
             <Box>
-              <Text color="#A210C6" fontSize="24px">
+              <Text marginLeft="-190px" color="#A210C6" fontSize="24px">
                 Contact us
               </Text>
-              <Text>
-                If you have any issues, our Mikul Customer <br></br> Care agents
-                are always happy to help. <br></br>
+              <Text>If you have any issues, our Mikul Customer</Text>
+              <Text marginLeft="-33px">
+                Care agents are always happy to help.
               </Text>
-              <Text marginTop="50px">You can reach us via:</Text>
-              <Text>Email: support@mikulhealth.com</Text>
-              <Text>Phone: +2349160596636</Text>
+              <Text marginTop="50px" marginLeft="-145px">
+                You can reach us via:
+              </Text>
+              <Text marginLeft="-68px">Email: support@mikulhealth.com</Text>
+              <Text marginLeft="-120px">Phone: +2349160596636</Text>
             </Box>
-
-            {/* <Box marginLeft="350px" marginTop="50px">
-              <a href="https://example.com">
-                <Image src={WhatsAppIcon} alt="Logo" w="100px" h="100px" />
-              </a>
-            </Box> */}
 
             <Box marginLeft="350px" marginTop="50px">
               <a href="https://wa.me/2347032579006">

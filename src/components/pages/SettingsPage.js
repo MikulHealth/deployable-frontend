@@ -5,10 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { SetUser } from "../../redux/userSlice";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import BookAppointmentModal from "../sections/BookAppointment";
-import AllAppointments from "../sections/AllAppointments";
-import PendingAppointmentModal from "../sections/PendingAppointments";
-import CanceledAppointmentsModal from "../sections/CanceledAppointments";
 import RightArrow from "../../assets/RightArrow.svg";
 import Help from "../../assets/Help.svg";
 
@@ -21,6 +17,7 @@ import {
   useToast,
   Image,
   Box,
+  extendTheme,
   Text,
   Flex,
   Link,
@@ -47,6 +44,22 @@ import NotificationIconn from "../../assets/Notification.Icon.svg";
 import serviceIcon from "../../assets/ServiceIcon.svg";
 import BigSettingsIcon from "../../assets/BigSettingsIcon.svg";
 import SearchAppointmentsModal from "../sections/SearchAppointmentByDate";
+
+const customTheme = extendTheme({
+  components: {
+    Link: {
+      baseStyle: {
+        _focus: {
+          boxShadow: "none",
+        },
+      },
+    },
+  },
+  fonts: {
+    body: "Montserrat, sans-serif",
+    heading: "Gill Sans MT, sans-serif",
+  },
+});
 
 const SettingsPage = () => {
   const navigate = useNavigate();
@@ -120,7 +133,7 @@ const SettingsPage = () => {
   };
 
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={customTheme}>
       <Box width="25%" p={3} h="90vh">
         <Image
           src={logo}
@@ -204,7 +217,7 @@ const SettingsPage = () => {
 
           <Flex alignItems="center" marginTop="20px" marginLeft="-60px">
             <Image
-              marginLeft="13px"
+              marginLeft="26px"
               w="20px"
               h="20px"
               src={serviceIcon}
@@ -295,9 +308,9 @@ const SettingsPage = () => {
         <Flex>
           <Text
             fontSize="36px"
-            fontFamily="body"
+            fontFamily="heading"
             color="#A210C6"
-            marginLeft="60px"
+            marginLeft="25px"
             marginTop="30px"
           >
             Settings
@@ -346,35 +359,10 @@ const SettingsPage = () => {
             </Box>
           </Flex>
         </Flex>
-        <Box marginLeft="900px" marginTop="10px">
-          <Image
-            onClick={help}
-            src={HelppIcon}
-            alt="Logo"
-            w="70px"
-            h="70px"
-            style={{
-              cursor: "pointer",
-              animation: "zoomInOut 2s infinite alternate",
-            }}
-          />
 
-          <style>
-            {`
-          @keyframes zoomInOut {
-            0% {
-              transform: scale(1);
-            }
-            100% {
-              transform: scale(1.2);
-            }
-          }
-        `}
-          </style>
-        </Box>
         <Flex>
-          <Box marginTop="-80px" width="25%" p={3} h="80vh">
-            <Text marginLeft="-160px" fontSize="24px">
+          <Box width="25%" p={3} h="80vh">
+            <Text fontFamily="heading" marginLeft="-160px" fontSize="24px">
               Account
             </Text>
 
@@ -511,7 +499,7 @@ const SettingsPage = () => {
               <Divider my={1} borderColor="black.500" />{" "}
             </Box>
           </Box>
-          <Box marginLeft="50px" marginTop="-80px">
+          <Box marginLeft="70px" marginTop="20px">
             <Image
               src={BigSettingsIcon}
               alt="Settings Icon"

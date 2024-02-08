@@ -5,10 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { SetUser } from "../../redux/userSlice";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import BookAppointmentModal from "../sections/BookAppointment";
-import AllAppointments from "../sections/AllAppointments";
-import PendingAppointmentModal from "../sections/PendingAppointments";
-import CanceledAppointmentsModal from "../sections/CanceledAppointments";
 import RightArrow from "../../assets/RightArrow.svg";
 import Help from "../../assets/Help.svg";
 import serviceIcon from "../../assets/ServiceIcon.svg";
@@ -31,6 +27,7 @@ import {
   Divider,
   FormControl,
   FormLabel,
+  extendTheme,
 } from "@chakra-ui/react";
 import { HiEye, HiEyeOff } from "react-icons/hi";
 import userImageIcon from "../../assets/userImage.svg";
@@ -50,6 +47,22 @@ import PasswordIcon from "../../assets/ColoredNotificationIcon.svg";
 import HelppIcon from "../../assets/HelppIcon.svg";
 import NotificationIconn from "../../assets/Notification.Icon.svg";
 import Bar from "../../assets/ColoredBar.svg";
+
+const customTheme = extendTheme({
+  components: {
+    Link: {
+      baseStyle: {
+        _focus: {
+          boxShadow: "none",
+        },
+      },
+    },
+  },
+  fonts: {
+    body: "Montserrat, sans-serif",
+    heading: "Gill Sans MT, sans-serif",
+  },
+});
 
 const ChangePasswordPage = () => {
   const navigate = useNavigate();
@@ -116,7 +129,6 @@ const ChangePasswordPage = () => {
     navigate("/services");
   };
 
-
   const handleOpenLogoutModal = () => {
     setShowLogoutModal(true);
   };
@@ -154,16 +166,16 @@ const ChangePasswordPage = () => {
   const handleOpenNotificationssModal = () => {
     navigate("/notification-settings");
   };
-  
+
   const help = () => {
     navigate("/help");
   };
 
   const validate = (values) => {
     let errors = {};
-  
+
     if (!values.oldPassword) errors.oldPassword = "*Required";
-  
+
     if (!values.newPassword) errors.newPassword = "*Required";
     else if (
       !/(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,}/.test(
@@ -172,7 +184,7 @@ const ChangePasswordPage = () => {
     )
       errors.newPassword =
         "Password must contain at least one uppercase letter, one number, one special character, and be at least 8 characters long";
-  
+
     if (!values.confirmPassword) errors.confirmPassword = "*Required";
     else if (
       !/(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,}/.test(
@@ -181,17 +193,20 @@ const ChangePasswordPage = () => {
     )
       errors.confirmPassword =
         "Password must contain at least one uppercase letter, one number, one special character, and be at least 8 characters long";
-  
+
     if (values.newPassword !== values.confirmPassword)
       errors.confirmPassword = "Password do not match";
-  
+
     return errors;
   };
 
-
   const handleSaveChanges = async () => {
     // Validate passwords
-    const validationErrors = validate({ oldPassword, newPassword, confirmPassword });
+    const validationErrors = validate({
+      oldPassword,
+      newPassword,
+      confirmPassword,
+    });
 
     if (Object.keys(validationErrors).length > 0) {
       // Display validation errors using toast messages
@@ -211,18 +226,21 @@ const ChangePasswordPage = () => {
     const token = localStorage.getItem("token");
 
     try {
-      const response = await fetch("http://localhost:8080/v1/angel/change-password", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          oldPassword,
-          newPassword,
-          confirmPassword,
-        }),
-      });
+      const response = await fetch(
+        "http://localhost:8080/v1/angel/change-password",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            oldPassword,
+            newPassword,
+            confirmPassword,
+          }),
+        }
+      );
 
       const responseData = await response.json(); // Parse the response JSON
 
@@ -259,12 +277,10 @@ const ChangePasswordPage = () => {
     // setOldPassword("");
     // setNewPassword("");
     // setConfirmPassword("");
-};
-
-
+  };
 
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={customTheme}>
       <Box width="25%" p={3} h="90vh">
         <Image
           src={logo}
@@ -346,9 +362,14 @@ const ChangePasswordPage = () => {
             </Text>
           </Flex>
 
-          
           <Flex alignItems="center" marginTop="30px" marginLeft="-60px">
-            <Image marginLeft="13px" w="20px" h="20px" src={serviceIcon} alt="Help" />
+            <Image
+              marginLeft="26px"
+              w="20px"
+              h="20px"
+              src={serviceIcon}
+              alt="Help"
+            />
             <Text
               marginLeft="15px"
               color="black"
@@ -394,7 +415,6 @@ const ChangePasswordPage = () => {
             </Text>
           </Flex>
 
-
           <Flex alignItems="center" marginTop="100px" marginLeft="-55px">
             <Image
               marginLeft="15px"
@@ -436,9 +456,9 @@ const ChangePasswordPage = () => {
         <Flex>
           <Text
             fontSize="36px"
-            fontFamily="body"
+            fontFamily="heading"
             color="#A210C6"
-            marginLeft="60px"
+            marginLeft="25px"
             marginTop="30px"
           >
             Settings
@@ -490,7 +510,7 @@ const ChangePasswordPage = () => {
         </Flex>
         <Flex>
           <Box width="25%" p={3} h="80vh">
-            <Text marginLeft="-160px" fontSize="24px">
+            <Text fontFamily="heading" marginLeft="-160px" fontSize="24px">
               Account
             </Text>
 
@@ -609,38 +629,38 @@ const ChangePasswordPage = () => {
               <Divider my={1} borderColor="black.500" />{" "}
             </Box>
             <Box>
-            {" "}
-            <Flex
-              marginTop="25px"
-              style={{
-                cursor: "pointer",
-              }}
-              _hover={{ color: "#A210C6" }}
-              onClick={help}
-            >
-              <Image
-                src={Help}
-                alt="Notification Icon"
-                boxSize="50px"
-                marginBottom="2%"
-                h="50px"
-                w="50px"
-                borderRadius="100%"
-              />
-              <Text fontSize="20px" marginLeft="5px" marginTop="10px">
-                Help
-              </Text>
-              <Image
-                marginLeft="145px"
-                marginTop="20px"
-                w="10px"
-                h="15px"
-                src={RightArrow}
-                alt="right arrow"
-              />
-            </Flex>
-            <Divider my={1} borderColor="black.500" />{" "}
-          </Box>
+              {" "}
+              <Flex
+                marginTop="25px"
+                style={{
+                  cursor: "pointer",
+                }}
+                _hover={{ color: "#A210C6" }}
+                onClick={help}
+              >
+                <Image
+                  src={Help}
+                  alt="Notification Icon"
+                  boxSize="50px"
+                  marginBottom="2%"
+                  h="50px"
+                  w="50px"
+                  borderRadius="100%"
+                />
+                <Text fontSize="20px" marginLeft="5px" marginTop="10px">
+                  Help
+                </Text>
+                <Image
+                  marginLeft="145px"
+                  marginTop="20px"
+                  w="10px"
+                  h="15px"
+                  src={RightArrow}
+                  alt="right arrow"
+                />
+              </Flex>
+              <Divider my={1} borderColor="black.500" />{" "}
+            </Box>
           </Box>
           <Box
             marginTop="30px"
@@ -652,7 +672,9 @@ const ChangePasswordPage = () => {
           >
             {" "}
             <VStack spacing={3} align="center">
-            <Text fontSize="20px">Change password</Text>
+              <Text fontFamily="heading" fontSize="20px">
+                Change password
+              </Text>
               <FormControl>
                 <FormLabel>Old Password</FormLabel>
                 <InputGroup>

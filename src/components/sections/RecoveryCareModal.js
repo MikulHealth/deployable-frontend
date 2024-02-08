@@ -20,8 +20,11 @@ const RecoveryCareModal = ({ isOpen, onClose }) => {
         <ModalHeader>RECOVERY CARE</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Text marginLeft="250px" color="#A210C6">
-            PREMIUM CARE (4 WEEKS INTENSIVE CARE)
+          <Text fontWeight="bold" marginLeft="110px" color="#A210C6">
+            ALL-INCLUSIVE CARE FOR PATIENTS WHO ARE RECOVERING FROM SURGERY OR A
+            <Text fontWeight="bold" marginLeft="130px" color="#A210C6">
+              LONG TIME/CRITICAL ILLNESS AT THE HOSPITAL
+            </Text>
           </Text>
           <Flex
             marginBottom="30px"

@@ -5,10 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { SetUser } from "../../redux/userSlice";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import BookAppointmentModal from "../sections/BookAppointment";
-import AllAppointments from "../sections/AllAppointments";
-import PendingAppointmentModal from "../sections/PendingAppointments";
-import CanceledAppointmentsModal from "../sections/CanceledAppointments";
 import Help from "../../assets/Help.svg";
 import HelppIcon from "../../assets/HelppIcon.svg";
 import serviceIcon from "../../assets/ServiceIcon.svg";
@@ -30,7 +26,9 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
+  extendTheme,
   ModalBody,
+  Divider,
   ModalCloseButton,
 } from "@chakra-ui/react";
 import userImageIcon from "../../assets/userImage.svg";
@@ -46,6 +44,22 @@ import Online from "../../assets/OnlinePayment.svg";
 import RightArrow from "../../assets/RightArrow.svg";
 import Wallet from "../../assets/WalletWhite.svg";
 import LoadingSpinner from "../../utils/Spiner";
+
+const customTheme = extendTheme({
+  components: {
+    Link: {
+      baseStyle: {
+        _focus: {
+          boxShadow: "none",
+        },
+      },
+    },
+  },
+  fonts: {
+    body: "Montserrat, sans-serif",
+    heading: "Gill Sans MT, sans-serif",
+  },
+});
 
 const FundWalletModal = ({
   isOpen,
@@ -236,7 +250,7 @@ const OnlinePaymentModal = ({ isOpen, onClose }) => {
   );
 };
 
-const WalletPage = () => {
+const DebitPage = () => {
   const [showFundWalletModal, setShowFundWalletModal] = useState(false);
   const [showBankTransferModal, setShowBankTransferModal] = useState(false);
   const [showOnlinePaymentModal, setShowOnlinePaymentModal] = useState(false);
@@ -309,6 +323,17 @@ const WalletPage = () => {
     navigate("/services");
   };
 
+  const openWalletPage = () => {
+    navigate("/wallet");
+  };
+
+
+  const openCreditpage = () => {
+    navigate("/credit");
+  };
+
+
+
   const handleCloseOnlinePaymentModal = () => {
     setShowOnlinePaymentModal(false);
   };
@@ -335,7 +360,7 @@ const WalletPage = () => {
   };
 
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={customTheme}>
       <Box width="25%" p={3} h="100vh">
         <Image
           src={logo}
@@ -374,7 +399,7 @@ const WalletPage = () => {
 
           <Flex alignItems="center" marginTop="30px">
             <Image
-              marginLeft="10px"
+              marginLeft="20px"
               w="20px"
               h="20px"
               src={AppointmentsIcon}
@@ -425,7 +450,13 @@ const WalletPage = () => {
           </Flex>
 
           <Flex alignItems="center" marginTop="30px" marginLeft="-60px">
-            <Image marginLeft="13px" w="20px" h="20px" src={serviceIcon} alt="Help" />
+            <Image
+              marginLeft="26px"
+              w="20px"
+              h="20px"
+              src={serviceIcon}
+              alt="Help"
+            />
             <Text
               marginLeft="15px"
               color="black"
@@ -442,7 +473,7 @@ const WalletPage = () => {
 
           <Flex alignItems="center" marginTop="30px" marginLeft="-46px">
             <Image
-              marginLeft="10px"
+              marginLeft="20px"
               w="20px"
               h="20px"
               src={SettingsIcon}
@@ -464,11 +495,9 @@ const WalletPage = () => {
             </Text>
           </Flex>
 
-    
-
           <Flex alignItems="center" marginTop="100px" marginLeft="-55px">
             <Image
-              marginLeft="10px"
+              marginLeft="20px"
               w="20px"
               h="20px"
               src={LogoutIcon}
@@ -507,9 +536,9 @@ const WalletPage = () => {
         <Flex>
           <Text
             fontSize="28px"
-            fontFamily="body"
+            fontFamily="heading"
             color="#A210C6"
-            marginLeft="60px"
+            marginLeft="30px"
             marginTop="30px"
           >
             Wallet
@@ -558,38 +587,40 @@ const WalletPage = () => {
             </Box>
           </Flex>
         </Flex>
-        <Box marginLeft="900px" marginTop="10px" >
-                <Image
-                onClick={help}
-                  src={HelppIcon}
-                  alt="Logo"
-                  w="70px"
-                  h="70px"
-                  style={{
-                    cursor: "pointer",
-                    animation: "zoomInOut 2s infinite alternate", 
-                  }}
-                />
 
-                <style>
-                  {`
-          @keyframes zoomInOut {
-            0% {
-              transform: scale(1);
-            }
-            100% {
-              transform: scale(1.2);
-            }
-          }
-        `}
-                </style>
-              </Box>
         <Box
-          marginTop="50px"
+          marginTop="30px"
+          marginLeft="13px"
+          border="1px solid gray"
+          borderRadius="md"
+          padding="3px"
+          w="70vw"
+          h="6vh"
+        >
+          <Flex marginLeft="10px" marginTop="5px">
+            <SearchIcon boxSize={4} marginRight="10px" marginTop="5px" />
+            <Text
+              fontSize="16px"
+              fontFamily="body"
+              style={{
+                marginLeft: "5px",
+                marginTop: "1px",
+                fontStyle: "italic",
+                cursor: "pointer",
+              }}
+              _hover={{ color: "#A210C6" }}
+              // onClick={handleOpenSearchAppointmentsModal}
+            >
+              Search transaction by date
+            </Text>
+          </Flex>
+        </Box>
+        <Box
+          marginTop="20px"
           marginLeft="15px"
           bg="#A210C6"
           w="70vw"
-          h="30vh"
+          h="25vh"
           borderRadius="20px"
           display="flex"
         >
@@ -598,15 +629,15 @@ const WalletPage = () => {
             <Flex marginLeft="30">
               <Box color="white">
                 <Text
-                  fontSize="20px"
+                  fontSize="16px"
                   fontFamily="body"
                   marginTop="25px"
                   style={{ marginLeft: "5px" }}
                 >
-                  My Wallet
+                  Mikul health wallet
                 </Text>
-                <Text fontSize="16px" style={{ marginLeft: "20px" }}>
-                  Balance: ₦{balance.toFixed(2)}
+                <Text fontSize="24px" style={{ marginLeft: "-55px" }}>
+                  ₦ {balance.toFixed(2)}
                 </Text>
               </Box>
               <Box>
@@ -623,12 +654,14 @@ const WalletPage = () => {
                 </Button>
               </Box>
             </Flex>
-            <Flex marginLeft="35px" marginTop="45px">
+            <Flex marginLeft="35px" marginTop="20px">
               <Box w="15vw" color="white" marginTop="5px">
-                <Text marginLeft="-120px" fontSize="12px">
+                <Text marginLeft="-135px" fontSize="16px">
                   Wallet ID:
                 </Text>
-                <Text fontSize="16px">Wema Bank 0124536789</Text>
+                <Text fontFamily="body" marginLeft="-23px" fontSize="16px">
+                  Wema Bank 0124536789
+                </Text>
               </Box>
               <Flex marginLeft="480px">
                 <Box w="8vw" color="white">
@@ -648,108 +681,87 @@ const WalletPage = () => {
           </Box>
         </Box>
 
-        <Box marginLeft="15px">
-          <Box
+        <Box>
+          <Text
+            fontSize="28px"
+            fontFamily="heading"
+            color="black"
+            marginLeft="-860px"
             marginTop="20px"
-            border="1px solid gray"
-            borderRadius="md"
-            padding="3px"
-            w="70vw"
-            h="10vh"
           >
-            <Flex marginLeft="10px" marginTop="15px">
-              <SearchIcon boxSize={4} marginRight="10px" marginTop="5px" />
-              <Text
-                fontSize="16px"
-                style={{
-                  marginLeft: "5px",
-                  marginTop: "2px",
-                  fontStyle: "italic",
-                  cursor: "pointer",
-                }}
-                _hover={{ color: "#A210C6" }}
-                // onClick={handleOpenSearchAppointmentsModal}
-              >
-                Search transaction by date
-              </Text>
-            </Flex>
-          </Box>
-
-          <Box display="flex" marginTop="30px">
-            <Box bg="#F6E4FC" w="34vw" h="15vh" borderRadius="10px">
-              {" "}
-              <Text
-                fontSize="20px"
-                fontFamily="body"
-                color="black"
-                marginTop="10px"
-                marginLeft="-350"
-              >
-                Credit
-              </Text>
-              <Text
-                fontSize="16px"
-                style={{
-                  marginLeft: "350px",
-                  marginTop: "25px",
-                  fontStyle: "italic",
-                  cursor: "pointer",
-                }}
-                _hover={{ color: "#A210C6" }}
-              >
-                View
-              </Text>
-            </Box>
-            <Box
-              bg="#F6E4FC"
-              w="34vw"
-              h="15vh"
-              marginLeft="26px"
-              borderRadius="10px"
-              cursor="pointer"
-              onClick={() => setShowCanceledModal(true)}
+            Recent activity
+          </Text>
+          <Flex marginTop="10px">
+            <Text
+              style={{
+                cursor: "pointer",
+              }}
+              _hover={{ color: "#A210C6" }}
+              marginLeft="30px"
+              onClick={openWalletPage}
             >
-              {" "}
-              <Text
-                fontSize="20px"
-                fontFamily="body"
-                color="black"
-                marginTop="10px"
-                marginLeft="-350"
-              >
-                Debit
-              </Text>
-              <Text
-                fontSize="16px"
-                style={{
-                  marginLeft: "350px",
-                  marginTop: "25px",
-                  fontStyle: "italic",
-                  cursor: "pointer",
-                }}
-                _hover={{ color: "#A210C6" }}
-              >
-                View
-              </Text>
-            </Box>
-          </Box>
+              All
+            </Text>{" "}
+            <Text
+              style={{
+                cursor: "pointer",
+              }}
+              _hover={{ color: "#A210C6" }}
+              marginLeft="50px"
+              onClick={openCreditpage}
+            >
+              Credit
+            </Text>{" "}
+            <Text
+              style={{
+                cursor: "pointer",
+                textDecoration: "underline",
+                textDecorationThickness: "5px",
+              }}
+              _hover={{ color: "#A210C6" }}
+              marginLeft="50px"
+            >
+              Debit
+            </Text>
+          </Flex>
+          <Divider
+            marginTop="-10%"
+            marginLeft="2%"
+            my={4}
+            borderColor="gray.500"
+            width="60%"
+          />
+        </Box>
+        <Box marginLeft="900px" marginTop="120px">
+          <Image
+            onClick={help}
+            src={HelppIcon}
+            alt="Logo"
+            w="70px"
+            h="70px"
+            style={{
+              cursor: "pointer",
+              animation: "zoomInOut 2s infinite alternate",
+            }}
+          />
+
+          <style>
+            {`
+          @keyframes zoomInOut {
+            0% {
+              transform: scale(1);
+            }
+            100% {
+              transform: scale(1.2);
+            }
+          }
+        `}
+          </style>
         </Box>
       </Box>
       <UserDetailsModal
         isOpen={showUserDetailsModal}
         onClose={handleCloseUserDetailsModal}
-      />
-      <PendingAppointmentModal
-        isOpen={showPendingModal}
-        onClose={() => setShowPendingModal(false)}
-      />
-      <CanceledAppointmentsModal
-        isOpen={showCanceledModal}
-        onClose={() => setShowCanceledModal(false)}
-      />
-      <AllAppointments
-        isOpen={showViewAllModal}
-        onClose={() => setShowViewAllModal(false)}
       />
       <FundWalletModal
         isOpen={showFundWalletModal}
@@ -774,4 +786,4 @@ const WalletPage = () => {
   );
 };
 
-export default WalletPage;
+export default DebitPage;
