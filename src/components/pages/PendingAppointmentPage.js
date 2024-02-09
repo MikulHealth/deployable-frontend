@@ -47,6 +47,7 @@ import AppointmentsIcon from "../../assets/AppointmentWhite.svg";
 import HomeIcon from "../../assets/HomeBlack.svg";
 import SearchAppointmentsModal from "../sections/SearchAppointmentByDate";
 import HelppIcon from "../../assets/HelppIcon.svg";
+import LogoutModal from "../sections/LogoutModal";
 import serviceIcon from "../../assets/ServiceIcon.svg";
 
 const customTheme = extendTheme({
@@ -569,10 +570,10 @@ const PendingAppointmentPage = () => {
               fontFamily="body"
               marginTop="30px"
               _hover={{ color: "" }}
-              marginLeft="-70px"
+              marginLeft="-20px"
               borderRadius="100px"
             >
-              Book now
+              Book appointment
             </Button>
           </Box>
           <Box>
@@ -647,11 +648,17 @@ const PendingAppointmentPage = () => {
             {loading ? (
               <LoadingSpinner />
             ) : pendingAppointments.length === 0 ? (
-              <Text>
-                You have no appointments yet. Click{" "}
-                <Button onClick={handleOpenAppointmentModal}>Book now</Button>{" "}
-                to begin.
-              </Text>
+              <Text marginLeft="35px">
+              You have no appointments yet. click{" "}
+              <Button
+                color="#A210C6"
+                fontStyle="italic"
+                onClick={handleOpenAppointmentModal}
+              >
+                Book appointment
+              </Button>
+              to begin.
+            </Text>
             ) : (
               <VStack align="start" spacing={4}>
                 {pendingAppointments.map((appointment) => (
@@ -664,7 +671,7 @@ const PendingAppointmentPage = () => {
                         {`${appointment.appointment.recipientFirstname} ${appointment.appointment.recipientLastname}`}
                       </Text>
                     </Flex>
-                    <Flex >
+                    <Flex>
                       <Text fontWeight="bold" color="black">
                         Booked on:
                       </Text>
@@ -741,6 +748,13 @@ const PendingAppointmentPage = () => {
         isOpen={showAppointmentModal}
         onClose={handleCloseAppointmentModal}
       />
+
+      <LogoutModal
+        isOpen={showLogoutModal}
+        onClose={() => setShowLogoutModal(false)}
+        onConfirm={handleConfirmLogout}
+      />
+
       <CanceledAppointmentsModal
         isOpen={showCanceledModal}
         onClose={() => setShowCanceledModal(false)}

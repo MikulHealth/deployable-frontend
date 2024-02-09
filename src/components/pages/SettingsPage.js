@@ -37,13 +37,11 @@ import LogoutIcon from "../../assets/Logout.svg";
 import AppointmentsIcon from "../../assets/AppointmentIcon.svg";
 import HomeIcon from "../../assets/HomeBlack.svg";
 import ProfileIcon from "../../assets/ProfileIcone.svg";
-import ProfileIconWhite from "../../assets/ProfileIconWh.svg";
+import LogoutModal from "../sections/LogoutModal";
 import PasswordIcon from "../../assets/PasswordIcon.svg";
-import HelppIcon from "../../assets/HelppIcon.svg";
 import NotificationIconn from "../../assets/Notification.Icon.svg";
 import serviceIcon from "../../assets/ServiceIcon.svg";
 import BigSettingsIcon from "../../assets/BigSettingsIcon.svg";
-import SearchAppointmentsModal from "../sections/SearchAppointmentByDate";
 
 const customTheme = extendTheme({
   components: {
@@ -316,7 +314,7 @@ const SettingsPage = () => {
             Settings
           </Text>
           <Flex
-            marginLeft="650px"
+            marginLeft="700px"
             style={{
               cursor: "pointer",
             }}
@@ -514,6 +512,11 @@ const SettingsPage = () => {
       <UserDetailsModal
         isOpen={showUserDetailsModal}
         onClose={handleCloseUserDetailsModal}
+      />
+      <LogoutModal
+        isOpen={showLogoutModal}
+        onClose={() => setShowLogoutModal(false)}
+        onConfirm={handleConfirmLogout}
       />
     </ChakraProvider>
   );

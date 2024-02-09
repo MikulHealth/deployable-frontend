@@ -333,6 +333,7 @@ const ClientDash = () => {
                 }}
                 _hover={{ color: "#A210C6" }}
                 fontSize="18px"
+                
               >
                 Logout
               </Text>

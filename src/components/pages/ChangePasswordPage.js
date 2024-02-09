@@ -42,7 +42,7 @@ import LogoutIcon from "../../assets/Logout.svg";
 import AppointmentsIcon from "../../assets/AppointmentIcon.svg";
 import HomeIcon from "../../assets/HomeBlack.svg";
 import ProfileIcon from "../../assets/ProfileIcone.svg";
-import ProfileIconWhite from "../../assets/ProfileIconWh.svg";
+import LogoutModal from "../sections/LogoutModal";
 import PasswordIcon from "../../assets/ColoredNotificationIcon.svg";
 import HelppIcon from "../../assets/HelppIcon.svg";
 import NotificationIconn from "../../assets/Notification.Icon.svg";
@@ -464,7 +464,7 @@ const ChangePasswordPage = () => {
             Settings
           </Text>
           <Flex
-            marginLeft="650px"
+            marginLeft="700px"
             style={{
               cursor: "pointer",
             }}
@@ -758,6 +758,11 @@ const ChangePasswordPage = () => {
       <UserDetailsModal
         isOpen={showUserDetailsModal}
         onClose={handleCloseUserDetailsModal}
+      />
+      <LogoutModal
+        isOpen={showLogoutModal}
+        onClose={() => setShowLogoutModal(false)}
+        onConfirm={handleConfirmLogout}
       />
     </ChakraProvider>
   );

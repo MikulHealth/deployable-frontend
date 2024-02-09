@@ -50,7 +50,7 @@ import HomeIcon from "../../assets/HomeBlack.svg";
 import ProfileIcon from "../../assets/ProfileIcone.svg";
 import ProfileIconWhite from "../../assets/ProfileIconWh.svg";
 import PasswordIcon from "../../assets/PasswordIcon.svg";
-import HelppIcon from "../../assets/HelppIcon.svg";
+import LogoutModal from "../sections/LogoutModal";
 import ColorArrowIcon from "../../assets/RightArrowColor.svg";
 import NotificationIconn from "../../assets/Notification.Icon.svg";
 import UpdatePhoneNumber from "../sections/UpdatePhoneNumber";
@@ -475,7 +475,7 @@ const EdithProfilePage = () => {
             Settings
           </Text>
           <Flex
-            marginLeft="650px"
+            marginLeft="700px"
             style={{
               cursor: "pointer",
             }}
@@ -898,6 +898,11 @@ const EdithProfilePage = () => {
       <UserDetailsModal
         isOpen={showUserDetailsModal}
         onClose={handleCloseUserDetailsModal}
+      />
+      <LogoutModal
+        isOpen={showLogoutModal}
+        onClose={() => setShowLogoutModal(false)}
+        onConfirm={handleConfirmLogout}
       />
     </ChakraProvider>
   );

@@ -41,11 +41,7 @@ import SettingsIcon from "../../assets/SettingsIcon.svg";
 import LogoutIcon from "../../assets/Logout.svg";
 import AppointmentsIcon from "../../assets/AppointmentIcon.svg";
 import HomeIcon from "../../assets/HomeBlack.svg";
-import ProfileIcon from "../../assets/ProfileIcone.svg";
-import ProfileIconWhite from "../../assets/ProfileIconWh.svg";
-import PasswordIcon from "../../assets/PasswordIcon.svg";
-import HelppIcon from "../../assets/HelppIcon.svg";
-import NotificationIconn from "../../assets/Notification.Icon.svg";
+import LogoutModal from "../sections/LogoutModal";
 import serviceIcon from "../../assets/ServiceIcon.svg";
 import SearchAppointmentsModal from "../sections/SearchAppointmentByDate";
 
@@ -311,7 +307,7 @@ const HelpPage = () => {
             Help
           </Text>
           <Flex
-            marginLeft="650px"
+            marginLeft="750px"
             style={{
               cursor: "pointer",
             }}
@@ -517,6 +513,11 @@ const HelpPage = () => {
           </Box>
         </Flex>
       </Box>
+      <LogoutModal
+        isOpen={showLogoutModal}
+        onClose={() => setShowLogoutModal(false)}
+        onConfirm={handleConfirmLogout}
+      />
     </ChakraProvider>
   );
 };

@@ -8,6 +8,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import Help from "../../assets/Help.svg";
 import HelppIcon from "../../assets/HelppIcon.svg";
 import serviceIcon from "../../assets/ServiceIcon.svg";
+import LogoutModal from "../sections/LogoutModal";
 import { PhoneIcon, AddIcon, WarningIcon, SearchIcon } from "@chakra-ui/icons";
 import {
   ChakraProvider,
@@ -541,7 +542,7 @@ const CreditPage = () => {
             Wallet
           </Text>
           <Flex
-            marginLeft="650px"
+            marginLeft="790px"
             style={{
               cursor: "pointer",
             }}
@@ -774,6 +775,11 @@ const CreditPage = () => {
           accountName: "Michael Joshua",
           accountNumber: "0123456789",
         }}
+      />
+      <LogoutModal
+        isOpen={showLogoutModal}
+        onClose={() => setShowLogoutModal(false)}
+        onConfirm={handleConfirmLogout}
       />
       <OnlinePaymentModal
         isOpen={showOnlinePaymentModal}

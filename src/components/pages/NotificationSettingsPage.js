@@ -10,6 +10,7 @@ import Help from "../../assets/Help.svg";
 import WebIcon from "../../assets/WebIcon.svg";
 import EmailIcon from "../../assets/EmailIcon.svg";
 import TextIcon from "../../assets/TextIcon.svg";
+import LogoutModal from "../sections/LogoutModal";
 
 import { PhoneIcon, AddIcon, WarningIcon, SearchIcon } from "@chakra-ui/icons";
 import {
@@ -361,7 +362,7 @@ const NotificationSettingsPage = () => {
             Settings
           </Text>
           <Flex
-            marginLeft="650px"
+            marginLeft="700px"
             style={{
               cursor: "pointer",
             }}
@@ -659,6 +660,12 @@ const NotificationSettingsPage = () => {
         isOpen={showUserDetailsModal}
         onClose={handleCloseUserDetailsModal}
       />
+          <LogoutModal
+        isOpen={showLogoutModal}
+        onClose={() => setShowLogoutModal(false)}
+        onConfirm={handleConfirmLogout}
+      />
+
     </ChakraProvider>
   );
 };

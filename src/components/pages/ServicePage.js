@@ -42,13 +42,9 @@ import SettingsIcon from "../../assets/SettingsIcon.svg";
 import LogoutIcon from "../../assets/Logout.svg";
 import AppointmentsIcon from "../../assets/AppointmentIcon.svg";
 import HomeIcon from "../../assets/HomeBlack.svg";
-import ProfileIcon from "../../assets/ProfileIcone.svg";
-import ProfileIconWhite from "../../assets/ProfileIconWh.svg";
-import PasswordIcon from "../../assets/PasswordIcon.svg";
 import HelppIcon from "../../assets/HelppIcon.svg";
-import NotificationIconn from "../../assets/Notification.Icon.svg";
+import LogoutModal from "../sections/LogoutModal";
 import serviceIcon from "../../assets/WhiteServiceIcon.svg";
-import SearchAppointmentsModal from "../sections/SearchAppointmentByDate";
 
 const customTheme = extendTheme({
   components: {
@@ -65,7 +61,6 @@ const customTheme = extendTheme({
     heading: "Gill Sans MT, sans-serif",
   },
 });
-
 
 const ServicePage = () => {
   const navigate = useNavigate();
@@ -92,22 +87,17 @@ const ServicePage = () => {
     setShowRecoveryCareModal(true);
   };
 
-
   const handleOpenPostpatumCareModal = () => {
     setShowPostpartumCareModal(true);
   };
-
 
   const handleOpenNannyCareModal = () => {
     setShowNannyCareModal(true);
   };
 
-
   const handleOpenShortCareModal = () => {
     setShowShortCareModal(true);
   };
-
-
 
   const handleOpenUserDetailsModal = () => {
     setShowUserDetailsModal(true);
@@ -295,7 +285,7 @@ const ServicePage = () => {
             </Text>
           </Flex>
 
-          <Flex alignItems="center" marginTop="100px" marginLeft="-55px">
+          <Flex alignItems="center" marginTop="80px" marginLeft="-55px">
             <Image
               marginLeft="15px"
               w="20px"
@@ -387,7 +377,6 @@ const ServicePage = () => {
             </Box>
           </Flex>
         </Flex>
-     
 
         <Box marginLeft="20px" marginTop="60px">
           <Box
@@ -535,20 +524,20 @@ const ServicePage = () => {
             </Flex>
           </Box>
           <Box marginLeft="905px" marginTop="-50px">
-          <Image
-            onClick={help}
-            src={HelppIcon}
-            alt="Logo"
-            w="70px"
-            h="70px"
-            style={{
-              cursor: "pointer",
-              animation: "zoomInOut 2s infinite alternate",
-            }}
-          />
+            <Image
+              onClick={help}
+              src={HelppIcon}
+              alt="Logo"
+              w="70px"
+              h="70px"
+              style={{
+                cursor: "pointer",
+                animation: "zoomInOut 2s infinite alternate",
+              }}
+            />
 
-          <style>
-            {`
+            <style>
+              {`
           @keyframes zoomInOut {
             0% {
               transform: scale(1);
@@ -558,32 +547,37 @@ const ServicePage = () => {
             }
           }
         `}
-          </style>
-        </Box>
+            </style>
+          </Box>
         </Box>
       </Box>
       <UserDetailsModal
         isOpen={showUserDetailsModal}
         onClose={handleCloseUserDetailsModal}
       />
+      <LogoutModal
+        isOpen={showLogoutModal}
+        onClose={() => setShowLogoutModal(false)}
+        onConfirm={handleConfirmLogout}
+      />
 
       <ElderlyCareModal
         isOpen={showElderlyCareModal}
         onClose={() => setShowElderlyCareModal(false)}
       />
-         <PostpartumCareModal
+      <PostpartumCareModal
         isOpen={showPostpartumCareModal}
         onClose={() => setShowPostpartumCareModal(false)}
       />
-         <NannyCareModal
+      <NannyCareModal
         isOpen={showNannyCareModal}
         onClose={() => setShowNannyCareModal(false)}
       />
-         <RecoveryCareModal
+      <RecoveryCareModal
         isOpen={showRecoveryCareModal}
         onClose={() => setShowRecoveryCareModal(false)}
       />
-         <ShortNurseVisitModal
+      <ShortNurseVisitModal
         isOpen={showShortCareModal}
         onClose={() => setShowShortCareModal(false)}
       />

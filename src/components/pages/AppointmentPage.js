@@ -41,6 +41,7 @@ import familyIcon from "../../assets/family.svg";
 import UserDetailsModal from "../sections/UserDetails";
 import LoadingSpinner from "../../utils/Spiner";
 import Wallet from "../../assets/Wallet.svg";
+import LogoutModal from "../sections/LogoutModal";
 import logo from "../../assets/LogoColoured.svg";
 import SettingsIcon from "../../assets/SettingsIcon.svg";
 import LogoutIcon from "../../assets/Logout.svg";
@@ -135,10 +136,7 @@ const AppointmentPage = () => {
   };
 
   const handleConfirmLogout = () => {
-    // Close the logout confirmation modal
     setShowLogoutModal(false);
-
-    // Perform the actual logout
     localStorage.removeItem("token");
     localStorage.removeItem("phoneNumber");
     localStorage.removeItem("orderId");
@@ -522,10 +520,10 @@ const AppointmentPage = () => {
               fontFamily="body"
               marginTop="30px"
               _hover={{ color: "" }}
-              marginLeft="-70px"
+              marginLeft="-20px"
               borderRadius="100px"
             >
-              Book now
+              Book appointment
             </Button>
           </Box>
           <Box>
@@ -600,9 +598,16 @@ const AppointmentPage = () => {
             {loading ? (
               <LoadingSpinner />
             ) : appointments.length === 0 ? (
-              <Text>
-                You have no appointments yet.{" "}
-                <Button onClick={handleOpenAppointmentModal}>Book now</Button>
+              <Text marginLeft="35px">
+                You have no appointments yet. click{" "}
+                <Button
+                  color="#A210C6"
+                  fontStyle="italic"
+                  onClick={handleOpenAppointmentModal}
+                >
+                  Book appointment
+                </Button>
+                to begin.
               </Text>
             ) : (
               <VStack align="start" spacing={4}>
@@ -683,7 +688,11 @@ const AppointmentPage = () => {
         isOpen={showCanceledModal}
         onClose={() => setShowCanceledModal(false)}
       />
-
+      <LogoutModal
+        isOpen={showLogoutModal}
+        onClose={() => setShowLogoutModal(false)}
+        onConfirm={handleConfirmLogout}
+      />
       <SearchAppointmentsModal
         isOpen={showSearchAppointmentsModal}
         onClose={handleCloseSearchAppointmentsModal}

@@ -54,27 +54,27 @@ const BookAppointmentModal = ({ isOpen, onClose }) => {
     <Modal isOpen={isOpen} onClose={onClose} size="md">
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader color="#A210C6">Book appointment</ModalHeader>
+        {/* <ModalHeader color="#A210C6">Book appointment</ModalHeader> */}
         <ModalCloseButton />
         <ModalBody>
           <Progress size="xs" isIndeterminate />
-          <VStack spacing={4} marginTop="20px">
+          <VStack spacing={4} marginTop="35px">
             <Button
-              bg="gray"
+               bg="#A210C6"
               color="white"
               onClick={() => handleOpenSelfAppointmentModal(2)}
             >
               Book for self
             </Button>
             <Button
-              bg="gray"
+               bg="#A210C6"
               color="white"
               onClick={() => handleOpenBookAppointmentModal()}
             >
               Book for beneficiary
             </Button>
             <Button
-              bg="gray"
+              bg="#A210C6"
               color="white"
               onClick={() => handleOpenBeneficiaryAppointmentModal(3)}
             >

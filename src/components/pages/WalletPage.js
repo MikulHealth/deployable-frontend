@@ -8,6 +8,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import CanceledAppointmentsModal from "../sections/CanceledAppointments";
 import Help from "../../assets/Help.svg";
 import HelppIcon from "../../assets/HelppIcon.svg";
+import LogoutModal from "../sections/LogoutModal";
 import serviceIcon from "../../assets/ServiceIcon.svg";
 import { PhoneIcon, AddIcon, WarningIcon, SearchIcon } from "@chakra-ui/icons";
 import {
@@ -287,10 +288,7 @@ const WalletPage = () => {
   };
 
   const handleConfirmLogout = () => {
-    // Close the logout confirmation modal
     setShowLogoutModal(false);
-
-    // Perform the actual logout
     localStorage.removeItem("token");
     localStorage.removeItem("phoneNumber");
     localStorage.removeItem("orderId");
@@ -520,7 +518,7 @@ const WalletPage = () => {
             Wallet
           </Text>
           <Flex
-            marginLeft="650px"
+             marginLeft="790px"
             style={{
               cursor: "pointer",
             }}
@@ -748,6 +746,11 @@ const WalletPage = () => {
           accountName: "Michael Joshua",
           accountNumber: "0123456789",
         }}
+      />
+        <LogoutModal
+        isOpen={showLogoutModal}
+        onClose={() => setShowLogoutModal(false)}
+        onConfirm={handleConfirmLogout}
       />
       <OnlinePaymentModal
         isOpen={showOnlinePaymentModal}
