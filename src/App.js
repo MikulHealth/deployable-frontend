@@ -29,7 +29,7 @@ import CreditPage from "./components/pages/CreditWalletPage";
 import DebitPage from "./components/pages/DebitWalletPage";
 import { DeleteIcon } from "@chakra-ui/icons";
 import PendingAppointmentPage from "./components/pages/PendingAppointmentPage";
-import ActiveAppointmentPage from "./components/pages/ActiveAppointmentPage";
+import ActiveAppointmentPage from "./components/pages/MatchedAppointmentPage";
 
 
 function App() {

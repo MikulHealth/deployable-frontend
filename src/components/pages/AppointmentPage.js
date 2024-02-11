@@ -376,7 +376,7 @@ const AppointmentPage = () => {
             <Text
               onClick={handleOpenLogoutModal}
               marginLeft="15px"
-              color="black"
+              color="#A210C6"
               style={{
                 cursor: "pointer",
               }}
@@ -575,6 +575,16 @@ const AppointmentPage = () => {
               _hover={{ color: "#A210C6" }}
               marginLeft="50px"
               onClick={handleOpenActiveAppointmentsModal}
+            >
+              Matched
+            </Text>
+            <Text
+              style={{
+                cursor: "pointer",
+              }}
+              _hover={{ color: "#A210C6" }}
+              marginLeft="50px"
+             
             >
               Active
             </Text>

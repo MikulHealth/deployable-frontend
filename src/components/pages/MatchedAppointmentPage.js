@@ -624,6 +624,15 @@ const ActiveAppointmentPage = () => {
               _hover={{ color: "#A210C6" }}
               marginLeft="50px"
             >
+              Matched 
+            </Text>
+            <Text
+              style={{
+                cursor: "pointer",
+              }}
+              _hover={{ color: "#A210C6" }}
+              marginLeft="50px"
+            >
               Active
             </Text>
             <Text

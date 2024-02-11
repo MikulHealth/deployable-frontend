@@ -85,7 +85,7 @@ const ClientDash = () => {
     const fetchMatchedAppointments = async () => {
       try {
         const token = localStorage.getItem("token");
-
+  
         const response = await fetch(
           "http://localhost:8080/v1/appointment/matchedAppointments",
           {
@@ -98,8 +98,8 @@ const ClientDash = () => {
         );
         const data = await response.json();
         if (response.ok) {
-          console.log(data.appointment + "this is response from matched appointments");
-          setMatchedAppointments(data);
+          console.log("Response from matched appointments:", data);
+          setMatchedAppointments(data.data); // Set matched appointments from data.data
           setShowMatchedAppointmentsModal(true);
         } else {
           console.error("Failed to fetch matched appointments:", data.error);
@@ -108,10 +108,10 @@ const ClientDash = () => {
         console.error("Error fetching matched appointments:", error);
       }
     };
-
-    // fetchMatchedAppointments();
+  
+    fetchMatchedAppointments();
   }, []);
-
+  
   const handleOpenLogoutModal = () => {
     setShowLogoutModal(true);
   };
@@ -353,7 +353,7 @@ const ClientDash = () => {
               <Text
                 onClick={handleOpenLogoutModal}
                 marginLeft="15px"
-                color="black"
+                color="#A210C6"
                 style={{
                   cursor: "pointer",
                 }}

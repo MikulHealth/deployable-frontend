@@ -125,7 +125,7 @@ const MatchedAppointmentsModal = ({ isOpen, onClose, matchedAppointments }) => {
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose} size="xl">
+      <Modal isOpen={isOpen} onClose={onClose} size="2xl">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Matched Appointments</ModalHeader>
@@ -133,31 +133,31 @@ const MatchedAppointmentsModal = ({ isOpen, onClose, matchedAppointments }) => {
           <ModalBody>
           {appointments.map(appointment => (
               <Box key={appointment.id}>
-                <Flex>
+                <Flex marginTop="5px">
                   <Text fontWeight="bold" color="black">
                     Care beneficiary:
                   </Text>
                   <Text marginLeft="5px" color="black">
-                    {`${appointment.appointment?.recipientFirstname} ${appointment.appointment?.recipientLastname}`}
-                  </Text>
+                  {`${appointment.appointment.recipientFirstname} ${appointment.appointment.recipientLastname}`}
+                     </Text>
                 </Flex>
-                <Flex>
+                <Flex marginTop="5px">
                   <Text fontWeight="bold" color="black">
                     Caregiver name:
                   </Text>
                   <Text marginLeft="5px" color="black">
-                    {`${appointment.matchedMedic.firstname} ${appointment.matchedMedic.lastname}`}
+                    {/* {`${appointment.matchedMedic.firstname} ${appointment.matchedMedic.lastname}`} */}
                   </Text>
                 </Flex>
-                <Flex>
+                <Flex marginTop="5px">
                   <Text fontWeight="bold" color="black">
                     Caregiver type:
                   </Text>
                   <Text marginLeft="5px" color="black">
-                    {appointment.medic.medicSpecialization}
+                    {appointment.appointment.medicSpecialization}
                   </Text>
                 </Flex>
-                <Flex>
+                <Flex marginTop="5px"  marginLeft="1px">
                   <Text fontWeight="bold" color="black">
                     Booked on:
                   </Text>
@@ -175,7 +175,7 @@ const MatchedAppointmentsModal = ({ isOpen, onClose, matchedAppointments }) => {
                     }}
                     _hover={{ color: "#A210C6" }}
                   >
-                    Details
+                    Details of caregiver
                   </Text>
                   <Text
                     marginLeft="40px"

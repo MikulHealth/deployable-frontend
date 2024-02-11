@@ -277,7 +277,7 @@ const SettingsPage = () => {
               onClick={handleOpenLogoutModal}
               fontSize="18px"
               marginLeft="15px"
-              color="black"
+              color="#A210C6"
               style={{
                 cursor: "pointer",
               }}

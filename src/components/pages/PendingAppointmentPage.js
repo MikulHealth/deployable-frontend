@@ -624,6 +624,16 @@ const PendingAppointmentPage = () => {
               marginLeft="50px"
               onClick={handleOpenActiveAppointmentsModal}
             >
+              Matched
+            </Text>
+            <Text
+              style={{
+                cursor: "pointer",
+              }}
+              _hover={{ color: "#A210C6" }}
+              marginLeft="50px"
+             
+            >
               Active
             </Text>
             <Text
