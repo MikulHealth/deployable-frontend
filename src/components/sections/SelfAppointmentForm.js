@@ -62,6 +62,7 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
       shift: "",
       servicePlan: "",
       currentLocation: "",
+      medicSpecialization: "",
     },
     {
       recipientHospital: "",
@@ -69,7 +70,6 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
       recipientHealthHistory: "",
     },
   ]);
-
 
   const handleStartDateChange = (date) => {
     updateFormData("startDate", date);
@@ -108,7 +108,7 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
 
   const handleFormSubmit = async () => {
     setLoading(true);
-    
+
     const fieldNameMappings = {
       startDate: "Start Date",
       endDate: "End Date",
@@ -117,7 +117,8 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
       currentLocation: "Current Location",
       recipientHospital: "Personal hospital",
       recipientHealthHistory: "Health History",
-    };    
+      medicSpecialization: "Medic Specialization",
+    };
 
     const requiredFields = [
       "startDate",
@@ -127,8 +128,9 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
       "currentLocation",
       "recipientHospital",
       "recipientHealthHistory",
+      "medicSpecialization",
     ];
-    
+
     // for (const fieldName of requiredFields) {
     //   if (!formPages[currentPage - 1][fieldName]) {
     //     setLoading(false);
@@ -142,8 +144,6 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
     //     return;
     //   }
     // }
-    
-    
 
     try {
       const token = localStorage.getItem("token");
@@ -212,7 +212,6 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
           duration: 6000,
         });
       }
-    
     } catch (error) {
       setLoading(false);
       console.error("An error occurred:", error);
@@ -240,7 +239,6 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
     }
     return true;
   };
-  
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="2xl">
@@ -258,34 +256,34 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
                   <Box w="250px">
                     <FormLabel marginTop="20px">Start Date</FormLabel>
                     <DatePicker
-                    name="startDate"
-                    selected={formPages[0].startDate}
-                    onChange={(e) => handleStartDateChange(e)}
-                    peekNextMonth
-                    showMonthDropdown
-                    showYearDropdown
-                    dropdownMode="select"
-                    dateFormat="dd-MM-yyyy"
-                    placeholderText="preferred date to start"
-                    className="form-control"
-                    minDate={new Date()}
-                  />
+                      name="startDate"
+                      selected={formPages[0].startDate}
+                      onChange={(e) => handleStartDateChange(e)}
+                      peekNextMonth
+                      showMonthDropdown
+                      showYearDropdown
+                      dropdownMode="select"
+                      dateFormat="dd-MM-yyyy"
+                      placeholderText="preferred date to start"
+                      className="form-control"
+                      minDate={new Date()}
+                    />
                   </Box>
                   <Box w="250px" marginLeft="5px">
                     <FormLabel marginTop="20px">End Date</FormLabel>
                     <DatePicker
-                    name="endDate"
-                    selected={formPages[0].endDate}
-                    onChange={(e) => handleEndDateChange(e)}
-                    peekNextMonth
-                    showMonthDropdown
-                    showYearDropdown
-                    dropdownMode="select"
-                    dateFormat="dd-MM-yyyy"
-                    placeholderText="preferred date to end"
-                    className="form-control"
-                    minDate={new Date()}
-                  />
+                      name="endDate"
+                      selected={formPages[0].endDate}
+                      onChange={(e) => handleEndDateChange(e)}
+                      peekNextMonth
+                      showMonthDropdown
+                      showYearDropdown
+                      dropdownMode="select"
+                      dateFormat="dd-MM-yyyy"
+                      placeholderText="preferred date to end"
+                      className="form-control"
+                      minDate={new Date()}
+                    />
                   </Box>
                 </Flex>
                 <Flex>
@@ -316,9 +314,26 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
                       <option value="Postpartum care">Postpartum care</option>
                       <option value="Nanny care">Nanny care</option>
                       <option value="Recovery care">Recovery care</option>
+                      <option value="Short home visit">Short home visit</option>
                     </Select>
                   </Box>
                 </Flex>
+                <Box marginLeft="50px">
+                  <FormLabel marginTop="20px">Type of caregiver </FormLabel>
+                  <Select
+                    name="medicSpecialization"
+                    placeholder="Select preferred caregiver"
+                    w="250px"
+                    value={formPages[0].medicSpecialization}
+                    onChange={(e) => handleInputChange(e)}
+                  >
+                    <option value="Registered Nurse">Registered Nurse</option>
+                    <option value="Assistant Nurse">Assistant Nurse</option>
+                    <option value="Registered Midwife">
+                      Registered Nurse/Midwife
+                    </option>
+                  </Select>
+                </Box>
                 <Box marginLeft="50px">
                   <FormLabel marginTop="20px">Current Location </FormLabel>
                   <Input

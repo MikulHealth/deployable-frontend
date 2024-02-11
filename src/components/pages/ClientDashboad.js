@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { SetUser } from "../../redux/userSlice";
 import familyIcon from "../../assets/family.svg";
 import BookAppointmentModal from "../sections/BookAppointment";
+import MatchedAppointmentsModal from "../sections/MatchedAppointmentsModal";
+
 import {
   Box,
   Button,
@@ -71,21 +73,45 @@ const ClientDash = () => {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [showSkeleton, setShowSkeleton] = useState(true);
 
+  const [matchedAppointments, setMatchedAppointments] = useState([]);
+  const [showMatchedAppointmentsModal, setShowMatchedAppointmentsModal] =
+    useState(false);
+
   useEffect(() => {
     AOS.init();
   }, []);
 
-  const userDetails = async () => {
-    try {
-      const response = await GetCurrentUser();
-      if (response.success) {
-        dispatch(SetUser(response.data));
+  useEffect(() => {
+    const fetchMatchedAppointments = async () => {
+      try {
+        const token = localStorage.getItem("token");
+
+        const response = await fetch(
+          "http://localhost:8080/v1/appointment/matchedAppointments",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const data = await response.json();
+        if (response.ok) {
+          console.log(data.appointment + "this is response from matched appointments");
+          setMatchedAppointments(data);
+          setShowMatchedAppointmentsModal(true);
+        } else {
+          console.error("Failed to fetch matched appointments:", data.error);
+        }
+      } catch (error) {
+        console.error("Error fetching matched appointments:", error);
       }
-      console.log("This is user" + JSON.stringify(user));
-    } catch (error) {
-      alert(error.response);
-    }
-  };
+    };
+
+    // fetchMatchedAppointments();
+  }, []);
+
   const handleOpenLogoutModal = () => {
     setShowLogoutModal(true);
   };
@@ -333,7 +359,6 @@ const ClientDash = () => {
                 }}
                 _hover={{ color: "#A210C6" }}
                 fontSize="18px"
-                
               >
                 Logout
               </Text>
@@ -763,6 +788,12 @@ const ClientDash = () => {
         isOpen={showLogoutModal}
         onClose={() => setShowLogoutModal(false)}
         onConfirm={handleConfirmLogout}
+      />
+
+      <MatchedAppointmentsModal
+        isOpen={showMatchedAppointmentsModal}
+        onClose={() => setShowMatchedAppointmentsModal(false)}
+        matchedAppointments={matchedAppointments}
       />
     </ChakraProvider>
   );

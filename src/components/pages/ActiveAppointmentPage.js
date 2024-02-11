@@ -66,7 +66,7 @@ const customTheme = extendTheme({
   },
 });
 
-const PendingAppointmentPage = () => {
+const ActiveAppointmentPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const toast = useToast();
@@ -133,8 +133,8 @@ const PendingAppointmentPage = () => {
     navigate("/appointment");
   };
 
-  const handleOpenActiveAppointmentsModal = () => {
-    navigate("/active-appointments");
+  const PendingAppointmentPage = () => {
+    navigate("/pending-appointments");
   };
 
   const handleOpenLogoutModal = () => {
@@ -171,7 +171,7 @@ const PendingAppointmentPage = () => {
       };
 
       const response = await axios.get(
-        "http://localhost:8080/v1/appointment/pendingAppointments",
+        "http://localhost:8080/v1/appointment/matchedAppointments",
         config
       );
 
@@ -203,7 +203,7 @@ const PendingAppointmentPage = () => {
   const fetchAndDisplayAppointmentDetails = async (appointmentId) => {
     try {
       const token = localStorage.getItem("token");
-      const apiUrl = `http://localhost:8080/v1/appointment/findPendingAppointmentDetails/${appointmentId}`;
+      const apiUrl = `http://localhost:8080/v1/appointment/findMatchedAppointmentDetails/${appointmentId}`;
 
       const headers = {
         "Content-Type": "application/json",
@@ -608,21 +608,21 @@ const PendingAppointmentPage = () => {
             <Text
               style={{
                 cursor: "pointer",
-                textDecoration: "underline",
-                textDecorationThickness: "5px",
               }}
               _hover={{ color: "#A210C6" }}
               marginLeft="50px"
+              onClick={PendingAppointmentPage}
             >
               Pending
             </Text>{" "}
             <Text
               style={{
                 cursor: "pointer",
+                textDecoration: "underline",
+                textDecorationThickness: "5px",
               }}
               _hover={{ color: "#A210C6" }}
               marginLeft="50px"
-              onClick={handleOpenActiveAppointmentsModal}
             >
               Active
             </Text>
@@ -632,7 +632,6 @@ const PendingAppointmentPage = () => {
               }}
               _hover={{ color: "#A210C6" }}
               marginLeft="50px"
-             
             >
               Completed
             </Text>
@@ -655,7 +654,7 @@ const PendingAppointmentPage = () => {
               <LoadingSpinner />
             ) : pendingAppointments.length === 0 ? (
               <Text marginLeft="35px">
-                You have no pending appointments yet. click{" "}
+                You have no active appointments yet. click{" "}
                 <a
                   href="#"
                   style={{
@@ -667,8 +666,7 @@ const PendingAppointmentPage = () => {
                   onClick={handleOpenAppointmentModal}
                 >
                   Book appointment
-                </a>
-                {" "}
+                </a>{" "}
                 to begin.
               </Text>
             ) : (
@@ -688,7 +686,7 @@ const PendingAppointmentPage = () => {
                         Booked on:
                       </Text>
                       <Text marginLeft="5px" color="black">
-                        {formatDateTime(appointment.createdAt)}
+                        {formatDateTime(appointment.appointment.createdAt)}
                       </Text>
                       <Text
                         marginLeft="40px"
@@ -1019,4 +1017,4 @@ const PendingAppointmentPage = () => {
   );
 };
 
-export default PendingAppointmentPage;
+export default ActiveAppointmentPage;

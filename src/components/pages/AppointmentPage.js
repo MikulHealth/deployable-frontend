@@ -131,6 +131,12 @@ const AppointmentPage = () => {
   const PendingAppointmentPage = () => {
     navigate("/pending-appointments");
   };
+
+  const handleOpenActiveAppointmentsModal = () => {
+    navigate("/active-appointments");
+  };
+
+
   const handleOpenLogoutModal = () => {
     setShowLogoutModal(true);
   };
@@ -568,6 +574,7 @@ const AppointmentPage = () => {
               }}
               _hover={{ color: "#A210C6" }}
               marginLeft="50px"
+              onClick={handleOpenActiveAppointmentsModal}
             >
               Active
             </Text>
@@ -577,6 +584,7 @@ const AppointmentPage = () => {
               }}
               _hover={{ color: "#A210C6" }}
               marginLeft="50px"
+             
             >
               Completed
             </Text>
@@ -592,7 +600,7 @@ const AppointmentPage = () => {
             className="all-appointment"
             overflow="scroll"
             marginLeft="2%"
-            w="40vw"
+            w="45vw"
             h="28vh"
           >
             {loading ? (
@@ -600,13 +608,18 @@ const AppointmentPage = () => {
             ) : appointments.length === 0 ? (
               <Text marginLeft="35px">
                 You have no appointments yet. click{" "}
-                <Button
-                  color="#A210C6"
-                  fontStyle="italic"
+                <a
+                  href="#"
+                  style={{
+                    color: "#A210C6",
+                    fontStyle: "italic",
+                    textDecoration: "none",
+                    cursor: "pointer",
+                  }}
                   onClick={handleOpenAppointmentModal}
                 >
                   Book appointment
-                </Button>
+                </a>{" "}
                 to begin.
               </Text>
             ) : (
@@ -835,6 +848,15 @@ const AppointmentPage = () => {
                         </Text>
                         <Text marginLeft="5px" color="black">
                           {selectedAppointment.servicePlan || "Not availabe"}
+                        </Text>
+                      </Flex>
+                      <Flex marginTop="5px">
+                        <Text fontWeight="bold" color="black">
+                          Type of caregiver
+                        </Text>
+                        <Text marginLeft="5px" color="black">
+                          {selectedAppointment.medicSpecialization ||
+                            "Not availabe"}
                         </Text>
                       </Flex>
                       <Flex marginTop="5px">

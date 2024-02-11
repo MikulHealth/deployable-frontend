@@ -1,74 +1,36 @@
 import React, { useState, useEffect } from "react";
-import userImageIcon from "../../assets/userImage.svg";
+import axios from "axios";
 import {
-  VStack,
-  Text,
-  Button,
   Modal,
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalCloseButton,
   ModalBody,
+  ModalCloseButton,
   ModalFooter,
+  Text,
   Box,
-  Flex,
-  Spinner,
-  Progress,
   useToast,
-  Image,
+  Progress,
+  Button,
+  Flex,
   Divider,
 } from "@chakra-ui/react";
-import axios from "axios";
 
-const AppointmentModal = ({ isOpen, onClose }) => {
-  const [appointments, setAppointments] = useState([]);
-  const [selectedAppointment, setSelectedAppointment] = useState(null);
-  const [loading, setLoading] = useState(true);
+const MatchedAppointmentsModal = ({ isOpen, onClose, matchedAppointments }) => {
   const toast = useToast();
+  const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
+  const [cancellingAppointmentId, setCancellingAppointmentId] = useState(null);
   const [detailsModalOpen, setDetailsModalOpen] = useState(false);
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const config = {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        };
+  const appointments = Array.isArray(matchedAppointments) ? matchedAppointments : Object.values(matchedAppointments);
 
-        const response = await axios.get(
-          "http://localhost:8080/v1/appointment/allAppointments",
-          config
-        );
 
-        if (response.data.success) {
-          toast({
-            title: response.data.message,
-            status: "success",
-            duration: 6000,
-          });
-          setAppointments(response.data.data);
-        } else {
-          toast({
-            title: "Request failed",
-            description: response.message,
-            status: "error",
-            duration: 6000,
-          });
-          console.error("Failed to fetch appointments");
-        }
-      } catch (error) {
-        console.error("Error fetching appointments:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (isOpen) {
-      fetchData();
-    }
-  }, [isOpen]);
+  const handleViewMore = async (id) => {
+    await fetchAndDisplayAppointmentDetails(id);
+    console.log(`View more details for appointment with ID: ${id}`);
+  };
 
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
@@ -79,10 +41,60 @@ const AppointmentModal = ({ isOpen, onClose }) => {
     return formattedDate;
   };
 
+  const formatDateTime = (dateTimeString) => {
+    const options = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+    };
+    const formattedDateTime = new Date(dateTimeString).toLocaleDateString(
+      undefined,
+      options
+    );
+    return formattedDateTime;
+  };
+
+  const handleConfirmation = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const apiUrl = `http://localhost:8080/v1/appointment/cancelAppointment/${cancellingAppointmentId}`;
+
+      const headers = {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      };
+
+      const response = await axios.post(apiUrl, {}, { headers });
+
+      if (response.data.success) {
+        toast({
+          title: response.data.message,
+          status: "success",
+          duration: 6000,
+        });
+      } else {
+        toast({
+          title: "Error canceling appointment",
+          description: response.data.message,
+          status: "error",
+          duration: 6000,
+        });
+        console.error("Error canceling appointment");
+      }
+    } catch (error) {
+      console.error("An error occurred while canceling appointment:", error);
+    } finally {
+      setConfirmationModalOpen(false);
+    }
+  };
+
   const fetchAndDisplayAppointmentDetails = async (appointmentId) => {
     try {
       const token = localStorage.getItem("token");
-      const apiUrl = `http://localhost:8080/v1/appointment/findAppointmentDetails/${appointmentId}`;
+      const apiUrl = `http://localhost:8080/v1/appointment/findMatchedAppointmentDetails/${appointmentId}`;
 
       const headers = {
         "Content-Type": "application/json",
@@ -105,85 +117,88 @@ const AppointmentModal = ({ isOpen, onClose }) => {
       );
     }
   };
-  const handleViewMore = async (id) => {
-    await fetchAndDisplayAppointmentDetails(id);
-    // onClose();
-    console.log(`View more details for appointment with ID: ${id}`);
-  };
 
-  const formatDateTime = (dateTimeString) => {
-    const options = {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "numeric",
-      minute: "numeric",
-      second: "numeric",
-    };
-    const formattedDateTime = new Date(dateTimeString).toLocaleDateString(
-      undefined,
-      options
-    );
-    return formattedDateTime;
+  const handleCancelAppointment = (appointmentId) => {
+    setCancellingAppointmentId(appointmentId);
+    setConfirmationModalOpen(true);
   };
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose} size="xl" borderRadius="0px">
+      <Modal isOpen={isOpen} onClose={onClose} size="xl">
         <ModalOverlay />
-        <ModalContent maxH="80vh" overflowY="auto">
-          <ModalHeader color="#A210C6">All your appointments.</ModalHeader>
+        <ModalContent>
+          <ModalHeader>Matched Appointments</ModalHeader>
           <ModalCloseButton />
-          <ModalBody marginLeft="45px">
-            <Progress size="xs" isIndeterminate />
-            {loading ? (
-              <Flex align="center" justify="center" height="200px">
-                <Spinner size="xl" />
-              </Flex>
-            ) : (
-              <VStack align="start" spacing={4}>
-                {appointments.map((appointment) => (
-                  <Box key={appointment.id}>
-                    <Flex>
-                      <Text fontWeight="bold" color="black">
-                        Care beneficiary:
-                      </Text>
-                      <Text marginLeft="5px" color="black">
-                        {`${appointment.recipientFirstname} ${appointment.recipientLastname}`}
-                      </Text>
-                    </Flex>
-                    <Flex>
-                      <Text fontWeight="bold" color="black">
-                        Booked on:
-                      </Text>
-                      <Text marginLeft="5px" color="black">
-                        {formatDateTime(appointment.createdAt)}
-                      </Text>
+          <ModalBody>
+          {appointments.map(appointment => (
+              <Box key={appointment.id}>
+                <Flex>
+                  <Text fontWeight="bold" color="black">
+                    Care beneficiary:
+                  </Text>
+                  <Text marginLeft="5px" color="black">
+                    {`${appointment.appointment?.recipientFirstname} ${appointment.appointment?.recipientLastname}`}
+                  </Text>
+                </Flex>
+                <Flex>
+                  <Text fontWeight="bold" color="black">
+                    Caregiver name:
+                  </Text>
+                  <Text marginLeft="5px" color="black">
+                    {`${appointment.matchedMedic.firstname} ${appointment.matchedMedic.lastname}`}
+                  </Text>
+                </Flex>
+                <Flex>
+                  <Text fontWeight="bold" color="black">
+                    Caregiver type:
+                  </Text>
+                  <Text marginLeft="5px" color="black">
+                    {appointment.medic.medicSpecialization}
+                  </Text>
+                </Flex>
+                <Flex>
+                  <Text fontWeight="bold" color="black">
+                    Booked on:
+                  </Text>
+                  <Text marginLeft="5px" color="black">
+                    {formatDateTime(appointment.appointment.createdAt)}
+                  </Text>
+                  <Text
+                    marginLeft="40px"
+                    fontSize="16px"
+                    onClick={() => handleViewMore(appointment.id)}
+                    style={{
+                      color: "#A210C6",
+                      fontStyle: "italic",
+                      cursor: "pointer",
+                    }}
+                    _hover={{ color: "#A210C6" }}
+                  >
+                    Details
+                  </Text>
+                  <Text
+                    marginLeft="40px"
+                    fontSize="16px"
+                    onClick={() => handleCancelAppointment(appointment.id)}
+                    style={{
+                      color: "red",
+                      fontStyle: "italic",
+                      cursor: "pointer",
+                    }}
+                    _hover={{ color: "#A210C6" }}
+                  >
+                    Cancel
+                  </Text>
+                </Flex>
 
-                      <Text
-                        fontSize="16px"
-                        onClick={() => handleViewMore(appointment.id)}
-                        style={{
-                          marginLeft: "60px",
-                          color: "#A210C6",
-                          fontStyle: "italic",
-                          cursor: "pointer",
-                        }}
-                        _hover={{ color: "#A210C6" }}
-                      >
-                        Details
-                      </Text>
-                    </Flex>
-                  
-                    <Divider my={4} borderColor="gray.500" />
-                  </Box>
-                ))}
-              </VStack>
-            )}
+                <Divider my={4} borderColor="gray.500" />
+              </Box>
+            ))}
           </ModalBody>
-          <ModalFooter></ModalFooter>
         </ModalContent>
       </Modal>
+
       {detailsModalOpen && selectedAppointment && (
         <Modal
           isOpen={detailsModalOpen}
@@ -306,12 +321,13 @@ const AppointmentModal = ({ isOpen, onClose }) => {
                           {selectedAppointment.shift || "Not availabe"}
                         </Text>
                       </Flex>
-                      <Flex marginTop="2px">
+                      <Flex marginTop="5px">
                         <Text fontWeight="bold" color="black">
-                          Type of Caregiver:
+                          Type of caregiver
                         </Text>
                         <Text marginLeft="5px" color="black">
-                          {selectedAppointment.medicSpecialization || "Not availabe"}
+                          {selectedAppointment.medicSpecialization ||
+                            "Not availabe"}
                         </Text>
                       </Flex>
                       <Flex marginTop="5px">
@@ -371,10 +387,10 @@ const AppointmentModal = ({ isOpen, onClose }) => {
                           Paid:
                         </Text>
                         <Text marginLeft="5px" color="black">
-                          {console.log("Is paid is", selectedAppointment.paid)}
                           {selectedAppointment.paid ? "Yes" : "No"}
                         </Text>
                       </Flex>
+
                       <Flex marginTop="5px">
                         <Text fontWeight="bold" color="black">
                           Health History:
@@ -397,8 +413,33 @@ const AppointmentModal = ({ isOpen, onClose }) => {
           </ModalContent>
         </Modal>
       )}
+
+      {confirmationModalOpen && (
+        <Modal
+          isOpen={confirmationModalOpen}
+          onClose={() => setConfirmationModalOpen(false)}
+          size="md"
+        >
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Confirmation</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              Are you sure you want to cancel this appointment?
+            </ModalBody>
+            <ModalFooter>
+              <Button colorScheme="red" onClick={() => setConfirmationModalOpen(false)}>
+                No
+              </Button>
+              <Button marginLeft="5px" onClick={handleConfirmation}>
+                Yes
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      )}
     </>
   );
 };
 
-export default AppointmentModal;
+export default MatchedAppointmentsModal;

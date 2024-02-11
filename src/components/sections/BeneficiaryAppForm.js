@@ -47,6 +47,7 @@ const BookBeneficiaryAppointmentModal = ({
     recipientHospital: "",
     medicalReport: null,
     recipientHealthHistory: "",
+    medicSpecialization: "",
     startDate: null,
     endDate: null,
     kinName: "",
@@ -94,6 +95,7 @@ const BookBeneficiaryAppointmentModal = ({
       endDate: "End Date",
       currentLocation: "Current Location",
       recipientHealthHistory: "Health History",
+      medicSpecialization: "Medic Specialization",
     };
 
     const requiredFields = [
@@ -104,6 +106,7 @@ const BookBeneficiaryAppointmentModal = ({
       "endDate",
       "currentLocation",
       "recipientHealthHistory",
+      "medicSpecialization",
     ];
 
     for (const fieldName of requiredFields) {
@@ -234,6 +237,7 @@ const BookBeneficiaryAppointmentModal = ({
         recipientHospital: "",
         medicalReport: null,
         recipientHealthHistory: "",
+        medicSpecialization: "",
         startDate: null,
         endDate: null,
         kinName: selectedBeneficiary.kinName || "",
@@ -288,39 +292,26 @@ const BookBeneficiaryAppointmentModal = ({
                     <option value="Postpartum care">Postpartum care</option>
                     <option value="Recovery care">Recovery care</option>
                     <option value="Nanny care">Nanny care</option>
+                    <option value="Short home visit">Short home visit</option>
                   </Select>
                 </Box>
               </Flex>
-              {/* <Flex>
-                <Box>
-                  <FormLabel marginTop="20px">
-                    Personal Doctor's name{" "}
-                  </FormLabel>
-                  <Input
-                    name="recipientDoctor"
-                    type="text"
-                    placeholder="Personal Doctor's name"
-                    value={formPages.recipientDoctor}
-                    onChange={(e) => handleInputChange(e)}
-                    w="250px"
-                    isRequired
-                  />
-                </Box>
-                <Box marginLeft="5px">
-                  <FormLabel marginTop="20px">Doctor's phone number </FormLabel>
-
-                  <InputGroup >
-                    <InputLeftAddon children="+234" />
-                    <Input
-                      name="recipientDoctorNumber"
-                      type="tel"
-                      value={formPages.recipientDoctorNumber}
-                      onChange={(e) => handleInputChange(e)}
-                      w="250px"
-                    />
-                  </InputGroup>
-                </Box>
-              </Flex> */}
+              <Box marginLeft="50px">
+                <FormLabel marginTop="20px">Type of caregiver </FormLabel>
+                <Select
+                  name="medicSpecialization"
+                  placeholder="Select preferred caregiver"
+                  w="250px"
+                  value={formPages.medicSpecialiation}
+                  onChange={(e) => handleInputChange(e)}
+                >
+                  <option value="Registered Nurse">Registered Nurse</option>
+                  <option value="Assistant Nurse">Assistant Nurse</option>
+                  <option value="Registered Midwife">
+                    Registered Nurse/Midwife
+                  </option>
+                </Select>
+              </Box>
               <Flex>
                 <Box>
                   <FormLabel marginTop="20px">Personal hospital </FormLabel>
@@ -334,7 +325,9 @@ const BookBeneficiaryAppointmentModal = ({
                   />
                 </Box>
                 <Box marginLeft="5px">
-                  <FormLabel marginTop="20px">Upload medical report (optional) </FormLabel>
+                  <FormLabel marginTop="20px">
+                    Upload medical report (optional){" "}
+                  </FormLabel>
                   <Input
                     name="medicalReport"
                     type="file"

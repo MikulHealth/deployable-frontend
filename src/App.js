@@ -29,6 +29,7 @@ import CreditPage from "./components/pages/CreditWalletPage";
 import DebitPage from "./components/pages/DebitWalletPage";
 import { DeleteIcon } from "@chakra-ui/icons";
 import PendingAppointmentPage from "./components/pages/PendingAppointmentPage";
+import ActiveAppointmentPage from "./components/pages/ActiveAppointmentPage";
 
 
 function App() {
@@ -70,6 +71,7 @@ function App() {
           <Route path="/credit" element={<CreditPage />} />
           <Route path="/debit" element={<DebitPage />} />
           <Route path="/pending-appointments" element={<PendingAppointmentPage />} />
+          <Route path="/active-appointments" element={<ActiveAppointmentPage />} />
         </Routes>
       </BrowserRouter>
     </div>

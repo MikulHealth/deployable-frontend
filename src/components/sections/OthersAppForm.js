@@ -52,12 +52,14 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
       recipientDoctorNumber: "",
       recipientHospital: "",
       medicalReport: "",
+      medicSpecialization: "",
     },
     {
       recipientHealthHistory: "",
       recipientImage: "",
       startDate: "",
       endDate: "",
+    
     },
     {
       kinName: "",
@@ -276,44 +278,59 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
                       />
                     </Box>
                   </Flex>
-
                 </Box>
               </FormControl>
             )}
             {currentPage === 2 && (
               <Box marginLeft="30px">
-               
-               <Flex marginTop="1px">
-                    <Box>
-                      <FormLabel marginTop="20px">Shift </FormLabel>
-                      <Select
-                        name="shift"
-                        placeholder="Select preferred shift"
-                        w="250px"
-                        value={formPages[1].shift}
-                        onChange={(e) => handleInputChange(e)}
-                      >
-                        <option value="Day Shift">Day Shift (8hrs)</option>
-                        <option value="Night Shift">Night Shift (12hrs)</option>
-                        <option value="Live in">Live in (24hrs)</option>
-                      </Select>
-                    </Box>
-                    <Box marginLeft="5px">
-                      <FormLabel marginTop="20px">Service Plan </FormLabel>
-                      <Select
-                        name="servicePlan"
-                        placeholder="preferred service plan"
-                        w="250px"
-                        value={formPages[1].servicePlan}
-                        onChange={(e) => handleInputChange(e)}
-                      >
-                        <option value="Elderly care">Elderly care</option>
-                        <option value="Postpartum care">Postpartum care</option>
-                        <option value="Recovery care">Recovery care</option>
-                        <option value="Nanny care">Nanny care</option>
-                      </Select>
-                    </Box>
-                  </Flex>
+                <Flex marginTop="1px">
+                  <Box>
+                    <FormLabel marginTop="20px">Shift </FormLabel>
+                    <Select
+                      name="shift"
+                      placeholder="Select preferred shift"
+                      w="250px"
+                      value={formPages[1].shift}
+                      onChange={(e) => handleInputChange(e)}
+                    >
+                      <option value="Day Shift">Day Shift (8hrs)</option>
+                      <option value="Night Shift">Night Shift (12hrs)</option>
+                      <option value="Live in">Live in (24hrs)</option>
+                    </Select>
+                  </Box>
+                  <Box marginLeft="5px">
+                    <FormLabel marginTop="20px">Service Plan </FormLabel>
+                    <Select
+                      name="servicePlan"
+                      placeholder="preferred service plan"
+                      w="250px"
+                      value={formPages[1].servicePlan}
+                      onChange={(e) => handleInputChange(e)}
+                    >
+                      <option value="Elderly care">Elderly care</option>
+                      <option value="Postpartum care">Postpartum care</option>
+                      <option value="Recovery care">Recovery care</option>
+                      <option value="Nanny care">Nanny care</option>
+                      <option value="Short home visit">Short home visit</option>
+                    </Select>
+                  </Box>
+                </Flex>
+                <Box marginLeft="50px">
+                  <FormLabel marginTop="20px">Type of caregiver </FormLabel>
+                  <Select
+                    name="medicSpecialization"
+                    placeholder="Select preferred caregiver"
+                    w="250px"
+                    value={formPages[1].medicSpecialization}
+                    onChange={(e) => handleInputChange(e)}
+                  >
+                    <option value="Registered Nurse">Registered Nurse</option>
+                    <option value="Assistant Nurse">Assistant Nurse</option>
+                    <option value="Registered Midwife">
+                      Registered Nurse/Midwife
+                    </option>
+                  </Select>
+                </Box>
                 <Flex>
                   <Box>
                     <FormLabel marginTop="20px">Personal hospital </FormLabel>
