@@ -72,6 +72,7 @@ const ClientDash = () => {
   const [showServicesModal, setShowServicesModal] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [showSkeleton, setShowSkeleton] = useState(true);
+  const [apiMessage, setApiMessage] = useState("");
 
   const [matchedAppointments, setMatchedAppointments] = useState([]);
   const [showMatchedAppointmentsModal, setShowMatchedAppointmentsModal] =
@@ -101,7 +102,10 @@ const ClientDash = () => {
           const data = await response.json();
           if (response.ok) {
             console.log("Response from matched appointments:", data);
-            setMatchedAppointments(data.data); 
+            setMatchedAppointments(data.data);
+            setApiMessage(data.message);
+
+            console.log("Response from api message", data.message);
             setShowMatchedAppointmentsModal(true);
           } else {
             console.error("Failed to fetch matched appointments:", data.error);
@@ -113,19 +117,17 @@ const ClientDash = () => {
         console.error("Error fetching matched appointments:", error);
       }
     };
-  
+
     // Fetch matched appointments initially
     fetchMatchedAppointments();
-  
+
     // Fetch matched appointments every 15 minutes
     const intervalId = setInterval(fetchMatchedAppointments, 15 * 60 * 1000);
-  
+
     // Clear interval on component unmount
     return () => clearInterval(intervalId);
   }, []);
-  
-  
-  
+
   const handleOpenLogoutModal = () => {
     setShowLogoutModal(true);
   };
@@ -808,6 +810,7 @@ const ClientDash = () => {
         isOpen={showMatchedAppointmentsModal}
         onClose={() => setShowMatchedAppointmentsModal(false)}
         matchedAppointments={matchedAppointments}
+        apiResponseMessage={apiMessage}
       />
     </ChakraProvider>
   );

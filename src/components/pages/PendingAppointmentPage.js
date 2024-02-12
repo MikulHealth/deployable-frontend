@@ -137,6 +137,10 @@ const PendingAppointmentPage = () => {
     navigate("/active-appointments");
   };
 
+  const handlePayment = () => {
+    navigate("/make-payment");
+  };
+
   const handleOpenLogoutModal = () => {
     setShowLogoutModal(true);
   };
@@ -984,11 +988,24 @@ const PendingAppointmentPage = () => {
                   </Flex>
                 </Box>
               </Flex>
+              {/* Display payment button if appointment is not paid */}
+              {!selectedAppointment.paid && (
+                <Button
+                  marginLeft="265px"
+                  bg="#A210C6"
+                  marginTop="10px"
+                  marginBottom="10px"
+                  color="white"
+                  _hover={{ color: "" }}
+                  onClick={handlePayment}
+                >
+                  Pay for appointment
+                </Button>
+              )}
             </ModalBody>
           </ModalContent>
         </Modal>
       )}
-
       {confirmationModalOpen && (
         <Modal
           isOpen={confirmationModalOpen}

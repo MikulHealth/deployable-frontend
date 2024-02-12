@@ -17,7 +17,12 @@ import {
   Divider,
 } from "@chakra-ui/react";
 
-const MatchedAppointmentsModal = ({ isOpen, onClose, matchedAppointments }) => {
+const MatchedAppointmentsModal = ({
+  isOpen,
+  onClose,
+  matchedAppointments,
+  apiMessage,
+}) => {
   const toast = useToast();
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
   const [cancellingAppointmentId, setCancellingAppointmentId] = useState(null);
@@ -28,6 +33,8 @@ const MatchedAppointmentsModal = ({ isOpen, onClose, matchedAppointments }) => {
     !matchedAppointments ||
     !Array.isArray(matchedAppointments) ||
     matchedAppointments.length === 0;
+
+    console.log("Response from Matched modal", JSON.stringify(apiMessage));
 
   const handleViewMore = async (id) => {
     await fetchAndDisplayAppointmentDetails(id);
@@ -136,10 +143,8 @@ const MatchedAppointmentsModal = ({ isOpen, onClose, matchedAppointments }) => {
             {/* Display message if no matched caregiver */}
             {noMatchedCaregiver && (
               <Box marginBottom="40px">
-                <Text>
-                  No matched caregiver found yet. Kindly wait, will find a
-                  suitable match soon.
-                </Text>
+                <Text>{JSON.stringify(apiMessage)}</Text>
+               
               </Box>
             )}
 
