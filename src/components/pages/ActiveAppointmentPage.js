@@ -624,16 +624,7 @@ const ActiveAppointmentPage = () => {
               _hover={{ color: "#A210C6" }}
               marginLeft="50px"
             >
-              Matched 
-            </Text>
-            <Text
-              style={{
-                cursor: "pointer",
-              }}
-              _hover={{ color: "#A210C6" }}
-              marginLeft="50px"
-            >
-              Active
+              Active 
             </Text>
             <Text
               style={{
@@ -674,7 +665,7 @@ const ActiveAppointmentPage = () => {
                   }}
                   onClick={handleOpenAppointmentModal}
                 >
-                  Book appointment
+                  book appointment
                 </a>{" "}
                 to begin.
               </Text>

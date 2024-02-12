@@ -24,8 +24,10 @@ const MatchedAppointmentsModal = ({ isOpen, onClose, matchedAppointments }) => {
   const [detailsModalOpen, setDetailsModalOpen] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
 
-  const appointments = Array.isArray(matchedAppointments) ? matchedAppointments : Object.values(matchedAppointments);
-
+  const noMatchedCaregiver =
+    !matchedAppointments ||
+    !Array.isArray(matchedAppointments) ||
+    matchedAppointments.length === 0;
 
   const handleViewMore = async (id) => {
     await fetchAndDisplayAppointmentDetails(id);
@@ -125,76 +127,86 @@ const MatchedAppointmentsModal = ({ isOpen, onClose, matchedAppointments }) => {
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose} size="2xl">
+      <Modal isOpen={isOpen} onClose={onClose} size="3xl">
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Matched Appointments</ModalHeader>
+          <ModalHeader>Appointment Status</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-          {appointments.map(appointment => (
-              <Box key={appointment.id}>
-                <Flex marginTop="5px">
-                  <Text fontWeight="bold" color="black">
-                    Care beneficiary:
-                  </Text>
-                  <Text marginLeft="5px" color="black">
-                  {`${appointment.appointment.recipientFirstname} ${appointment.appointment.recipientLastname}`}
-                     </Text>
-                </Flex>
-                <Flex marginTop="5px">
-                  <Text fontWeight="bold" color="black">
-                    Caregiver name:
-                  </Text>
-                  <Text marginLeft="5px" color="black">
-                    {/* {`${appointment.matchedMedic.firstname} ${appointment.matchedMedic.lastname}`} */}
-                  </Text>
-                </Flex>
-                <Flex marginTop="5px">
-                  <Text fontWeight="bold" color="black">
-                    Caregiver type:
-                  </Text>
-                  <Text marginLeft="5px" color="black">
-                    {appointment.appointment.medicSpecialization}
-                  </Text>
-                </Flex>
-                <Flex marginTop="5px"  marginLeft="1px">
-                  <Text fontWeight="bold" color="black">
-                    Booked on:
-                  </Text>
-                  <Text marginLeft="5px" color="black">
-                    {formatDateTime(appointment.appointment.createdAt)}
-                  </Text>
-                  <Text
-                    marginLeft="40px"
-                    fontSize="16px"
-                    onClick={() => handleViewMore(appointment.id)}
-                    style={{
-                      color: "#A210C6",
-                      fontStyle: "italic",
-                      cursor: "pointer",
-                    }}
-                    _hover={{ color: "#A210C6" }}
-                  >
-                    Details of caregiver
-                  </Text>
-                  <Text
-                    marginLeft="40px"
-                    fontSize="16px"
-                    onClick={() => handleCancelAppointment(appointment.id)}
-                    style={{
-                      color: "red",
-                      fontStyle: "italic",
-                      cursor: "pointer",
-                    }}
-                    _hover={{ color: "#A210C6" }}
-                  >
-                    Cancel
-                  </Text>
-                </Flex>
-
-                <Divider my={4} borderColor="gray.500" />
+            {/* Display message if no matched caregiver */}
+            {noMatchedCaregiver && (
+              <Box marginBottom="40px">
+                <Text>
+                  No matched caregiver found yet. Kindly wait, will find a
+                  suitable match soon.
+                </Text>
               </Box>
-            ))}
+            )}
+
+            {/* Display matched appointments if available */}
+            {!noMatchedCaregiver &&
+              matchedAppointments.map((appointment) => (
+                <Box key={appointment.id}>
+                  <Flex marginTop="5px">
+                    <Text fontWeight="bold" color="black">
+                      Care beneficiary:
+                    </Text>
+                    <Text marginLeft="5px" color="black">
+                      {`${appointment.appointment.recipientFirstname} ${appointment.appointment.recipientLastname}`}
+                    </Text>
+                  </Flex>
+                  <Flex marginTop="5px">
+                    <Text fontWeight="bold" color="black">
+                      Caregiver name:
+                    </Text>
+                    <Text marginLeft="5px" color="black"></Text>
+                  </Flex>
+                  <Flex marginTop="5px">
+                    <Text fontWeight="bold" color="black">
+                      Caregiver type:
+                    </Text>
+                    <Text marginLeft="5px" color="black">
+                      {appointment.appointment.medicSpecialization}
+                    </Text>
+                  </Flex>
+                  <Flex marginTop="5px" marginLeft="1px">
+                    <Text fontWeight="bold" color="black">
+                      Booked on:
+                    </Text>
+                    <Text marginLeft="5px" color="black">
+                      {formatDateTime(appointment.appointment.createdAt)}
+                    </Text>
+                    <Text
+                      marginLeft="40px"
+                      fontSize="16px"
+                      onClick={() => handleViewMore(appointment.id)}
+                      style={{
+                        color: "#A210C6",
+                        fontStyle: "italic",
+                        cursor: "pointer",
+                      }}
+                      _hover={{ color: "#A210C6" }}
+                    >
+                      Details of caregiver
+                    </Text>
+                    <Text
+                      marginLeft="40px"
+                      fontSize="16px"
+                      onClick={() => handleCancelAppointment(appointment.id)}
+                      style={{
+                        color: "red",
+                        fontStyle: "italic",
+                        cursor: "pointer",
+                      }}
+                      _hover={{ color: "#A210C6" }}
+                    >
+                      Cancel appointment
+                    </Text>
+                  </Flex>
+
+                  <Divider my={4} borderColor="gray.500" />
+                </Box>
+              ))}
           </ModalBody>
         </ModalContent>
       </Modal>
@@ -428,7 +440,10 @@ const MatchedAppointmentsModal = ({ isOpen, onClose, matchedAppointments }) => {
               Are you sure you want to cancel this appointment?
             </ModalBody>
             <ModalFooter>
-              <Button colorScheme="red" onClick={() => setConfirmationModalOpen(false)}>
+              <Button
+                colorScheme="red"
+                onClick={() => setConfirmationModalOpen(false)}
+              >
                 No
               </Button>
               <Button marginLeft="5px" onClick={handleConfirmation}>

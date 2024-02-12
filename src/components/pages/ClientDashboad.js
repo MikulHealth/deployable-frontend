@@ -84,33 +84,47 @@ const ClientDash = () => {
   useEffect(() => {
     const fetchMatchedAppointments = async () => {
       try {
-        const token = localStorage.getItem("token");
-  
-        const response = await fetch(
-          "http://localhost:8080/v1/appointment/matchedAppointments",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
+        const appointmentId = localStorage.getItem("appointmentId");
+        // Check if there is an appointment ID in the local storage
+        if (appointmentId) {
+          const token = localStorage.getItem("token");
+          const response = await fetch(
+            `http://localhost:8080/v1/appointment/match-appointment/${appointmentId}`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          const data = await response.json();
+          if (response.ok) {
+            console.log("Response from matched appointments:", data);
+            setMatchedAppointments(data.data); 
+            setShowMatchedAppointmentsModal(true);
+          } else {
+            console.error("Failed to fetch matched appointments:", data.error);
           }
-        );
-        const data = await response.json();
-        if (response.ok) {
-          console.log("Response from matched appointments:", data);
-          setMatchedAppointments(data.data); // Set matched appointments from data.data
-          setShowMatchedAppointmentsModal(true);
         } else {
-          console.error("Failed to fetch matched appointments:", data.error);
+          console.log("No appointment ID found in local storage.");
         }
       } catch (error) {
         console.error("Error fetching matched appointments:", error);
       }
     };
   
+    // Fetch matched appointments initially
     fetchMatchedAppointments();
+  
+    // Fetch matched appointments every 15 minutes
+    const intervalId = setInterval(fetchMatchedAppointments, 15 * 60 * 1000);
+  
+    // Clear interval on component unmount
+    return () => clearInterval(intervalId);
   }, []);
+  
+  
   
   const handleOpenLogoutModal = () => {
     setShowLogoutModal(true);

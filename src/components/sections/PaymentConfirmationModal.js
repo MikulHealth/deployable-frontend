@@ -122,26 +122,25 @@ const PaymentConfirmationModal = ({ isOpen, onClose }) => {
     try {
       const token = localStorage.getItem("token");
       const appointmentId = localStorage.getItem("appointmentId");
-
+  
       const apiUrl = `http://localhost:8080/v1/payment/verify/${appointmentId}`;
-
+  
       const headers = {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       };
-
+  
       const response = await axios.get(apiUrl, { headers });
       console.log(response.data);
-
+  
       if (response.data.status === true) {
         toast({
           title: "Payment verified",
-          description: response.data.message,
+          description: "We will match you with a suitable caregiver soon.",
           status: "success",
-          duration: 6000,
+          duration: 8000,
         });
         console.log("Payment verified successfully", response.data.data);
-        localStorage.removeItem("appointmentId");
         setPaymentData({
           email: "",
           amount: " ",
@@ -153,7 +152,7 @@ const PaymentConfirmationModal = ({ isOpen, onClose }) => {
         setTimeout(() => {
           navigate("/dashboard");
         }, 3000);
-       
+      
       } else {
         toast({
           title: "Verification failed",
@@ -162,16 +161,13 @@ const PaymentConfirmationModal = ({ isOpen, onClose }) => {
           duration: 6000,
         });
         console.error("Payment verification failed");
-       
-        navigate("/dashboard");
       }
     } catch (error) {
       // Handle error
       console.error("An error occurred during payment verification:", error);
-      navigate("/dashboard");
     }
   };
-
+  
   const handlePayment = (e) => {
     e.preventDefault();
   };
