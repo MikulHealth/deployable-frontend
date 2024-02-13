@@ -183,7 +183,6 @@ const CustomizeServicePage = () => {
     setConfirmationModalOpen(true);
   };
 
-
   const formatDateTime = (dateTimeString) => {
     const options = {
       year: "numeric",
@@ -421,7 +420,7 @@ const CustomizeServicePage = () => {
             fontSize="36px"
             fontFamily="heading"
             color="#A210C6"
-            marginLeft="60px"
+            marginLeft="30px"
             marginTop="30px"
           >
             Services
@@ -471,19 +470,29 @@ const CustomizeServicePage = () => {
           </Flex>
         </Flex>
         <Box w="70vw" h="80vh">
-          <Button
-            onClick={handlebackToService}
-            borderColor="#A210C6"
-            borderWidth="1px"
-            color="#A210C6"
-            fontFamily="body"
-            marginTop="10px"
-            _hover={{ color: "" }}
-            marginLeft="-650px"
-            borderRadius="100px"
-          >
-            Back to other services
-          </Button>
+          <Flex>
+            <Box>
+              <Text fontSize="18px" marginLeft="30px" marginTop="5px">
+                Welcome to the custom service section! Here, you have the
+              </Text>
+              <Text fontSize="18px" marginLeft="10px" marginTop="3px" marginBottom="20px">
+                flexibility to tailor services according to your preferences.
+              </Text>
+            </Box>
+            <Button
+              onClick={handlebackToService}
+              borderColor="#A210C6"
+              borderWidth="1px"
+              color="#A210C6"
+              fontFamily="body"
+              marginTop="10px"
+              _hover={{ color: "" }}
+              marginLeft="200px"
+              borderRadius="100px"
+            >
+              Back to other services
+            </Button>
+          </Flex>
 
           <Box
             className="all-customized-services"

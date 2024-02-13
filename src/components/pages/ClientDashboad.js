@@ -557,7 +557,7 @@ const ClientDash = () => {
                         }}
                         color="#A210C6"
                         _hover={{ color: "#A210C6" }}
-                        onClick={() => setShowServicesModal(true)}
+                        onClick={Services}
                       >
                         View services
                       </Text>
