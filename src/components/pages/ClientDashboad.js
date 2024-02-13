@@ -75,6 +75,7 @@ const ClientDash = () => {
   const [apiMessage, setApiMessage] = useState("");
 
   const [matchedAppointments, setMatchedAppointments] = useState([]);
+  const [matchedAppointmentMessage, setMatchedAppointmentMessage] = useState("")
   const [showMatchedAppointmentsModal, setShowMatchedAppointmentsModal] =
     useState(false);
 
@@ -104,7 +105,7 @@ const ClientDash = () => {
             console.log("Response from matched appointments:", data);
             setMatchedAppointments(data.data);
             setApiMessage(data.message);
-
+            setMatchedAppointmentMessage(data.message)
             console.log("Response from api message", data.message);
             setShowMatchedAppointmentsModal(true);
           } else {

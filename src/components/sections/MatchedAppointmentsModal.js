@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import {
   Modal,
@@ -28,13 +29,13 @@ const MatchedAppointmentsModal = ({
   const [cancellingAppointmentId, setCancellingAppointmentId] = useState(null);
   const [detailsModalOpen, setDetailsModalOpen] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
-
+  const { user } = useSelector((state) => state.userReducer);
   const noMatchedCaregiver =
     !matchedAppointments ||
     !Array.isArray(matchedAppointments) ||
     matchedAppointments.length === 0;
 
-    console.log("Response from Matched modal", JSON.stringify(apiMessage));
+  console.log("Response from Matched modal", apiMessage);
 
   const handleViewMore = async (id) => {
     await fetchAndDisplayAppointmentDetails(id);
@@ -143,8 +144,15 @@ const MatchedAppointmentsModal = ({
             {/* Display message if no matched caregiver */}
             {noMatchedCaregiver && (
               <Box marginBottom="40px">
-                <Text>{JSON.stringify(apiMessage)}</Text>
-               
+                {user?.appointmentPaid && !user?.appointmentMatched && (
+                  <Text>No matching caregiver found yet, please wait...</Text>
+                )}
+                {isOpen && !user?.appointmentPaid && (
+                  <Text>
+                    Kindly pay for your appointment to get matched with a
+                    caregiver.
+                  </Text>
+                )}
               </Box>
             )}
 
