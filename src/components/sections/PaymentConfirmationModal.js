@@ -152,6 +152,7 @@ const PaymentConfirmationModal = ({ isOpen, onClose }) => {
         setTimeout(() => {
           navigate("/dashboard");
         }, 3000);
+        window.location.reload();
       
       } else {
         toast({

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import {
   Modal,
   ModalOverlay,
@@ -16,7 +17,24 @@ import {
   Button,
   Flex,
   Divider,
+  extendTheme,
 } from "@chakra-ui/react";
+
+const customTheme = extendTheme({
+  components: {
+    Link: {
+      baseStyle: {
+        _focus: {
+          boxShadow: "none",
+        },
+      },
+    },
+  },
+  fonts: {
+    body: "Montserrat, sans-serif",
+    heading: "Gill Sans MT, sans-serif",
+  },
+});
 
 const MatchedAppointmentsModal = ({
   isOpen,
@@ -29,6 +47,7 @@ const MatchedAppointmentsModal = ({
   const [cancellingAppointmentId, setCancellingAppointmentId] = useState(null);
   const [detailsModalOpen, setDetailsModalOpen] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
+  const navigate = useNavigate();
   const { user } = useSelector((state) => state.userReducer);
   const noMatchedCaregiver =
     !matchedAppointments ||
@@ -133,30 +152,15 @@ const MatchedAppointmentsModal = ({
     setConfirmationModalOpen(true);
   };
 
+
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose} size="3xl">
+      <Modal theme={customTheme} isOpen={isOpen} onClose={onClose} size="3xl">
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Appointment Status</ModalHeader>
+          <ModalHeader fontStyle="header">Appointment Status</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            {/* Display message if no matched caregiver */}
-            {noMatchedCaregiver && (
-              <Box marginBottom="40px">
-                {user?.appointmentPaid && !user?.appointmentMatched && (
-                  <Text>No matching caregiver found yet, please wait...</Text>
-                )}
-                {isOpen && !user?.appointmentPaid && (
-                  <Text>
-                    Kindly pay for your appointment to get matched with a
-                    caregiver.
-                  </Text>
-                )}
-              </Box>
-            )}
-
-            {/* Display matched appointments if available */}
             {!noMatchedCaregiver &&
               matchedAppointments.map((appointment) => (
                 <Box key={appointment.id}>

@@ -6,7 +6,7 @@ import { SetUser } from "../../redux/userSlice";
 import familyIcon from "../../assets/family.svg";
 import BookAppointmentModal from "../sections/BookAppointment";
 import MatchedAppointmentsModal from "../sections/MatchedAppointmentsModal";
-
+import PayForAppointmentModal from "../sections/PayForAppointment";
 import {
   Box,
   Button,
@@ -73,15 +73,32 @@ const ClientDash = () => {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [showSkeleton, setShowSkeleton] = useState(true);
   const [apiMessage, setApiMessage] = useState("");
+  const [showPayAppointmentModal, setShowPayAppointmentModal] = useState(false);
 
   const [matchedAppointments, setMatchedAppointments] = useState([]);
-  const [matchedAppointmentMessage, setMatchedAppointmentMessage] = useState("")
+  const [matchedAppointmentMessage, setMatchedAppointmentMessage] =
+    useState("");
   const [showMatchedAppointmentsModal, setShowMatchedAppointmentsModal] =
     useState(false);
 
   useEffect(() => {
     AOS.init();
   }, []);
+
+  useEffect(() => {
+    // Call the function after 5 seconds
+    const timeoutId = setTimeout(checkPendingAppointment, 10000);
+
+    // Clear timeout on component unmount
+    return () => clearTimeout(timeoutId);
+  }, []);
+
+  const checkPendingAppointment = () => {
+    if (user && user.appointmentPaid === false) {
+      // Display modal with the message
+      setShowPayAppointmentModal(true);
+    }
+  };
 
   useEffect(() => {
     const fetchMatchedAppointments = async () => {
@@ -104,10 +121,14 @@ const ClientDash = () => {
           if (response.ok) {
             console.log("Response from matched appointments:", data);
             setMatchedAppointments(data.data);
-            setApiMessage(data.message);
-            setMatchedAppointmentMessage(data.message)
             console.log("Response from api message", data.message);
-            setShowMatchedAppointmentsModal(true);
+
+            // Check if data.data exists and is an array with length > 0
+            if (data.data && Array.isArray(data.data) && data.data.length > 0) {
+              setShowMatchedAppointmentsModal(true);
+            } else {
+              console.log("No matched appointments found in data.");
+            }
           } else {
             console.error("Failed to fetch matched appointments:", data.error);
           }
@@ -120,9 +141,8 @@ const ClientDash = () => {
     };
 
     // Fetch matched appointments initially
-    fetchMatchedAppointments();
+    setTimeout(fetchMatchedAppointments, 5000);
 
-    // Fetch matched appointments every 15 minutes
     const intervalId = setInterval(fetchMatchedAppointments, 15 * 60 * 1000);
 
     // Clear interval on component unmount
@@ -149,7 +169,6 @@ const ClientDash = () => {
     setShowLogoutModal(false);
     localStorage.removeItem("token");
     localStorage.removeItem("phoneNumber");
-    localStorage.removeItem("orderId");
     navigate("/");
   };
 
@@ -206,7 +225,6 @@ const ClientDash = () => {
     navigate("/services");
   };
 
-
   const PendingAppointmentPage = () => {
     navigate("/pending-appointments");
   };
@@ -214,7 +232,6 @@ const ClientDash = () => {
   const handleOpenActiveAppointmentsModal = () => {
     navigate("/active-appointments");
   };
-
 
   const handleOpenUserDetailsModal = () => {
     setShowUserDetailsModal(true);
@@ -821,6 +838,11 @@ const ClientDash = () => {
         onClose={() => setShowMatchedAppointmentsModal(false)}
         matchedAppointments={matchedAppointments}
         apiResponseMessage={apiMessage}
+      />
+
+      <PayForAppointmentModal
+        isOpen={showPayAppointmentModal}
+        onClose={() => setShowPayAppointmentModal(false)}
       />
     </ChakraProvider>
   );
