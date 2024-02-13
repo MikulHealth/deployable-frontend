@@ -46,6 +46,7 @@ const CustomizePlanModal = ({ isOpen, onClose }) => {
   const [selectedServices, setSelectedServices] = useState([]);
   const [frequency, setFrequency] = useState("");
   const [duration, setDuration] = useState("");
+  const [shift, setShift] = useState("");
   const [preferredCaregiver, setPreferredCaregiver] = useState("");
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const toast = useToast();
@@ -138,6 +139,7 @@ const CustomizePlanModal = ({ isOpen, onClose }) => {
       selectedServices: selectedServices,
       frequency: frequency,
       duration: duration,
+      shift: shift,
       preferredCaregiver: preferredCaregiver,
     };
 
@@ -164,9 +166,11 @@ const CustomizePlanModal = ({ isOpen, onClose }) => {
             status: "success",
             duration: 6000,
           });
-          handleConfirmationModalClose()
-          onClose()
-          navigate("/customize-service");
+          handleConfirmationModalClose();
+          onClose();
+          setTimeout(() => {
+            navigate("/services");
+          }, 2000);
         } else {
           // Display error toast
           toast({
@@ -234,6 +238,19 @@ const CustomizePlanModal = ({ isOpen, onClose }) => {
                 </Select>
               </FormControl>
               <FormControl mb={4}>
+                <FormLabel fontWeight="bold">Shift: </FormLabel>
+                <Select
+                  name="shift"
+                  placeholder="Select preferred shift"
+                  value={shift}
+                  onChange={(e) => setShift(e.target.value)}
+                >
+                  <option value="Day Shift">Day Shift (8hrs)</option>
+                  <option value="Night Shift">Night Shift (12hrs)</option>
+                  <option value="Live in">Live in (24hrs)</option>
+                </Select>
+              </FormControl>
+              <FormControl mb={4}>
                 <FormLabel fontWeight="bold">
                   Duration in number(s): (daily / weekly / monthly)
                 </FormLabel>
@@ -295,6 +312,10 @@ const CustomizePlanModal = ({ isOpen, onClose }) => {
             <Flex>
               <Text fontWeight="bold">Duration:</Text>
               <Text marginLeft="5px"> {duration}</Text>
+            </Flex>
+            <Flex>
+              <Text fontWeight="bold">Shift:</Text>
+              <Text marginLeft="5px"> {shift}</Text>
             </Flex>
             <Flex>
               <Text fontWeight="bold">Preferred Caregiver:</Text>

@@ -71,12 +71,8 @@ const CustomizeServicePage = () => {
   const { user } = useSelector((state) => state.userReducer);
   const [showUserDetailsModal, setShowUserDetailsModal] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
-  const [showCanceledModal, setShowCanceledModal] = useState(false);
-  const [showWalletModal, setShowWalletModal] = useState(false);
   const [customizedServices, setCustomizedServices] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [detailsModalOpen, setDetailsModalOpen] = useState(false);
-  const [selectedService, setSelectedService] = useState(null);
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
   const [deleteServiceId, setDeleteServiceId] = useState(null);
   const [showCustomizeModal, setShowCustomizeModal] = useState(false);
@@ -148,7 +144,7 @@ const CustomizeServicePage = () => {
         Authorization: `Bearer ${token}`,
       };
 
-      const response = await axios.delete(apiUrl, {}, { headers });
+      const response = await axios.post(apiUrl, {}, { headers });
 
       if (response.data.success) {
         toast({
@@ -187,10 +183,6 @@ const CustomizeServicePage = () => {
     setConfirmationModalOpen(true);
   };
 
-  const handleViewMore = async (id) => {
-    await fetchAndDisplayServiceDetails(id);
-    console.log(`View more details for customized service with ID: ${id}`);
-  };
 
   const formatDateTime = (dateTimeString) => {
     const options = {
@@ -206,33 +198,6 @@ const CustomizeServicePage = () => {
       options
     );
     return formattedDateTime;
-  };
-
-  const fetchAndDisplayServiceDetails = async (serviceId) => {
-    try {
-      const token = localStorage.getItem("token");
-      const apiUrl = `http://localhost:8080/v1/appointment/findServiceDetails/${serviceId}`;
-
-      const headers = {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      };
-
-      const response = await axios.get(apiUrl, { headers });
-
-      if (response && response.data && response.data.success) {
-        console.log("Appointment details:", response.data.data);
-        setSelectedService(response.data.data.data);
-        setDetailsModalOpen(true);
-      } else {
-        console.error("Error fetching appointment details");
-      }
-    } catch (error) {
-      console.error(
-        "An error occurred while fetching appointment details:",
-        error
-      );
-    }
   };
 
   const fetchData = async () => {
@@ -508,8 +473,9 @@ const CustomizeServicePage = () => {
         <Box w="70vw" h="80vh">
           <Button
             onClick={handlebackToService}
-            bg="#A210C6"
-            color="white"
+            borderColor="#A210C6"
+            borderWidth="1px"
+            color="#A210C6"
             fontFamily="body"
             marginTop="10px"
             _hover={{ color: "" }}
@@ -554,61 +520,125 @@ const CustomizeServicePage = () => {
             ) : (
               <VStack marginTop="10px" align="start" spacing={4}>
                 {customizedServices.map((service) => (
-                  <Box key={service.id}>
-                    <Flex>
-                      <Text fontWeight="bold" color="black">
-                        Name:
-                      </Text>
-                      <Text marginLeft="5px" color="black">
-                        {`${service.name}`}
-                      </Text>
-                    </Flex>
-                    <Flex>
-                      <Text fontWeight="bold" color="black">
-                        Frequency:
-                      </Text>
-                      <Text marginLeft="5px" color="black">
-                        {`${service.frequency}`}
-                      </Text>
-                    </Flex>
-                    <Flex>
-                      <Text fontWeight="bold" color="black">
-                        Booked on:
-                      </Text>
-                      <Text marginLeft="5px" color="black">
-                        {formatDateTime(service.createdAt)}
-                      </Text>
-                      <Text
-                        marginLeft="40px"
-                        fontSize="16px"
-                        onClick={() => handleViewMore(service.id)}
-                        style={{
-                          color: "#A210C6",
-                          fontStyle: "italic",
-                          cursor: "pointer",
-                        }}
-                        _hover={{ color: "#A210C6" }}
-                      >
-                        Details
-                      </Text>
-                      <Text
-                        marginLeft="40px"
-                        fontSize="16px"
-                        onClick={() => handleDeleteService(service.id)}
-                        style={{
-                          color: "red",
-                          fontStyle: "italic",
-                          cursor: "pointer",
-                        }}
-                        _hover={{ color: "#A210C6" }}
-                      >
-                        Cancel
-                      </Text>
-                    </Flex>
+                  <Box marginTop="20px" key={service.id}>
+                    <Box
+                      padding="40px"
+                      style={{
+                        cursor: "pointer",
+                        // boxShadow: "0px 4px 8px rgba(162, 16, 198, 0.4)",
+                      }}
+                      borderColor="#A210C6"
+                      borderWidth="2px"
+                      p={4}
+                      borderRadius="2xl"
+                      // h="50vh"
+                      w="40vw"
+                    >
+                      <Box>
+                        <Box marginLeft="90px">
+                          <Flex>
+                            <Text fontWeight="bold" color="black">
+                              Name:
+                            </Text>
+                            <Text marginLeft="5px" color="black">
+                              {`${service.name}`}
+                            </Text>
 
-                    <Divider my={4} borderColor="gray.500" />
+                            <Flex marginLeft="45px">
+                              <Text fontWeight="bold" color="black">
+                                Frequency:
+                              </Text>
+                              <Text marginLeft="5px" color="black">
+                                {`${service.frequency}`}
+                              </Text>
+                            </Flex>
+                          </Flex>
+                          <Flex>
+                            <Flex>
+                              <Text fontWeight="bold" color="black">
+                                Duration:
+                              </Text>
+                              <Text marginLeft="5px" color="black">
+                                {`${service.duration}`}
+                              </Text>
+                            </Flex>
+                            <Flex marginLeft="85px">
+                              <Text fontWeight="bold" color="black">
+                                Shift:
+                              </Text>
+                              <Text marginLeft="5px" color="black">
+                                {`${service.shift}`}
+                              </Text>
+                            </Flex>
+                          </Flex>
+                        </Box>
+                      </Box>
+                      <Box marginLeft="-25px" marginTop="3px">
+                        <Flex direction="column">
+                          <Text
+                            fontWeight="bold"
+                            color="black"
+                            marginTop="10px"
+                          >
+                            Selected Services:
+                          </Text>
+
+                          {service.selectedServices.map((selectedService) => (
+                            <Text ml="20px" key={selectedService} color="black">
+                              {selectedService}
+                            </Text>
+                          ))}
+                        </Flex>
+                      </Box>
+
+                      <Flex marginLeft="80px" marginTop="10px">
+                        <Text fontWeight="bold" color="black">
+                          Created on:
+                        </Text>
+                        <Text marginLeft="5px" color="black">
+                          {formatDateTime(service.createdAt)}
+                        </Text>
+                      </Flex>
+                      <Box marginLeft="-15px" marginTop="20px">
+                        <Button
+                          fontSize="16px"
+                          // bg="#A210C6"
+                          color="#A210C6"
+                          onClick={handleOpenCustomizePlanFormModal}
+                          style={{
+                            fontStyle: "italic",
+                            cursor: "pointer",
+                          }}
+                          _hover={{ color: "#A210C6" }}
+                        >
+                          Book plan
+                        </Button>
+                        <Button
+                          marginLeft="120px"
+                          fontSize="16px"
+                          // bg="gray"
+                          color="red"
+                          onClick={() => handleDeleteService(service.id)}
+                          style={{
+                            fontStyle: "italic",
+                            cursor: "pointer",
+                          }}
+                          _hover={{ color: "" }}
+                        >
+                          Delete plan
+                        </Button>
+                      </Box>
+                    </Box>
                   </Box>
                 ))}
+                <Button
+                  color="green"
+                  marginTop="20px"
+                  marginBottom="50px"
+                  onClick={handleOpenCustomizePlanFormModal}
+                >
+                  Add another plan
+                </Button>
               </VStack>
             )}
           </Box>
@@ -649,31 +679,6 @@ const CustomizeServicePage = () => {
         onClose={() => setShowLogoutModal(false)}
         onConfirm={handleConfirmLogout}
       />{" "}
-      {detailsModalOpen && selectedService && (
-        <Modal
-          isOpen={detailsModalOpen}
-          onClose={() => setDetailsModalOpen(false)}
-          size="3xl"
-        >
-          <ModalOverlay />
-          <ModalContent overflowY="auto">
-            <ModalHeader color="#A210C6">
-              Customized Service Details
-            </ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-              <Progress size="xs" isIndeterminate />
-              <Flex marginLeft="30px">
-                <Box>
-                  <Flex>
-                    <Box marginRight="20px"></Box>
-                  </Flex>
-                </Box>
-              </Flex>
-            </ModalBody>
-          </ModalContent>
-        </Modal>
-      )}
       {confirmationModalOpen && (
         <Modal
           isOpen={confirmationModalOpen}
