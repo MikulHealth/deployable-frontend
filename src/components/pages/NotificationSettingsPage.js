@@ -427,7 +427,7 @@ const NotificationSettingsPage = () => {
                   marginBottom="2%"
                   h="50px"
                   w="50px"
-                  borderRadius="100%"
+                  borderRadius="10%"
                 />
                 <Text fontSize="20px" marginLeft="5px" marginTop="10px">
                   Profile
@@ -460,7 +460,7 @@ const NotificationSettingsPage = () => {
                   marginBottom="2%"
                   h="50px"
                   w="50px"
-                  borderRadius="100%"
+                  borderRadius="10%"
                 />
                 <Text fontSize="20px" marginLeft="5px" marginTop="10px">
                   Change password
@@ -503,7 +503,7 @@ const NotificationSettingsPage = () => {
                   marginLeft="-20px"
                   h="50px"
                   w="50px"
-                  borderRadius="100%"
+                  borderRadius="10%"
                 />
                 <Text
                   color="#A210C6"
@@ -542,7 +542,7 @@ const NotificationSettingsPage = () => {
                 marginBottom="2%"
                 h="50px"
                 w="50px"
-                borderRadius="100%"
+                borderRadius="10%"
               />
               <Text fontSize="20px" marginLeft="5px" marginTop="10px">
                 Help

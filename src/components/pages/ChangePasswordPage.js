@@ -530,7 +530,7 @@ const ChangePasswordPage = () => {
                   marginBottom="2%"
                   h="50px"
                   w="50px"
-                  borderRadius="100%"
+                  borderRadius="10%"
                 />
                 <Text fontSize="20px" marginLeft="5px" marginTop="10px">
                   Profile
@@ -612,7 +612,7 @@ const ChangePasswordPage = () => {
                   marginBottom="2%"
                   h="50px"
                   w="50px"
-                  borderRadius="100%"
+                  borderRadius="10%"
                 />
                 <Text fontSize="20px" marginLeft="5px" marginTop="10px">
                   Notification Settings
@@ -645,7 +645,7 @@ const ChangePasswordPage = () => {
                   marginBottom="2%"
                   h="50px"
                   w="50px"
-                  borderRadius="100%"
+                  borderRadius="10%"
                 />
                 <Text fontSize="20px" marginLeft="5px" marginTop="10px">
                   Help

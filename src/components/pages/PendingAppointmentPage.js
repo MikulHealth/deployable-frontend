@@ -604,7 +604,7 @@ const PendingAppointmentPage = () => {
                 cursor: "pointer",
               }}
               _hover={{ color: "#A210C6" }}
-              marginLeft="30px"
+              marginLeft="25px"
               onClick={handleOpenAppointmentsModal}
             >
               All
@@ -616,7 +616,7 @@ const PendingAppointmentPage = () => {
                 textDecorationThickness: "5px",
               }}
               _hover={{ color: "#A210C6" }}
-              marginLeft="50px"
+              marginLeft="130px"
             >
               Pending
             </Text>{" "}
@@ -625,7 +625,7 @@ const PendingAppointmentPage = () => {
                 cursor: "pointer",
               }}
               _hover={{ color: "#A210C6" }}
-              marginLeft="50px"
+              marginLeft="130px"
               onClick={handleOpenActiveAppointmentsModal}
             >
               Active
@@ -635,7 +635,7 @@ const PendingAppointmentPage = () => {
                 cursor: "pointer",
               }}
               _hover={{ color: "#A210C6" }}
-              marginLeft="50px"
+              marginLeft="130px"
             >
               Completed
             </Text>
@@ -645,7 +645,7 @@ const PendingAppointmentPage = () => {
             marginLeft="2%"
             my={4}
             borderColor="gray.500"
-            width="60%"
+            width="52%"
           />
           <Box
             className="all-appointment"

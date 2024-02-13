@@ -550,7 +550,7 @@ const EdithProfilePage = () => {
                   marginBottom="2%"
                   h="50px"
                   w="50px"
-                  borderRadius="100%"
+                  borderRadius="10%"
                   marginLeft="-20px"
                 />
                 <Text
@@ -589,7 +589,7 @@ const EdithProfilePage = () => {
                   marginBottom="2%"
                   h="50px"
                   w="50px"
-                  borderRadius="100%"
+                  borderRadius="10%"
                 />
                 <Text fontSize="20px" marginLeft="5px" marginTop="10px">
                   Change password
@@ -622,7 +622,7 @@ const EdithProfilePage = () => {
                   marginBottom="2%"
                   h="50px"
                   w="50px"
-                  borderRadius="100%"
+                  borderRadius="10%"
                 />
                 <Text fontSize="20px" marginLeft="5px" marginTop="10px">
                   Notification Settings
@@ -655,7 +655,7 @@ const EdithProfilePage = () => {
                   marginBottom="2%"
                   h="50px"
                   w="50px"
-                  borderRadius="100%"
+                  borderRadius="10%"
                 />
                 <Text fontSize="20px" marginLeft="5px" marginTop="10px">
                   Help

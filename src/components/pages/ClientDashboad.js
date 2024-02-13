@@ -205,6 +205,16 @@ const ClientDash = () => {
     navigate("/services");
   };
 
+
+  const PendingAppointmentPage = () => {
+    navigate("/pending-appointments");
+  };
+
+  const handleOpenActiveAppointmentsModal = () => {
+    navigate("/active-appointments");
+  };
+
+
   const handleOpenUserDetailsModal = () => {
     setShowUserDetailsModal(true);
   };
@@ -680,7 +690,8 @@ const ClientDash = () => {
                           cursor: "pointer",
                           fontSize: "14px",
                         }}
-                        _hover={{ color: "#A210C6" }}
+                        _hover={{ color: "" }}
+                        onClick={PendingAppointmentPage}
                       >
                         Pending appointments: {pendingAppointments}
                       </Text>
@@ -693,7 +704,8 @@ const ClientDash = () => {
                           cursor: "pointer",
                           fontSize: "14px",
                         }}
-                        _hover={{ color: "#A210C6" }}
+                        _hover={{ color: "" }}
+                        onClick={handleOpenActiveAppointmentsModal}
                       >
                         Active appointments: {activeAppointments}
                       </Text>
@@ -701,14 +713,11 @@ const ClientDash = () => {
                     <li style={{ listStyleType: "none" }}>
                       <Text
                         marginTop="5px"
-                        marginLeft="-32px"
                         style={{
-                          marginLeft: "5px",
-
                           cursor: "pointer",
                           fontSize: "14px",
                         }}
-                        _hover={{ color: "#A210C6" }}
+                        _hover={{ color: "" }}
                       >
                         Completed appointments: {completedAppointments}
                       </Text>
