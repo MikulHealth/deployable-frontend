@@ -43,7 +43,7 @@ import AppointmentsIcon from "../../assets/AppointmentIcon.svg";
 import HomeIcon from "../../assets/HomeBlack.svg";
 import ProfileIcon from "../../assets/ProfileIcone.svg";
 import LogoutModal from "../sections/LogoutModal";
-import PasswordIcon from "../../assets/ColoredNotificationIcon.svg";
+import PasswordIcon from "../../assets/PasswordIconColored.svg";
 import HelppIcon from "../../assets/HelppIcon.svg";
 import NotificationIconn from "../../assets/Notification.Icon.svg";
 import Bar from "../../assets/ColoredBar.svg";
@@ -564,7 +564,7 @@ const ChangePasswordPage = () => {
                   marginBottom="2%"
                   h="50px"
                   w="50px"
-                  borderRadius="100%"
+                  borderRadius="10%"
                 />
                 <Image
                   src={PasswordIcon}
@@ -574,7 +574,7 @@ const ChangePasswordPage = () => {
                   marginBottom="2%"
                   h="50px"
                   w="50px"
-                  borderRadius="100%"
+                  borderRadius="10%"
                 />
                 <Text
                   color="#A210C6"

@@ -547,7 +547,7 @@ const ServicePage = () => {
                 <Text fontSize="24px">Customize service</Text>
               </Box>
               <Image
-                marginLeft="620px"
+                marginLeft="598px"
                 marginTop="15px"
                 w="30px"
                 h="30px"

@@ -29,7 +29,7 @@ import Help from "../../assets/Help.svg";
 import SettingsIcon from "../../assets/SettingsIcon.svg";
 import LogoutIcon from "../../assets/Logout.svg";
 import AppointmentsIcon from "../../assets/AppointmentIcon.svg";
-import HelpIcon from "../../assets/HelpIcon.svg";
+import HomeIcon from "../../assets/HomeWhite.svg";
 import userImageIcon from "../../assets/userImage.svg";
 import NotificationIcon from "../../assets/notification.svg";
 import "../../styles/pages/LandingPage.css";
@@ -247,7 +247,7 @@ const ClientDash = () => {
                 marginLeft="24px"
                 w="20px"
                 h="20px"
-                src={HelpIcon}
+                src={HomeIcon}
                 alt="HelpIcon"
               />
 
