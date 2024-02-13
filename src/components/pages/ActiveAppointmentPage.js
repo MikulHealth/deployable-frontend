@@ -73,8 +73,6 @@ const ActiveAppointmentPage = () => {
   const { user } = useSelector((state) => state.userReducer);
   const [showUserDetailsModal, setShowUserDetailsModal] = useState(false);
   const [showAppointmentModal, setShowAppointmentModal] = useState(false);
-  const [showViewAllModal, setShowViewAllModal] = useState(false);
-  const [showPendingModal, setShowPendingModal] = useState(false);
   const [showCanceledModal, setShowCanceledModal] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [showWalletModal, setShowWalletModal] = useState(false);
@@ -147,7 +145,6 @@ const ActiveAppointmentPage = () => {
   };
 
   const handleCancelModalClose = () => {
-    // Close the confirmation modal
     setConfirmationModalOpen(false);
   };
 
@@ -424,7 +421,7 @@ const ActiveAppointmentPage = () => {
             <Text
               onClick={handleOpenLogoutModal}
               marginLeft="15px"
-              color="black"
+              color="#A210C6"
               style={{
                 cursor: "pointer",
               }}

@@ -504,7 +504,7 @@ const CreditPage = () => {
             <Text
               onClick={handleOpenLogoutModal}
               marginLeft="15px"
-              color="black"
+              color="#A210C6"
               style={{
                 cursor: "pointer",
               }}

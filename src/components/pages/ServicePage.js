@@ -140,6 +140,11 @@ const ServicePage = () => {
     navigate("/dashboard");
   };
 
+  const handleOpenCustomizeModal = () => {
+    navigate("/customize-service");
+  };
+
+
   const handleOpenAppointmentsModal = () => {
     navigate("/appointment");
   };
@@ -378,11 +383,11 @@ const ServicePage = () => {
           </Flex>
         </Flex>
 
-        <Box marginLeft="20px" marginTop="60px">
+        <Box marginLeft="20px" marginTop="40px">
           <Box
             marginTop="20px"
             marginLeft="8px"
-            h="12vh"
+            h="10vh"
             w="65vw"
             borderRadius="15px"
             paddingBottom="5px"
@@ -394,12 +399,12 @@ const ServicePage = () => {
             onClick={handleOpenElderlyCareModal}
           >
             <Flex>
-              <Box marginLeft="30px" marginTop="20px">
+              <Box marginLeft="30px" marginTop="15px">
                 <Text fontSize="24px">Elderly care</Text>
               </Box>
               <Image
                 marginLeft="670px"
-                marginTop="25px"
+                marginTop="15px"
                 w="30px"
                 h="30px"
                 src={RightArrow}
@@ -411,7 +416,7 @@ const ServicePage = () => {
           <Box
             marginTop="20px"
             marginLeft="8px"
-            h="12vh"
+            h="10vh"
             w="65vw"
             borderRadius="15px"
             paddingBottom="5px"
@@ -423,12 +428,12 @@ const ServicePage = () => {
             onClick={handleOpenPostpatumCareModal}
           >
             <Flex>
-              <Box marginLeft="30px" marginTop="20px">
+              <Box marginLeft="30px" marginTop="15px">
                 <Text fontSize="24px">Postpartum care</Text>
               </Box>
               <Image
                 marginLeft="612px"
-                marginTop="25px"
+                marginTop="15px"
                 w="30px"
                 h="30px"
                 src={RightArrow}
@@ -440,7 +445,7 @@ const ServicePage = () => {
           <Box
             marginTop="20px"
             marginLeft="8px"
-            h="12vh"
+            h="10vh"
             w="65vw"
             borderRadius="15px"
             paddingBottom="5px"
@@ -452,12 +457,12 @@ const ServicePage = () => {
             onClick={handleOpenRecoveryCareModal}
           >
             <Flex>
-              <Box marginLeft="30px" marginTop="20px">
+              <Box marginLeft="30px" marginTop="15px">
                 <Text fontSize="24px">Recovery care</Text>
               </Box>
               <Image
                 marginLeft="640px"
-                marginTop="25px"
+                marginTop="15px"
                 w="30px"
                 h="30px"
                 src={RightArrow}
@@ -469,7 +474,7 @@ const ServicePage = () => {
           <Box
             marginTop="20px"
             marginLeft="8px"
-            h="12vh"
+            h="10vh"
             w="65vw"
             borderRadius="15px"
             paddingBottom="5px"
@@ -481,12 +486,12 @@ const ServicePage = () => {
             onClick={handleOpenNannyCareModal}
           >
             <Flex>
-              <Box marginLeft="28px" marginTop="20px">
+              <Box marginLeft="28px" marginTop="15px">
                 <Text fontSize="24px">Nanny services</Text>
               </Box>
               <Image
                 marginLeft="630px"
-                marginTop="25px"
+                marginTop="15px"
                 w="30px"
                 h="30px"
                 src={RightArrow}
@@ -498,7 +503,7 @@ const ServicePage = () => {
           <Box
             marginTop="20px"
             marginLeft="8px"
-            h="12vh"
+            h="10vh"
             w="65vw"
             borderRadius="15px"
             paddingBottom="5px"
@@ -510,12 +515,40 @@ const ServicePage = () => {
             onClick={handleOpenShortCareModal}
           >
             <Flex>
-              <Box marginLeft="30px" marginTop="20px">
+              <Box marginLeft="30px" marginTop="15px">
                 <Text fontSize="24px">Short home visit</Text>
               </Box>
               <Image
                 marginLeft="620px"
-                marginTop="25px"
+                marginTop="15px"
+                w="30px"
+                h="30px"
+                src={RightArrow}
+                alt="Settings"
+              />
+            </Flex>
+          </Box>
+          <Box
+            marginTop="20px"
+            marginLeft="8px"
+            h="10vh"
+            w="65vw"
+            borderRadius="15px"
+            paddingBottom="5px"
+            style={{
+              cursor: "pointer",
+              boxShadow: "0px 4px 8px rgba(162, 16, 198, 0.4)",
+            }}
+            _hover={{ color: "#A210C6" }}
+            onClick={handleOpenCustomizeModal}
+          >
+            <Flex>
+              <Box marginLeft="30px" marginTop="15px">
+                <Text fontSize="24px">Customize service</Text>
+              </Box>
+              <Image
+                marginLeft="620px"
+                marginTop="15px"
                 w="30px"
                 h="30px"
                 src={RightArrow}
