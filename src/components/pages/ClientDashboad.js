@@ -87,7 +87,7 @@ const ClientDash = () => {
 
   useEffect(() => {
     // Call the function after 5 seconds
-    const timeoutId = setTimeout(checkPendingAppointment, 10000);
+    const timeoutId = setTimeout(checkPendingAppointment, 5000);
 
     // Clear timeout on component unmount
     return () => clearTimeout(timeoutId);

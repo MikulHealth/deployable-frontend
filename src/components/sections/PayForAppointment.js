@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Modal,
   ModalOverlay,
@@ -30,6 +31,7 @@ const customTheme = extendTheme({
 
 const PayForAppointmentModal = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
+  const { user } = useSelector((state) => state.userReducer);
 
   const handlePayment = () => {
     navigate("/make-payment");
@@ -43,7 +45,8 @@ const PayForAppointmentModal = ({ isOpen, onClose }) => {
         <ModalBody>
           <Text>
             {" "}
-            Your pending appointment has not been paid for, kindly make payment to
+            Hello {user?.firstName},
+            We notice your pending appointment has not been paid for, kindly make payment to
             get matched with a caregiver.
           </Text>
         </ModalBody>
