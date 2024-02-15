@@ -162,7 +162,7 @@ const PendingAppointmentPage = () => {
     // Perform the actual logout
     localStorage.removeItem("token");
     localStorage.removeItem("phoneNumber");
-    localStorage.removeItem("orderId");
+   
     navigate("/");
   };
 
@@ -249,6 +249,7 @@ const PendingAppointmentPage = () => {
           status: "success",
           duration: 6000,
         });
+        localStorage.removeItem("appointmentId");
         fetchData();
       } else {
         toast({

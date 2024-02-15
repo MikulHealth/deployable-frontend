@@ -94,7 +94,8 @@ const ClientDash = () => {
   }, []);
 
   const checkPendingAppointment = () => {
-    if (user && user.appointmentPaid === false) {
+    const appointmentId = localStorage.getItem("appointmentId");
+    if (appointmentId && user && user.appointmentPaid === false) {
       // Display modal with the message
       setShowPayAppointmentModal(true);
     }

@@ -1,5 +1,12 @@
-// AddBeneficiaryForm.js
+
 import React, { useState } from "react";
+import {
+  FaMapMarkerAlt,
+  FaFile,
+  FaCalendarAlt,
+  FaPhoneAlt,
+  FaUser,
+} from "react-icons/fa";
 import {
   VStack,
   FormControl,
@@ -7,6 +14,7 @@ import {
   Input,
   Button,
   Flex,
+  InputGroup,
   Select,
   Modal,
   ModalOverlay,
@@ -15,6 +23,8 @@ import {
   ModalCloseButton,
   ModalBody,
   ModalFooter,
+  InputRightElement,
+  Image,
   Box,
   useToast,
 } from "@chakra-ui/react";
@@ -23,10 +33,12 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useDispatch, useSelector } from "react-redux";
 import BeneficiariesModal from "./Beneficiaries";
+import LocationIcon from "../../assets/LocationIcon.svg";
+import CalenderIcon from "../../assets/CalenderIcon.svg";
 
 
 const AddBeneficiaryForm = ({ isOpen, onClose, openBeneficiariesModal }) => {
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDob, setSelectedDob] = useState(null);
   const [loading, setLoading] = useState(false);
   const { user } = useSelector((state) => state.userReducer);
   const [isBeneficiary, setBeneficiary] = useState(false);
@@ -50,7 +62,7 @@ const AddBeneficiaryForm = ({ isOpen, onClose, openBeneficiariesModal }) => {
     const { name, value } = e.target;
   
     if (name === "DOB") {
-      setSelectedDate(value);
+      setSelectedDob(value);
       setFormData({
         ...formData,
         recipientDOB: value,
@@ -62,6 +74,12 @@ const AddBeneficiaryForm = ({ isOpen, onClose, openBeneficiariesModal }) => {
       });
     }
   };
+
+  const handleDOBChange = (date) => {
+    setSelectedDob(date);
+    setFormData({ ...formData, recipientDOB: date });
+  };
+
   
   const handleAddBeneficiary = async () => {
     setLoading(true);
@@ -74,8 +92,8 @@ const AddBeneficiaryForm = ({ isOpen, onClose, openBeneficiariesModal }) => {
       };
   
       // Format the date to match the backend expectations
-      const formattedDate = selectedDate
-        ? selectedDate.toISOString().split('T')[0]
+      const formattedDate = selectedDob
+        ? selectedDob.toISOString().split('T')[0]
         : '';
   
       const dataToSend = {
@@ -130,79 +148,115 @@ const AddBeneficiaryForm = ({ isOpen, onClose, openBeneficiariesModal }) => {
             <FormControl w="40vw">
               <FormLabel> Enter Beneficiary name</FormLabel>
               <Flex>
-                <Input
-                  name="recipientFirstName"
-                  placeholder="First name"
-                  onChange={handleInputChange}
-                  w="250px"
-                />
-                <Input
-                  name="recipientLastName"
-                  marginLeft="5px"
-                  placeholder="Last name"
-                  onChange={handleInputChange}
-                  w="250px"
-                />
+                <InputGroup>
+                  <Input
+                    name="recipientFirstname"
+                    placeholder="first name"
+                    value={formData.recipientFirstname}
+                    onChange={handleInputChange}
+                    w="270px"
+                  />
+                  <InputRightElement marginRight="45px" pointerEvents="none">
+                    <FaUser color="gray.300" />
+                  </InputRightElement>
+                </InputGroup>
+                <InputGroup>
+                  <Input
+                    name="recipientLastname"
+                    marginLeft="5px"
+                    placeholder="last name"
+                    value={formData.recipientLastname}
+                    onChange={handleInputChange}
+                    w="270px"
+                  />
+                  <InputRightElement marginRight="80px" pointerEvents="none">
+                    <FaUser color="gray.300" />
+                  </InputRightElement>
+                </InputGroup>
               </Flex>
               <Flex>
                 <Box>
-                  <FormLabel marginTop="20px">Gender </FormLabel>
+                  <FormLabel fontWeight="bold" marginTop="20px">
+                    Gender{" "}
+                  </FormLabel>
                   <Select
                     name="recipientGender"
-                    placeholder="Select your gender"
-                    w="250px"
+                    placeholder="select gender"
+                    w="270px"
+                    value={formData.recipientGender}
                     onChange={handleInputChange}
                   >
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
                   </Select>
                 </Box>
-                <Box marginLeft="10px">
-                  <FormLabel marginTop="20px">Date of Birth</FormLabel>
-                  <DatePicker
-                    name="DOB"
-                    selected={selectedDate}
-                    onChange={(date) => setSelectedDate(date)}
-                    maxDate={new Date()}
-                    peekNextMonth
-                    showMonthDropdown
-                    showYearDropdown
-                    dropdownMode="select"
-                    dateFormat="yyyy-MM-dd"
-                    placeholderText="Select your date of birth"
-                    className="form-control"
-                  />
+                <Box marginLeft="5px" w="270px">
+                  <FormLabel fontWeight="bold" marginTop="20px">
+                    Date of Birth
+                  </FormLabel>
+                  <Flex
+                    h="6vh"
+                    padding="5px"
+                    paddingLeft="15px"
+                    style={{ border: "1px solid #ccc", borderRadius: "5px" }}
+                  >
+                    {" "}
+                    <DatePicker
+                      name="recipientDOB"
+                      selected={selectedDob}
+                      onChange={handleDOBChange}
+                      maxDate={new Date()}
+                      peekNextMonth
+                      showMonthDropdown
+                      showYearDropdown
+                      dropdownMode="select"
+                      dateFormat="dd-MM-yyyy"
+                      placeholderText="select date of birth"
+                      className="form-control"
+                    />
+                    <Image
+                      marginLeft="30px"
+                      w="24px"
+                      h="24px"
+                      src={CalenderIcon}
+                      alt="CalenderIcon"
+                    />
+                  </Flex>
                 </Box>
               </Flex>
               <Flex marginTop="1px">
                 <Box>
-                  <FormLabel marginTop="20px">Contact Number </FormLabel>
-                  <Input
-                    name="recipientPhoneNumber"
-                    type="tel"
-                    placeholder="Beneficiary PhoneNumber"
-                    onChange={handleInputChange}
-                    w="500px"
-                  />
+                  <FormLabel fontWeight="bold" marginTop="20px">
+                    Contact Number{" "}
+                  </FormLabel>
+                  <InputGroup>
+                    <Input
+                      name="recipientPhoneNumber"
+                      type="tel"
+                      placeholder="recipient phone number"
+                      value={formData.recipientPhoneNumber}
+                      onChange={handleInputChange}
+                      w="270px"
+                    />
+                    <InputRightElement pointerEvents="none">
+                      <FaPhoneAlt color="gray.300" />
+                    </InputRightElement>
+                  </InputGroup>
                 </Box>
-              </Flex>
-              <Flex>
-                <Box>
-                  <FormLabel marginTop="20px">
+                <Box marginLeft="5px">
+                  <FormLabel fontWeight="bold" marginTop="20px">
                     Relationship with beneficiary{" "}
                   </FormLabel>
                   <Select
                     name="relationship"
                     placeholder="Select the appropriate relationship type"
-                    w="250px"
+                    w="270px"
                     onChange={handleInputChange}
                   >
                     <option value="Mum">Mum</option>
                     <option value="Dad">Dad</option>
-
                     <option value="Wife">Wife</option>
                     <option value="Husband">Husband</option>
-
                     <option value="Sister">Sister</option>
                     <option value="Brother">Brother</option>
                     <option value="Uncle">Uncle</option>
@@ -215,14 +269,12 @@ const AddBeneficiaryForm = ({ isOpen, onClose, openBeneficiariesModal }) => {
                     <option value="Friend">Friend</option>
                     <option value="Colleague">Colleague</option>
                     <option value="Neighbour">Neighbour</option>
-
                     <option value="MotherInLaw">Mother in-law</option>
                     <option value="FatherInLaw">Father in-law</option>
                     <option value="Grandmother">Grand mother</option>
                     <option value="Grandfather">Grand father</option>
                   </Select>
                 </Box>
-
               </Flex>
             </FormControl>
           </VStack>

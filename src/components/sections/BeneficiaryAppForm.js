@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FaMapMarkerAlt, FaFile } from "react-icons/fa";
+import LocationIcon from "../../assets/LocationIcon.svg";
+import CalenderIcon from "../../assets/CalenderIcon.svg";
 import {
   InputLeftAddon,
   InputGroup,
@@ -15,6 +16,7 @@ import {
   Button,
   Input,
   Select,
+  Image,
   Textarea,
   FormControl,
   FormLabel,
@@ -220,16 +222,14 @@ const BookBeneficiaryAppointmentModal = ({
         currentLocation: "",
         shift: "",
         servicePlan: "",
-        recipientHospital: "",
+
         medicalReport: null,
-        recipientHealthHistory: "",
+
         medicSpecialization: "",
         startDate: null,
         endDate: null,
-        kinName: selectedBeneficiary.kinName || "",
-        kinNumber: selectedBeneficiary.kinNumber || "",
+
         relationship: selectedBeneficiary.relationship || "",
-        language: selectedBeneficiary.language || "",
       });
     }
   }, [selectedBeneficiary]);
@@ -253,50 +253,66 @@ const BookBeneficiaryAppointmentModal = ({
                   <FormLabel fontWeight="bold" marginTop="20px">
                     Start Date
                   </FormLabel>
-                  <Box
+                  <Flex
                     h="6vh"
                     padding="5px"
                     paddingLeft="15px"
                     style={{ border: "1px solid #ccc", borderRadius: "5px" }}
                   >
-                    <DatePicker
-                      selected={selectedStartDate}
-                      onChange={handleStartDateChange}
-                      peekNextMonth
-                      showMonthDropdown
-                      showYearDropdown
-                      dropdownMode="select"
-                      dateFormat="dd-MM-yyyy"
-                      placeholderText="preferred date to start"
-                      className="form-control"
-                      minDate={new Date()}
+                  
+                      <DatePicker
+                        selected={selectedStartDate}
+                        onChange={handleStartDateChange}
+                        peekNextMonth
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
+                        dateFormat="dd-MM-yyyy"
+                        placeholderText="preferred date to start"
+                        className="form-control"
+                        minDate={new Date()}
+                      />
+                     <Image
+                      marginLeft="30px"
+                      w="24px"
+                      h="24px"
+                      src={CalenderIcon}
+                      alt="CalenderIcon"
                     />
-                  </Box>
+                  </Flex>
                 </Box>
                 <Box w="270px" marginLeft="5px">
                   <FormLabel fontWeight="bold" marginTop="20px">
                     End Date
                   </FormLabel>
-                  <Box
+                  <Flex
                     h="6vh"
                     padding="5px"
                     paddingLeft="15px"
                     style={{ border: "1px solid #ccc", borderRadius: "5px" }}
                   >
-                    <DatePicker
-                      selected={selectedEndDate}
-                      onChange={handleEndDateChange}
-                      peekNextMonth
-                      showMonthDropdown
-                      showYearDropdown
-                      dropdownMode="select"
-                      dateFormat="dd-MM-yyyy"
-                      placeholderText="preferred date to end"
-                      className="form-control"
-                      minDate={new Date()}
-                      style={{ border: "none" }}
+                 
+                      <DatePicker
+                        selected={selectedEndDate}
+                        onChange={handleEndDateChange}
+                        peekNextMonth
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
+                        dateFormat="dd-MM-yyyy"
+                        placeholderText="preferred date to end"
+                        className="form-control"
+                        minDate={new Date()}
+                        style={{ border: "none" }}
+                      />
+                  <Image
+                      marginLeft="30px"
+                      w="24px"
+                      h="24px"
+                      src={CalenderIcon}
+                      alt="CalenderIcon"
                     />
-                  </Box>
+                  </Flex>
                 </Box>
               </Flex>
               <Flex>
@@ -358,11 +374,8 @@ const BookBeneficiaryAppointmentModal = ({
                   <FormLabel fontWeight="bold" marginTop="20px">
                     Current Location{" "}
                   </FormLabel>
-                  <InputGroup>
-                    <InputRightElement
-                      pointerEvents="none"
-                      children={<FaMapMarkerAlt color="gray.100" />}
-                    />
+                 
+                  <Flex>
                     <Input
                       name="currentLocation"
                       type="text"
@@ -371,7 +384,16 @@ const BookBeneficiaryAppointmentModal = ({
                       onChange={handleInputChange}
                       w="270px"
                     />
-                  </InputGroup>
+                      <Image
+                      marginTop="10px"
+                      marginLeft="-35px"
+                      w="24px"
+                      h="24px"
+                      src={LocationIcon}
+                      alt="LocationIcon"
+                    />
+                    </Flex>
+                
                 </Box>
               </Flex>
               <Box marginLeft="40px">

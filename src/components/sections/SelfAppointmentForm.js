@@ -5,7 +5,8 @@ import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import LoadingSpinner from "../../utils/Spiner";
-import { FaMapMarkerAlt, FaFile } from "react-icons/fa";
+import LocationIcon from "../../assets/LocationIcon.svg";
+import CalenderIcon from "../../assets/CalenderIcon.svg";
 import {
   Modal,
   ModalOverlay,
@@ -19,6 +20,7 @@ import {
   Input,
   Button,
   Progress,
+  Image,
   Flex,
   Box,
   Select,
@@ -190,9 +192,9 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
                   <FormLabel fontWeight="bold" marginTop="20px">
                     Start Date
                   </FormLabel>
-                  <Box
+                  <Flex
                     h="6vh"
-                    padding="5px"
+                    paddingTop="5px"
                     paddingLeft="15px"
                     style={{ border: "1px solid #ccc", borderRadius: "5px" }}
                   >
@@ -208,15 +210,22 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
                       className="form-control"
                       minDate={new Date()}
                     />
-                  </Box>
+                    <Image
+                      marginLeft="30px"
+                      w="24px"
+                      h="24px"
+                      src={CalenderIcon}
+                      alt="CalenderIcon"
+                    />
+                  </Flex>
                 </Box>
                 <Box w="270px" marginLeft="5px">
                   <FormLabel fontWeight="bold" marginTop="20px">
                     End Date
                   </FormLabel>
-                  <Box
+                  <Flex
                     h="6vh"
-                    padding="5px"
+                    paddingTop="5px"
                     paddingLeft="15px"
                     style={{ border: "1px solid #ccc", borderRadius: "5px" }}
                   >
@@ -233,7 +242,14 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
                       minDate={new Date()}
                       style={{ border: "none" }}
                     />
-                  </Box>
+                    <Image
+                      marginLeft="30px"
+                      w="24px"
+                      h="24px"
+                      src={CalenderIcon}
+                      alt="CalenderIcon"
+                    />
+                  </Flex>
                 </Box>
               </Flex>
               <Flex>
@@ -295,11 +311,7 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
                   <FormLabel fontWeight="bold" marginTop="20px">
                     Current Location{" "}
                   </FormLabel>
-                  <InputGroup>
-                    <InputRightElement
-                      pointerEvents="none"
-                      children={<FaMapMarkerAlt color="gray.100" />}
-                    />
+                  <Flex>
                     <Input
                       name="currentLocation"
                       type="text"
@@ -308,7 +320,15 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
                       onChange={handleInputChange}
                       w="270px"
                     />
-                  </InputGroup>
+                    <Image
+                      marginTop="10px"
+                      marginLeft="-35px"
+                      w="24px"
+                      h="24px"
+                      src={LocationIcon}
+                      alt="LocationIcon"
+                    />
+                  </Flex>
                 </Box>
               </Flex>
               <Box marginLeft="40px">
@@ -325,10 +345,7 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
                     w="550px"
                     placeholder="Upload necessary document"
                   />
-                  {/* <InputRightElement
-                    pointerEvents="none"
-                    children={<FaFile color="gray.300" />}
-                  /> */}
+                
                 </InputGroup>
               </Box>
               <Box marginLeft="40px">

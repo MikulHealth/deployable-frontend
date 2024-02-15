@@ -63,11 +63,7 @@ const BeneficiariesModal = ({ isOpen, onClose }) => {
         );
 
         if (response.data.success) {
-          // toast({
-          //   title: response.data.message,
-          //   status: "success",
-          //   duration: 6000,
-          // });
+   
           setBeneficiaries(response.data.data);
         } else {
           toast({
@@ -174,109 +170,114 @@ const BeneficiariesModal = ({ isOpen, onClose }) => {
               </Flex>
             ) : (
               <VStack align="start" spacing={4}>
-                {beneficiaries.map((beneficiary) => (
-                  <Box key={beneficiary.id}>
-                    <Flex>
-                      <Box>
-                        <Flex>
-                          <Text fontWeight="bold" color="black">
-                            Beneficiary Name:{" "}
-                          </Text>
-                          <Text color="black" marginLeft="5px">
-                            {`${
-                              beneficiary.recipientFirstName || "Not available"
-                            } ${
-                              beneficiary.recipientLastName || "Not available"
-                            }`}
-                          </Text>
-                        </Flex>
-                        <Flex>
-                          <Text fontWeight="bold" color="black">
-                            Phone Number:{" "}
-                          </Text>
-                          <Text color="black" marginLeft="5px">
-                            {beneficiary.recipientPhoneNumber ||
-                              "Not available"}
-                          </Text>
-                        </Flex>
-                        <Flex>
-                          <Text fontWeight="bold" color="black">
-                            Gender:{" "}
-                          </Text>
-                          <Text marginLeft="5px" color="black">
-                            {beneficiary.recipientGender || "Not available"}
-                          </Text>
-                        </Flex>
-                        <Flex>
-                          <Text fontWeight="bold" color="black">
-                            Date of Birth:{" "}
-                          </Text>
-                          <Text marginLeft="5px" color="black">
-                            {formatDate(beneficiary.recipientDOB) ||
-                              "Not availabe"}
-                          </Text>
-                        </Flex>
+                {beneficiaries.length === 0 ? (
+                  <Text fontWeight="bold" >You have no beneficiaries yet.</Text>
+                ) : (
+                  beneficiaries.map((beneficiary) => (
+                    <Box key={beneficiary.id}>
+                      <Flex>
+                        <Box>
+                          <Flex>
+                            <Text fontWeight="bold" color="black">
+                              Beneficiary Name:{" "}
+                            </Text>
+                            <Text color="black" marginLeft="5px">
+                              {`${
+                                beneficiary.recipientFirstName ||
+                                "Not available"
+                              } ${
+                                beneficiary.recipientLastName || "Not available"
+                              }`}
+                            </Text>
+                          </Flex>
+                          <Flex>
+                            <Text fontWeight="bold" color="black">
+                              Phone Number:{" "}
+                            </Text>
+                            <Text color="black" marginLeft="5px">
+                              {beneficiary.recipientPhoneNumber ||
+                                "Not available"}
+                            </Text>
+                          </Flex>
+                          <Flex>
+                            <Text fontWeight="bold" color="black">
+                              Gender:{" "}
+                            </Text>
+                            <Text marginLeft="5px" color="black">
+                              {beneficiary.recipientGender || "Not available"}
+                            </Text>
+                          </Flex>
+                          <Flex>
+                            <Text fontWeight="bold" color="black">
+                              Date of Birth:{" "}
+                            </Text>
+                            <Text marginLeft="5px" color="black">
+                              {formatDate(beneficiary.recipientDOB) ||
+                                "Not availabe"}
+                            </Text>
+                          </Flex>
 
-                        <Flex marginTop="5px">
-                          <Text fontWeight="bold" color="black">
-                            Relationship:
-                          </Text>
-                          <Text marginLeft="5px" color="black">
-                            {beneficiary.relationship || "Not availabe"}
-                          </Text>
-                        </Flex>
-                        <Flex marginTop="5px">
-                          <Text fontWeight="bold" color="black">
-                            Added on:
-                          </Text>
-                          <Text marginLeft="5px" color="black">
-                            {formatDateTime(beneficiary.createdAt) ||
-                              "Not availabe"}
-                          </Text>
-                        </Flex>
-                      </Box>
-                      <Flex marginTop="100px">
-                        <Box>
-                          <Text
-                            fontSize="17px"
-                            style={{
-                              marginLeft: "30px",
-                              marginTop: "30px",
-                              color: "#A210C6",
-                              fontStyle: "italic",
-                              cursor: "pointer",
-                            }}
-                            _hover={{ color: "#A210C6" }}
-                            onClick={() =>
-                              handleOpenBookAppointmentModal(beneficiary)
-                            }
-                          >
-                            Book appointment
-                          </Text>
+                          <Flex marginTop="5px">
+                            <Text fontWeight="bold" color="black">
+                              Relationship:
+                            </Text>
+                            <Text marginLeft="5px" color="black">
+                              {beneficiary.relationship || "Not availabe"}
+                            </Text>
+                          </Flex>
+                          <Flex marginTop="5px">
+                            <Text fontWeight="bold" color="black">
+                              Added on:
+                            </Text>
+                            <Text marginLeft="5px" color="black">
+                              {formatDateTime(beneficiary.createdAt) ||
+                                "Not availabe"}
+                            </Text>
+                          </Flex>
                         </Box>
-                        <Box>
-                          <Text
-                            fontSize="17px"
-                            onClick={() =>
-                              handleRemoveBeneficiary(beneficiary.id)
-                            }
-                            style={{
-                              marginLeft: "20px",
-                              marginTop: "30px",
-                              color: "red",
-                              fontStyle: "italic",
-                              cursor: "pointer",
-                            }}
-                            _hover={{ color: "#A210C6" }}
-                          >
-                            Remove beneficiary
-                          </Text>
-                        </Box>
+                        <Flex marginTop="100px">
+                          <Box>
+                            <Text
+                              fontSize="17px"
+                              style={{
+                                marginLeft: "30px",
+                                marginTop: "30px",
+                                color: "#A210C6",
+                                fontStyle: "italic",
+                                cursor: "pointer",
+                              }}
+                              _hover={{ color: "#A210C6" }}
+                              onClick={() =>
+                                handleOpenBookAppointmentModal(beneficiary)
+                              }
+                            >
+                              Book appointment
+                            </Text>
+                          </Box>
+                          <Box>
+                            <Text
+                              fontSize="17px"
+                              onClick={() =>
+                                handleRemoveBeneficiary(beneficiary.id)
+                              }
+                              style={{
+                                marginLeft: "20px",
+                                marginTop: "30px",
+                                color: "red",
+                                fontStyle: "italic",
+                                cursor: "pointer",
+                              }}
+                              _hover={{ color: "#A210C6" }}
+                            >
+                              Remove beneficiary
+                            </Text>
+                          </Box>
+                        </Flex>
                       </Flex>
-                    </Flex>
-                    <Divider my={4} borderColor="gray.500" />
-                  </Box>
-                ))}
+                      <Divider my={4} borderColor="gray.500" />
+                    </Box>
+                  ))
+                )}
               </VStack>
             )}
           </ModalBody>

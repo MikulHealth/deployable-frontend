@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import LocationIcon from "../../assets/LocationIcon.svg";
+import CalenderIcon from "../../assets/CalenderIcon.svg";
 import {
   FaMapMarkerAlt,
   FaFile,
@@ -18,6 +20,7 @@ import {
   ModalHeader,
   ModalCloseButton,
   ModalBody,
+  Image,
   ModalFooter,
   FormControl,
   FormLabel,
@@ -62,27 +65,65 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
 
   const navigate = useNavigate();
 
+  // const handleInputChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setFormFields((prevFields) => ({
+  //     ...prevFields,
+  //     [name]: value,
+  //   }));
+  // };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormFields((prevFields) => ({
-      ...prevFields,
-      [name]: value,
-    }));
+  
+    if (name === "DOB") {
+      setSelectedDob(value);
+      setFormFields({
+        ...formFields,
+        recipientDOB: value,
+      });
+    } else {
+      setFormFields({
+        ...formFields,
+        [name]: value,
+      });
+    }
   };
+  
 
   const handleStartDateChange = (date) => {
-    setFormFields((prevFields) => ({
-      ...prevFields,
-      startDate: date,
-    }));
+    setSelectedStartDate(date);
+    setFormFields({ ...formFields, startDate: date });
   };
 
-  const handleEndDateChange = (date) => {
-    setFormFields((prevFields) => ({
-      ...prevFields,
-      endDate: date,
-    }));
+  const handleDOBChange = (date) => {
+    setSelectedDob(date);
+    setFormFields({ ...formFields, recipientDOB: date });
   };
+
+
+  const handleEndDateChange = (date) => {
+    setSelectedEndDate(date);
+    setFormFields({ ...formFields, endDate: date });
+  };
+
+  const formatDateToUTC = (selectedDate) => {
+    if (!selectedDate) return "";
+
+    // Use isNaN to check if the selectedDate is a valid date object
+    if (isNaN(new Date(selectedDate))) {
+      console.error("Invalid date:", selectedDate);
+      return "";
+    }
+
+    // Add one day to the selected date
+    const adjustedDate = new Date(selectedDate);
+    adjustedDate.setDate(adjustedDate.getDate() + 1);
+
+    return adjustedDate.toISOString().split("T")[0];
+  };
+
+
 
   const handleFormSubmit = async () => {
     setLoading(true);
@@ -94,17 +135,16 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
         Authorization: `Bearer ${token}`,
       };
 
-      const formatDateWithDayAdjustment = (selectedDate) => {
-        const adjustedDate = new Date(selectedDate);
-        adjustedDate.setDate(adjustedDate.getDate() + 1);
-        return adjustedDate.toISOString().split("T")[0];
-      };
+      const formatDateWithDayAdjustment = (selectedDate) =>
+      formatDateToUTC(new Date(selectedDate));
 
       const formDataWithDates = {
         ...formFields,
         startDate: formatDateWithDayAdjustment(formFields.startDate),
         endDate: formatDateWithDayAdjustment(formFields.endDate),
         recipientDOB: formatDateWithDayAdjustment(formFields.recipientDOB),
+        customerPhoneNumber: user?.phoneNumber,
+        customerId: user?.id,
       };
 
       const requestBody = JSON.stringify(formDataWithDates);
@@ -150,17 +190,29 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
     }
   };
 
+  
+
   const handleSwitchChange = async () => {
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
-      const apiUrl = "http://localhost:8080/v1/beneficiary/add";
+      const apiUrl = "http://localhost:8080/v1/appointment/addNewBeneficiary";
       const headers = {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       };
 
-      const requestBody = JSON.stringify(formFields);
+      const formatDateWithDayAdjustment = (selectedDate) =>
+      formatDateToUTC(new Date(selectedDate));
+
+      const formDataWithDates = {
+        ...formFields,
+        recipientDOB: formatDateWithDayAdjustment(formFields.recipientDOB),
+        customerPhoneNumber: user?.phoneNumber,
+        customerId: user?.id,
+      };
+
+      const requestBody = JSON.stringify(formDataWithDates);
 
       const response = await axios.post(apiUrl, requestBody, { headers });
 
@@ -171,7 +223,7 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
           status: "success",
           duration: 6000,
         });
-        onClose(); // Close the modal after successful addition
+        
       } else {
         setLoading(false);
         console.error("Error adding beneficiary");
@@ -208,31 +260,31 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
             <Box>
               <FormLabel fontWeight="bold">Enter Beneficiary details</FormLabel>
               <Flex>
-              <InputGroup>
-                <Input
-                  name="recipientFirstname"
-                  placeholder="first name"
-                  value={formFields.recipientFirstname}
-                  onChange={handleInputChange}
-                  w="270px"
-                />
-                <InputRightElement marginRight="45px"  pointerEvents="none">
-                      <FaUser color="gray.300" />
-                    </InputRightElement>
-                  </InputGroup>
-                  <InputGroup>
-                <Input
-                  name="recipientLastname"
-                  marginLeft="-35px"
-                  placeholder="last name"
-                  value={formFields.recipientLastname}
-                  onChange={handleInputChange}
-                  w="270px"
-                />
-                <InputRightElement marginRight="80px" pointerEvents="none">
-                      <FaUser color="gray.300" />
-                    </InputRightElement>
-                  </InputGroup>
+                <InputGroup>
+                  <Input
+                    name="recipientFirstname"
+                    placeholder="first name"
+                    value={formFields.recipientFirstname}
+                    onChange={handleInputChange}
+                    w="270px"
+                  />
+                  <InputRightElement marginRight="45px" pointerEvents="none">
+                    <FaUser color="gray.300" />
+                  </InputRightElement>
+                </InputGroup>
+                <InputGroup>
+                  <Input
+                    name="recipientLastname"
+                    marginLeft="-35px"
+                    placeholder="last name"
+                    value={formFields.recipientLastname}
+                    onChange={handleInputChange}
+                    w="270px"
+                  />
+                  <InputRightElement marginRight="80px" pointerEvents="none">
+                    <FaUser color="gray.300" />
+                  </InputRightElement>
+                </InputGroup>
               </Flex>
               <Flex>
                 <Box>
@@ -241,7 +293,7 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
                   </FormLabel>
                   <Select
                     name="recipientGender"
-                    placeholder="Select gender"
+                    placeholder="select gender"
                     w="270px"
                     value={formFields.recipientGender}
                     onChange={handleInputChange}
@@ -254,31 +306,34 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
                   <FormLabel fontWeight="bold" marginTop="20px">
                     Date of Birth
                   </FormLabel>
-                  <Box
+                  <Flex
                     h="6vh"
                     padding="5px"
                     paddingLeft="15px"
                     style={{ border: "1px solid #ccc", borderRadius: "5px" }}
                   >
                     {" "}
-                    <InputGroup>
-                      <DatePicker
-                        name="recipientDOB"
-                        selected={formFields.recipientDOB}
-                        onChange={handleStartDateChange}
-                        peekNextMonth
-                        showMonthDropdown
-                        showYearDropdown
-                        dropdownMode="select"
-                        dateFormat="yyyy-MM-dd"
-                        placeholderText="Select DOB"
-                        className="form-control"
-                      />
-                      <InputRightElement pointerEvents="none">
-                        <FaCalendarAlt color="gray.300" />
-                      </InputRightElement>
-                    </InputGroup>
-                  </Box>
+                    <DatePicker
+                      name="recipientDOB"
+                      selected={selectedDob}
+                      onChange={handleDOBChange}
+                      maxDate={new Date()}
+                      peekNextMonth
+                      showMonthDropdown
+                      showYearDropdown
+                      dropdownMode="select"
+                      dateFormat="dd-MM-yyyy"
+                      placeholderText="select date of birth"
+                      className="form-control"
+                    />
+                    <Image
+                      marginLeft="30px"
+                      w="24px"
+                      h="24px"
+                      src={CalenderIcon}
+                      alt="CalenderIcon"
+                    />
+                  </Flex>
                 </Box>
               </Flex>
               <Flex marginTop="1px">
@@ -290,15 +345,47 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
                     <Input
                       name="recipientPhoneNumber"
                       type="tel"
-                      placeholder="recipient Phone Number"
+                      placeholder="recipient phone number"
                       value={formFields.recipientPhoneNumber}
                       onChange={handleInputChange}
-                      w="550px"
+                      w="270px"
                     />
                     <InputRightElement pointerEvents="none">
                       <FaPhoneAlt color="gray.300" />
                     </InputRightElement>
                   </InputGroup>
+                </Box>
+                <Box marginLeft="5px">
+                  <FormLabel fontWeight="bold" marginTop="20px">
+                    Relationship with beneficiary{" "}
+                  </FormLabel>
+                  <Select
+                    name="relationship"
+                    placeholder="Select the appropriate relationship type"
+                    w="270px"
+                    onChange={handleInputChange}
+                  >
+                    <option value="Mum">Mum</option>
+                    <option value="Dad">Dad</option>
+                    <option value="Wife">Wife</option>
+                    <option value="Husband">Husband</option>
+                    <option value="Sister">Sister</option>
+                    <option value="Brother">Brother</option>
+                    <option value="Uncle">Uncle</option>
+                    <option value="Aunt">Aunt</option>
+                    <option value="Son">Son</option>
+                    <option value="Daughter">Daughter</option>
+                    <option value="Niece">Niece</option>
+                    <option value="Nephew">Nephew</option>
+                    <option value="Cousin">Cousin</option>
+                    <option value="Friend">Friend</option>
+                    <option value="Colleague">Colleague</option>
+                    <option value="Neighbour">Neighbour</option>
+                    <option value="MotherInLaw">Mother in-law</option>
+                    <option value="FatherInLaw">Father in-law</option>
+                    <option value="Grandmother">Grand mother</option>
+                    <option value="Grandfather">Grand father</option>
+                  </Select>
                 </Box>
               </Flex>
               <Flex marginLeft="5px">
@@ -307,60 +394,64 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
                     Start Date
                   </FormLabel>
 
-                  <Box
+                  <Flex
                     h="6vh"
                     padding="5px"
                     paddingLeft="15px"
                     style={{ border: "1px solid #ccc", borderRadius: "5px" }}
                   >
-                    <InputGroup>
-                      <DatePicker
-                        selected={selectedStartDate}
-                        onChange={handleStartDateChange}
-                        peekNextMonth
-                        showMonthDropdown
-                        showYearDropdown
-                        dropdownMode="select"
-                        dateFormat="dd-MM-yyyy"
-                        placeholderText="preferred date to start"
-                        className="form-control"
-                        minDate={new Date()}
-                      />
-                      <InputRightElement pointerEvents="none">
-                        <FaCalendarAlt color="gray.300" />
-                      </InputRightElement>
-                    </InputGroup>
-                  </Box>
+                     <DatePicker
+                      selected={selectedStartDate}
+                      onChange={handleStartDateChange}
+                      peekNextMonth
+                      showMonthDropdown
+                      showYearDropdown
+                      dropdownMode="select"
+                      dateFormat="dd-MM-yyyy"
+                      placeholderText="preferred date to start"
+                      className="form-control"
+                      minDate={new Date()}
+                    />
+                    <Image
+                      marginLeft="30px"
+                      w="24px"
+                      h="24px"
+                      src={CalenderIcon}
+                      alt="CalenderIcon"
+                    />
+                  </Flex>
                 </Box>
                 <Box w="270px" marginLeft="5px">
                   <FormLabel fontWeight="bold" marginTop="20px">
                     End Date
                   </FormLabel>
-                  <Box
+                  <Flex
                     h="6vh"
                     padding="5px"
                     paddingLeft="15px"
                     style={{ border: "1px solid #ccc", borderRadius: "5px" }}
                   >
-                    <InputGroup>
-                      <DatePicker
-                        selected={selectedEndDate}
-                        onChange={handleEndDateChange}
-                        peekNextMonth
-                        showMonthDropdown
-                        showYearDropdown
-                        dropdownMode="select"
-                        dateFormat="dd-MM-yyyy"
-                        placeholderText="preferred date to end"
-                        className="form-control"
-                        minDate={new Date()}
-                        style={{ border: "none" }}
-                      />
-                      <InputRightElement pointerEvents="none">
-                        <FaCalendarAlt color="gray.300" />
-                      </InputRightElement>
-                    </InputGroup>
-                  </Box>
+                    <DatePicker
+                      selected={selectedEndDate}
+                      onChange={handleEndDateChange}
+                      peekNextMonth
+                      showMonthDropdown
+                      showYearDropdown
+                      dropdownMode="select"
+                      dateFormat="dd-MM-yyyy"
+                      placeholderText="preferred date to end"
+                      className="form-control"
+                      minDate={new Date()}
+                      style={{ border: "none" }}
+                    />
+                    <Image
+                      marginLeft="30px"
+                      w="24px"
+                      h="24px"
+                      src={CalenderIcon}
+                      alt="CalenderIcon"
+                    />
+                  </Flex>
                 </Box>
               </Flex>
               <Flex marginLeft="5px">
@@ -423,18 +514,24 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
                     Current Location{" "}
                   </FormLabel>
                   <InputGroup>
-                    <InputRightElement
-                      pointerEvents="none"
-                      children={<FaMapMarkerAlt color="gray.100" />}
-                    />
-                    <Input
-                      name="currentLocation"
-                      type="text"
-                      placeholder="current Location"
-                      value={formFields.currentLocation}
-                      onChange={handleInputChange}
-                      w="270px"
-                    />
+                    <Flex>
+                      <Input
+                        name="currentLocation"
+                        type="text"
+                        placeholder="current Location"
+                        value={formFields.currentLocation}
+                        onChange={handleInputChange}
+                        w="270px"
+                      />
+                      <Image
+                        marginTop="10px"
+                        marginLeft="-35px"
+                        w="24px"
+                        h="24px"
+                        src={LocationIcon}
+                        alt="LocationIcon"
+                      />
+                    </Flex>
                   </InputGroup>
                 </Box>
               </Flex>
@@ -452,10 +549,6 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
                     w="550px"
                     placeholder="Upload necessary document"
                   />
-                  {/* <InputRightElement
-                    pointerEvents="none"
-                    children={<FaFile color="gray.300" />}
-                  /> */}
                 </InputGroup>
               </Box>
               <Box marginLeft="5px">

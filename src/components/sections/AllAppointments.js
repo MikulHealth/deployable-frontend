@@ -252,33 +252,7 @@ const AppointmentModal = ({ isOpen, onClose }) => {
                         </Text>
                       </Flex>
 
-                      <Flex marginTop="5px">
-                        <Text fontWeight="bold" color="black">
-                          Next of kin name:
-                        </Text>
-                        <Text marginLeft="5px" color="black">
-                          {selectedAppointment.kinName || "Not available"}
-                        </Text>
-                      </Flex>
-
-                      <Flex marginTop="5px">
-                        <Text fontWeight="bold" color="black">
-                          Next of kin number:
-                        </Text>
-                        <Text marginLeft="5px" color="black">
-                          {selectedAppointment.kinNumber || "Not availabe"}
-                        </Text>
-                      </Flex>
-
-                      <Flex marginTop="5px">
-                        <Text fontWeight="bold" color="black">
-                          Language:
-                        </Text>
-                        <Text marginLeft="5px" color="black">
-                          {selectedAppointment.language || "Not available"}
-                        </Text>
-                      </Flex>
-
+                
                       <Flex marginTop="5px">
                         <Text fontWeight="bold" color="black">
                           Relationship:
@@ -314,15 +288,7 @@ const AppointmentModal = ({ isOpen, onClose }) => {
                           {selectedAppointment.medicSpecialization || "Not availabe"}
                         </Text>
                       </Flex>
-                      <Flex marginTop="5px">
-                        <Text fontWeight="bold" color="black">
-                          Hospital:
-                        </Text>
-                        <Text marginLeft="5px" color="black">
-                          {selectedAppointment.recipientHospital ||
-                            "Not availabe"}
-                        </Text>
-                      </Flex>
+                     
 
                       <Flex marginTop="5px">
                         <Text fontWeight="bold" color="black">
