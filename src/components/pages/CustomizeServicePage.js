@@ -475,7 +475,12 @@ const CustomizeServicePage = () => {
               <Text fontSize="18px" marginLeft="30px" marginTop="5px">
                 Welcome to the custom service section! Here, you have the
               </Text>
-              <Text fontSize="18px" marginLeft="10px" marginTop="3px" marginBottom="20px">
+              <Text
+                fontSize="18px"
+                marginLeft="10px"
+                marginTop="3px"
+                marginBottom="20px"
+              >
                 flexibility to tailor services according to your preferences.
               </Text>
             </Box>
@@ -487,10 +492,10 @@ const CustomizeServicePage = () => {
               fontFamily="body"
               marginTop="10px"
               _hover={{ color: "" }}
-              marginLeft="200px"
+              marginLeft="300px"
               borderRadius="100px"
             >
-              Back to other services
+              Back
             </Button>
           </Flex>
 
@@ -698,7 +703,10 @@ const CustomizeServicePage = () => {
           <ModalContent>
             <ModalHeader>Confirmation</ModalHeader>
             <ModalCloseButton />
-            <ModalBody>Are you sure you want to delete this service?</ModalBody>
+            <ModalBody>
+              Are you sure you want to delete this service? <br></br> This
+              action is irreversible.
+            </ModalBody>
             <ModalFooter>
               <Button colorScheme="red" onClick={handleCancelModalClose}>
                 No

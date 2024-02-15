@@ -1,11 +1,11 @@
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import LoadingSpinner from "../../utils/Spiner";
-
+import { FaMapMarkerAlt, FaFile } from "react-icons/fa";
 import {
   Modal,
   ModalOverlay,
@@ -19,12 +19,13 @@ import {
   Input,
   Button,
   Progress,
-  Switch,
   Flex,
-  Text,
   Box,
   Select,
   useToast,
+  InputGroup,
+  InputLeftElement,
+  InputRightElement,
   Textarea,
 } from "@chakra-ui/react";
 import { SetUser } from "../../redux/userSlice";
@@ -33,15 +34,20 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
   const toast = useToast();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.userReducer);
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [bookForSelf, setBookForSelf] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
-  const [progressBarValue, setProgressBarValue] = useState(25);
-  const [currentPage, setCurrentPage] = useState(1);
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
   const [selectedDob, setSelectedDob] = useState(null);
+  const [formFields, setFormFields] = useState({
+    startDate: null,
+    endDate: null,
+    shift: "",
+    servicePlan: "",
+    currentLocation: "",
+    medicSpecialization: "",
+    medicalReport: "",
+    recipientHealthHistory: "",
+  });
 
   const navigate = useNavigate();
 
@@ -55,95 +61,23 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
     return adjustedDate.toISOString().split("T")[0];
   };
 
-  const [formPages, setFormPages] = useState([
-    {
-      endDate: "",
-      startDate: "",
-      shift: "",
-      servicePlan: "",
-      currentLocation: "",
-      medicSpecialization: "",
-    },
-    {
-      recipientHospital: "",
-      medicalReport: "",
-      recipientHealthHistory: "",
-    },
-  ]);
-
   const handleStartDateChange = (date) => {
-    updateFormData("startDate", date);
+    setSelectedStartDate(date);
+    setFormFields({ ...formFields, startDate: date });
   };
 
   const handleEndDateChange = (date) => {
-    updateFormData("endDate", date);
-  };
-
-  const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-      setProgressBarValue((currentPage + 1) * (100 / totalPages));
-    }
-  };
-
-  const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-      setProgressBarValue((currentPage - 1) * (100 / totalPages));
-    }
-  };
-
-  const updateFormData = (name, value) => {
-    setFormPages((prevPages) => {
-      const updatedPages = [...prevPages];
-      updatedPages[currentPage - 1][name] = value;
-      return updatedPages;
-    });
+    setSelectedEndDate(date);
+    setFormFields({ ...formFields, endDate: date });
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    updateFormData(name, value);
+    setFormFields({ ...formFields, [name]: value });
   };
 
   const handleFormSubmit = async () => {
     setLoading(true);
-
-    const fieldNameMappings = {
-      startDate: "Start Date",
-      endDate: "End Date",
-      shift: "Shift",
-      servicePlan: "Service Plan",
-      currentLocation: "Current Location",
-      recipientHospital: "Personal hospital",
-      recipientHealthHistory: "Health History",
-      medicSpecialization: "Medic Specialization",
-    };
-
-    const requiredFields = [
-      "startDate",
-      "endDate",
-      "shift",
-      "servicePlan",
-      "currentLocation",
-      "recipientHospital",
-      "recipientHealthHistory",
-      "medicSpecialization",
-    ];
-
-    // for (const fieldName of requiredFields) {
-    //   if (!formPages[currentPage - 1][fieldName]) {
-    //     setLoading(false);
-    //     toast({
-    //       title: `${fieldNameMappings[fieldName]} is required`,
-    //       description: `Please fill in the ${fieldNameMappings[fieldName]} field.`,
-    //       status: "error",
-    //       duration: 5000,
-    //       isClosable: true,
-    //     });
-    //     return;
-    //   }
-    // }
 
     try {
       const token = localStorage.getItem("token");
@@ -165,12 +99,10 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
         recipientGender: user?.gender,
         recipientDOB: user?.dob,
         recipientImage: user?.image,
-        kinName: user?.kinName,
-        kinNumber: user?.kinNumber,
       };
 
       const formDataWithDates = {
-        ...formPages[0],
+        ...formFields,
         startDate: formatDateWithDayAdjustment(selectedStartDate),
         endDate: formatDateWithDayAdjustment(selectedEndDate),
         recipientDOB: formatDateWithDayAdjustment(selectedDob),
@@ -178,7 +110,6 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
         customerId: user?.id,
 
         ...userFieldsForBookForSelf,
-        ...formPages[1],
       };
 
       const requestBody = JSON.stringify(formDataWithDates);
@@ -224,15 +155,20 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
     }
   };
 
-  const totalPages = 2;
-
-  const validateStartDates = () => {
-    if (!formPages[0].startDate || !formPages[0].endDate) {
+  const validateForm = () => {
+    if (
+      !formFields.startDate ||
+      !formFields.endDate ||
+      !formFields.shift ||
+      !formFields.servicePlan ||
+      !formFields.currentLocation ||
+      !formFields.medicSpecialization ||
+      !formFields.recipientHealthHistory
+    ) {
       toast({
-        title: "Appointment Dates Required",
-        description: "Please select both start and end dates.",
+        title: "Please fill all required fields",
         status: "error",
-        duration: 5000,
+        duration: 3000,
         isClosable: true,
       });
       return false;
@@ -247,18 +183,22 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
         <ModalHeader color="#A210C6">Book Appointment</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Progress hasStripe value={progressBarValue} colorScheme="gray" />
-          <Progress size="xs" isIndeterminate />
           <FormControl isRequired>
-            {currentPage === 1 && (
-              <Box>
-                <Flex marginLeft="50px">
-                  <Box w="250px">
-                    <FormLabel marginTop="20px">Start Date</FormLabel>
+            <Box>
+              <Flex marginLeft="40px">
+                <Box w="270px">
+                  <FormLabel fontWeight="bold" marginTop="20px">
+                    Start Date
+                  </FormLabel>
+                  <Box
+                    h="6vh"
+                    padding="5px"
+                    paddingLeft="15px"
+                    style={{ border: "1px solid #ccc", borderRadius: "5px" }}
+                  >
                     <DatePicker
-                      name="startDate"
-                      selected={formPages[0].startDate}
-                      onChange={(e) => handleStartDateChange(e)}
+                      selected={selectedStartDate}
+                      onChange={handleStartDateChange}
                       peekNextMonth
                       showMonthDropdown
                       showYearDropdown
@@ -269,12 +209,20 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
                       minDate={new Date()}
                     />
                   </Box>
-                  <Box w="250px" marginLeft="5px">
-                    <FormLabel marginTop="20px">End Date</FormLabel>
+                </Box>
+                <Box w="270px" marginLeft="5px">
+                  <FormLabel fontWeight="bold" marginTop="20px">
+                    End Date
+                  </FormLabel>
+                  <Box
+                    h="6vh"
+                    padding="5px"
+                    paddingLeft="15px"
+                    style={{ border: "1px solid #ccc", borderRadius: "5px" }}
+                  >
                     <DatePicker
-                      name="endDate"
-                      selected={formPages[0].endDate}
-                      onChange={(e) => handleEndDateChange(e)}
+                      selected={selectedEndDate}
+                      onChange={handleEndDateChange}
                       peekNextMonth
                       showMonthDropdown
                       showYearDropdown
@@ -283,49 +231,58 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
                       placeholderText="preferred date to end"
                       className="form-control"
                       minDate={new Date()}
+                      style={{ border: "none" }}
                     />
                   </Box>
-                </Flex>
-                <Flex>
-                  <Box marginLeft="50px">
-                    <FormLabel marginTop="20px">Shift </FormLabel>
-                    <Select
-                      name="shift"
-                      placeholder="Select preferred shift"
-                      w="250px"
-                      value={formPages[0].shift}
-                      onChange={(e) => handleInputChange(e)}
-                    >
-                      <option value="Day Shift">Day Shift (8hrs)</option>
-                      <option value="Night Shift">Night Shift (12hrs)</option>
-                      <option value="Live in">Live in (24hrs)</option>
-                    </Select>
-                  </Box>
-                  <Box marginLeft="5px">
-                    <FormLabel marginTop="20px">Service Plan </FormLabel>
-                    <Select
-                      name="servicePlan"
-                      placeholder="Preferred service plan"
-                      w="250px"
-                      value={formPages[0].servicePlan}
-                      onChange={(e) => handleInputChange(e)}
-                    >
-                      <option value="Elderly care">Elderly care</option>
-                      <option value="Postpartum care">Postpartum care</option>
-                      <option value="Nanny care">Nanny care</option>
-                      <option value="Recovery care">Recovery care</option>
-                      <option value="Short home visit">Short home visit</option>
-                    </Select>
-                  </Box>
-                </Flex>
-                <Box marginLeft="50px">
-                  <FormLabel marginTop="20px">Type of caregiver </FormLabel>
+                </Box>
+              </Flex>
+              <Flex>
+                <Box marginLeft="40px">
+                  <FormLabel fontWeight="bold" marginTop="20px">
+                    Shift{" "}
+                  </FormLabel>
+                  <Select
+                    name="shift"
+                    placeholder="select preferred shift"
+                    w="270px"
+                    value={formFields.shift}
+                    onChange={handleInputChange}
+                  >
+                    <option value="Day Shift">Day Shift (8hrs)</option>
+                    <option value="Night Shift">Night Shift (12hrs)</option>
+                    <option value="Live in">Live in (24hrs)</option>
+                  </Select>
+                </Box>
+                <Box marginLeft="5px">
+                  <FormLabel fontWeight="bold" marginTop="20px">
+                    Service Plan{" "}
+                  </FormLabel>
+                  <Select
+                    name="servicePlan"
+                    placeholder="preferred service plan"
+                    w="270px"
+                    value={formFields.servicePlan}
+                    onChange={handleInputChange}
+                  >
+                    <option value="Elderly care">Elderly care</option>
+                    <option value="Postpartum care">Postpartum care</option>
+                    <option value="Nanny care">Nanny care</option>
+                    <option value="Recovery care">Recovery care</option>
+                    <option value="Short home visit">Short home visit</option>
+                  </Select>
+                </Box>
+              </Flex>
+              <Flex>
+                <Box marginLeft="40px">
+                  <FormLabel fontWeight="bold" marginTop="20px">
+                    Type of caregiver{" "}
+                  </FormLabel>
                   <Select
                     name="medicSpecialization"
-                    placeholder="Select preferred caregiver"
-                    w="250px"
-                    value={formPages[0].medicSpecialization}
-                    onChange={(e) => handleInputChange(e)}
+                    placeholder="select preferred caregiver"
+                    w="270px"
+                    value={formFields.medicSpecialization}
+                    onChange={handleInputChange}
                   >
                     <option value="Registered Nurse">Registered Nurse</option>
                     <option value="Assistant Nurse">Assistant Nurse</option>
@@ -334,95 +291,75 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
                     </option>
                   </Select>
                 </Box>
-                <Box marginLeft="50px">
-                  <FormLabel marginTop="20px">Current Location </FormLabel>
-                  <Input
-                    name="currentLocation"
-                    type="text"
-                    placeholder="Current Location"
-                    value={formPages[0].currentLocation}
-                    onChange={(e) => handleInputChange(e)}
-                    w="500px"
-                  />
-                </Box>
-              </Box>
-            )}
-            {currentPage === 2 && (
-              <Box marginLeft="30px">
-                <Flex>
-                  <Box>
-                    <FormLabel marginTop="20px">Personal hospital </FormLabel>
+                <Box marginLeft="5px">
+                  <FormLabel fontWeight="bold" marginTop="20px">
+                    Current Location{" "}
+                  </FormLabel>
+                  <InputGroup>
+                    <InputRightElement
+                      pointerEvents="none"
+                      children={<FaMapMarkerAlt color="gray.100" />}
+                    />
                     <Input
-                      name="recipientHospital"
+                      name="currentLocation"
                       type="text"
-                      placeholder="Hospital name"
-                      value={formPages[1].recipientHospital}
-                      onChange={(e) => handleInputChange(e)}
-                      w="250px"
+                      placeholder="current Location"
+                      value={formFields.currentLocation}
+                      onChange={handleInputChange}
+                      w="270px"
                     />
-                  </Box>
-                  <Box marginLeft="5px">
-                    <FormLabel marginTop="20px">
-                      Upload medical report (optional){" "}
-                    </FormLabel>
-                    <Input
-                      name="medicalReport"
-                      type="file"
-                      onChange={(e) => handleInputChange(e)}
-                      w="250px"
-                    />
-                  </Box>
-                </Flex>
-
-                <Box>
-                  <FormLabel marginTop="20px">Health History </FormLabel>
-                  <Textarea
-                    name="recipientHealthHistory"
-                    type="text"
-                    placeholder="Please share health history and any special need we should be aware of"
-                    value={formPages[1].recipientHealthHistory}
-                    onChange={(e) => handleInputChange(e)}
-                    w="505px"
-                  />
+                  </InputGroup>
                 </Box>
+              </Flex>
+              <Box marginLeft="40px">
+                <FormLabel fontWeight="bold" marginTop="20px">
+                  Upload necessary document (test results, medical report,
+                  scans, etc)
+                </FormLabel>
+                <InputGroup>
+                  <Input
+                    padding="5px"
+                    name="medicalReport"
+                    type="file"
+                    onChange={handleInputChange}
+                    w="550px"
+                    placeholder="Upload necessary document"
+                  />
+                  {/* <InputRightElement
+                    pointerEvents="none"
+                    children={<FaFile color="gray.300" />}
+                  /> */}
+                </InputGroup>
               </Box>
-            )}
+              <Box marginLeft="40px">
+                <FormLabel fontWeight="bold" marginTop="20px">
+                  Health History{" "}
+                </FormLabel>
+                <Textarea
+                  name="recipientHealthHistory"
+                  type="text"
+                  placeholder="share health history and any special need we should know"
+                  value={formFields.recipientHealthHistory}
+                  onChange={handleInputChange}
+                  w="550px"
+                />
+              </Box>
+            </Box>
           </FormControl>
         </ModalBody>
 
         <ModalFooter>
-          {currentPage === 1 ? (
-            <Button
-              bg="#A210C6"
-              color="white"
-              onClick={handleNextPage}
-              // marginRight="5px"
-            >
-              Next
-            </Button>
-          ) : (
-            <Button
-              bg="gray"
-              color="white"
-              onClick={handlePreviousPage}
-              marginRight="5px"
-            >
-              Previous
-            </Button>
-          )}
-          {currentPage === 2 && (
-            <>
-              <Button
-                isLoading={loading}
-                loadingText="Processing..."
-                bg="#A210C6"
-                color="white"
-                onClick={handleFormSubmit}
-              >
-                {loading ? "Processing..." : "Submit"}
-              </Button>
-            </>
-          )}
+          <Button
+            isLoading={loading}
+            loadingText="Processing..."
+            bg="#A210C6"
+            color="white"
+            onClick={() => handleFormSubmit()}
+            borderRadius="100px"
+            _hover={{ color: "" }}
+          >
+            {loading ? "Processing..." : "Book appointment"}
+          </Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

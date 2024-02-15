@@ -1,10 +1,16 @@
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import LoadingSpinner from "../../utils/Spiner";
+import {
+  FaMapMarkerAlt,
+  FaFile,
+  FaCalendarAlt,
+  FaPhoneAlt,
+  FaUser,
+} from "react-icons/fa";
 import {
   Modal,
   ModalOverlay,
@@ -15,15 +21,18 @@ import {
   ModalFooter,
   FormControl,
   FormLabel,
+  InputGroup,
+  InputLeftElement,
+  InputRightElement,
   Input,
   Button,
   Progress,
-  Text,
-  Switch,
   Flex,
   Box,
   Select,
   useToast,
+  Switch,
+  Text,
   Textarea,
 } from "@chakra-ui/react";
 
@@ -31,95 +40,48 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
   const toast = useToast();
   const { user } = useSelector((state) => state.userReducer);
   const [loading, setLoading] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [progressBarValue, setProgressBarValue] = useState(25);
+  const [selectedStartDate, setSelectedStartDate] = useState(null);
+  const [selectedEndDate, setSelectedEndDate] = useState(null);
+  const [selectedDob, setSelectedDob] = useState(null);
+  const [addToBeneficiaryList, setAddToBeneficiaryList] = useState(false);
+  const [formFields, setFormFields] = useState({
+    recipientFirstname: "",
+    recipientLastname: "",
+    recipientPhoneNumber: "",
+    recipientGender: "",
+    recipientDOB: "",
+    currentLocation: "",
+    shift: "",
+    servicePlan: "",
+    medicSpecialization: "",
+    startDate: "",
+    endDate: "",
+    relationship: "",
+    medicalReport: "",
+  });
+
   const navigate = useNavigate();
-
-  const [formPages, setFormPages] = useState([
-    {
-      recipientFirstname: "",
-      recipientLastname: "",
-      recipientPhoneNumber: "",
-      recipientGender: "",
-      recipientDOB: "",
-      currentLocation: "",
-      shift: "",
-    },
-    {
-      relationship: "",
-      language: "",
-      recipientDoctor: "",
-      recipientDoctorNumber: "",
-      recipientHospital: "",
-      medicalReport: "",
-      medicSpecialization: "",
-    },
-    {
-      recipientHealthHistory: "",
-      recipientImage: "",
-      startDate: "",
-      endDate: "",
-    
-    },
-    {
-      kinName: "",
-      kinNumber: "",
-    },
-  ]);
-
-  const handleStartDateChange = (date) => {
-    updateFormData("startDate", date);
-  };
-
-  const handleEndDateChange = (date) => {
-    updateFormData("endDate", date);
-  };
-
-  const handleDobChange = (date) => {
-    updateFormData("recipientDOB", date);
-  };
-
-  const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-      setProgressBarValue((currentPage + 1) * (100 / totalPages));
-    }
-  };
-
-  const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-      setProgressBarValue((currentPage - 1) * (100 / totalPages));
-    }
-  };
-
-  const updateFormData = (name, value) => {
-    setFormPages((prevPages) => {
-      const updatedPages = [...prevPages];
-      updatedPages[currentPage - 1][name] = value;
-      return updatedPages;
-    });
-  };
-
-  const formatDateToUTC = (selectedDate) => {
-    if (!selectedDate) return "";
-
-    // Use isNaN to check if the selectedDate is a valid date object
-    if (isNaN(new Date(selectedDate))) {
-      console.error("Invalid date:", selectedDate);
-      return "";
-    }
-
-    // Add one day to the selected date
-    const adjustedDate = new Date(selectedDate);
-    adjustedDate.setDate(adjustedDate.getDate() + 1);
-
-    return adjustedDate.toISOString().split("T")[0];
-  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    updateFormData(name, value);
+    setFormFields((prevFields) => ({
+      ...prevFields,
+      [name]: value,
+    }));
+  };
+
+  const handleStartDateChange = (date) => {
+    setFormFields((prevFields) => ({
+      ...prevFields,
+      startDate: date,
+    }));
+  };
+
+  const handleEndDateChange = (date) => {
+    setFormFields((prevFields) => ({
+      ...prevFields,
+      endDate: date,
+    }));
   };
 
   const handleFormSubmit = async () => {
@@ -132,18 +94,17 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
         Authorization: `Bearer ${token}`,
       };
 
-      const formatDateWithDayAdjustment = (selectedDate) =>
-        formatDateToUTC(new Date(selectedDate));
+      const formatDateWithDayAdjustment = (selectedDate) => {
+        const adjustedDate = new Date(selectedDate);
+        adjustedDate.setDate(adjustedDate.getDate() + 1);
+        return adjustedDate.toISOString().split("T")[0];
+      };
 
       const formDataWithDates = {
-        ...formPages[0],
-        ...formPages[1],
-        ...formPages[2],
-        ...formPages[3],
-        startDate: formatDateWithDayAdjustment(formPages[2].startDate),
-        endDate: formatDateWithDayAdjustment(formPages[2].endDate),
-        recipientDOB: formatDateWithDayAdjustment(formPages[0].recipientDOB),
-        customerPhoneNumber: user.phoneNumber,
+        ...formFields,
+        startDate: formatDateWithDayAdjustment(formFields.startDate),
+        endDate: formatDateWithDayAdjustment(formFields.endDate),
+        recipientDOB: formatDateWithDayAdjustment(formFields.recipientDOB),
       };
 
       const requestBody = JSON.stringify(formDataWithDates);
@@ -189,7 +150,52 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
     }
   };
 
-  const totalPages = 4;
+  const handleSwitchChange = async () => {
+    setLoading(true);
+    try {
+      const token = localStorage.getItem("token");
+      const apiUrl = "http://localhost:8080/v1/beneficiary/add";
+      const headers = {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      };
+
+      const requestBody = JSON.stringify(formFields);
+
+      const response = await axios.post(apiUrl, requestBody, { headers });
+
+      if (response.data.success) {
+        setLoading(false);
+        toast({
+          title: "Beneficiary Added",
+          status: "success",
+          duration: 6000,
+        });
+        onClose(); // Close the modal after successful addition
+      } else {
+        setLoading(false);
+        console.error("Error adding beneficiary");
+        const errorMessage = response.data
+          ? response.data.message
+          : "Unknown error";
+        toast({
+          title: "Adding beneficiary failed",
+          description: errorMessage,
+          status: "error",
+          duration: 6000,
+        });
+      }
+    } catch (error) {
+      setLoading(false);
+      console.error("An error occurred:", error);
+      toast({
+        title: "Error adding beneficiary",
+        description: error.response?.data?.message || "Unknown error",
+        status: "error",
+        duration: 6000,
+      });
+    }
+  };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="2xl">
@@ -198,131 +204,212 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
         <ModalHeader color="#A210C6">Book Appointment</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Progress hasStripe value={progressBarValue} colorScheme="gray" />
-          <Progress size="xs" isIndeterminate />
-          <FormControl>
-            {currentPage === 1 && (
-              <FormControl marginLeft="40px">
+          <FormControl marginLeft="40px">
+            <Box>
+              <FormLabel fontWeight="bold">Enter Beneficiary details</FormLabel>
+              <Flex>
+              <InputGroup>
+                <Input
+                  name="recipientFirstname"
+                  placeholder="first name"
+                  value={formFields.recipientFirstname}
+                  onChange={handleInputChange}
+                  w="270px"
+                />
+                <InputRightElement marginRight="45px"  pointerEvents="none">
+                      <FaUser color="gray.300" />
+                    </InputRightElement>
+                  </InputGroup>
+                  <InputGroup>
+                <Input
+                  name="recipientLastname"
+                  marginLeft="-35px"
+                  placeholder="last name"
+                  value={formFields.recipientLastname}
+                  onChange={handleInputChange}
+                  w="270px"
+                />
+                <InputRightElement marginRight="80px" pointerEvents="none">
+                      <FaUser color="gray.300" />
+                    </InputRightElement>
+                  </InputGroup>
+              </Flex>
+              <Flex>
                 <Box>
-                  <FormLabel> Enter Beneficiary name</FormLabel>
-                  <Flex>
-                    <Input
-                      name="recipientFirstname"
-                      placeholder="First name"
-                      value={formPages[0].recipientFirstname}
-                      onChange={(e) => handleInputChange(e)}
-                      w="250px"
-                    />
-                    <Input
-                      name="recipientLastname"
-                      marginLeft="2px"
-                      placeholder="Last name"
-                      value={formPages[0].recipientLastname}
-                      onChange={(e) => handleInputChange(e)}
-                      w="250px"
-                    />
-                  </Flex>
-                  <Flex>
-                    <Box>
-                      <FormLabel marginTop="20px">Gender </FormLabel>
-                      <Select
-                        name="recipientGender"
-                        placeholder="Select your gender"
-                        w="250px"
-                        value={formPages[0].recipientGender}
-                        onChange={(e) => handleInputChange(e)}
-                      >
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                      </Select>
-                    </Box>
-                    <Box marginLeft="5px" w="250px">
-                      <FormLabel marginTop="20px">Date of Birth</FormLabel>
+                  <FormLabel fontWeight="bold" marginTop="20px">
+                    Gender{" "}
+                  </FormLabel>
+                  <Select
+                    name="recipientGender"
+                    placeholder="Select gender"
+                    w="270px"
+                    value={formFields.recipientGender}
+                    onChange={handleInputChange}
+                  >
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                  </Select>
+                </Box>
+                <Box marginLeft="5px" w="270px">
+                  <FormLabel fontWeight="bold" marginTop="20px">
+                    Date of Birth
+                  </FormLabel>
+                  <Box
+                    h="6vh"
+                    padding="5px"
+                    paddingLeft="15px"
+                    style={{ border: "1px solid #ccc", borderRadius: "5px" }}
+                  >
+                    {" "}
+                    <InputGroup>
                       <DatePicker
                         name="recipientDOB"
-                        selected={formPages[0].recipientDOB}
-                        onChange={(date) => handleDobChange(date)}
-                        maxDate={new Date()}
+                        selected={formFields.recipientDOB}
+                        onChange={handleStartDateChange}
                         peekNextMonth
                         showMonthDropdown
                         showYearDropdown
                         dropdownMode="select"
                         dateFormat="yyyy-MM-dd"
-                        placeholderText="Select your date of birth"
+                        placeholderText="Select DOB"
                         className="form-control"
                       />
-                    </Box>
-                  </Flex>
-                  <Flex marginTop="1px">
-                    <Box>
-                      <FormLabel marginTop="20px">Contact Number </FormLabel>
-                      <Input
-                        name="recipientPhoneNumber"
-                        type="tel"
-                        placeholder="Beneficiary PhoneNumber"
-                        value={formPages[0].recipientPhoneNumber}
-                        onChange={(e) => handleInputChange(e)}
-                        w="250px"
-                      />
-                    </Box>
-
-                    <Box marginLeft="5px">
-                      <FormLabel marginTop="20px">Current Location </FormLabel>
-                      <Input
-                        name="currentLocation"
-                        type="text"
-                        placeholder="Current Location"
-                        value={formPages[0].currentLocation}
-                        onChange={(e) => handleInputChange(e)}
-                        w="250px"
-                      />
-                    </Box>
-                  </Flex>
+                      <InputRightElement pointerEvents="none">
+                        <FaCalendarAlt color="gray.300" />
+                      </InputRightElement>
+                    </InputGroup>
+                  </Box>
                 </Box>
-              </FormControl>
-            )}
-            {currentPage === 2 && (
-              <Box marginLeft="30px">
-                <Flex marginTop="1px">
-                  <Box>
-                    <FormLabel marginTop="20px">Shift </FormLabel>
-                    <Select
-                      name="shift"
-                      placeholder="Select preferred shift"
-                      w="250px"
-                      value={formPages[1].shift}
-                      onChange={(e) => handleInputChange(e)}
-                    >
-                      <option value="Day Shift">Day Shift (8hrs)</option>
-                      <option value="Night Shift">Night Shift (12hrs)</option>
-                      <option value="Live in">Live in (24hrs)</option>
-                    </Select>
+              </Flex>
+              <Flex marginTop="1px">
+                <Box>
+                  <FormLabel fontWeight="bold" marginTop="20px">
+                    Contact Number{" "}
+                  </FormLabel>
+                  <InputGroup>
+                    <Input
+                      name="recipientPhoneNumber"
+                      type="tel"
+                      placeholder="recipient Phone Number"
+                      value={formFields.recipientPhoneNumber}
+                      onChange={handleInputChange}
+                      w="550px"
+                    />
+                    <InputRightElement pointerEvents="none">
+                      <FaPhoneAlt color="gray.300" />
+                    </InputRightElement>
+                  </InputGroup>
+                </Box>
+              </Flex>
+              <Flex marginLeft="5px">
+                <Box w="270px">
+                  <FormLabel fontWeight="bold" marginTop="20px">
+                    Start Date
+                  </FormLabel>
+
+                  <Box
+                    h="6vh"
+                    padding="5px"
+                    paddingLeft="15px"
+                    style={{ border: "1px solid #ccc", borderRadius: "5px" }}
+                  >
+                    <InputGroup>
+                      <DatePicker
+                        selected={selectedStartDate}
+                        onChange={handleStartDateChange}
+                        peekNextMonth
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
+                        dateFormat="dd-MM-yyyy"
+                        placeholderText="preferred date to start"
+                        className="form-control"
+                        minDate={new Date()}
+                      />
+                      <InputRightElement pointerEvents="none">
+                        <FaCalendarAlt color="gray.300" />
+                      </InputRightElement>
+                    </InputGroup>
                   </Box>
-                  <Box marginLeft="5px">
-                    <FormLabel marginTop="20px">Service Plan </FormLabel>
-                    <Select
-                      name="servicePlan"
-                      placeholder="preferred service plan"
-                      w="250px"
-                      value={formPages[1].servicePlan}
-                      onChange={(e) => handleInputChange(e)}
-                    >
-                      <option value="Elderly care">Elderly care</option>
-                      <option value="Postpartum care">Postpartum care</option>
-                      <option value="Recovery care">Recovery care</option>
-                      <option value="Nanny care">Nanny care</option>
-                      <option value="Short home visit">Short home visit</option>
-                    </Select>
+                </Box>
+                <Box w="270px" marginLeft="5px">
+                  <FormLabel fontWeight="bold" marginTop="20px">
+                    End Date
+                  </FormLabel>
+                  <Box
+                    h="6vh"
+                    padding="5px"
+                    paddingLeft="15px"
+                    style={{ border: "1px solid #ccc", borderRadius: "5px" }}
+                  >
+                    <InputGroup>
+                      <DatePicker
+                        selected={selectedEndDate}
+                        onChange={handleEndDateChange}
+                        peekNextMonth
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
+                        dateFormat="dd-MM-yyyy"
+                        placeholderText="preferred date to end"
+                        className="form-control"
+                        minDate={new Date()}
+                        style={{ border: "none" }}
+                      />
+                      <InputRightElement pointerEvents="none">
+                        <FaCalendarAlt color="gray.300" />
+                      </InputRightElement>
+                    </InputGroup>
                   </Box>
-                </Flex>
-                <Box marginLeft="50px">
-                  <FormLabel marginTop="20px">Type of caregiver </FormLabel>
+                </Box>
+              </Flex>
+              <Flex marginLeft="5px">
+                <Box>
+                  <FormLabel fontWeight="bold" marginTop="20px">
+                    Shift{" "}
+                  </FormLabel>
+                  <Select
+                    name="shift"
+                    placeholder="select preferred shift"
+                    w="270px"
+                    value={formFields.shift}
+                    onChange={handleInputChange}
+                  >
+                    <option value="Day Shift">Day Shift (8hrs)</option>
+                    <option value="Night Shift">Night Shift (12hrs)</option>
+                    <option value="Live in">Live in (24hrs)</option>
+                  </Select>
+                </Box>
+                <Box marginLeft="5px">
+                  <FormLabel fontWeight="bold" marginTop="20px">
+                    Service Plan{" "}
+                  </FormLabel>
+                  <Select
+                    name="servicePlan"
+                    placeholder="preferred service plan"
+                    w="270px"
+                    value={formFields.servicePlan}
+                    onChange={handleInputChange}
+                  >
+                    <option value="Elderly care">Elderly care</option>
+                    <option value="Postpartum care">Postpartum care</option>
+                    <option value="Nanny care">Nanny care</option>
+                    <option value="Recovery care">Recovery care</option>
+                    <option value="Short home visit">Short home visit</option>
+                  </Select>
+                </Box>
+              </Flex>
+              <Flex marginLeft="5px">
+                <Box>
+                  <FormLabel fontWeight="bold" marginTop="20px">
+                    Type of caregiver{" "}
+                  </FormLabel>
                   <Select
                     name="medicSpecialization"
-                    placeholder="Select preferred caregiver"
-                    w="250px"
-                    value={formPages[1].medicSpecialization}
-                    onChange={(e) => handleInputChange(e)}
+                    placeholder="select preferred caregiver"
+                    w="270px"
+                    value={formFields.medicSpecialization}
+                    onChange={handleInputChange}
                   >
                     <option value="Registered Nurse">Registered Nurse</option>
                     <option value="Assistant Nurse">Assistant Nurse</option>
@@ -331,201 +418,89 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
                     </option>
                   </Select>
                 </Box>
-                <Flex>
-                  <Box>
-                    <FormLabel marginTop="20px">Personal hospital </FormLabel>
+                <Box marginLeft="5px">
+                  <FormLabel fontWeight="bold" marginTop="20px">
+                    Current Location{" "}
+                  </FormLabel>
+                  <InputGroup>
+                    <InputRightElement
+                      pointerEvents="none"
+                      children={<FaMapMarkerAlt color="gray.100" />}
+                    />
                     <Input
-                      name="recipientHospital"
+                      name="currentLocation"
                       type="text"
-                      placeholder="Hospital name"
-                      value={formPages[1].recipientHospital}
-                      onChange={(e) => handleInputChange(e)}
-                      w="250px"
+                      placeholder="current Location"
+                      value={formFields.currentLocation}
+                      onChange={handleInputChange}
+                      w="270px"
                     />
-                  </Box>
-                  <Box marginLeft="5px">
-                    <FormLabel marginTop="20px">
-                      Upload medical report{" "}
-                    </FormLabel>
-                    <Input
-                      name="medicalReport"
-                      type="file"
-                      onChange={(e) => handleInputChange(e)}
-                      w="250px"
-                    />
-                  </Box>
-                </Flex>
+                  </InputGroup>
+                </Box>
+              </Flex>
+              <Box marginLeft="5px">
+                <FormLabel fontWeight="bold" marginTop="20px">
+                  Upload necessary document (test results, medical report,
+                  scans, etc)
+                </FormLabel>
+                <InputGroup>
+                  <Input
+                    padding="5px"
+                    name="medicalReport"
+                    type="file"
+                    onChange={handleInputChange}
+                    w="550px"
+                    placeholder="Upload necessary document"
+                  />
+                  {/* <InputRightElement
+                    pointerEvents="none"
+                    children={<FaFile color="gray.300" />}
+                  /> */}
+                </InputGroup>
               </Box>
-            )}
-            {currentPage === 3 && (
-              <Box>
-                <FormControl marginLeft="10px">
-                  <Box marginLeft="50px">
-                    <Box>
-                      <FormLabel marginTop="20px">Health History </FormLabel>
-                      <Textarea
-                        name="recipientHealthHistory"
-                        type="text"
-                        placeholder="Please share health history and any special need we should be aware of"
-                        value={formPages[2].recipientHealthHistory}
-                        onChange={(e) => handleInputChange(e)}
-                        w="500px"
-                      />
-                    </Box>
-
-                    <Flex marginTop="1px">
-                      <Box w="250px">
-                        <FormLabel marginTop="20px">Start Date</FormLabel>
-                        <DatePicker
-                          name="startDate"
-                          selected={formPages[2].startDate}
-                          onChange={(e) => handleStartDateChange(e)}
-                          peekNextMonth
-                          showMonthDropdown
-                          showYearDropdown
-                          dropdownMode="select"
-                          dateFormat="yyyy-MM-dd"
-                          placeholderText="preferred date to start"
-                          className="form-control"
-                          minDate={new Date()}
-                        />
-                      </Box>
-                      <Box w="250px" marginLeft="5px">
-                        <FormLabel marginTop="20px">End Date</FormLabel>
-                        <DatePicker
-                          name="endDate"
-                          selected={formPages[2].endDate}
-                          onChange={(e) => handleEndDateChange(e)}
-                          peekNextMonth
-                          showMonthDropdown
-                          showYearDropdown
-                          dropdownMode="select"
-                          dateFormat="yyyy-MM-dd"
-                          placeholderText="preferred date to end"
-                          className="form-control"
-                          minDate={new Date()}
-                        />
-                      </Box>{" "}
-                    </Flex>
-                  </Box>
-                </FormControl>
+              <Box marginLeft="5px">
+                <FormLabel fontWeight="bold" marginTop="20px">
+                  Health History{" "}
+                </FormLabel>
+                <Textarea
+                  name="recipientHealthHistory"
+                  type="text"
+                  placeholder="share health history and any special need we should know"
+                  value={formFields.recipientHealthHistory}
+                  onChange={handleInputChange}
+                  w="550px"
+                />
               </Box>
-            )}
-            {currentPage === 4 && (
-              <Box>
-                <FormControl marginLeft="5px">
-                  <Box marginLeft="50px">
-                    <Flex marginTop="1px">
-                      <Box>
-                        <FormLabel marginTop="20px">Next of kin </FormLabel>
-                        <Input
-                          name="kinName"
-                          type="text"
-                          placeholder="Next of kin name"
-                          value={formPages[3].kinName}
-                          onChange={(e) => handleInputChange(e)}
-                          w="250px"
-                        />
-                      </Box>
-                      <Box marginLeft="5px">
-                        <FormLabel marginTop="20px">Phone number </FormLabel>
-                        <Input
-                          name="kinNumber"
-                          type="text"
-                          placeholder="Next of kin phone number"
-                          value={formPages[3].kinNumber}
-                          onChange={(e) => handleInputChange(e)}
-                          w="250px"
-                        />
-                      </Box>
-                    </Flex>
-                    <Flex marginTop="1px">
-                      <Box>
-                        <FormLabel marginTop="20px">
-                          Relationship with beneficiary{" "}
-                        </FormLabel>
-                        <Select
-                          name="relationship"
-                          placeholder="Select the appropriate relationship type"
-                          w="250px"
-                          onChange={(e) => handleInputChange(e)}
-                          value={formPages[3].relationship}
-                        >
-                          <option value="Mum">Mum</option>
-                          <option value="Dad">Dad</option>
-
-                          <option value="Wife">Wife</option>
-                          <option value="Husband">Husband</option>
-
-                          <option value="Sister">Sister</option>
-                          <option value="Brother">Brother</option>
-                          <option value="Uncle">Uncle</option>
-                          <option value="Aunt">Aunt</option>
-                          <option value="Son">Son</option>
-                          <option value="Daughter">Daughter</option>
-                          <option value="Niece">Niece</option>
-                          <option value="Nephew">Nephew</option>
-                          <option value="Cousin">Cousin</option>
-                          <option value="Friend">Friend</option>
-                          <option value="Colleague">Colleague</option>
-                          <option value="Neighbour">Neighbour</option>
-
-                          <option value="MotherInLaw">Mother in-law</option>
-                          <option value="FatherInLaw">Father in-law</option>
-                          <option value="Grandmother">Grand mother</option>
-                          <option value="Grandfather">Grand father</option>
-                        </Select>
-                      </Box>
-                      <Box marginLeft="5px">
-                        <FormLabel marginTop="20px">
-                          Preferred Language
-                        </FormLabel>
-                        <Select
-                          name="language"
-                          placeholder="Select preferred language"
-                          w="250px"
-                          onChange={(e) => handleInputChange(e)}
-                          value={formPages[3].language}
-                        >
-                          <option value="English">English</option>
-                          <option value="Igbo">Igbo</option>
-                          <option value="Yoruba">Yoruba</option>
-                          <option value="Housa">Hausa</option>
-                          <option value="Pigeon">Pidgeon</option>
-                          <option value="Others">Others</option>
-                        </Select>
-                      </Box>
-                    </Flex>
-                  </Box>
-                </FormControl>
-              </Box>
-            )}
+            </Box>
+            <Flex marginTop="10px" marginLeft="350px">
+              <Text color="#A210C6" fontStyle="italic">
+                Add to beneficiary list?
+              </Text>
+              <Switch
+                marginLeft="10px"
+                colorScheme="green"
+                isChecked={addToBeneficiaryList}
+                onChange={() => {
+                  setAddToBeneficiaryList(!addToBeneficiaryList); // Update the state first
+                  if (!addToBeneficiaryList) {
+                    handleSwitchChange();
+                  }
+                }}
+              />
+            </Flex>
           </FormControl>
         </ModalBody>
         <ModalFooter>
-          {currentPage > 1 && (
-            <Button color="white" bg="gray" mr={3} onClick={handlePreviousPage}>
-              Previous
-            </Button>
-          )}
-          {currentPage < 4 ? (
-            <Button color="white" bg="#A210C6" mr={3} onClick={handleNextPage}>
-              Next
-            </Button>
-          ) : (
-            <>
-              <Button
-                isLoading={loading}
-                loadingText="Processing..."
-                bg="#A210C6"
-                color="white"
-                mr={3}
-                onClick={handleFormSubmit}
-              >
-                {loading ? "Processing..." : "Submit"}
-              </Button>
-            </>
-          )}
+          <Button
+            borderRadius="100px"
+            isLoading={loading}
+            loadingText="Processing..."
+            bg="#A210C6"
+            color="white"
+            onClick={handleFormSubmit}
+          >
+            {loading ? "Processing..." : "Book appointment"}
+          </Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

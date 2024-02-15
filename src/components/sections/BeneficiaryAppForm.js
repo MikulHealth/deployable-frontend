@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { FaMapMarkerAlt, FaFile } from "react-icons/fa";
 import {
   InputLeftAddon,
   InputGroup,
@@ -19,6 +20,8 @@ import {
   FormLabel,
   Box,
   Text,
+  InputLeftElement,
+  InputRightElement,
   Flex,
 } from "@chakra-ui/react";
 import DatePicker from "react-datepicker";
@@ -33,7 +36,8 @@ const BookBeneficiaryAppointmentModal = ({
   const toast = useToast();
   const { user } = useSelector((state) => state.userReducer);
   const [loading, setLoading] = useState(false);
-
+  const [selectedStartDate, setSelectedStartDate] = useState(null);
+  const [selectedEndDate, setSelectedEndDate] = useState(null);
   const navigate = useNavigate();
   const [formPages, setFormPages] = useState({
     recipientFirstname: "",
@@ -44,16 +48,11 @@ const BookBeneficiaryAppointmentModal = ({
     currentLocation: "",
     shift: "",
     servicePlan: "",
-    recipientHospital: "",
     medicalReport: null,
-    recipientHealthHistory: "",
     medicSpecialization: "",
     startDate: null,
     endDate: null,
-    kinName: "",
-    kinNumber: "",
     relationship: "",
-    language: "",
   });
 
   const formatDateToUTC = (selectedDate) => {
@@ -78,34 +77,38 @@ const BookBeneficiaryAppointmentModal = ({
   };
 
   const handleStartDateChange = (date) => {
+    setSelectedStartDate(date);
     setFormPages({ ...formPages, startDate: date });
   };
 
   const handleEndDateChange = (date) => {
+    setSelectedEndDate(date);
     setFormPages({ ...formPages, endDate: date });
   };
 
   const handleFormSubmit = async () => {
     setLoading(true);
+
+    if (!validateStartDates()) {
+      setLoading(false);
+      return;
+    }
+
     const fieldNameMappings = {
       shift: "Shift",
       servicePlan: "Service Plan",
-      recipientHospital: "Personal hospital",
       startDate: "Start Date",
       endDate: "End Date",
       currentLocation: "Current Location",
-      recipientHealthHistory: "Health History",
       medicSpecialization: "Medic Specialization",
     };
 
     const requiredFields = [
       "shift",
       "servicePlan",
-      "recipientHospital",
       "startDate",
       "endDate",
       "currentLocation",
-      "recipientHealthHistory",
       "medicSpecialization",
     ];
 
@@ -122,23 +125,6 @@ const BookBeneficiaryAppointmentModal = ({
         return;
       }
     }
-
-    if (!validateStartDates()) {
-      setLoading(false);
-      return;
-    }
-
-    // if (!validateNigerianPhoneNumber(formPages.recipientDoctorNumber)) {
-    //   setLoading(false);
-    //   toast({
-    //     title: "Invalid Phone Number",
-    //     description: "Please enter a valid Nigerian phone number.",
-    //     status: "error",
-    //     duration: 5000,
-    //     isClosable: true,
-    //   });
-    //   return;
-    // }
 
     try {
       const token = localStorage.getItem("token");
@@ -261,17 +247,69 @@ const BookBeneficiaryAppointmentModal = ({
         <ModalCloseButton />
         <ModalBody>
           <FormControl isRequired>
-            <Box marginLeft="40px">
-              <Flex marginTop="1px">
-                <Box>
-                  <FormLabel marginTop="20px">Shift </FormLabel>
+            <Box>
+              <Flex marginLeft="40px">
+                <Box w="270px">
+                  <FormLabel fontWeight="bold" marginTop="20px">
+                    Start Date
+                  </FormLabel>
+                  <Box
+                    h="6vh"
+                    padding="5px"
+                    paddingLeft="15px"
+                    style={{ border: "1px solid #ccc", borderRadius: "5px" }}
+                  >
+                    <DatePicker
+                      selected={selectedStartDate}
+                      onChange={handleStartDateChange}
+                      peekNextMonth
+                      showMonthDropdown
+                      showYearDropdown
+                      dropdownMode="select"
+                      dateFormat="dd-MM-yyyy"
+                      placeholderText="preferred date to start"
+                      className="form-control"
+                      minDate={new Date()}
+                    />
+                  </Box>
+                </Box>
+                <Box w="270px" marginLeft="5px">
+                  <FormLabel fontWeight="bold" marginTop="20px">
+                    End Date
+                  </FormLabel>
+                  <Box
+                    h="6vh"
+                    padding="5px"
+                    paddingLeft="15px"
+                    style={{ border: "1px solid #ccc", borderRadius: "5px" }}
+                  >
+                    <DatePicker
+                      selected={selectedEndDate}
+                      onChange={handleEndDateChange}
+                      peekNextMonth
+                      showMonthDropdown
+                      showYearDropdown
+                      dropdownMode="select"
+                      dateFormat="dd-MM-yyyy"
+                      placeholderText="preferred date to end"
+                      className="form-control"
+                      minDate={new Date()}
+                      style={{ border: "none" }}
+                    />
+                  </Box>
+                </Box>
+              </Flex>
+              <Flex>
+                <Box marginLeft="40px">
+                  <FormLabel fontWeight="bold" marginTop="20px">
+                    Shift{" "}
+                  </FormLabel>
                   <Select
                     name="shift"
-                    placeholder="Select preferred shift"
-                    w="250px"
+                    placeholder="select preferred shift"
+                    w="270px"
                     value={formPages.shift}
-                    onChange={(e) => handleInputChange(e)}
-                    isRequired
+                    onChange={handleInputChange}
                   >
                     <option value="Day Shift">Day Shift (8hrs)</option>
                     <option value="Night Shift">Night Shift (12hrs)</option>
@@ -279,134 +317,111 @@ const BookBeneficiaryAppointmentModal = ({
                   </Select>
                 </Box>
                 <Box marginLeft="5px">
-                  <FormLabel marginTop="20px">Service Plan </FormLabel>
+                  <FormLabel fontWeight="bold" marginTop="20px">
+                    Service Plan{" "}
+                  </FormLabel>
                   <Select
                     name="servicePlan"
                     placeholder="preferred service plan"
-                    w="250px"
+                    w="270px"
                     value={formPages.servicePlan}
-                    onChange={(e) => handleInputChange(e)}
-                    isRequired
+                    onChange={handleInputChange}
                   >
                     <option value="Elderly care">Elderly care</option>
                     <option value="Postpartum care">Postpartum care</option>
-                    <option value="Recovery care">Recovery care</option>
                     <option value="Nanny care">Nanny care</option>
+                    <option value="Recovery care">Recovery care</option>
                     <option value="Short home visit">Short home visit</option>
                   </Select>
                 </Box>
               </Flex>
-              <Box marginLeft="50px">
-                <FormLabel marginTop="20px">Type of caregiver </FormLabel>
-                <Select
-                  name="medicSpecialization"
-                  placeholder="Select preferred caregiver"
-                  w="250px"
-                  value={formPages.medicSpecialiation}
-                  onChange={(e) => handleInputChange(e)}
-                >
-                  <option value="Registered Nurse">Registered Nurse</option>
-                  <option value="Assistant Nurse">Assistant Nurse</option>
-                  <option value="Registered Midwife">
-                    Registered Nurse/Midwife
-                  </option>
-                </Select>
-              </Box>
               <Flex>
-                <Box>
-                  <FormLabel marginTop="20px">Personal hospital </FormLabel>
-                  <Input
-                    name="recipientHospital"
-                    type="text"
-                    placeholder="Hospital name"
-                    value={formPages.recipientHospital}
-                    onChange={(e) => handleInputChange(e)}
-                    w="250px"
-                  />
+                <Box marginLeft="40px">
+                  <FormLabel fontWeight="bold" marginTop="20px">
+                    Type of caregiver{" "}
+                  </FormLabel>
+                  <Select
+                    name="medicSpecialization"
+                    placeholder="select preferred caregiver"
+                    w="270px"
+                    value={formPages.medicSpecialization}
+                    onChange={handleInputChange}
+                  >
+                    <option value="Registered Nurse">Registered Nurse</option>
+                    <option value="Assistant Nurse">Assistant Nurse</option>
+                    <option value="Registered Midwife">
+                      Registered Nurse/Midwife
+                    </option>
+                  </Select>
                 </Box>
                 <Box marginLeft="5px">
-                  <FormLabel marginTop="20px">
-                    Upload medical report (optional){" "}
+                  <FormLabel fontWeight="bold" marginTop="20px">
+                    Current Location{" "}
                   </FormLabel>
+                  <InputGroup>
+                    <InputRightElement
+                      pointerEvents="none"
+                      children={<FaMapMarkerAlt color="gray.100" />}
+                    />
+                    <Input
+                      name="currentLocation"
+                      type="text"
+                      placeholder="current Location"
+                      value={formPages.currentLocation}
+                      onChange={handleInputChange}
+                      w="270px"
+                    />
+                  </InputGroup>
+                </Box>
+              </Flex>
+              <Box marginLeft="40px">
+                <FormLabel fontWeight="bold" marginTop="20px">
+                  Upload necessary document (test results, medical report,
+                  scans, etc)
+                </FormLabel>
+                <InputGroup>
                   <Input
+                    padding="5px"
                     name="medicalReport"
                     type="file"
-                    onChange={(e) => handleInputChange(e)}
-                    w="250px"
+                    onChange={handleInputChange}
+                    w="550px"
+                    placeholder="Upload necessary document"
                   />
-                </Box>
-              </Flex>
-              <Flex marginTop="1px">
-                <Box w="250px">
-                  <FormLabel marginTop="20px">Start Date</FormLabel>
-                  <DatePicker
-                    name="startDate"
-                    selected={formPages.startDate}
-                    onChange={(e) => handleStartDateChange(e)}
-                    peekNextMonth
-                    showMonthDropdown
-                    showYearDropdown
-                    dropdownMode="select"
-                    dateFormat="dd-MM-yyyy"
-                    placeholderText="preferred date to start"
-                    className="form-control"
-                    minDate={new Date()}
-                  />
-                </Box>
-                <Box w="250px" marginLeft="5px">
-                  <FormLabel marginTop="20px">End Date</FormLabel>
-                  <DatePicker
-                    name="endDate"
-                    selected={formPages.endDate}
-                    onChange={(e) => handleEndDateChange(e)}
-                    peekNextMonth
-                    showMonthDropdown
-                    showYearDropdown
-                    dropdownMode="select"
-                    dateFormat="dd-MM-yyyy"
-                    placeholderText="preferred date to end"
-                    className="form-control"
-                    minDate={new Date()}
-                  />
-                </Box>{" "}
-              </Flex>
-              <Box marginLeft="5px">
-                <FormLabel marginTop="20px">Current Location </FormLabel>
-                <Input
-                  name="currentLocation"
-                  type="text"
-                  placeholder="Current Location"
-                  value={formPages.currentLocation}
-                  onChange={(e) => handleInputChange(e)}
-                  w="500px"
-                  isRequired
-                />
+                  {/* <InputRightElement
+                    pointerEvents="none"
+                    children={<FaFile color="gray.300" />}
+                  /> */}
+                </InputGroup>
               </Box>
-              <Box>
-                <FormLabel marginTop="20px">Health History </FormLabel>
+              <Box marginLeft="40px">
+                <FormLabel fontWeight="bold" marginTop="20px">
+                  Health History{" "}
+                </FormLabel>
                 <Textarea
                   name="recipientHealthHistory"
                   type="text"
-                  placeholder="Please share health history and any special need we should be aware of"
+                  placeholder="share health history and any special need we should know"
                   value={formPages.recipientHealthHistory}
-                  onChange={(e) => handleInputChange(e)}
-                  w="500px"
-                  isRequired
+                  onChange={handleInputChange}
+                  w="550px"
                 />
               </Box>
             </Box>
           </FormControl>
         </ModalBody>
+
         <ModalFooter>
           <Button
             isLoading={loading}
             loadingText="Processing..."
             bg="#A210C6"
             color="white"
-            mr={3}
-            onClick={handleFormSubmit}
+            onClick={() => handleFormSubmit()}
+            borderRadius="100px"
+            _hover={{ color: "" }}
           >
-            {loading ? "Processing..." : "Submit"}
+            {loading ? "Processing..." : "Book appointment"}
           </Button>
         </ModalFooter>
       </ModalContent>

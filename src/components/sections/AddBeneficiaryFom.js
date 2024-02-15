@@ -186,29 +186,6 @@ const AddBeneficiaryForm = ({ isOpen, onClose, openBeneficiariesModal }) => {
                   />
                 </Box>
               </Flex>
-
-              <Flex marginTop="1px">
-                <Box>
-                  <FormLabel marginTop="20px">Next of kin </FormLabel>
-                  <Input
-                    name="kinName"
-                    type="text"
-                    placeholder="Next of kin name"
-                    onChange={handleInputChange}
-                    w="250px"
-                  />
-                </Box>
-                <Box marginLeft="5px">
-                  <FormLabel marginTop="20px">Phone number </FormLabel>
-                  <Input
-                    name="KinNumber"
-                    type="tel"
-                    placeholder="Next of kin phone number"
-                    onChange={handleInputChange}
-                    w="250px"
-                  />
-                </Box>
-              </Flex>
               <Flex>
                 <Box>
                   <FormLabel marginTop="20px">
@@ -245,22 +222,7 @@ const AddBeneficiaryForm = ({ isOpen, onClose, openBeneficiariesModal }) => {
                     <option value="Grandfather">Grand father</option>
                   </Select>
                 </Box>
-                <Box marginLeft="5px">
-                  <FormLabel marginTop="20px">Preferred Language</FormLabel>
-                  <Select
-                    name="language"
-                    placeholder="Select preferred language"
-                    w="250px"
-                    onChange={handleInputChange}
-                  >
-                    <option value="English">English</option>
-                          <option value="Igbo">Igbo</option>
-                          <option value="Yoruba">Yoruba</option>
-                          <option value="Housa">Hausa</option>
-                          <option value="Pigeon">Pidgeon</option>
-                          <option value="Others">Others</option>
-                  </Select>
-                </Box>
+
               </Flex>
             </FormControl>
           </VStack>

@@ -63,11 +63,11 @@ const BeneficiariesModal = ({ isOpen, onClose }) => {
         );
 
         if (response.data.success) {
-          toast({
-            title: response.data.message,
-            status: "success",
-            duration: 6000,
-          });
+          // toast({
+          //   title: response.data.message,
+          //   status: "success",
+          //   duration: 6000,
+          // });
           setBeneficiaries(response.data.data);
         } else {
           toast({
@@ -219,33 +219,6 @@ const BeneficiariesModal = ({ isOpen, onClose }) => {
 
                         <Flex marginTop="5px">
                           <Text fontWeight="bold" color="black">
-                            Next of kin name:
-                          </Text>
-                          <Text marginLeft="5px" color="black">
-                            {beneficiary.kinName || "Not available"}
-                          </Text>
-                        </Flex>
-
-                        <Flex marginTop="5px">
-                          <Text fontWeight="bold" color="black">
-                            Next of kin number:
-                          </Text>
-                          <Text marginLeft="5px" color="black">
-                            {beneficiary.kinNumber || "Not availabe"}
-                          </Text>
-                        </Flex>
-
-                        <Flex marginTop="5px">
-                          <Text fontWeight="bold" color="black">
-                            Language:
-                          </Text>
-                          <Text marginLeft="5px" color="black">
-                            {beneficiary.language || "Not available"}
-                          </Text>
-                        </Flex>
-
-                        <Flex marginTop="5px">
-                          <Text fontWeight="bold" color="black">
                             Relationship:
                           </Text>
                           <Text marginLeft="5px" color="black">
@@ -262,7 +235,7 @@ const BeneficiariesModal = ({ isOpen, onClose }) => {
                           </Text>
                         </Flex>
                       </Box>
-                      <Flex marginTop="185px">
+                      <Flex marginTop="100px">
                         <Box>
                           <Text
                             fontSize="17px"

@@ -104,7 +104,6 @@ const ClientDash = () => {
     const fetchMatchedAppointments = async () => {
       try {
         const appointmentId = localStorage.getItem("appointmentId");
-        // Check if there is an appointment ID in the local storage
         if (appointmentId) {
           const token = localStorage.getItem("token");
           const response = await fetch(

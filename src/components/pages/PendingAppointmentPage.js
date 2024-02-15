@@ -848,33 +848,6 @@ const PendingAppointmentPage = () => {
 
                       <Flex marginTop="5px">
                         <Text fontWeight="bold" color="black">
-                          Next of kin name:
-                        </Text>
-                        <Text marginLeft="5px" color="black">
-                          {selectedAppointment.kinName || "Not available"}
-                        </Text>
-                      </Flex>
-
-                      <Flex marginTop="5px">
-                        <Text fontWeight="bold" color="black">
-                          Next of kin number:
-                        </Text>
-                        <Text marginLeft="5px" color="black">
-                          {selectedAppointment.kinNumber || "Not availabe"}
-                        </Text>
-                      </Flex>
-
-                      <Flex marginTop="5px">
-                        <Text fontWeight="bold" color="black">
-                          Language:
-                        </Text>
-                        <Text marginLeft="5px" color="black">
-                          {selectedAppointment.language || "Not available"}
-                        </Text>
-                      </Flex>
-
-                      <Flex marginTop="5px">
-                        <Text fontWeight="bold" color="black">
                           Relationship:
                         </Text>
                         <Text marginLeft="5px" color="black">
@@ -906,15 +879,6 @@ const PendingAppointmentPage = () => {
                         </Text>
                         <Text marginLeft="5px" color="black">
                           {selectedAppointment.medicSpecialization ||
-                            "Not availabe"}
-                        </Text>
-                      </Flex>
-                      <Flex marginTop="5px">
-                        <Text fontWeight="bold" color="black">
-                          Hospital:
-                        </Text>
-                        <Text marginLeft="5px" color="black">
-                          {selectedAppointment.recipientHospital ||
                             "Not availabe"}
                         </Text>
                       </Flex>
@@ -1017,7 +981,8 @@ const PendingAppointmentPage = () => {
             <ModalHeader>Confirmation</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              Are you sure you want to cancel this appointment?
+              Are you sure you want to cancel this appointment? <br></br>
+              This action is irreversible.
             </ModalBody>
             <ModalFooter>
               <Button colorScheme="red" onClick={handleCancelModalClose}>
