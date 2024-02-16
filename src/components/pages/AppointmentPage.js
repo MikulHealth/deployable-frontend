@@ -654,6 +654,32 @@ const AppointmentPage = () => {
                       >
                         Details
                       </Text>
+                      <Text
+                        fontSize="16px"
+                        marginLeft="60px"
+                        color={
+                          appointment.appointmentCompleted
+                            ? "green.500"
+                            : appointment.appointmentActive
+                            ? "blue.500"
+                            : appointment.appointmentMatched
+                            ? "yellow.500"
+                            : appointment.appointmentPending
+                            ? "yellow.500"
+                            : "black"
+                        }
+                        fontStyle="italic"
+                      >
+                        {appointment.appointmentCompleted
+                          ? "Completed"
+                          : appointment.appointmentActive
+                          ? "Active"
+                          : appointment.appointmentMatched
+                          ? "Paired"
+                          : appointment.appointmentPending
+                          ? "Pending"
+                          : "Unknown"}
+                      </Text>
                     </Flex>
                     <Divider my={4} borderColor="gray.500" />
                   </Box>
@@ -778,33 +804,9 @@ const AppointmentPage = () => {
                         </Text>
                       </Flex>
 
-                      <Flex marginTop="5px">
-                        <Text fontWeight="bold" color="black">
-                          Next of kin name:
-                        </Text>
-                        <Text marginLeft="5px" color="black">
-                          {selectedAppointment.kinName || "Not available"}
-                        </Text>
-                      </Flex>
+                  
 
-                      <Flex marginTop="5px">
-                        <Text fontWeight="bold" color="black">
-                          Next of kin number:
-                        </Text>
-                        <Text marginLeft="5px" color="black">
-                          {selectedAppointment.kinNumber || "Not availabe"}
-                        </Text>
-                      </Flex>
-
-                      <Flex marginTop="5px">
-                        <Text fontWeight="bold" color="black">
-                          Language:
-                        </Text>
-                        <Text marginLeft="5px" color="black">
-                          {selectedAppointment.language || "Not available"}
-                        </Text>
-                      </Flex>
-
+                   
                       <Flex marginTop="5px">
                         <Text fontWeight="bold" color="black">
                           Relationship:
@@ -832,15 +834,7 @@ const AppointmentPage = () => {
                           {selectedAppointment.shift || "Not availabe"}
                         </Text>
                       </Flex>
-                      <Flex marginTop="5px">
-                        <Text fontWeight="bold" color="black">
-                          Hospital:
-                        </Text>
-                        <Text marginLeft="5px" color="black">
-                          {selectedAppointment.recipientHospital ||
-                            "Not availabe"}
-                        </Text>
-                      </Flex>
+                  
 
                       <Flex marginTop="5px">
                         <Text fontWeight="bold" color="black">

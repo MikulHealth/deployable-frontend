@@ -48,7 +48,9 @@ const AppointmentModal = ({ isOpen, onClose }) => {
             status: "success",
             duration: 6000,
           });
+          console.log("appointment status",  response.data.data)
           setAppointments(response.data.data);
+        
         } else {
           toast({
             title: "Request failed",
@@ -126,6 +128,7 @@ const AppointmentModal = ({ isOpen, onClose }) => {
     );
     return formattedDateTime;
   };
+  console.log("appointment status",  appointments.appointmentPending)
 
   return (
     <>
@@ -173,8 +176,34 @@ const AppointmentModal = ({ isOpen, onClose }) => {
                       >
                         Details
                       </Text>
+                      <Text
+                        fontSize="16px"
+                        marginLeft="60px"
+                        color={
+                          appointment.appointmentCompleted
+                            ? "green.500"
+                            : appointment.appointmentActive
+                            ? "blue.500"
+                            : appointment.appointmentMatched
+                            ? "yellow.500"
+                            : appointment.appointmentPending
+                            ? "yellow.500"
+                            : "black"
+                        }
+                        fontStyle="italic"
+                      >
+                        {appointment.appointmentCompleted
+                          ? "Completed"
+                          : appointment.appointmentActive
+                          ? "Active"
+                          : appointment.appointmentMatched
+                          ? "Paired"
+                          : appointment.appointmentPending
+                          ? "Pending"
+                          : "Unknown"}
+                      </Text>
                     </Flex>
-                  
+
                     <Divider my={4} borderColor="gray.500" />
                   </Box>
                 ))}
@@ -252,7 +281,6 @@ const AppointmentModal = ({ isOpen, onClose }) => {
                         </Text>
                       </Flex>
 
-                
                       <Flex marginTop="5px">
                         <Text fontWeight="bold" color="black">
                           Relationship:
@@ -285,10 +313,10 @@ const AppointmentModal = ({ isOpen, onClose }) => {
                           Type of Caregiver:
                         </Text>
                         <Text marginLeft="5px" color="black">
-                          {selectedAppointment.medicSpecialization || "Not availabe"}
+                          {selectedAppointment.medicSpecialization ||
+                            "Not availabe"}
                         </Text>
                       </Flex>
-                     
 
                       <Flex marginTop="5px">
                         <Text fontWeight="bold" color="black">
