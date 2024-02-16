@@ -91,7 +91,7 @@ const AddBeneficiaryForm = ({ isOpen, onClose, openBeneficiariesModal }) => {
         },
       };
   
-      // Format the date to match the backend expectations
+   
       const formattedDate = selectedDob
         ? selectedDob.toISOString().split('T')[0]
         : '';
@@ -146,7 +146,7 @@ const AddBeneficiaryForm = ({ isOpen, onClose, openBeneficiariesModal }) => {
         <ModalBody marginLeft="45px">
           <VStack align="start" spacing={4}>
             <FormControl w="40vw">
-              <FormLabel> Enter Beneficiary name</FormLabel>
+              <FormLabel fontWeight="bold"> Enter Beneficiary name</FormLabel>
               <Flex>
                 <InputGroup>
                   <Input
@@ -249,7 +249,7 @@ const AddBeneficiaryForm = ({ isOpen, onClose, openBeneficiariesModal }) => {
                   </FormLabel>
                   <Select
                     name="relationship"
-                    placeholder="Select the appropriate relationship type"
+                    placeholder="select the appropriate relationship type"
                     w="270px"
                     onChange={handleInputChange}
                   >
