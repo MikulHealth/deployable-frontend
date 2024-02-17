@@ -493,9 +493,21 @@ const ClientDash = () => {
                   </Button>
                 </Box>
 
-                <Box marginTop="-8px">
+                <Box marginTop="-5px">
                   <Box display="flex">
-                    <Box bg="#ECCFF4" w="24.5vw" h="20vh" borderRadius="10px">
+                    <Box
+                      style={{
+                        // boxShadow: "0px 4px 8px rgba(162, 16, 198, 0.4)",
+                        transition: "transform 0.3s ease-in-out",
+                      }}
+                      bg="#ECCFF4"
+                      w="24.5vw"
+                      h="20vh"
+                      borderRadius="10px"
+                      _hover={{
+                        transform: "translateY(-10px)",
+                      }}
+                    >
                       {" "}
                       <Text
                         fontSize="20px"
@@ -525,6 +537,13 @@ const ClientDash = () => {
                       </Text>
                     </Box>
                     <Box
+                      style={{
+                        // boxShadow: "0px 4px 8px rgba(162, 16, 198, 0.4)",
+                        transition: "transform 0.3s ease-in-out",
+                      }}
+                      _hover={{
+                        transform: "translateY(-10px)",
+                      }}
                       bg="#ECCFF4"
                       w="24.5vw"
                       h="20vh"
@@ -560,8 +579,20 @@ const ClientDash = () => {
                       </Text>
                     </Box>
                   </Box>
-                  <Box display="flex" marginTop="15px">
-                    <Box bg="#ECCFF4" w="24.5vw" h="20vh" borderRadius="10px">
+                  <Box display="flex" marginTop="25px">
+                    <Box
+                      style={{
+                        // boxShadow: "0px 4px 8px rgba(162, 16, 198, 0.4)",
+                        transition: "transform 0.3s ease-in-out",
+                      }}
+                      _hover={{
+                        transform: "translateY(-10px)",
+                      }}
+                      bg="#ECCFF4"
+                      w="24.5vw"
+                      h="20vh"
+                      borderRadius="10px"
+                    >
                       {" "}
                       <Text
                         fontSize="20px"
@@ -595,6 +626,13 @@ const ClientDash = () => {
                       />
                     </Box>
                     <Box
+                      style={{
+                        // boxShadow: "0px 4px 8px rgba(162, 16, 198, 0.4)",
+                        transition: "transform 0.3s ease-in-out",
+                      }}
+                      _hover={{
+                        transform: "translateY(-10px)",
+                      }}
                       bg="#ECCFF4"
                       w="24.5vw"
                       h="20vh"

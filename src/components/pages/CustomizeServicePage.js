@@ -483,6 +483,7 @@ const CustomizeServicePage = () => {
               >
                 flexibility to tailor services according to your preferences.
               </Text>
+              <Divider my={4} borderColor="gray.500" />
             </Box>
             <Button
               onClick={handlebackToService}
@@ -557,7 +558,6 @@ const CustomizeServicePage = () => {
                             <Text marginLeft="5px" color="black">
                               {`${service.name}`}
                             </Text>
-
                             <Flex marginLeft="45px">
                               <Text fontWeight="bold" color="black">
                                 Frequency:
@@ -566,6 +566,14 @@ const CustomizeServicePage = () => {
                                 {`${service.frequency}`}
                               </Text>
                             </Flex>
+                          </Flex>
+                          <Flex>
+                          <Text fontWeight="bold" color="black">
+                           Preferred Caregiver:
+                            </Text>
+                            <Text marginLeft="35px" color="black">
+                              {`${service.preferredCaregiver}`}
+                            </Text>
                           </Flex>
                           <Flex>
                             <Flex>
