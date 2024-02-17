@@ -42,11 +42,11 @@ const BookBeneficiaryAppointmentModal = ({
   const [selectedEndDate, setSelectedEndDate] = useState(null);
   const navigate = useNavigate();
   const [formPages, setFormPages] = useState({
-    recipientFirstname: "",
-    recipientLastname: "",
-    recipientGender: "",
-    recipientDOB: null,
-    recipientPhoneNumber: "",
+    recipientFirstname: selectedBeneficiary.recipientFirstName,
+    recipientLastname: selectedBeneficiary.recipientLastName,
+    recipientGender: selectedBeneficiary.recipientGender,
+    recipientDOB: selectedBeneficiary.recipientDOB,
+    recipientPhoneNumber: selectedBeneficiary.recipientPhoneNumber,
     currentLocation: "",
     shift: "",
     servicePlan: "",
@@ -54,7 +54,8 @@ const BookBeneficiaryAppointmentModal = ({
     medicSpecialization: "",
     startDate: null,
     endDate: null,
-    relationship: "",
+    relationship: selectedBeneficiary.relationship,
+    costOfService: "",
   });
 
   const formatDateToUTC = (selectedDate) => {
@@ -75,6 +76,9 @@ const BookBeneficiaryAppointmentModal = ({
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    if (name === "servicePlan") {
+      // updateMedicSpecialization(value);
+    }
     setFormPages({ ...formPages, [name]: value });
   };
 
@@ -102,7 +106,6 @@ const BookBeneficiaryAppointmentModal = ({
       startDate: "Start Date",
       endDate: "End Date",
       currentLocation: "Current Location",
-      medicSpecialization: "Medic Specialization",
     };
 
     const requiredFields = [
@@ -111,7 +114,6 @@ const BookBeneficiaryAppointmentModal = ({
       "startDate",
       "endDate",
       "currentLocation",
-      "medicSpecialization",
     ];
 
     for (const fieldName of requiredFields) {
@@ -160,6 +162,7 @@ const BookBeneficiaryAppointmentModal = ({
         });
         const id = response.data.data.id;
         localStorage.setItem("appointmentId", id);
+        localStorage.setItem("costOfService", formPages.costOfService);
         setTimeout(() => {
           navigate("/make-payment");
         }, 1000);
@@ -234,6 +237,42 @@ const BookBeneficiaryAppointmentModal = ({
     }
   }, [selectedBeneficiary]);
 
+  const calculateServiceCost = () => {
+    const { servicePlan, shift } = formPages;
+
+    let costOfService = 0;
+
+    switch (servicePlan) {
+      case "Elderly care by a Licensed Nurse":
+        costOfService = shift === "Day Shift" ? 18000000 : 22000000;
+        break;
+      case "Elderly care by a Nurse Assistant":
+        costOfService = shift === "Day Shift" ? 12000000 : 15000000;
+        break;
+      case "Postpartum care":
+        costOfService = shift === "Day Shift" ? 20000000 : 25000000;
+        break;
+      case "Recovery care":
+        costOfService = shift === "Day Shift" ? 20000000 : 25000000;
+        break;
+      case "Nanny care":
+        costOfService = shift === "Day Shift" ? 7000000 : 9000000;
+        break;
+      case "Short home visit":
+        costOfService = 1500000;
+        break;
+      default:
+        costOfService = 0;
+        break;
+    }
+
+    setFormPages({ ...formPages, costOfService });
+  };
+
+  useEffect(() => {
+    calculateServiceCost();
+  }, [formPages.servicePlan, formPages.shift]);
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="2xl">
       <ModalContent>
@@ -259,20 +298,19 @@ const BookBeneficiaryAppointmentModal = ({
                     paddingLeft="15px"
                     style={{ border: "1px solid #ccc", borderRadius: "5px" }}
                   >
-                  
-                      <DatePicker
-                        selected={selectedStartDate}
-                        onChange={handleStartDateChange}
-                        peekNextMonth
-                        showMonthDropdown
-                        showYearDropdown
-                        dropdownMode="select"
-                        dateFormat="dd-MM-yyyy"
-                        placeholderText="preferred date to start"
-                        className="form-control"
-                        minDate={new Date()}
-                      />
-                     <Image
+                    <DatePicker
+                      selected={selectedStartDate}
+                      onChange={handleStartDateChange}
+                      peekNextMonth
+                      showMonthDropdown
+                      showYearDropdown
+                      dropdownMode="select"
+                      dateFormat="dd-MM-yyyy"
+                      placeholderText="preferred date to start"
+                      className="form-control"
+                      minDate={new Date()}
+                    />
+                    <Image
                       marginLeft="30px"
                       w="24px"
                       h="24px"
@@ -291,21 +329,20 @@ const BookBeneficiaryAppointmentModal = ({
                     paddingLeft="15px"
                     style={{ border: "1px solid #ccc", borderRadius: "5px" }}
                   >
-                 
-                      <DatePicker
-                        selected={selectedEndDate}
-                        onChange={handleEndDateChange}
-                        peekNextMonth
-                        showMonthDropdown
-                        showYearDropdown
-                        dropdownMode="select"
-                        dateFormat="dd-MM-yyyy"
-                        placeholderText="preferred date to end"
-                        className="form-control"
-                        minDate={new Date()}
-                        style={{ border: "none" }}
-                      />
-                  <Image
+                    <DatePicker
+                      selected={selectedEndDate}
+                      onChange={handleEndDateChange}
+                      peekNextMonth
+                      showMonthDropdown
+                      showYearDropdown
+                      dropdownMode="select"
+                      dateFormat="dd-MM-yyyy"
+                      placeholderText="preferred date to end"
+                      className="form-control"
+                      minDate={new Date()}
+                      style={{ border: "none" }}
+                    />
+                    <Image
                       marginLeft="30px"
                       w="24px"
                       h="24px"
@@ -318,6 +355,50 @@ const BookBeneficiaryAppointmentModal = ({
               <Flex>
                 <Box marginLeft="40px">
                   <FormLabel fontWeight="bold" marginTop="20px">
+                    Service Plan{" "}
+                  </FormLabel>
+                  <Select
+                    name="servicePlan"
+                    placeholder="preferred service plan"
+                    w="270px"
+                    value={formPages.servicePlan}
+                    onChange={handleInputChange}
+                  >
+                    <option
+                      value="Elderly care by a Licensed Nurse"
+                      style={{ marginTop: "5px" }}
+                    >
+                      Elderly care by a Licensed Nurse
+                    </option>
+                    <option
+                      value="Elderly care by a Nurse Assistant"
+                      style={{ marginTop: "5px" }}
+                    >
+                      Elderly care by a Nurse Assistant
+                    </option>
+                    <option
+                      value="Postpartum care"
+                      style={{ marginTop: "5px" }}
+                    >
+                      Postpartum care by a Licensed Nurse/Midwife
+                    </option>
+                    <option value="Nanny care" style={{ marginTop: "5px" }}>
+                      Nanny service by a Professional Nanny
+                    </option>
+                    <option value="Recovery care" style={{ marginTop: "5px" }}>
+                      Recovery care by a Licensed Nurse
+                    </option>
+                    <option
+                      value="Short home visit"
+                      style={{ marginTop: "5px" }}
+                    >
+                      Short home visit by a Licensed Nurse
+                    </option>
+                  </Select>
+                </Box>
+
+                <Box marginLeft="5px">
+                  <FormLabel fontWeight="bold" marginTop="20px">
                     Shift{" "}
                   </FormLabel>
                   <Select
@@ -328,74 +409,39 @@ const BookBeneficiaryAppointmentModal = ({
                     onChange={handleInputChange}
                   >
                     <option value="Day Shift">Day Shift (8hrs)</option>
-                 
-                    <option value="Live in (24hrs)">Live in (24hrs)</option>
-                  </Select>
-                </Box>
-                <Box marginLeft="5px">
-                  <FormLabel fontWeight="bold" marginTop="20px">
-                    Service Plan{" "}
-                  </FormLabel>
-                  <Select
-                    name="servicePlan"
-                    placeholder="preferred service plan"
-                    w="270px"
-                    value={formPages.servicePlan}
-                    onChange={handleInputChange}
-                  >
-                    <option value="Elderly care">Elderly care</option>
-                    <option value="Postpartum care">Postpartum care</option>
-                    <option value="Nanny care">Nanny care</option>
-                    <option value="Recovery care">Recovery care</option>
-                    <option value="Short home visit">Short home visit</option>
-                  </Select>
-                </Box>
-              </Flex>
-              <Flex>
-                <Box marginLeft="40px">
-                  <FormLabel fontWeight="bold" marginTop="20px">
-                    Type of caregiver{" "}
-                  </FormLabel>
-                  <Select
-                    name="medicSpecialization"
-                    placeholder="select preferred caregiver"
-                    w="270px"
-                    value={formPages.medicSpecialization}
-                    onChange={handleInputChange}
-                  >
-                    <option value="Registered Nurse">Registered Nurse</option>
-                    <option value="Assistant Nurse">Assistant Nurse</option>
-                    <option value="Registered Midwife">
-                      Registered Nurse/Midwife
+
+                    <option value="Live in (24hrs)">
+                      Live-in shift (24hrs)
                     </option>
                   </Select>
                 </Box>
-                <Box marginLeft="5px">
-                  <FormLabel fontWeight="bold" marginTop="20px">
-                    Current Location{" "}
-                  </FormLabel>
-                 
-                  <Flex>
-                    <Input
-                      name="currentLocation"
-                      type="text"
-                      placeholder="current Location"
-                      value={formPages.currentLocation}
-                      onChange={handleInputChange}
-                      w="270px"
-                    />
-                      <Image
-                      marginTop="10px"
-                      marginLeft="-35px"
-                      w="24px"
-                      h="24px"
-                      src={LocationIcon}
-                      alt="LocationIcon"
-                    />
-                    </Flex>
-                
-                </Box>
               </Flex>
+
+              <Box marginLeft="40px">
+                <FormLabel fontWeight="bold" marginTop="20px">
+                  Current Location{" "}
+                </FormLabel>
+
+                <Flex>
+                  <Input
+                    name="currentLocation"
+                    type="text"
+                    placeholder="current Location"
+                    value={formPages.currentLocation}
+                    onChange={handleInputChange}
+                    w="550px"
+                  />
+                  <Image
+                    marginTop="10px"
+                    marginLeft="-35px"
+                    w="24px"
+                    h="24px"
+                    src={LocationIcon}
+                    alt="LocationIcon"
+                  />
+                </Flex>
+              </Box>
+
               <Box marginLeft="40px">
                 <FormLabel fontWeight="bold" marginTop="20px">
                   Upload necessary document (test results, medical report,

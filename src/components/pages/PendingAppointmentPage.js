@@ -195,6 +195,16 @@ const PendingAppointmentPage = () => {
     fetchData();
   }, [toast]);
 
+  const formattedCost = (cost) => {
+    // Divide costOfService by 100 to represent the amount in naira
+    const costInNaira = cost / 100;
+  
+    // Format the costOfService as naira with the last two zeros separated by a dot
+    const formattedCost = "₦ " + costInNaira.toLocaleString("en-NG", { maximumFractionDigits: 2 });
+  
+    return formattedCost;
+  };
+
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
     const formattedDate = new Date(dateString).toLocaleDateString(
@@ -861,7 +871,7 @@ const PendingAppointmentPage = () => {
                       <Text fontWeight="bold" color="black">
                         Date of Birth:
                       </Text>
-                      <Text marginLeft="450px" color="black">
+                      <Text marginLeft="430px" color="black">
                         {formatDate(selectedAppointment.recipientDOB) ||
                           "Not available"}
                       </Text>
@@ -882,8 +892,8 @@ const PendingAppointmentPage = () => {
                       <Text fontWeight="bold" color="black">
                         Relationship:
                       </Text>
-                      <Text marginLeft="450px" color="black">
-                        {selectedAppointment.relationship || "Not availabe"}
+                      <Text marginLeft="490px" color="black">
+                        {selectedAppointment.relationship || "Nil"}
                       </Text>
                     </Flex>
                     <Divider my={4} borderColor="gray.500" />
@@ -902,7 +912,7 @@ const PendingAppointmentPage = () => {
                         <Text fontWeight="bold" color="black">
                           Shift:
                         </Text>
-                        <Text marginLeft="520px" color="black">
+                        <Text marginLeft="510px" color="black">
                           {selectedAppointment.shift || "Not availabe"}
                         </Text>
                       </Flex>
@@ -912,7 +922,7 @@ const PendingAppointmentPage = () => {
                         <Text fontWeight="bold" color="black">
                           Service Plan
                         </Text>
-                        <Text marginLeft="460px" color="black">
+                        <Text marginLeft="440px" color="black">
                           {selectedAppointment.servicePlan || "Not availabe"}
                         </Text>
                       </Flex>
@@ -921,7 +931,7 @@ const PendingAppointmentPage = () => {
                         <Text fontWeight="bold" color="black">
                           Type of caregiver
                         </Text>
-                        <Text marginLeft="400px" color="black">
+                        <Text marginLeft="360px" color="black">
                           {selectedAppointment.medicSpecialization ||
                             "Not availabe"}
                         </Text>
@@ -932,7 +942,7 @@ const PendingAppointmentPage = () => {
                           Cost of service
                         </Text>
                         <Text marginLeft="450px" color="black">
-                          {selectedAppointment.costOfService || "Not availabe"}
+                        {formattedCost(selectedAppointment.costOfService) || "Not availabe"}
                         </Text>
                       </Flex>
                       <Divider my={4} borderColor="gray.500" />

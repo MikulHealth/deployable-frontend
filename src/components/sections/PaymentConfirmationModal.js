@@ -49,9 +49,10 @@ const PaymentConfirmationModal = ({ isOpen, onClose }) => {
   const toast = useToast();
   const { user } = useSelector((state) => state.userReducer);
   const storedPaymentData = localStorage.getItem("appointmentId");
+  const costOfService = localStorage.getItem("costOfService");
   const [paymentData, setPaymentData] = useState({
     email: user.email || "",
-    amount: 500000,
+    amount: costOfService,
     reference: storedPaymentData,
     name: `${user.firstName || ""} ${user.lastName || ""}`,
     phone: user.phoneNumber || "",
@@ -65,6 +66,17 @@ const PaymentConfirmationModal = ({ isOpen, onClose }) => {
       [name]: value,
     });
   };
+
+  const formattedCost = (cost) => {
+    // Divide costOfService by 100 to represent the amount in naira
+    const costInNaira = cost / 100;
+  
+    // Format the costOfService as naira with the last two zeros separated by a dot
+    const formattedCost = "₦ " + costInNaira.toLocaleString("en-NG", { maximumFractionDigits: 2 });
+  
+    return formattedCost;
+  };
+  
 
   const handlePaymentSuccess = (response) => {
     verifyPayment();
@@ -185,7 +197,7 @@ const PaymentConfirmationModal = ({ isOpen, onClose }) => {
             </Text>
             <form onSubmit={handlePayment}>
               <Text marginLeft="70px" bg="#F6E4FC" marginBottom="30px" w="40vw">
-                Hi {user?.firstName}, kindly pay the sum of 250,000 to proceed
+                Hi {user?.firstName}, kindly pay the sum of {formattedCost(costOfService)} to proceed
                 with your booking.<br></br> You would be matched with a
                 caregiver within 48hrs<br></br>upon a successful payment.
               </Text>

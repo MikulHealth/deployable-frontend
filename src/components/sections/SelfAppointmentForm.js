@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import LoadingSpinner from "../../utils/Spiner";
@@ -46,9 +46,10 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
     shift: "",
     servicePlan: "",
     currentLocation: "",
-    medicSpecialization: "",
     medicalReport: "",
+    costOfService: "",
     recipientHealthHistory: "",
+    costOfService: "",
   });
 
   const navigate = useNavigate();
@@ -128,6 +129,7 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
         });
         const id = response.data.data.id;
         localStorage.setItem("appointmentId", id);
+        localStorage.setItem("costOfService", formFields.costOfService);
         setTimeout(() => {
           navigate("/make-payment");
         }, 1000);
@@ -177,6 +179,42 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
     }
     return true;
   };
+
+  const calculateServiceCost = () => {
+    const { servicePlan, shift } = formFields;
+
+    let costOfService = 0;
+
+    switch (servicePlan) {
+      case "Elderly care by a Licensed Nurse":
+        costOfService = shift === "Day Shift" ? 18000000 : 22000000;
+        break;
+      case "Elderly care by a Nurse Assistant":
+        costOfService = shift === "Day Shift" ? 12000000 : 15000000;
+        break;
+      case "Postpartum care":
+        costOfService = shift === "Day Shift" ? 20000000 : 25000000;
+        break;
+      case "Recovery care":
+        costOfService = shift === "Day Shift" ? 20000000 : 25000000;
+        break;
+      case "Nanny care":
+        costOfService = shift === "Day Shift" ? 7000000 : 9000000;
+        break;
+      case "Short home visit":
+        costOfService = 1500000;
+        break;
+      default:
+        costOfService = 0;
+        break;
+    }
+
+    setFormFields({ ...formFields, costOfService });
+  };
+
+  useEffect(() => {
+    calculateServiceCost();
+  }, [formFields.servicePlan, formFields.shift]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="2xl">
@@ -255,6 +293,50 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
               <Flex>
                 <Box marginLeft="40px">
                   <FormLabel fontWeight="bold" marginTop="20px">
+                    Service Plan{" "}
+                  </FormLabel>
+                  <Select
+                    name="servicePlan"
+                    placeholder="preferred service plan"
+                    w="270px"
+                    value={formFields.servicePlan}
+                    onChange={handleInputChange}
+                  >
+                    <option
+                      value="Elderly care by a Licensed Nurse"
+                      style={{ marginTop: "5px" }}
+                    >
+                      Elderly care by a Licensed Nurse
+                    </option>
+                    <option
+                      value="Elderly care by a Nurse Assistant"
+                      style={{ marginTop: "5px" }}
+                    >
+                      Elderly care by a Nurse Assistant
+                    </option>
+                    <option
+                      value="Postpartum care"
+                      style={{ marginTop: "5px" }}
+                    >
+                      Postpartum care by a Licensed Nurse/Midwife
+                    </option>
+                    <option value="Nanny care" style={{ marginTop: "5px" }}>
+                      Nanny service by a Professional Nanny
+                    </option>
+                    <option value="Recovery care" style={{ marginTop: "5px" }}>
+                      Recovery care by a Licensed Nurse
+                    </option>
+                    <option
+                      value="Short home visit"
+                      style={{ marginTop: "5px" }}
+                    >
+                      Short home visit by a Licensed Nurse
+                    </option>
+                  </Select>
+                </Box>
+
+                <Box marginLeft="5px">
+                  <FormLabel fontWeight="bold" marginTop="20px">
                     Shift{" "}
                   </FormLabel>
                   <Select
@@ -265,72 +347,38 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
                     onChange={handleInputChange}
                   >
                     <option value="Day Shift">Day Shift (8hrs)</option>
-                    <option value="Night Shift">Night Shift (12hrs)</option>
-                    <option value="Live in">Live in (24hrs)</option>
-                  </Select>
-                </Box>
-                <Box marginLeft="5px">
-                  <FormLabel fontWeight="bold" marginTop="20px">
-                    Service Plan{" "}
-                  </FormLabel>
-                  <Select
-                    name="servicePlan"
-                    placeholder="preferred service plan"
-                    w="270px"
-                    value={formFields.servicePlan}
-                    onChange={handleInputChange}
-                  >
-                    <option value="Elderly care">Elderly care</option>
-                    <option value="Postpartum care">Postpartum care</option>
-                    <option value="Nanny care">Nanny care</option>
-                    <option value="Recovery care">Recovery care</option>
-                    <option value="Short home visit">Short home visit</option>
-                  </Select>
-                </Box>
-              </Flex>
-              <Flex>
-                <Box marginLeft="40px">
-                  <FormLabel fontWeight="bold" marginTop="20px">
-                    Type of caregiver{" "}
-                  </FormLabel>
-                  <Select
-                    name="medicSpecialization"
-                    placeholder="select preferred caregiver"
-                    w="270px"
-                    value={formFields.medicSpecialization}
-                    onChange={handleInputChange}
-                  >
-                    <option value="Registered Nurse">Registered Nurse</option>
-                    <option value="Assistant Nurse">Assistant Nurse</option>
-                    <option value="Registered Midwife">
-                      Registered Nurse/Midwife
+
+                    <option value="Live in (24hrs)">
+                      Live-in shift (24hrs)
                     </option>
                   </Select>
                 </Box>
-                <Box marginLeft="5px">
-                  <FormLabel fontWeight="bold" marginTop="20px">
-                    Current Location{" "}
-                  </FormLabel>
-                  <Flex>
-                    <Input
-                      name="currentLocation"
-                      type="text"
-                      placeholder="current Location"
-                      value={formFields.currentLocation}
-                      onChange={handleInputChange}
-                      w="270px"
-                    />
-                    <Image
-                      marginTop="10px"
-                      marginLeft="-35px"
-                      w="24px"
-                      h="24px"
-                      src={LocationIcon}
-                      alt="LocationIcon"
-                    />
-                  </Flex>
-                </Box>
               </Flex>
+
+              <Box marginLeft="40px">
+                <FormLabel fontWeight="bold" marginTop="20px">
+                  Current Location{" "}
+                </FormLabel>
+                <Flex>
+                  <Input
+                    name="currentLocation"
+                    type="text"
+                    placeholder="current Location"
+                    value={formFields.currentLocation}
+                    onChange={handleInputChange}
+                    w="550px"
+                  />
+                  <Image
+                    marginTop="10px"
+                    marginLeft="-35px"
+                    w="24px"
+                    h="24px"
+                    src={LocationIcon}
+                    alt="LocationIcon"
+                  />
+                </Flex>
+              </Box>
+
               <Box marginLeft="40px">
                 <FormLabel fontWeight="bold" marginTop="20px">
                   Upload necessary document (test results, medical report,
@@ -345,7 +393,6 @@ const SelfAppointmentModal = ({ isOpen, onClose }) => {
                     w="550px"
                     placeholder="Upload necessary document"
                   />
-                
                 </InputGroup>
               </Box>
               <Box marginLeft="40px">
