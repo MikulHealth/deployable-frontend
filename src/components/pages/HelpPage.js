@@ -513,6 +513,10 @@ const HelpPage = () => {
           </Box>
         </Flex>
       </Box>
+      <UserDetailsModal
+        isOpen={showUserDetailsModal}
+        onClose={handleCloseUserDetailsModal}
+      />
       <LogoutModal
         isOpen={showLogoutModal}
         onClose={() => setShowLogoutModal(false)}

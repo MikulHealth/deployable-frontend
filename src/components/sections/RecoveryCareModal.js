@@ -35,7 +35,7 @@ const RecoveryCareModal = ({ isOpen, onClose }) => {
           </Text>
           <Flex
             marginBottom="30px"
-            marginTop="30px"
+            marginTop="50px"
             marginLeft="8px"
             alignItems="center"
           >

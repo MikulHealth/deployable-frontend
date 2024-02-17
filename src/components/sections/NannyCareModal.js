@@ -18,7 +18,7 @@ const NannyCareModal = ({ isOpen, onClose }) => {
     <Modal isOpen={isOpen} onClose={onClose} size="4xl">
       <ModalOverlay />
       <ModalContent marginTop="30px">
-        <ModalHeader>NANNY CARE</ModalHeader>
+        <ModalHeader>NANNY SERVICE</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
         <Text fontWeight="bold" marginLeft="360px" color="#A210C6">

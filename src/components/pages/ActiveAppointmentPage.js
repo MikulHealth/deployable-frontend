@@ -783,9 +783,9 @@ const ActiveAppointmentPage = () => {
             <ModalCloseButton />
             <ModalBody>
               <Progress size="xs" isIndeterminate />
-              <Flex marginLeft="30px">
+              <Box marginLeft="30px">
                 <Box>
-                  <Flex>
+                  <Box>
                     <Box marginRight="20px">
                       <Flex>
                         <Text fontWeight="bold" color="black">
@@ -978,9 +978,9 @@ const ActiveAppointmentPage = () => {
                         </Text>
                       </Flex>
                     </Box>
-                  </Flex>
+                  </Box>
                 </Box>
-              </Flex>
+              </Box>
             </ModalBody>
           </ModalContent>
         </Modal>

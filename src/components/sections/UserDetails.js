@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { GetCurrentUser } from "../../apiCalls/UserApis";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import axios from "axios"; 
+import axios from "axios";
 import {
   Modal,
   ModalOverlay,
@@ -15,6 +15,7 @@ import {
   Flex,
   Image,
   Text,
+  Divider,
   Button,
   ModalFooter,
 } from "@chakra-ui/react";
@@ -54,7 +55,7 @@ const UserDetailsModal = ({ isOpen, onClose }) => {
   const [isEditModalOpen, setEditModalOpen] = useState(false);
 
   const handleEditClick = () => {
-    navigate("/edit-profile")
+    navigate("/edit-profile");
     onClose();
   };
 
@@ -71,7 +72,6 @@ const UserDetailsModal = ({ isOpen, onClose }) => {
     return formattedDate;
   };
 
-
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose} size="2xl">
@@ -81,24 +81,62 @@ const UserDetailsModal = ({ isOpen, onClose }) => {
           <ModalCloseButton />
           <ModalBody>
             <Flex>
-              <VStack  marginLeft="20px" marginTop="30px" align="center" spacing={4}>
-                <Text>{`Name: ${user?.firstName} ${user?.lastName}`}</Text>
-                <Text>{`Home address: ${user?.address}`}</Text>
-                <Text>{`Email: ${user?.email}`}</Text>
-                <Text>{`Phone Number: ${user?.phoneNumber}`}</Text>
-                <Text>{`Date of birth:  ${formatDate(user?.dob)}`}</Text>
-                <Text>{`Gender: ${user?.gender}`}</Text>
+              <VStack
+                marginLeft="20px"
+                marginTop="30px"
+                align="center"
+                spacing={4}
+              >
+                <Text>
+                  Name:{" "}
+                  <Text
+                    as="span"
+                    fontWeight="bold"
+                  >{`${user?.firstName} ${user?.lastName}`}</Text>
+                </Text>
+                <Divider my={1} borderColor="gray.500" />
+                <Text>
+                  Home address:{" "}
+                  <Text as="span" fontWeight="bold">{`${user?.address}`}</Text>
+                </Text>
+                <Divider my={1} borderColor="gray.500" />
+                <Text>
+                  Email:{" "}
+                  <Text as="span" fontWeight="bold">{`${user?.email}`}</Text>
+                </Text>
+                <Divider my={1} borderColor="gray.500" />
+                <Text>
+                  Phone Number:{" "}
+                  <Text
+                    as="span"
+                    fontWeight="bold"
+                  >{`${user?.phoneNumber}`}</Text>
+                </Text>
+                <Divider my={1} borderColor="gray.500" />
+                <Text>
+                  Date of birth:{" "}
+                  <Text as="span" fontWeight="bold">{`${formatDate(
+                    user?.dob
+                  )}`}</Text>
+                </Text>
+                <Divider my={1} borderColor="gray.500" />
+                <Text>
+                  Gender:{" "}
+                  <Text as="span" fontWeight="bold">{`${user?.gender}`}</Text>
+                </Text>
+                <Divider my={1} borderColor="gray.500" />
               </VStack>
+
               <Image
-              src={user?.image || defaultImage}
-              alt="User Image"
-              borderRadius="8px"
-              h="45vh"
-              w="20vw"
-              marginLeft="50px"
-            />
+                src={user?.image || defaultImage}
+                alt="User Image"
+                borderRadius="8px"
+                h="55vh"
+                w="20vw"
+                marginLeft="50px"
+                marginTop="40px"
+              />
             </Flex>
-           
           </ModalBody>
           <ModalFooter>
             <Text

@@ -467,8 +467,8 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
                     onChange={handleInputChange}
                   >
                     <option value="Day Shift">Day Shift (8hrs)</option>
-                    <option value="Night Shift">Night Shift (12hrs)</option>
-                    <option value="Live in">Live in (24hrs)</option>
+                  
+                    <option value="Live in (24hrs)">Live in (24hrs)</option>
                   </Select>
                 </Box>
                 <Box marginLeft="5px">
@@ -574,7 +574,7 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
                 colorScheme="green"
                 isChecked={addToBeneficiaryList}
                 onChange={() => {
-                  setAddToBeneficiaryList(!addToBeneficiaryList); // Update the state first
+                  setAddToBeneficiaryList(!addToBeneficiaryList); 
                   if (!addToBeneficiaryList) {
                     handleSwitchChange();
                   }

@@ -704,6 +704,7 @@ const EdithProfilePage = () => {
                     border="1px solid black"
                     borderRadius="6px"
                     marginLeft="-5px"
+                    paddingTop="10px"
                     h="7vh"
                     w="30vw"
                   >
@@ -723,15 +724,14 @@ const EdithProfilePage = () => {
                       dropdownMode="select"
                       value={formatDate(formData.dob)}
                       style={{
-                        marginTop: "40px",
+                        marginTop: "60px",
                         marginLeft: "50px",
                         display: "",
                       }}
                     />
 
                     <Image
-                      marginTop="10px"
-                      marginLeft="180px"
+                      marginLeft="160px"
                       h="24px"
                       w="24px"
                       src={DateIcon}
@@ -826,6 +826,7 @@ const EdithProfilePage = () => {
                 type="file"
                 accept="image/*"
                 borderColor="black"
+                padding="5px"
                 _hover={{ color: "" }}
                 onChange={(e) => {
                   handleImageChange(e.target.files[0], formData, setFormData);
@@ -837,13 +838,21 @@ const EdithProfilePage = () => {
               <Button
                 fontSize="15px"
                 borderColor="#A210C6"
-                marginLeft="60px"
+                marginLeft="50px"
+                bg="none"
                 _hover={{ color: "" }}
                 onClick={handleOpenConfirmationModal}
               >
                 Change picture
               </Button>
-              <Button fontSize="15px" color="red" marginLeft="70px">
+              <Divider orientation="vertical" borderColor="black" my={1} />
+              <Button
+                _hover={{ color: "" }}
+                bg="none"
+                fontSize="15px"
+                color="red"
+                marginLeft="75px"
+              >
                 Delete picture
               </Button>
             </Flex>
