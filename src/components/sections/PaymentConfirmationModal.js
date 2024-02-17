@@ -114,6 +114,7 @@ const PaymentConfirmationModal = ({ isOpen, onClose }) => {
           status: "success",
           duration: 8000,
         });
+        localStorage.removeItem("costOfService");
         console.log("Payment verified successfully", response.data.data);
         setPaymentData({
           email: "",
