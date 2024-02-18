@@ -46,6 +46,7 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
   const [selectedDob, setSelectedDob] = useState(null);
+  const [customizedPlans, setCustomizedPlans] = useState([]);
   const [addToBeneficiaryList, setAddToBeneficiaryList] = useState(false);
   const [formFields, setFormFields] = useState({
     recipientFirstname: "",
@@ -68,7 +69,25 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
-    if (name === "DOB") {
+    if (name === "servicePlan") {
+      // Find the selected plan object
+      const selectedPlan = customizedPlans.find((plan) => plan.name === value);
+
+      if (selectedPlan) {
+        setFormFields({
+          ...formFields,
+          [name]: value,
+          shift: selectedPlan.shift,
+          // Removing comma and decimal point and parsing as integer
+          costOfService: parseInt(
+            selectedPlan.costOfService.replace(/[\.,]/g, "")
+          ),
+          medicSpecialization: selectedPlan.preferredCaregiver,
+        });
+      } else {
+        setFormFields({ ...formFields, [name]: value });
+      }
+    } else if (name === "DOB") {
       setSelectedDob(value);
       setFormFields({
         ...formFields,
@@ -81,6 +100,35 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
       });
     }
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const config = {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        };
+
+        const response = await axios.get(
+          "http://localhost:8080/v1/appointment/all-customized-services",
+          config
+        );
+
+        if (response.data.success) {
+          setCustomizedPlans(response.data.data);
+        } else {
+          console.error("Failed to fetch custom services");
+        }
+      } catch (error) {
+        console.error("Error fetching custom services:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleStartDateChange = (date) => {
     setSelectedStartDate(date);
@@ -186,25 +234,33 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
 
     switch (servicePlan) {
       case "Elderly care by a Licensed Nurse":
-        costOfService = shift === "Day Shift" ? 18000000 : 22000000;
+        costOfService = shift === "Day Shift (8hrs)" ? 18000000 : 22000000;
         break;
       case "Elderly care by a Nurse Assistant":
-        costOfService = shift === "Day Shift" ? 12000000 : 15000000;
+        costOfService = shift === "Day Shift (8hrs)" ? 12000000 : 15000000;
         break;
       case "Postpartum care":
-        costOfService = shift === "Day Shift" ? 20000000 : 25000000;
-        break;
       case "Recovery care":
-        costOfService = shift === "Day Shift" ? 20000000 : 25000000;
+        costOfService = shift === "Day Shift (8hrs)" ? 20000000 : 25000000;
         break;
       case "Nanny care":
-        costOfService = shift === "Day Shift" ? 7000000 : 9000000;
+        costOfService = shift === "Day Shift (8hrs)" ? 7000000 : 9000000;
         break;
       case "Short home visit":
         costOfService = 1500000;
         break;
       default:
-        costOfService = 0;
+        const customPlan = customizedPlans.find(
+          (plan) => plan.name === servicePlan
+        );
+        if (customPlan) {
+          // Adding two decimal places to costOfService for custom plans
+          costOfService = parseInt(
+            customPlan.costOfService.replace(/[\.,]/g, "")
+          );
+        } else {
+          costOfService = 0;
+        }
         break;
     }
 
@@ -518,6 +574,11 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
                     >
                       Short home visit by a Licensed Nurse
                     </option>
+                    {customizedPlans.map((plan) => (
+                      <option key={plan.id} value={plan.name}>
+                        {plan.name}
+                      </option>
+                    ))}
                   </Select>
                 </Box>
 
@@ -532,11 +593,8 @@ const BeneficiaryAppointmentModal = ({ isOpen, onClose }) => {
                     value={formFields.shift}
                     onChange={handleInputChange}
                   >
-                    <option value="Day Shift">Day Shift (8hrs)</option>
-
-                    <option value="Live in (24hrs)">
-                      Live-in shift (24hrs)
-                    </option>
+                    <option value="Day Shift (8hrs)">Day Shift (8hrs)</option>
+                    <option value="Live-in (24hrs)">Live-in (24hrs)</option>
                   </Select>
                 </Box>
               </Flex>

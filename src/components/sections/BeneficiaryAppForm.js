@@ -40,6 +40,7 @@ const BookBeneficiaryAppointmentModal = ({
   const [loading, setLoading] = useState(false);
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
+  const [customizedPlans, setCustomizedPlans] = useState([]);
   const navigate = useNavigate();
   const [formPages, setFormPages] = useState({
     recipientFirstname: selectedBeneficiary.recipientFirstName,
@@ -77,9 +78,28 @@ const BookBeneficiaryAppointmentModal = ({
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     if (name === "servicePlan") {
-      // updateMedicSpecialization(value);
+      // Find the selected plan object
+      const selectedPlan = customizedPlans.find((plan) => plan.name === value);
+
+      console.log("Selected Plan:", selectedPlan);
+    console.log("Cost of Service:", selectedPlan ? selectedPlan.costOfService : "N/A");
+    
+
+      // Set the shift and costOfService based on the selected plan
+      if (selectedPlan) {
+        setFormPages({
+          ...formPages,
+          [name]: value,
+          shift: selectedPlan.shift,
+          costOfService: parseFloat(selectedPlan.costOfService),
+          medicSpecialization: selectedPlan.preferredCaregiver,
+        });
+      } else {
+        setFormPages({ ...formPages, [name]: value });
+      }
+    } else {
+      setFormPages({ ...formPages, [name]: value });
     }
-    setFormPages({ ...formPages, [name]: value });
   };
 
   const handleStartDateChange = (date) => {
@@ -163,6 +183,9 @@ const BookBeneficiaryAppointmentModal = ({
         const id = response.data.data.id;
         localStorage.setItem("appointmentId", id);
         localStorage.setItem("costOfService", formPages.costOfService);
+        console.log("cost of service is ", formPages.costOfService)
+        console.log("caregiver of service is ", formPages.medicSpecialization)
+        console.log("shift of service is ", formPages.shift)
         setTimeout(() => {
           navigate("/make-payment");
         }, 1000);
@@ -212,6 +235,35 @@ const BookBeneficiaryAppointmentModal = ({
   };
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const config = {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        };
+
+        const response = await axios.get(
+          "http://localhost:8080/v1/appointment/all-customized-services",
+          config
+        );
+
+        if (response.data.success) {
+          setCustomizedPlans(response.data.data);
+        } else {
+          console.error("Failed to fetch custom services");
+        }
+      } catch (error) {
+        console.error("Error fetching custom services:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
     // Set initial form values based on the selected beneficiary
     if (selectedBeneficiary) {
       setFormPages({
@@ -225,9 +277,7 @@ const BookBeneficiaryAppointmentModal = ({
         currentLocation: "",
         shift: "",
         servicePlan: "",
-
         medicalReport: null,
-
         medicSpecialization: "",
         startDate: null,
         endDate: null,
@@ -239,36 +289,40 @@ const BookBeneficiaryAppointmentModal = ({
 
   const calculateServiceCost = () => {
     const { servicePlan, shift } = formPages;
-
+  
     let costOfService = 0;
-
+  
     switch (servicePlan) {
       case "Elderly care by a Licensed Nurse":
-        costOfService = shift === "Day Shift" ? 18000000 : 22000000;
+        costOfService = shift === "Day Shift (8hrs)" ? 18000000 : 22000000;
         break;
       case "Elderly care by a Nurse Assistant":
-        costOfService = shift === "Day Shift" ? 12000000 : 15000000;
+        costOfService = shift === "Day Shift (8hrs)" ? 12000000 : 15000000;
         break;
       case "Postpartum care":
-        costOfService = shift === "Day Shift" ? 20000000 : 25000000;
-        break;
       case "Recovery care":
-        costOfService = shift === "Day Shift" ? 20000000 : 25000000;
+        costOfService = shift === "Day Shift (8hrs)" ? 20000000 : 25000000;
         break;
       case "Nanny care":
-        costOfService = shift === "Day Shift" ? 7000000 : 9000000;
+        costOfService = shift === "Day Shift (8hrs)" ? 7000000 : 9000000;
         break;
       case "Short home visit":
         costOfService = 1500000;
         break;
       default:
-        costOfService = 0;
+        const customPlan = customizedPlans.find((plan) => plan.name === servicePlan);
+        if (customPlan) {
+          // Adding two decimal places to costOfService for custom plans
+          costOfService = parseInt(customPlan.costOfService.replace(/[\.,]/g, ""));
+        } else {
+          costOfService = 0;
+        }
         break;
     }
-
+  
     setFormPages({ ...formPages, costOfService });
   };
-
+  
   useEffect(() => {
     calculateServiceCost();
   }, [formPages.servicePlan, formPages.shift]);
@@ -364,36 +418,31 @@ const BookBeneficiaryAppointmentModal = ({
                     value={formPages.servicePlan}
                     onChange={handleInputChange}
                   >
-                    <option
-                      value="Elderly care by a Licensed Nurse"
-                      style={{ marginTop: "5px" }}
-                    >
+                    {/* Predefined options */}
+                    <option value="Elderly care by a Licensed Nurse">
                       Elderly care by a Licensed Nurse
                     </option>
-                    <option
-                      value="Elderly care by a Nurse Assistant"
-                      style={{ marginTop: "5px" }}
-                    >
+                    <option value="Elderly care by a Nurse Assistant">
                       Elderly care by a Nurse Assistant
                     </option>
-                    <option
-                      value="Postpartum care"
-                      style={{ marginTop: "5px" }}
-                    >
+                    <option value="Postpartum care">
                       Postpartum care by a Licensed Nurse/Midwife
                     </option>
-                    <option value="Nanny care" style={{ marginTop: "5px" }}>
+                    <option value="Nanny care">
                       Nanny service by a Professional Nanny
                     </option>
-                    <option value="Recovery care" style={{ marginTop: "5px" }}>
+                    <option value="Recovery care">
                       Recovery care by a Licensed Nurse
                     </option>
-                    <option
-                      value="Short home visit"
-                      style={{ marginTop: "5px" }}
-                    >
+                    <option value="Short home visit">
                       Short home visit by a Licensed Nurse
                     </option>
+                    {/* Customized plans */}
+                    {customizedPlans.map((plan) => (
+                      <option key={plan.id} value={plan.name}>
+                        {plan.name}
+                      </option>
+                    ))}
                   </Select>
                 </Box>
 
@@ -408,11 +457,9 @@ const BookBeneficiaryAppointmentModal = ({
                     value={formPages.shift}
                     onChange={handleInputChange}
                   >
-                    <option value="Day Shift">Day Shift (8hrs)</option>
+                    <option value="Day Shift (8hrs)">Day Shift (8hrs)</option>
 
-                    <option value="Live in (24hrs)">
-                      Live-in shift (24hrs)
-                    </option>
+                    <option value="Live-in (24hrs)">Live-in (24hrs)</option>
                   </Select>
                 </Box>
               </Flex>

@@ -7,6 +7,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import RightArrow from "../../assets/RightArrow.svg";
 import Help from "../../assets/Help.svg";
+import BookAppointmentModal from "../sections/BookAppointment";
 import axios from "axios";
 import { PhoneIcon, AddIcon, WarningIcon, SearchIcon } from "@chakra-ui/icons";
 import {
@@ -73,6 +74,7 @@ const CustomizeServicePage = () => {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [customizedServices, setCustomizedServices] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showAppointmentModal, setShowAppointmentModal] = useState(false);
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
   const [deleteServiceId, setDeleteServiceId] = useState(null);
   const [showCustomizeModal, setShowCustomizeModal] = useState(false);
@@ -122,12 +124,16 @@ const CustomizeServicePage = () => {
     navigate("/dashboard");
   };
 
-  const handleOpenCustomizeModal = () => {
-    navigate("/dashboard");
-  };
+  // const handleOpenCustomizeModal = () => {
+  //   navigate("/dashboard");
+  // };
 
   const handleOpenAppointmentsModal = () => {
     navigate("/appointment");
+  };
+
+  const handleOpenAppointmentModal = () => {
+    setShowAppointmentModal(true);
   };
 
   const handleCancelModalClose = () => {
@@ -137,11 +143,10 @@ const CustomizeServicePage = () => {
   const formattedCost = (cost) => {
     // Format the costOfService as naira with the last two zeros separated by a dot
     const formattedCost =
-      "₦ " + cost?.toLocaleString("en-NG", { maximumFractionDigits: 2 });
+      "₦ " + cost.toLocaleString("en-NG", { maximumFractionDigits: 2 });
 
     return formattedCost;
   };
-
 
   const handleConfirmation = async () => {
     try {
@@ -241,8 +246,12 @@ const CustomizeServicePage = () => {
     setShowCustomizeModal(true);
   };
 
-  const handleCloseAppointmentModal = () => {
+  const handleCloseCustomizePlanFormModal = () => {
     setShowCustomizeModal(false);
+  };
+
+  const handleCloseAppointmentModal = () => {
+    setShowAppointmentModal(false);
   };
 
   return (
@@ -581,7 +590,7 @@ const CustomizeServicePage = () => {
                               Preferred Caregiver:
                             </Text>
                             <Text marginLeft="35px" color="black">
-                              {`${service.preferredCaregiver}`}
+                              {`${service.medicSpecialization}`}
                             </Text>
                           </Flex>
                           <Flex>
@@ -610,19 +619,6 @@ const CustomizeServicePage = () => {
                               {`${formattedCost(service.costOfService)}`}
                             </Text>
                           </Flex>
-                          {/* <Flex marginLeft="85px">
-                            <Text fontWeight="bold" color="black">
-                              Additional note:
-                            </Text>
-                            <Text
-                              maxW="300px"
-                              maxH="1000px"
-                              marginLeft="5px"
-                              color="black"
-                            >
-                              {`${service.note}`}
-                            </Text>
-                          </Flex> */}
                         </Box>
                       </Box>
                       <Box marginLeft="-25px" marginTop="3px">
@@ -656,7 +652,7 @@ const CustomizeServicePage = () => {
                           fontSize="16px"
                           // bg="#A210C6"
                           color="#A210C6"
-                          onClick={handleOpenCustomizePlanFormModal}
+                          onClick={handleOpenAppointmentModal}
                           style={{
                             fontStyle: "italic",
                             cursor: "pointer",
@@ -756,9 +752,13 @@ const CustomizeServicePage = () => {
           </ModalContent>
         </Modal>
       )}
+      <BookAppointmentModal
+        isOpen={showAppointmentModal}
+        onClose={handleCloseAppointmentModal}
+      />
       <CustomizeServiceModal
         isOpen={showCustomizeModal}
-        onClose={handleCloseAppointmentModal}
+        onClose={handleCloseCustomizePlanFormModal}
       />
     </ChakraProvider>
   );

@@ -48,8 +48,8 @@ const CustomizePlanModal = ({ isOpen, onClose }) => {
   const [frequency, setFrequency] = useState("");
   const [duration, setDuration] = useState("");
   const [shift, setShift] = useState("");
-  const [preferredCaregiver, setPreferredCaregiver] = useState("");
-  const [note, setNote] = useState("");
+  const [medicSpecialization, setMedicSpecialization] = useState("");
+  const [name, setName] = useState("");
   const [costOfService, setCostOfService] = useState(0);
 
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
@@ -89,39 +89,42 @@ const CustomizePlanModal = ({ isOpen, onClose }) => {
     "Dressing changes",
   ];
 
-  // Function to calculate the cost based on caregiver, duration, and shift
-  const calculateCost = () => {
-    let costPerDay = 0;
+// Function to calculate the cost based on caregiver, duration, and shift
+const calculateCost = () => {
+  let costPerDay = 0;
 
-    // Determine the cost per day based on the caregiver
-    if (preferredCaregiver === "Nurse Assistant") {
-      costPerDay = 6000; // Default cost for Nurse Assistant
+  // Determine the cost per day based on the caregiver
+  if (medicSpecialization === "Nurse Assistant") {
+    costPerDay = 6000; // Default cost for Nurse Assistant
+  } else {
+    costPerDay = 12000; // Default cost for others (Licensed Nurse and Licensed Nurse/Midwife)
+  }
+
+  // Adjust cost per day based on the type of shift chosen
+  if (shift === "Day Shift") {
+    costPerDay *= 1; // No adjustment needed for 8hrs shift
+  } else if (shift === "Live-in") {
+    // Adjust cost for 24hrs shift
+    if (medicSpecialization === "Nurse Assistant") {
+      costPerDay = 8000; // Adjusted cost for Nurse Assistant for 24hrs shift
     } else {
-      costPerDay = 12000; // Default cost for others (Licensed Nurse and Licensed Nurse/Midwife)
+      costPerDay = 16000; // Adjusted cost for others for 24hrs shift
     }
+  }
 
-    // Adjust cost per day based on the type of shift chosen
-    if (shift === "Day Shift") {
-      costPerDay *= 1; // No adjustment needed for 8hrs shift
-    } else if (shift === "Live-in") {
-      // Adjust cost for 24hrs shift
-      if (preferredCaregiver === "Nurse Assistant") {
-        costPerDay = 8000; // Adjusted cost for Nurse Assistant for 24hrs shift
-      } else {
-        costPerDay = 16000; // Adjusted cost for others for 24hrs shift
-      }
-    }
-
-    // Calculate the total cost based on duration
-    const totalCost = costPerDay * parseInt(duration);
-    return totalCost;
-  };
+  // Calculate the total cost based on duration
+  const totalCost = costPerDay * parseInt(duration);
+  return totalCost.toLocaleString("en-NG", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }); // Format the total cost
+};
 
   useEffect(() => {
     // Update costOfService whenever duration or preferredCaregiver changes
     const calculatedCost = calculateCost();
     setCostOfService(calculatedCost);
-  }, [duration, preferredCaregiver]);
+  }, [duration, medicSpecialization]);
 
   const formattedCost = (cost) => {
     // Format the costOfService as naira with the last two zeros separated by a dot
@@ -186,9 +189,9 @@ const CustomizePlanModal = ({ isOpen, onClose }) => {
       frequency: frequency,
       duration: duration,
       shift: shift,
-      preferredCaregiver: preferredCaregiver,
+      medicSpecialization: medicSpecialization,
       costOfService: costOfService,
-      note: note,
+      name: name,
     };
 
     // Send the API request using Axios
@@ -291,8 +294,8 @@ const CustomizePlanModal = ({ isOpen, onClose }) => {
                   value={shift}
                   onChange={(e) => setShift(e.target.value)}
                 >
-                  <option value="Day Shift">Day Shift (8hrs)</option>
-                  <option value="Live in">Live-in (24hrs)</option>
+                  <option value="Day Shift (8hrs)">Day Shift (8hrs)</option>
+                  <option value="Live-in (24hrs)">Live-in (24hrs)</option>
                 </Select>
               </FormControl>
               <FormControl mb={4}>
@@ -309,8 +312,8 @@ const CustomizePlanModal = ({ isOpen, onClose }) => {
                 <FormLabel fontWeight="bold">Preferred Caregiver:</FormLabel>
                 <Select
                   placeholder="Select preferred caregiver"
-                  value={preferredCaregiver}
-                  onChange={(e) => setPreferredCaregiver(e.target.value)}
+                  value={medicSpecialization}
+                  onChange={(e) => setMedicSpecialization(e.target.value)}
                 >
                   <option value="Registered Nurse">Registered Nurse</option>
                   <option value="Registered Nurse/Midwife">
@@ -319,19 +322,19 @@ const CustomizePlanModal = ({ isOpen, onClose }) => {
                   <option value="Nurse Assistant">Nurse Assistant</option>
                 </Select>
               </FormControl>
-              {/* <FormControl mb={4}>
+              <FormControl mb={4}>
                 <FormLabel fontWeight="bold" marginTop="20px">
-                  Additional note{" "}
+                  Name the plan{" "}
                 </FormLabel>
-                <Textarea
-                  name="note"
+                <Input
+                  name="name"
                   type="text"
-                  placeholder="share health history and any special need we should know"
-                  value={note}
-                  onChange={(e) => setNote(e.target.value)}
+                  placeholder="give the your customized plan a name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                   // w="550px"
                 />
-              </FormControl> */}
+              </FormControl>
               <Flex>
                 <Spacer />
                 <Button
@@ -377,16 +380,16 @@ const CustomizePlanModal = ({ isOpen, onClose }) => {
             </Flex>
             <Flex>
               <Text fontWeight="bold">Preferred Caregiver:</Text>
-              <Text marginLeft="5px"> {preferredCaregiver}</Text>
+              <Text marginLeft="5px"> {medicSpecialization}</Text>
             </Flex>
             <Flex>
               <Text fontWeight="bold">Cost of Service:</Text>
               <Text marginLeft="5px">{formattedCost(costOfService)}</Text>{" "}
             </Flex>
-            {/* <Flex>
-              <Text fontWeight="bold">Additional note:</Text>
-              <Text marginLeft="5px">{note}</Text>{" "}
-            </Flex> */}
+            <Flex>
+              <Text fontWeight="bold">Name of service:</Text>
+              <Text marginLeft="5px">{name}</Text>{" "}
+            </Flex>
             <Flex>
               <Spacer />
               <Button color="white" bg="#A210C6" mt={4} onClick={handleSubmit}>
