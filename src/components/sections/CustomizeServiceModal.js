@@ -319,7 +319,7 @@ const CustomizePlanModal = ({ isOpen, onClose }) => {
                   <option value="Nurse Assistant">Nurse Assistant</option>
                 </Select>
               </FormControl>
-              <FormControl mb={4}>
+              {/* <FormControl mb={4}>
                 <FormLabel fontWeight="bold" marginTop="20px">
                   Additional note{" "}
                 </FormLabel>
@@ -331,7 +331,7 @@ const CustomizePlanModal = ({ isOpen, onClose }) => {
                   onChange={(e) => setNote(e.target.value)}
                   // w="550px"
                 />
-              </FormControl>
+              </FormControl> */}
               <Flex>
                 <Spacer />
                 <Button
@@ -383,10 +383,10 @@ const CustomizePlanModal = ({ isOpen, onClose }) => {
               <Text fontWeight="bold">Cost of Service:</Text>
               <Text marginLeft="5px">{formattedCost(costOfService)}</Text>{" "}
             </Flex>
-            <Flex>
+            {/* <Flex>
               <Text fontWeight="bold">Additional note:</Text>
               <Text marginLeft="5px">{note}</Text>{" "}
-            </Flex>
+            </Flex> */}
             <Flex>
               <Spacer />
               <Button color="white" bg="#A210C6" mt={4} onClick={handleSubmit}>
