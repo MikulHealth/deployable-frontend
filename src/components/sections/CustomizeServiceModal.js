@@ -24,6 +24,7 @@ import {
   ModalBody,
   ModalCloseButton,
   extendTheme,
+  Textarea,
 } from "@chakra-ui/react";
 
 const customTheme = extendTheme({
@@ -48,6 +49,9 @@ const CustomizePlanModal = ({ isOpen, onClose }) => {
   const [duration, setDuration] = useState("");
   const [shift, setShift] = useState("");
   const [preferredCaregiver, setPreferredCaregiver] = useState("");
+  const [note, setNote] = useState("");
+  const [costOfService, setCostOfService] = useState(0);
+
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const toast = useToast();
   const [loading, setLoading] = useState(false);
@@ -84,6 +88,48 @@ const CustomizePlanModal = ({ isOpen, onClose }) => {
     "IV therapy",
     "Dressing changes",
   ];
+
+  // Function to calculate the cost based on caregiver, duration, and shift
+  const calculateCost = () => {
+    let costPerDay = 0;
+
+    // Determine the cost per day based on the caregiver
+    if (preferredCaregiver === "Nurse Assistant") {
+      costPerDay = 6000; // Default cost for Nurse Assistant
+    } else {
+      costPerDay = 12000; // Default cost for others (Licensed Nurse and Licensed Nurse/Midwife)
+    }
+
+    // Adjust cost per day based on the type of shift chosen
+    if (shift === "Day Shift") {
+      costPerDay *= 1; // No adjustment needed for 8hrs shift
+    } else if (shift === "Live-in") {
+      // Adjust cost for 24hrs shift
+      if (preferredCaregiver === "Nurse Assistant") {
+        costPerDay = 8000; // Adjusted cost for Nurse Assistant for 24hrs shift
+      } else {
+        costPerDay = 16000; // Adjusted cost for others for 24hrs shift
+      }
+    }
+
+    // Calculate the total cost based on duration
+    const totalCost = costPerDay * parseInt(duration);
+    return totalCost;
+  };
+
+  useEffect(() => {
+    // Update costOfService whenever duration or preferredCaregiver changes
+    const calculatedCost = calculateCost();
+    setCostOfService(calculatedCost);
+  }, [duration, preferredCaregiver]);
+
+  const formattedCost = (cost) => {
+    // Format the costOfService as naira with the last two zeros separated by a dot
+    const formattedCost =
+      "₦ " + cost.toLocaleString("en-NG", { maximumFractionDigits: 2 });
+
+    return formattedCost;
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -141,6 +187,8 @@ const CustomizePlanModal = ({ isOpen, onClose }) => {
       duration: duration,
       shift: shift,
       preferredCaregiver: preferredCaregiver,
+      costOfService: costOfService,
+      note: note,
     };
 
     // Send the API request using Axios
@@ -233,8 +281,6 @@ const CustomizePlanModal = ({ isOpen, onClose }) => {
                   onChange={(e) => setFrequency(e.target.value)}
                 >
                   <option value="daily">Daily</option>
-                  <option value="weekly">Weekly</option>
-                  <option value="monthly">Monthly</option>
                 </Select>
               </FormControl>
               <FormControl mb={4}>
@@ -246,13 +292,12 @@ const CustomizePlanModal = ({ isOpen, onClose }) => {
                   onChange={(e) => setShift(e.target.value)}
                 >
                   <option value="Day Shift">Day Shift (8hrs)</option>
-                  <option value="Night Shift">Night Shift (12hrs)</option>
-                  <option value="Live in">Live in (24hrs)</option>
+                  <option value="Live in">Live-in (24hrs)</option>
                 </Select>
               </FormControl>
               <FormControl mb={4}>
                 <FormLabel fontWeight="bold">
-                  Duration in number(s): (daily / weekly / monthly)
+                  Duration in number(s): (daily)
                 </FormLabel>
                 <Input
                   placeholder="How many..."
@@ -273,6 +318,19 @@ const CustomizePlanModal = ({ isOpen, onClose }) => {
                   </option>
                   <option value="Nurse Assistant">Nurse Assistant</option>
                 </Select>
+              </FormControl>
+              <FormControl mb={4}>
+                <FormLabel fontWeight="bold" marginTop="20px">
+                  Additional note{" "}
+                </FormLabel>
+                <Textarea
+                  name="note"
+                  type="text"
+                  placeholder="share health history and any special need we should know"
+                  value={note}
+                  onChange={(e) => setNote(e.target.value)}
+                  // w="550px"
+                />
               </FormControl>
               <Flex>
                 <Spacer />
@@ -321,7 +379,14 @@ const CustomizePlanModal = ({ isOpen, onClose }) => {
               <Text fontWeight="bold">Preferred Caregiver:</Text>
               <Text marginLeft="5px"> {preferredCaregiver}</Text>
             </Flex>
-
+            <Flex>
+              <Text fontWeight="bold">Cost of Service:</Text>
+              <Text marginLeft="5px">{formattedCost(costOfService)}</Text>{" "}
+            </Flex>
+            <Flex>
+              <Text fontWeight="bold">Additional note:</Text>
+              <Text marginLeft="5px">{note}</Text>{" "}
+            </Flex>
             <Flex>
               <Spacer />
               <Button color="white" bg="#A210C6" mt={4} onClick={handleSubmit}>

@@ -205,7 +205,7 @@ const PendingAppointmentPage = () => {
 
     return formattedCost;
   };
-
+  
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
     const formattedDate = new Date(dateString).toLocaleDateString(

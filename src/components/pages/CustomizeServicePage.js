@@ -134,6 +134,15 @@ const CustomizeServicePage = () => {
     setConfirmationModalOpen(false);
   };
 
+  const formattedCost = (cost) => {
+    // Format the costOfService as naira with the last two zeros separated by a dot
+    const formattedCost =
+      "₦ " + cost?.toLocaleString("en-NG", { maximumFractionDigits: 2 });
+
+    return formattedCost;
+  };
+
+
   const handleConfirmation = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -568,8 +577,8 @@ const CustomizeServicePage = () => {
                             </Flex>
                           </Flex>
                           <Flex>
-                          <Text fontWeight="bold" color="black">
-                           Preferred Caregiver:
+                            <Text fontWeight="bold" color="black">
+                              Preferred Caregiver:
                             </Text>
                             <Text marginLeft="35px" color="black">
                               {`${service.preferredCaregiver}`}
@@ -593,6 +602,27 @@ const CustomizeServicePage = () => {
                               </Text>
                             </Flex>
                           </Flex>
+                          <Flex>
+                            <Text fontWeight="bold" color="black">
+                              Cost of service:
+                            </Text>
+                            <Text marginLeft="90px" color="black">
+                              {`${formattedCost(service.costOfService)}`}
+                            </Text>
+                          </Flex>
+                          {/* <Flex marginLeft="85px">
+                            <Text fontWeight="bold" color="black">
+                              Additional note:
+                            </Text>
+                            <Text
+                              maxW="300px"
+                              maxH="1000px"
+                              marginLeft="5px"
+                              color="black"
+                            >
+                              {`${service.note}`}
+                            </Text>
+                          </Flex> */}
                         </Box>
                       </Box>
                       <Box marginLeft="-25px" marginTop="3px">
