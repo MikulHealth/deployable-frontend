@@ -247,8 +247,8 @@ const ClientDash = () => {
 
   return (
     <ChakraProvider theme={customTheme}>
-      <Flex overflowY="scroll" height="100vh">
-        <Box width="25%" p={3} color="white" h="100vh">
+     <Flex direction={{ base: "column", md: "row" }} overflowY="scroll" height="100vh">
+     <Box width={{ base: "100%", md: "25%" }} p={3} color="white" h="100vh">
           <Image
             src={logo}
             alt="Logo"
@@ -420,7 +420,7 @@ const ClientDash = () => {
         ) : (
           //  Second Section (Middle)
 
-          <VStack align="center" width="50%" h="100vh">
+          <VStack align="center" width={{ base: "100%", md: "50%" }} h="100vh">
             <Box>
               <Box>
                 <Text
@@ -676,7 +676,7 @@ const ClientDash = () => {
           <Skeleton marginLeft="5px" height="100vh" width="25%" />
         ) : (
           //  Third Section (Right)
-          <VStack width="25%" spacing={3} h="100vh">
+          <VStack width={{ base: "100%", md: "25%" }} spacing={3} h="100vh">
             <Box marginLeft="90px" marginTop="10px">
               <Flex marginLeft="50px">
                 <Box marginTop="30px">
