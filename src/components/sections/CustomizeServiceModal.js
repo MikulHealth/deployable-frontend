@@ -72,15 +72,12 @@ const CustomizePlanModal = ({ isOpen, onClose }) => {
     "Serving of urinal/bedpan",
     "Catheter care",
     "Ostomy care",
-    "Insurance against theft & damage",
     "Blood pressure & pulse monitoring",
     "Post-Operative Wound Care",
     "Episiotomy Care",
     "Health Education",
     "Physical & Emotional Support",
     "Sitz Bath",
-    "Baby Grooming",
-    "Baby Umbilical Care",
     "Injection administration",
     "Health assessment",
     "Symptom management",
@@ -89,36 +86,35 @@ const CustomizePlanModal = ({ isOpen, onClose }) => {
     "Dressing changes",
   ];
 
-// Function to calculate the cost based on caregiver, duration, and shift
-const calculateCost = () => {
-  let costPerDay = 0;
+  const calculateCost = () => {
+    let costPerDay = 0;
 
-  // Determine the cost per day based on the caregiver
-  if (medicSpecialization === "Nurse Assistant") {
-    costPerDay = 6000; // Default cost for Nurse Assistant
-  } else {
-    costPerDay = 12000; // Default cost for others (Licensed Nurse and Licensed Nurse/Midwife)
-  }
-
-  // Adjust cost per day based on the type of shift chosen
-  if (shift === "Day Shift") {
-    costPerDay *= 1; // No adjustment needed for 8hrs shift
-  } else if (shift === "Live-in") {
-    // Adjust cost for 24hrs shift
+    // Determine the cost per day based on the caregiver
     if (medicSpecialization === "Nurse Assistant") {
-      costPerDay = 8000; // Adjusted cost for Nurse Assistant for 24hrs shift
+      costPerDay = 6000;
     } else {
-      costPerDay = 16000; // Adjusted cost for others for 24hrs shift
+      costPerDay = 12000;
     }
-  }
 
-  // Calculate the total cost based on duration
-  const totalCost = costPerDay * parseInt(duration);
-  return totalCost.toLocaleString("en-NG", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }); // Format the total cost
-};
+    // Adjust cost per day based on the type of shift chosen
+    if (shift === "Day Shift") {
+      costPerDay *= 1; // No adjustment needed for 8hrs shift
+    } else if (shift === "Live-in") {
+      // Adjust cost for 24hrs shift
+      if (medicSpecialization === "Nurse Assistant") {
+        costPerDay = 8000;
+      } else {
+        costPerDay = 16000;
+      }
+    }
+
+    // Calculate the total cost based on duration
+    const totalCost = costPerDay * parseInt(duration);
+    return totalCost.toLocaleString("en-NG", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }); // Format the total cost
+  };
 
   useEffect(() => {
     // Update costOfService whenever duration or preferredCaregiver changes

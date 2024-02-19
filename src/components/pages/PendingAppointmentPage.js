@@ -6,6 +6,7 @@ import { SetUser } from "../../redux/userSlice";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import BookAppointmentModal from "../sections/BookAppointment";
+import EditPendingAppointmentModal from "../sections/EditPendingAppointmentModal";
 import CanceledAppointmentsModal from "../sections/CanceledAppointments";
 import Help from "../../assets/Help.svg";
 import axios from "axios";
@@ -73,8 +74,8 @@ const PendingAppointmentPage = () => {
   const { user } = useSelector((state) => state.userReducer);
   const [showUserDetailsModal, setShowUserDetailsModal] = useState(false);
   const [showAppointmentModal, setShowAppointmentModal] = useState(false);
-  const [showViewAllModal, setShowViewAllModal] = useState(false);
-  const [showPendingModal, setShowPendingModal] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [selectedAppointmentId, setSelectedAppointmentId] = useState(null);
   const [showCanceledModal, setShowCanceledModal] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [showWalletModal, setShowWalletModal] = useState(false);
@@ -107,7 +108,15 @@ const PendingAppointmentPage = () => {
     setShowSearchAppointmentsModal(false);
   };
 
-  const handleOpenHelpModal = () => {};
+  const handleEditAppointment = (id) => {
+    setSelectedAppointmentId(id);
+    setEditModalOpen(true);
+    setDetailsModalOpen(false)
+  };
+
+  const handleCloseEditModal = () => {
+    setEditModalOpen(false);
+  };
 
   const handleCloseAppointmentModal = () => {
     setShowAppointmentModal(false);
@@ -205,7 +214,7 @@ const PendingAppointmentPage = () => {
 
     return formattedCost;
   };
-  
+
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
     const formattedDate = new Date(dateString).toLocaleDateString(
@@ -282,6 +291,17 @@ const PendingAppointmentPage = () => {
     await fetchAndDisplayAppointmentDetails(id);
     console.log(`View more details for appointment with ID: ${id}`);
   };
+
+  // useEffect(() => {
+  //   // Fetch appointment details when the reschedule appointment modal is closed
+  //   if (!editModalOpen && selectedAppointmentId) {
+  //      fetchAndDisplayAppointmentDetails(selectedAppointmentId);
+  //     setTimeout(() => {
+  //       setDetailsModalOpen(true)
+  //     }, 3000);
+  //   }
+  // }, [editModalOpen]);
+  
 
   const formatDateTime = (dateTimeString) => {
     const options = {
@@ -789,6 +809,11 @@ const PendingAppointmentPage = () => {
         isOpen={showSearchAppointmentsModal}
         onClose={handleCloseSearchAppointmentsModal}
       />
+      <EditPendingAppointmentModal
+        isOpen={editModalOpen}
+        onClose={handleCloseEditModal}
+        appointmentDetails={selectedAppointment}
+      />
 
       {detailsModalOpen && selectedAppointment && (
         <Modal
@@ -1001,7 +1026,19 @@ const PendingAppointmentPage = () => {
                       "Not available"}
                   </Text>
                 </Flex>
+
                 <Divider my={4} borderColor="gray.500" />
+                <Button
+                  marginLeft="300px"
+                  bg="#A210C6"
+                  marginTop="10px"
+                  marginBottom="10px"
+                  color="white"
+                  _hover={{ color: "" }}
+                  onClick={handleEditAppointment}
+                >
+                  Reschedule appointment
+                </Button>
               </Box>
 
               {/* Display payment button if appointment is not paid */}
