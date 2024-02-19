@@ -479,8 +479,19 @@ const HelpPage = () => {
               <Text marginTop="50px" marginLeft="-145px">
                 You can reach us via:
               </Text>
-              <Text marginLeft="-68px">Email: support@mikulhealth.com</Text>
-              <Text marginLeft="-120px">Phone: +2349160596636</Text>
+              <Text marginLeft="-68px">
+                Email:{" "}
+                <a
+                  href="mailto:support@mikulhealth.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  support@mikulhealth.com
+                </a>
+              </Text>
+              <Text marginLeft="-120px">
+                Phone: <a href="tel:+2349160596636">+2349160596636</a>
+              </Text>
             </Box>
 
             <Box marginLeft="350px" marginTop="50px">

@@ -1037,14 +1037,14 @@ const PendingAppointmentPage = () => {
                   _hover={{ color: "" }}
                   onClick={handleEditAppointment}
                 >
-                  Reschedule appointment
+                  Update appointment details
                 </Button>
               </Box>
 
               {/* Display payment button if appointment is not paid */}
               {!selectedAppointment.paid && (
                 <Button
-                  marginLeft="330px"
+                  marginLeft="320px"
                   bg="#A210C6"
                   marginTop="10px"
                   marginBottom="10px"

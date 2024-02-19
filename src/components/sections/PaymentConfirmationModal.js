@@ -51,11 +51,11 @@ const PaymentConfirmationModal = ({ isOpen, onClose }) => {
   const storedPaymentData = localStorage.getItem("appointmentId");
   const costOfService = localStorage.getItem("costOfService");
   const [paymentData, setPaymentData] = useState({
-    email: user.email || "",
+    email: user?.email || "",
     amount: costOfService,
     reference: storedPaymentData,
-    name: `${user.firstName || ""} ${user.lastName || ""}`,
-    phone: user.phoneNumber || "",
+    name: `${user?.firstName || ""} ${user?.lastName || ""}`,
+    phone: user?.phoneNumber || "",
     publicKey: "pk_test_be79821835be2e8689484980b54a9785c8fa0778",
   });
 
@@ -70,13 +70,13 @@ const PaymentConfirmationModal = ({ isOpen, onClose }) => {
   const formattedCost = (cost) => {
     // Divide costOfService by 100 to represent the amount in naira
     const costInNaira = cost / 100;
-  
+
     // Format the costOfService as naira with the last two zeros separated by a dot
-    const formattedCost = "₦ " + costInNaira.toLocaleString("en-NG", { maximumFractionDigits: 2 });
-  
+    const formattedCost =
+      "₦ " + costInNaira.toLocaleString("en-NG", { maximumFractionDigits: 2 });
+
     return formattedCost;
   };
-  
 
   const handlePaymentSuccess = (response) => {
     verifyPayment();
@@ -154,77 +154,91 @@ const PaymentConfirmationModal = ({ isOpen, onClose }) => {
 
   return (
     <ChakraProvider theme={customTheme}>
-  
-        <Box overflowY="scroll" height="100vh">
-          <Box
-            bg="#A210C6"
-            p={3}
-            color="white"
-            position="sticky"
-            top="0"
-            zIndex="1000"
-            borderBottom="1px solid white"
+      <Box overflowY="scroll" height="100vh">
+        <Box
+          bg="#A210C6"
+          p={3}
+          color="white"
+          position="sticky"
+          top="0"
+          zIndex="1000"
+          borderBottom="1px solid white"
+        >
+          <HStack spacing={10}>
+            <Box w="5px" />
+            <a href="/">
+              <Image src={logo} alt="Logo" w="100px" h="30px" />
+            </a>
+            <Spacer />
+            <Spacer />
+            <Spacer />
+            <Spacer />
+            <ChakraLink fontStyle="italic" href="/dashboard" color="#A210C6">
+              <Button color="#A210C6" bg="white">
+                Dashboad
+              </Button>
+            </ChakraLink>
+          </HStack>
+        </Box>
+        <Box
+          marginLeft="350px"
+          marginTop="50px"
+          w="50vw"
+          h="70vh"
+          borderRadius="40px"
+        >
+          <Text
+            fontSize="32px"
+            fontFamily="body"
+            color="#A210C6"
+            paddingTop="15px"
           >
-            <HStack spacing={10}>
-              <Box w="5px" />
-              <a href="/">
-                <Image src={logo} alt="Logo" w="100px" h="30px" />
-              </a>
-              <Spacer />
-              <Spacer />
-              <Spacer />
-              <Spacer />
-              <ChakraLink fontStyle="italic" href="/dashboard" color="#A210C6">
-                <Button bg="white">Dashboad</Button>
-              </ChakraLink>
-            </HStack>
-          </Box>
-          <Box
-            marginLeft="350px"
-            marginTop="50px"
-            w="50vw"
-            h="70vh"
-            // bg="#F6E4FC"
-            borderRadius="10px"
-          >
+            Confirm Payment
+          </Text>
+          <form onSubmit={handlePayment}>
             <Text
-              fontSize="32px"
-              fontFamily="body"
-              color="#A210C6"
-              paddingTop="15px"
-              // marginLeft="-370px"
+              padding="5px"
+              fontSize="20px"
+              marginLeft="70px"
+              bg="#F6E4FC"
+              marginBottom="30px"
+              w="40vw"
             >
-              Confirm Payment
+              Hi {user?.firstName}, kindly pay the sum of{" "}
+              {formattedCost(costOfService)} to proceed with your booking.
+              <br></br> You would be matched with a caregiver within 48hrs
+              <br></br>upon a successful payment.
             </Text>
-            <form onSubmit={handlePayment}>
-              <Text marginLeft="70px" bg="#F6E4FC" marginBottom="30px" w="40vw">
-                Hi {user?.firstName}, kindly pay the sum of {formattedCost(costOfService)} to proceed
-                with your booking.<br></br> You would be matched with a
-                caregiver within 48hrs<br></br>upon a successful payment.
-              </Text>
-              <FormControl isRequired>
-                <Box marginLeft="20px" alignContent="center">
-                  <FormLabel marginLeft="270px">Your email address</FormLabel>
-                  <Input
-                    type="email"
-                    name="email"
-                    placeholder="Email Address"
-                    value={paymentData.email}
-                    onChange={handleInputChange}
-                    required
-                    w="500"
-                  />
-                  <FormLabel marginLeft="290px">Your full name</FormLabel>
-                  <Input
-                    type="text"
-                    name="name"
-                    placeholder="Full Name"
-                    value={paymentData.name}
-                    onChange={handleInputChange}
-                    required
-                    w="500"
-                  />
-                  <FormLabel marginLeft="270px">Your phone number</FormLabel>
+            <FormControl isRequired>
+              <Box marginLeft="20px" alignContent="center">
+                <Flex marginLeft="120px">
+                  <Box>
+                    <FormLabel>Full name</FormLabel>
+                    <Input
+                      type="text"
+                      name="name"
+                      placeholder="Full Name"
+                      value={paymentData.name}
+                      onChange={handleInputChange}
+                      required
+                      w="500"
+                    />
+                  </Box>
+                  <Box marginLeft="10px">
+                    <FormLabel>Email address</FormLabel>
+                    <Input
+                      type="email"
+                      name="email"
+                      placeholder="Email Address"
+                      value={paymentData.email}
+                      onChange={handleInputChange}
+                      required
+                      w="500"
+                    />
+                  </Box>
+                </Flex>
+                <Box marginLeft="120px">
+                  <FormLabel>Your phone number</FormLabel>
                   <Input
                     type="tel"
                     name="phone"
@@ -232,39 +246,48 @@ const PaymentConfirmationModal = ({ isOpen, onClose }) => {
                     value={paymentData.phone}
                     onChange={handleInputChange}
                     required
-                    w="500"
+                    marginLeft="-125px"
+                    w="425px"
                   />
                 </Box>
-                <Flex marginTop="30px" marginLeft="200px">
-                  <Box mr={3}>
-                    <Button
-                      bg="#A210C6"
-                      color="white"
-                      onClick={handlePayment}
-                      isLoading={loading}
-                    >
-                      <Box color="white">
-                        {/* Use the retrieved paymentData */}
-                        <PaystackButton
-                          {...paymentData}
-                          text="Make Payment"
-                          className="submits"
-                          onSuccess={handlePaymentSuccess}
-                          onClose={handlePaymentFailure}
-                        />
-                      </Box>
-                    </Button>
-                  </Box>
-                  <Box>
-                    <Button color="white" bg="gray" onClick={handleCancel}>
-                      Cancel payment
-                    </Button>
-                  </Box>
-                </Flex>
-              </FormControl>
-            </form>
-          </Box>
+              </Box>
+
+              <Flex marginTop="30px" marginLeft="200px">
+                <Box mr={3}>
+                  <Button
+                    _hover={{ color: "" }}
+                    bg="#A210C6"
+                    color="white"
+                    onClick={handlePayment}
+                    isLoading={loading}
+                  >
+                    <Box color="white">
+                      {/* Use the retrieved paymentData */}
+                      <PaystackButton
+                        {...paymentData}
+                        text="Process Payment"
+                        className="submits"
+                        onSuccess={handlePaymentSuccess}
+                        onClose={handlePaymentFailure}
+                      />
+                    </Box>
+                  </Button>
+                </Box>
+                <Box>
+                  <Button
+                    _hover={{ color: "" }}
+                    color="white"
+                    bg="gray"
+                    onClick={handleCancel}
+                  >
+                    Cancel payment
+                  </Button>
+                </Box>
+              </Flex>
+            </FormControl>
+          </form>
         </Box>
+      </Box>
       {/* )} */}
     </ChakraProvider>
   );
